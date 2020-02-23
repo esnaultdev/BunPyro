@@ -25,7 +25,8 @@ ext.versions = [
 
 ext.deps = [
         plugins: [
-                android: 'com.android.tools.build:gradle:3.5.1',
+                android: 'com.android.tools.build:gradle:3.5.3',
                 kotlin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+                navigation: "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.androidx.navigation}"
         ]
 ]

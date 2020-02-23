@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.android.screen.apikey
+package dev.esnault.bunpyro.android.screen.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,14 +10,14 @@ import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class ApiKeyFragment : BaseFragment() {
+class HomeFragment : BaseFragment() {
 
-    override val vm: ApiKeyViewModel by viewModel()
+    override val vm: HomeViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.api_key_fragment, container, false)
+        return inflater.inflate(R.layout.home_fragment, container, false)
     }
 }

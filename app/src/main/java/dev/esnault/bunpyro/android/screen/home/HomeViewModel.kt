@@ -1,8 +1,8 @@
-package dev.esnault.bunpyro.android.screen.apikey
+package dev.esnault.bunpyro.android.screen.home
 
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 
 
-class ApiKeyViewModel : BaseViewModel() {
+class HomeViewModel : BaseViewModel() {
     // TODO: Implement the ViewModel
 }

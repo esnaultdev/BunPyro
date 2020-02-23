@@ -3,24 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/startFragment">
+    app:startDestination="@id/startScreen">
 
     <fragment
-        android:id="@+id/startFragment"
+        android:id="@+id/startScreen"
         android:name="dev.esnault.bunpyro.android.screen.start.StartFragment"
         tools:layout="@layout/fragment_start">
 
         <action
-            android:id="@+id/action_startFragment_to_apiKeyFragment"
-            app:destination="@id/apiKeyFragment"
-            app:popUpTo="@+id/startFragment"
+            android:id="@+id/action_start_to_apiKey"
+            app:destination="@id/apiKeyScreen"
+            app:popUpTo="@+id/startScreen"
             app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_start_to_home"
+            app:destination="@id/homeScreen" />
 
     </fragment>
 
     <fragment
-        android:id="@+id/apiKeyFragment"
+        android:id="@+id/apiKeyScreen"
         android:name="dev.esnault.bunpyro.android.screen.apikey.ApiKeyFragment"
+        tools:layout="@layout/api_key_fragment" >
+
+        <action
+            android:id="@+id/action_apiKey_to_home"
+            app:destination="@id/homeScreen" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeScreen"
+        android:name="dev.esnault.bunpyro.android.screen.home.HomeFragment"
         tools:layout="@layout/api_key_fragment" />
 
 </navigation>
