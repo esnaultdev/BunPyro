@@ -24,9 +24,9 @@ class StartViewModel(
 
     private fun navigateToNextScreen(hasApiKey: Boolean) {
         val navDirections = if (hasApiKey) {
-            StartFragmentDirections.actionStartToApiKey()
-        } else {
             StartFragmentDirections.actionStartToHome()
+        } else {
+            StartFragmentDirections.actionStartToApiKey()
         }
         navigate(navDirections)
     }

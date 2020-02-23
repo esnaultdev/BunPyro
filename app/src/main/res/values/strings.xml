@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">BunPyro</string>
+
+    <string name="apikey_hint">Api Key</string>
+    <string name="apikey_start">Start</string>
+    <string name="apikey_privacy">Privacy</string>
+
+    <string name="apikey_welcome">Welcome to BunPyro!</string>
+
 </resources>

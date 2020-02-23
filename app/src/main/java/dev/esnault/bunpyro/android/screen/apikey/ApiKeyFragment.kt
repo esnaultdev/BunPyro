@@ -18,6 +18,6 @@ class ApiKeyFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.api_key_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_api_key, container, false)
     }
 }
