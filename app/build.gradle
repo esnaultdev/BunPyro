@@ -60,6 +60,11 @@ dependencies {
     kapt "androidx.room:room-compiler:${versions.androidx.room}"
     implementation "androidx.room:room-ktx:${versions.androidx.room}"
 
+    // Network
+    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
+    implementation "com.squareup.moshi:moshi-kotlin:${versions.moshi}"
+
     // Test
     testImplementation "junit:junit:${versions.junit}"
     androidTestImplementation "androidx.test:runner:${versions.androidx.test}"

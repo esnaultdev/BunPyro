@@ -15,6 +15,10 @@ ext.versions = [
         material: '1.1.0',
         // "DI"
         koin: '2.0.1',
+        // Network
+        retrofit: '2.7.1',
+        moshi: '1.9.2',
+
         // Test
         junit: '4.12',
 ]
