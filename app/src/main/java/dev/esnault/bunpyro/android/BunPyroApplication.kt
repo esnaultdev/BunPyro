@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.app
+package dev.esnault.bunpyro.android
 
 import android.app.Application
 import dev.esnault.bunpyro.di.appModule

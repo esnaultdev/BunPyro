@@ -1,7 +1,8 @@
-package dev.esnault.bunpyro
+package dev.esnault.bunpyro.android
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import dev.esnault.bunpyro.R
 
 class MainActivity : AppCompatActivity() {
 
