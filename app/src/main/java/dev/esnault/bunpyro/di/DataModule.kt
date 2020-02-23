@@ -31,7 +31,7 @@ val dataModule = module {
         val moshi: Moshi = get()
 
         Retrofit.Builder()
-            .baseUrl("https://api.github.com")
+            .baseUrl("https://bunpro.jp/api/")
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }

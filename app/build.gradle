@@ -31,6 +31,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -48,6 +52,8 @@ dependencies {
     // Architecture components
     implementation "androidx.navigation:navigation-fragment-ktx:${versions.androidx.navigation}"
     implementation "androidx.navigation:navigation-ui-ktx:${versions.androidx.navigation}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidx.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidx.lifecycle}"
 
     // DI
     implementation "org.koin:koin-android:${versions.koin}"
