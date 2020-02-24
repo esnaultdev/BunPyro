@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.observe
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import dev.esnault.bunpyro.R
 
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
@@ -75,6 +77,8 @@ class ApiKeyFragment : BaseFragment() {
     }
 
     private fun bindToViewState(viewState: ApiKeyViewModel.ViewState) {
+        TransitionManager.beginDelayedTransition(binding.apikeyRoot, AutoTransition())
+
         when (viewState) {
             is ApiKeyViewModel.ViewState.Default -> {
                 binding.apikeyDefaultGroup.show()
