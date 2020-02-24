@@ -14,6 +14,7 @@ import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.common.hide
 import dev.esnault.bunpyro.common.hideKeyboard
+import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.common.show
 import dev.esnault.bunpyro.databinding.FragmentApiKeyBinding
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -50,7 +51,7 @@ class ApiKeyFragment : BaseFragment() {
         }
 
         binding.apikeyPrivacy.setOnClickListener {
-            // TODO Open the browser to https://www.bunpro.jp/privacy
+            context?.openUrlInBrowser("https://www.bunpro.jp/privacy")
         }
 
         binding.apikeyErrorButton.setOnClickListener {
