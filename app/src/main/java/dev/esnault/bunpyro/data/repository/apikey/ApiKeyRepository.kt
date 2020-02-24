@@ -26,27 +26,30 @@ class ApiKeyRepository(
     override suspend fun checkAndSaveApiKey(apiKey: String): ApiKeyCheckResult {
         return withContext(Dispatchers.IO) {
             val checkResult = checkApiKey(apiKey)
-            appConfig.saveApiKey(apiKey)
+            if (checkResult is ApiKeyCheckResult.Success) {
+                appConfig.saveApiKey(apiKey)
+            }
             checkResult
         }
     }
 
     private suspend fun checkApiKey(apiKey: String): ApiKeyCheckResult {
+        // TODO log the unknown errors (logcat + firebase)
         return try {
             val user = bunproApi.getUser(apiKey)
             ApiKeyCheckResult.Success(user.userInfo)
         } catch (e: HttpException) {
             when (e.code()) {
-                401 -> ApiKeyCheckResult.InvalidKey
-                in 500..599 -> ApiKeyCheckResult.ServerError
-                else -> ApiKeyCheckResult.UnknownError(e)
+                401 -> ApiKeyCheckResult.Error.Invalid
+                in 500..599 -> ApiKeyCheckResult.Error.Server
+                else -> ApiKeyCheckResult.Error.Unknown(e)
             }
         } catch (e: SocketTimeoutException) {
-            ApiKeyCheckResult.NetworkError
+            ApiKeyCheckResult.Error.Network
         } catch (e: IOException) {
-            ApiKeyCheckResult.NetworkError
+            ApiKeyCheckResult.Error.Network
         } catch (e: Exception) {
-            ApiKeyCheckResult.UnknownError(e)
+            ApiKeyCheckResult.Error.Unknown(e)
         }
     }
 }

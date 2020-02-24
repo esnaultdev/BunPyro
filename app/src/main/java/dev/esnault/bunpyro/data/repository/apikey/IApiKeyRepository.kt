@@ -11,9 +11,11 @@ interface IApiKeyRepository {
 }
 
 sealed class ApiKeyCheckResult {
-    object NetworkError : ApiKeyCheckResult()
-    object InvalidKey : ApiKeyCheckResult()
-    object ServerError : ApiKeyCheckResult()
-    class UnknownError(val exception: Throwable) : ApiKeyCheckResult()
     class Success(val userInfo: UserInfo) : ApiKeyCheckResult()
+    sealed class Error : ApiKeyCheckResult() {
+        object Network : Error()
+        object Invalid : Error()
+        object Server : Error()
+        class Unknown(val exception: Throwable) : Error()
+    }
 }
