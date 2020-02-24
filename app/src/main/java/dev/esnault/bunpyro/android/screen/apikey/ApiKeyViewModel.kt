@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
+import dev.esnault.bunpyro.data.repository.apikey.ApiKeyCheckResult
 import dev.esnault.bunpyro.data.repository.apikey.IApiKeyRepository
 import kotlinx.coroutines.launch
 
@@ -32,8 +33,14 @@ class ApiKeyViewModel(
         val apiKey = apiKey ?: return
 
         viewModelScope.launch {
-            apiKeyRepository.checkAndSaveApiKey(apiKey)
-            navigate(ApiKeyFragmentDirections.actionApiKeyToHome())
+            val checkResult = apiKeyRepository.checkAndSaveApiKey(apiKey)
+            handleApiKeyCheckResult(checkResult)
         }
+    }
+
+    private fun handleApiKeyCheckResult(checkResult: ApiKeyCheckResult) {
+        // TODO
+
+        navigate(ApiKeyFragmentDirections.actionApiKeyToHome())
     }
 }
