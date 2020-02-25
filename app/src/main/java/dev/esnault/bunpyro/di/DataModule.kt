@@ -2,16 +2,20 @@ package dev.esnault.bunpyro.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.esnault.bunpyro.data.config.AppConfig
 import dev.esnault.bunpyro.data.config.IAppConfig
+import dev.esnault.bunpyro.data.db.BunPyroDatabase
+import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
 import dev.esnault.bunpyro.data.network.AuthorisationInterceptor
 import dev.esnault.bunpyro.data.network.BunproApi
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
 import dev.esnault.bunpyro.data.sync.ISyncService
 import dev.esnault.bunpyro.data.sync.SyncService
 import okhttp3.OkHttpClient
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -28,6 +32,23 @@ val dataModule = module {
     }
 
     single<IAppConfig> { AppConfig(get()) }
+
+    // endregion
+
+    // region DB
+
+    single<BunPyroDatabase> {
+        Room.databaseBuilder(
+            androidApplication(),
+            BunPyroDatabase::class.java,
+            "bunpyro_db"
+        ).build()
+    }
+
+    single<GrammarPointDao> {
+        val db: BunPyroDatabase = get()
+        db.grammarPointDao()
+    }
 
     // endregion
 
@@ -83,7 +104,7 @@ val dataModule = module {
     // region Sync
 
     single<ISyncService> {
-        SyncService(get())
+        SyncService(get(), get())
     }
 
     // endregion
