@@ -9,7 +9,7 @@ buildscript {
     }
 
     dependencies {
-        classpath deps.plugins.android
+        classpath 'com.android.tools.build:gradle:3.6.0'
         classpath deps.plugins.kotlin
         classpath deps.plugins.navigation
         // NOTE: Do not place your application dependencies here; they belong
