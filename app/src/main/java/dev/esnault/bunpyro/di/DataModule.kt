@@ -12,6 +12,8 @@ import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
 import dev.esnault.bunpyro.data.network.AuthorisationInterceptor
 import dev.esnault.bunpyro.data.network.BunproApi
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
+import dev.esnault.bunpyro.data.repository.sync.ISyncRepository
+import dev.esnault.bunpyro.data.repository.sync.SyncRepository
 import dev.esnault.bunpyro.data.sync.ISyncService
 import dev.esnault.bunpyro.data.sync.SyncService
 import okhttp3.OkHttpClient
@@ -103,8 +105,12 @@ val dataModule = module {
 
     // region Sync
 
+    single<ISyncRepository> {
+        SyncRepository(get())
+    }
+
     single<ISyncService> {
-        SyncService(get(), get())
+        SyncService(get(), get(), get())
     }
 
     // endregion

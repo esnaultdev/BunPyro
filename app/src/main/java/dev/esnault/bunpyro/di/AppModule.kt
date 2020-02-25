@@ -11,7 +11,7 @@ import org.koin.dsl.module
 
 val appModule = module {
 
-    viewModel { StartViewModel(get()) }
+    viewModel { StartViewModel(get(), get()) }
     viewModel { ApiKeyViewModel(get()) }
     viewModel { FirstSyncViewModel() }
     viewModel { HomeViewModel() }

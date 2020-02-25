@@ -67,19 +67,18 @@ Example response
     "requested_information": [
         {
             "grammar_point": "ている③",
-            "created_at_date": 1582351671,
-            "updated_at_date": 1582429278
+            "created_at_date": 1.582.351.671,
+            "updated_at_date": 1.582.429.278
 
         },
             "grammar_point": "ている②",
-            "created_at_date": 1582351655,
-            "updated_at_date": 1582429159
+            "created_at_date": 1.582.351.655,
+            "updated_at_date": 1.582.429.159
 
         },
             "grammar_point": "はずがない",
-            "created_at_date": 1582279274,
-            "updated_at_date": 1582429298
-
+            "created_at_date": 1.582.279.274,
+            "updated_at_date": 1.582.429.298
         }
     ]
 }
@@ -316,6 +315,9 @@ Example response
 ```
 
 Personal note: Dealing with the raw html in the JSON API will be painful
+
+The response has a weak ETag validator which enables to only get new content (with 304 Unmodified
+otherwise).
 
 
 GET api/v4/example_sentences

@@ -2,7 +2,9 @@ package dev.esnault.bunpyro.data.network
 
 import dev.esnault.bunpyro.data.network.entities.DataRequest
 import dev.esnault.bunpyro.data.network.entities.GrammarPoint
+import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Header
 
 
 /**
@@ -12,5 +14,7 @@ import retrofit2.http.GET
 interface BunproVersionedApi {
 
     @GET("v4/grammar_points")
-    suspend fun getGrammarPoints(): DataRequest<GrammarPoint>
+    suspend fun getGrammarPoints(
+        @Header("If-None-Match") etagHeader: String?
+    ): Response<DataRequest<GrammarPoint>>
 }
