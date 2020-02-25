@@ -1,9 +1,7 @@
 package dev.esnault.bunpyro.android.screen.apikey
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.observe
@@ -20,20 +18,10 @@ import dev.esnault.bunpyro.databinding.FragmentApiKeyBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class ApiKeyFragment : BaseFragment() {
-
-    private var _binding: FragmentApiKeyBinding? = null
-    private val binding get() = _binding!!
+class ApiKeyFragment : BaseFragment<FragmentApiKeyBinding>() {
 
     override val vm: ApiKeyViewModel by viewModel()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentApiKeyBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override val viewBindingClass = FragmentApiKeyBinding::class
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,11 +49,6 @@ class ApiKeyFragment : BaseFragment() {
         vm.viewState.observe(this) { viewState ->
             bindToViewState(viewState)
         }
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
     }
 
     private fun onInputFieldEditorAction(actionId: Int): Boolean {
