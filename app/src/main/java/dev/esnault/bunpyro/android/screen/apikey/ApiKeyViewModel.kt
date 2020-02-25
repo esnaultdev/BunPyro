@@ -61,7 +61,7 @@ class ApiKeyViewModel(
             is ApiKeyCheckResult.Success -> {
                 currentState = ViewState.Success(checkResult.userInfo.userName)
                 delay(2000L)
-                navigate(ApiKeyFragmentDirections.actionApiKeyToHome())
+                navigate(ApiKeyFragmentDirections.actionApiKeyToFirstSync())
             }
             is ApiKeyCheckResult.Error -> {
                 val newState = when (checkResult) {

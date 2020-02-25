@@ -17,8 +17,16 @@
             app:popUpToInclusive="true" />
 
         <action
+            android:id="@+id/action_start_to_firstSync"
+            app:destination="@id/firstSyncScreen"
+            app:popUpTo="@+id/startScreen"
+            app:popUpToInclusive="true" />
+
+        <action
             android:id="@+id/action_start_to_home"
-            app:destination="@id/homeScreen" />
+            app:destination="@id/homeScreen"
+            app:popUpTo="@+id/startScreen"
+            app:popUpToInclusive="true" />
 
     </fragment>
 
@@ -28,8 +36,23 @@
         tools:layout="@layout/fragment_api_key" >
 
         <action
-            android:id="@+id/action_apiKey_to_home"
-            app:destination="@id/homeScreen" />
+            android:id="@+id/action_apiKey_to_firstSync"
+            app:destination="@id/firstSyncScreen"
+            app:popUpTo="@+id/apiKeyScreen"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/firstSyncScreen"
+        android:name="dev.esnault.bunpyro.android.screen.firstsync.FirstSyncFragment"
+        tools:layout="@layout/fragment_first_sync" >
+
+        <action
+            android:id="@+id/action_firstSync_to_home"
+            app:destination="@id/homeScreen"
+            app:popUpTo="@+id/firstSyncScreen"
+            app:popUpToInclusive="true" />
 
     </fragment>
 
