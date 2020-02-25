@@ -330,33 +330,33 @@ curl -H "Authorization: Bearer {USER_API_TOKEN}" "https://bunpro.jp/api/v4/examp
 Example response
 ```
 {
-  "data": [
-    {
-      "id": "9",
-      "type": "example-sentences",
-      "attributes": {
-        "grammar-point-id": 3,
-        "japanese": "私（わたし）はトムです。",
-        "english": "I <strong>(as the topic of this sentence)</strong> am Tom.",
-        "nuance": null,
-        "sentence-order": 0,
-        "audio-link": "私はトムです。.mp3"
-      }
-    },
-    [...]
-    {
-      "id": "17",
-      "type": "example-sentences",
-      "attributes": {
-        "grammar-point-id": 5,
-        "japanese": "これは寿司（すし）です。",
-        "english": "<strong>This</strong> is sushi.",
-        "nuance": null,
-        "sentence-order": 2,
-        "audio-link": "これは寿司です。.mp3"
-      }
-    }
-  ]
+    "data": [
+        {
+            "id": "9",
+            "type": "example-sentences",
+            "attributes": {
+                "grammar-point-id": 3,
+                "japanese": "私（わたし）はトムです。",
+                "english": "I <strong>(as the topic of this sentence)</strong> am Tom.",
+                "nuance": null,
+                "sentence-order": 0,
+                "audio-link": "私はトムです。.mp3"
+            }
+        },
+        [...]
+        {
+            "id": "17",
+            "type": "example-sentences",
+            "attributes": {
+                "grammar-point-id": 5,
+                "japanese": "これは寿司（すし）です。",
+                "english": "<strong>This</strong> is sushi.",
+                "nuance": null,
+                "sentence-order": 2,
+                "audio-link": "これは寿司です。.mp3"
+            }
+        }
+    ]
 }
 ```
 
@@ -406,5 +406,7 @@ Reviews API
 TODO
 
 `api/v3/reviews/create/{ID}?complete=true`
+
 `api/v3/reviews/edit/{ID}?remove_review=true`
+
 `api/v3/reviews/edit/{ID}?reset=true`
