@@ -2,12 +2,9 @@ package dev.esnault.bunpyro.data.repository.apikey
 
 import dev.esnault.bunpyro.data.config.IAppConfig
 import dev.esnault.bunpyro.data.network.BunproApi
+import dev.esnault.bunpyro.data.network.simpleRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
-import java.io.IOException
-import java.lang.Exception
-import java.net.SocketTimeoutException
 
 
 class ApiKeyRepository(
@@ -35,21 +32,14 @@ class ApiKeyRepository(
 
     private suspend fun checkApiKey(apiKey: String): ApiKeyCheckResult {
         // TODO log the unknown errors (logcat + firebase)
-        return try {
-            val user = bunproApi.getUser(apiKey)
-            ApiKeyCheckResult.Success(user.userInfo)
-        } catch (e: HttpException) {
-            when (e.code()) {
-                401 -> ApiKeyCheckResult.Error.Invalid
-                in 500..599 -> ApiKeyCheckResult.Error.Server
-                else -> ApiKeyCheckResult.Error.Unknown(e)
-            }
-        } catch (e: SocketTimeoutException) {
-            ApiKeyCheckResult.Error.Network
-        } catch (e: IOException) {
-            ApiKeyCheckResult.Error.Network
-        } catch (e: Exception) {
-            ApiKeyCheckResult.Error.Unknown(e)
-        }
+
+        return simpleRequest(
+            request = { bunproApi.getUser(apiKey) },
+            onSuccess = { ApiKeyCheckResult.Success(it.userInfo) },
+            onInvalidApiKey = { ApiKeyCheckResult.Error.Invalid },
+            onNetworkError = { ApiKeyCheckResult.Error.Network },
+            onServerError = { ApiKeyCheckResult.Error.Server },
+            onUnknownError = { ApiKeyCheckResult.Error.Unknown(it) }
+        )
     }
 }
