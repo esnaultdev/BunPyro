@@ -2,6 +2,7 @@
     <string name="app_name">BunPyro</string>
 
     <string name="common_ok">OK</string>
+    <string name="common_retry">Retry</string>
 
     <string name="apikey_hint">Api Key</string>
     <string name="apikey_start">Go</string>
@@ -11,10 +12,17 @@
     <string name="apikey_checking">Checking with Bunpro</string>
     <string name="apikey_welcome">Welcome, %s</string>
     <string name="apikey_check_error_network_title">Network error</string>
-    <string name="apikey_check_error_invalid_title">The API key is invalid</string>
-    <string name="apikey_check_error_unknown_title">Something went wrong on our side</string>
     <string name="apikey_check_error_network_text">Make sure your network is available and try again.</string>
+    <string name="apikey_check_error_invalid_title">The API key is invalid</string>
     <string name="apikey_check_error_invalid_text">Make sure to copy paste it from Bunpro and try again.</string>
+    <string name="apikey_check_error_unknown_title">Something went wrong on our side</string>
     <string name="apikey_check_error_unknown_text">Please try again in a few minutes.</string>
+
+    <string name="firstsync_download_title">Downloading grammar data</string>
+    <string name="firstsync_download_text">This can take up to 30s</string>
+    <string name="firstsync_error_network_title">Network error</string>
+    <string name="firstsync_error_network_text">Make sure your network is available and try again.</string>
+    <string name="firstsync_error_unknown_title">Something went wrong on our side</string>
+    <string name="firstsync_error_unknown_text">Please try again in a few minutes.</string>
 
 </resources>

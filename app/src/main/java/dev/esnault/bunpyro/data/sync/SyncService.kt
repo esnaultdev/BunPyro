@@ -13,12 +13,17 @@ class SyncService(
     private val grammarPointDao: GrammarPointDao
 ) : ISyncService {
 
-    override suspend fun syncGrammar() {
+    override suspend fun firstSync() {
+        if (syncRepo.getFirstSyncCompleted()) {
+            // The first sync has already been completed, nothing to do
+            return
+        }
+
         val eTag = syncRepo.getGrammarPointsETag()
 
         val pointsResponse = versionedApi.getGrammarPoints(eTag)
         if (pointsResponse.code() == 304) {
-            // Already up to date
+            // Already up to date.
             syncRepo.saveFirstSyncCompleted()
             return
         }
