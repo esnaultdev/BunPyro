@@ -1,64 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/startScreen">
+    app:startDestination="@id/startScreen"
+    >
 
     <fragment
         android:id="@+id/startScreen"
         android:name="dev.esnault.bunpyro.android.screen.start.StartFragment"
-        tools:layout="@layout/fragment_start">
+        tools:layout="@layout/fragment_start"
+        >
 
         <action
             android:id="@+id/action_start_to_apiKey"
             app:destination="@id/apiKeyScreen"
             app:popUpTo="@+id/startScreen"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            />
 
         <action
             android:id="@+id/action_start_to_firstSync"
             app:destination="@id/firstSyncScreen"
             app:popUpTo="@+id/startScreen"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            />
 
         <action
             android:id="@+id/action_start_to_home"
             app:destination="@id/homeScreen"
             app:popUpTo="@+id/startScreen"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            />
 
     </fragment>
 
     <fragment
         android:id="@+id/apiKeyScreen"
         android:name="dev.esnault.bunpyro.android.screen.apikey.ApiKeyFragment"
-        tools:layout="@layout/fragment_api_key" >
+        tools:layout="@layout/fragment_api_key"
+        >
 
         <action
             android:id="@+id/action_apiKey_to_firstSync"
             app:destination="@id/firstSyncScreen"
             app:popUpTo="@+id/apiKeyScreen"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            />
 
     </fragment>
 
     <fragment
         android:id="@+id/firstSyncScreen"
         android:name="dev.esnault.bunpyro.android.screen.firstsync.FirstSyncFragment"
-        tools:layout="@layout/fragment_first_sync" >
+        tools:layout="@layout/fragment_first_sync"
+        >
 
         <action
             android:id="@+id/action_firstSync_to_home"
             app:destination="@id/homeScreen"
             app:popUpTo="@+id/firstSyncScreen"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            />
 
     </fragment>
 
     <fragment
         android:id="@+id/homeScreen"
         android:name="dev.esnault.bunpyro.android.screen.home.HomeFragment"
-        tools:layout="@layout/fragment_api_key" />
+        tools:layout="@layout/fragment_api_key"
+        >
+
+        <action
+            android:id="@+id/action_home_to_lessons"
+            app:destination="@id/lessonsScreen"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/lessonsScreen"
+        android:name="dev.esnault.bunpyro.android.screen.lessons.LessonsFragment"
+        tools:layout="@layout/fragment_lessons"
+        />
 
 </navigation>

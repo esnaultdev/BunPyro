@@ -25,4 +25,6 @@
     <string name="firstsync_error_unknown_title">Something went wrong on our side</string>
     <string name="firstsync_error_unknown_text">Please try again in a few minutes.</string>
 
+    <string name="home_lessons">Lessons</string>
+
 </resources>
