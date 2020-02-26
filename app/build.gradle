@@ -73,6 +73,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
     implementation "com.squareup.moshi:moshi-kotlin:${versions.moshi}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}"
 
     // Test
     testImplementation "junit:junit:${versions.junit}"

@@ -17,6 +17,7 @@ import dev.esnault.bunpyro.data.repository.sync.SyncRepository
 import dev.esnault.bunpyro.data.sync.ISyncService
 import dev.esnault.bunpyro.data.sync.SyncService
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
@@ -25,6 +26,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 
+@Suppress("RemoveExplicitTypeArguments")
 val dataModule = module {
 
     // region Config
@@ -54,11 +56,25 @@ val dataModule = module {
 
     // endregion
 
-    // region Bunpro Base API
+    // region Common API
 
     single<Moshi> {
         Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
+            .build()
+    }
+
+    // endregion
+
+    // region Bunpro Base API
+
+    single<OkHttpClient>(named("baseApiOkHttp")) {
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BASIC
+        }
+
+        OkHttpClient.Builder()
+            .addInterceptor(logging)
             .build()
     }
 
@@ -67,6 +83,7 @@ val dataModule = module {
 
         Retrofit.Builder()
             .baseUrl("https://bunpro.jp/api/")
+            .client(get(named("baseApiOkHttp")))
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
@@ -80,9 +97,14 @@ val dataModule = module {
 
     // region Bunpro Versioned API
 
-    single<OkHttpClient>() {
+    single<OkHttpClient>(named("versionedApiOkHttp")) {
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BASIC
+        }
+
         OkHttpClient.Builder()
             .addInterceptor(AuthorisationInterceptor(get()))
+            .addInterceptor(logging)
             .build()
     }
 
@@ -91,7 +113,7 @@ val dataModule = module {
 
         Retrofit.Builder()
             .baseUrl("https://bunpro.jp/api/")
-            .client(get())
+            .client(get(named("versionedApiOkHttp")))
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }

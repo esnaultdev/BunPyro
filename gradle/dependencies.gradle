@@ -18,6 +18,7 @@ ext.versions = [
         koin: '2.0.1',
         // Network
         retrofit: '2.7.1',
+        okhttp: '4.4.0',
         moshi: '1.9.2',
 
         // Test
