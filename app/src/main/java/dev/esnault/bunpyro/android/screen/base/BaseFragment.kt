@@ -49,7 +49,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         // fragment makes it worth it.
         // Let's hope that someday we have a way to avoid this reflection usage.
 
-        val inflateMethod = viewBindingClass.java.getMethod(
+        val inflateMethod = bindingClass.java.getMethod(
             "inflate",
             LayoutInflater::class.java,
             ViewGroup::class.java,
@@ -59,7 +59,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         return binding.root
     }
 
-    abstract val viewBindingClass: KClass<VB>
+    abstract val bindingClass: KClass<VB>
 
     override fun onDestroyView() {
         _binding = null

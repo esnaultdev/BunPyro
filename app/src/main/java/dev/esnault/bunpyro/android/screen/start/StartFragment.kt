@@ -12,5 +12,5 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class StartFragment : BaseFragment<FragmentStartBinding>() {
 
     override val vm: StartViewModel by viewModel()
-    override val viewBindingClass = FragmentStartBinding::class
+    override val bindingClass = FragmentStartBinding::class
 }

@@ -21,7 +21,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class ApiKeyFragment : BaseFragment<FragmentApiKeyBinding>() {
 
     override val vm: ApiKeyViewModel by viewModel()
-    override val viewBindingClass = FragmentApiKeyBinding::class
+    override val bindingClass = FragmentApiKeyBinding::class
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

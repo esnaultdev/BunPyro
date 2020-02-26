@@ -5,9 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
+import dev.esnault.bunpyro.data.sync.FirstSyncResult
 import dev.esnault.bunpyro.data.sync.ISyncService
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FirstSyncViewModel(
     private val syncService: ISyncService
@@ -24,8 +27,35 @@ class FirstSyncViewModel(
     private var downloadJob: Job? = null
 
     init {
-        viewModelScope.launch {
-            // TODO
+        syncData()
+    }
+
+    fun onRetry() {
+        if (downloadJob?.isActive == true) return
+        syncData()
+    }
+
+    private fun syncData() {
+        currentState = ViewState.Downloading
+
+        downloadJob = viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                syncService.firstSync()
+            }
+
+            when (result) {
+                FirstSyncResult.Success -> {
+                    navigate(FirstSyncFragmentDirections.actionFirstSyncToHome())
+                }
+                is FirstSyncResult.Error -> {
+                    currentState = when (result) {
+                        FirstSyncResult.Error.Network -> ViewState.Error.Network
+                        FirstSyncResult.Error.DB,
+                        FirstSyncResult.Error.Server,
+                        is FirstSyncResult.Error.Unknown -> ViewState.Error.Unknown
+                    }
+                }
+            }
         }
     }
 

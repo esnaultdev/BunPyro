@@ -9,5 +9,5 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override val vm: HomeViewModel by viewModel()
-    override val viewBindingClass = FragmentHomeBinding::class
+    override val bindingClass = FragmentHomeBinding::class
 }
