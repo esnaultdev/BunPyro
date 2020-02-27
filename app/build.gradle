@@ -49,6 +49,7 @@ dependencies {
     // UI
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidx.constraintlayout}"
     implementation "com.google.android.material:material:${versions.material}"
+    implementation "me.zhanghai.android.materialprogressbar:library:${versions.materialprogressbar}"
 
     // Architecture components
     implementation "androidx.navigation:navigation-fragment-ktx:${versions.androidx.navigation}"
