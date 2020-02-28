@@ -16,5 +16,5 @@ val appModule = module {
     viewModel { ApiKeyViewModel(get()) }
     viewModel { FirstSyncViewModel(get()) }
     viewModel { HomeViewModel() }
-    viewModel { LessonsViewModel() }
+    viewModel { LessonsViewModel(get()) }
 }
