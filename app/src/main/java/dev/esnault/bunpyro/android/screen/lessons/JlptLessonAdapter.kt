@@ -2,9 +2,12 @@ package dev.esnault.bunpyro.android.screen.lessons
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
+import dev.esnault.bunpyro.common.hide
+import dev.esnault.bunpyro.common.show
 import dev.esnault.bunpyro.databinding.ItemJlptLessonBinding
 import dev.esnault.bunpyro.databinding.TabLessonBinding
 import dev.esnault.bunpyro.domain.entities.JlptLesson
@@ -59,8 +62,18 @@ class JlptLessonAdapter(
                     text = (position + 1).toString()
 
                     lessonAdapter.lessons.get(position).let { lesson ->
-                        tabBinding.progress.max = lesson.size
-                        tabBinding.progress.progress = lesson.studied
+                        val hasGrammar = lesson.size != 0
+
+                        tabBinding.progress.apply {
+                            if (hasGrammar) {
+                                max = lesson.size
+                                progress = lesson.studied
+
+                                visibility = View.VISIBLE
+                            } else {
+                                visibility = View.INVISIBLE
+                            }
+                        }
                     }
                 }
             }.attach()
