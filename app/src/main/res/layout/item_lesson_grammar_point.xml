@@ -4,27 +4,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".android.screen.lessons.LessonsFragment"
+    android:layout_height="wrap_content"
     >
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/tab_height"
-        app:layout_constraintEnd_toEndOf="parent"
+    <TextView
+        android:id="@+id/japanese"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/english"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="4dp"
+        tools:text="Japanese"
         />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pager"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <TextView
+        android:id="@+id/english"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabs"
+        app:layout_constraintTop_toBottomOf="@+id/japanese"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="English"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

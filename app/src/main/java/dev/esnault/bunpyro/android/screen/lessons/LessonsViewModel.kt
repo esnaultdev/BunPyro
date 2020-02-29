@@ -3,7 +3,6 @@ package dev.esnault.bunpyro.android.screen.lessons
 import androidx.lifecycle.*
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
-import dev.esnault.bunpyro.domain.entities.JLPT
 import dev.esnault.bunpyro.domain.entities.JlptLesson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -38,14 +37,6 @@ class LessonsViewModel(
                     this@LessonsViewModel.currentState = newState
                 }
         }
-    }
-
-    fun selectJlptLevel(jlpt: JLPT) {
-        // TODO select
-    }
-
-    fun selectLesson(id: Int) {
-        // TODO
     }
 
     data class ViewState(

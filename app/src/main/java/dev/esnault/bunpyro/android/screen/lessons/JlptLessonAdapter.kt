@@ -1,0 +1,73 @@
+package dev.esnault.bunpyro.android.screen.lessons
+
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.tabs.TabLayoutMediator
+import dev.esnault.bunpyro.databinding.ItemJlptLessonBinding
+import dev.esnault.bunpyro.databinding.TabLessonBinding
+import dev.esnault.bunpyro.domain.entities.JlptLesson
+
+
+class JlptLessonAdapter(
+    context: Context
+) : RecyclerView.Adapter<JlptLessonAdapter.ViewHolder>() {
+
+    private val inflater = LayoutInflater.from(context)
+
+    var jlptLessons: List<JlptLesson> = mutableListOf()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemJlptLessonBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(jlptLessons[position])
+    }
+
+    override fun getItemCount(): Int = jlptLessons.size
+
+    class ViewHolder(
+        private val binding: ItemJlptLessonBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        private val context: Context
+            get() = itemView.context
+
+        private val layoutInflater: LayoutInflater
+            get() = LayoutInflater.from(context)
+
+        private val lessonAdapter = LessonAdapter(context)
+
+        init {
+            binding.pager.adapter = lessonAdapter
+            bindPagerToTabs()
+        }
+
+        private fun bindPagerToTabs() {
+            TabLayoutMediator(binding.tabs, binding.pager) { tab, position ->
+                tab.apply {
+                    val tabBinding = TabLessonBinding.inflate(layoutInflater)
+                    customView = tabBinding.root
+
+                    text = (position + 1).toString()
+
+                    lessonAdapter.lessons.get(position).let { lesson ->
+                        tabBinding.progress.max = lesson.size
+                        tabBinding.progress.progress = lesson.studied
+                    }
+                }
+            }.attach()
+        }
+
+        fun bind(jlptLesson: JlptLesson) {
+            lessonAdapter.lessons = jlptLesson.lessons
+        }
+    }
+}
