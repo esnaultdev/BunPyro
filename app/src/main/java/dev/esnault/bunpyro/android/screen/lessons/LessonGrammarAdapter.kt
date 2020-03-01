@@ -10,7 +10,8 @@ import dev.esnault.bunpyro.domain.entities.GrammarPointOverview
 
 
 class LessonGrammarAdapter(
-    context: Context
+    context: Context,
+    private val onGrammarClicked: (id: Int) -> Unit
 ) : RecyclerView.Adapter<LessonGrammarAdapter.ViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
@@ -23,7 +24,7 @@ class LessonGrammarAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemLessonGrammarPointBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding)
+        return ViewHolder(binding, onGrammarClicked)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -33,13 +34,24 @@ class LessonGrammarAdapter(
     override fun getItemCount(): Int = grammarPoints.size
 
     class ViewHolder(
-        private val binding: ItemLessonGrammarPointBinding
+        private val binding: ItemLessonGrammarPointBinding,
+        private val onGrammarClicked: (id: Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val context: Context
             get() = itemView.context
 
+        private var grammarPoint: GrammarPointOverview? = null
+
+        init {
+            binding.root.setOnClickListener {
+                grammarPoint?.let { onGrammarClicked(it.id) }
+            }
+        }
+
         fun bind(grammarPoint: GrammarPointOverview, isLast: Boolean) {
+            this.grammarPoint = grammarPoint
+
             binding.japanese.text = grammarPoint.title
             binding.english.text = grammarPoint.meaning
 

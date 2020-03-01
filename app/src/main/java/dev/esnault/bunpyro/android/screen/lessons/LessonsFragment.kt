@@ -30,7 +30,7 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
     }
 
     private fun setupPager() {
-        lessonsAdapter = JlptLessonAdapter(context!!)
+        lessonsAdapter = JlptLessonAdapter(context!!) { vm.onGrammarClicked(it) }
         binding.pager.adapter = lessonsAdapter
         binding.pager.isUserInputEnabled = false
     }

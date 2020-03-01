@@ -69,7 +69,7 @@
     <fragment
         android:id="@+id/homeScreen"
         android:name="dev.esnault.bunpyro.android.screen.home.HomeFragment"
-        tools:layout="@layout/fragment_api_key"
+        tools:layout="@layout/fragment_home"
         >
 
         <action
@@ -83,6 +83,26 @@
         android:id="@+id/lessonsScreen"
         android:name="dev.esnault.bunpyro.android.screen.lessons.LessonsFragment"
         tools:layout="@layout/fragment_lessons"
-        />
+        >
+
+        <action
+            android:id="@+id/action_lessons_to_grammarPoint"
+            app:destination="@id/grammarPointScreen"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/grammarPointScreen"
+        android:name="dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointFragment"
+        tools:layout="@layout/fragment_grammar_point"
+        >
+
+        <argument
+            android:name="id"
+            app:argType="integer"
+            />
+
+    </fragment>
 
 </navigation>

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="64dp"
+    android:background="?selectableItemBackground"
     >
 
     <TextView
@@ -46,11 +47,11 @@
         android:id="@+id/bottom_divider"
         android:layout_width="0dp"
         android:layout_height="1dp"
+        android:alpha="0.1"
         android:background="?colorOnSurface"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:alpha="0.1"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

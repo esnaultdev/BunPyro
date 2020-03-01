@@ -39,8 +39,11 @@ class LessonsViewModel(
         }
     }
 
+    fun onGrammarClicked(id: Int) {
+        navigate(LessonsFragmentDirections.actionLessonsToGrammarPoint(id))
+    }
+
     data class ViewState(
         val lessons: List<JlptLesson>
-        // TODO selection
     )
 }
