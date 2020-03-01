@@ -2,6 +2,8 @@ package dev.esnault.bunpyro.di
 
 import dev.esnault.bunpyro.data.repository.apikey.ApiKeyRepository
 import dev.esnault.bunpyro.data.repository.apikey.IApiKeyRepository
+import dev.esnault.bunpyro.data.repository.grammarpoint.GrammarPointRepository
+import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
 import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
 import dev.esnault.bunpyro.data.repository.lesson.LessonRepository
 import org.koin.dsl.module
@@ -15,5 +17,9 @@ val repoModule = module {
 
     single<ILessonRepository> {
         LessonRepository(get())
+    }
+
+    single<IGrammarPointRepository> {
+        GrammarPointRepository(get())
     }
 }

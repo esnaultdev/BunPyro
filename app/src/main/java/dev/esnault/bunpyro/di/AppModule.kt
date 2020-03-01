@@ -21,6 +21,6 @@ val appModule = module {
     viewModel { LessonsViewModel(get()) }
     viewModel { params ->
         val args: GrammarPointFragmentArgs = params[0]
-        GrammarPointViewModel(args.id)
+        GrammarPointViewModel(args.id, get())
     }
 }
