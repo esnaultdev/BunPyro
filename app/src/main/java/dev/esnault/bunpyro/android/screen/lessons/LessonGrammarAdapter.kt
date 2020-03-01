@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import dev.esnault.bunpyro.common.setVisible
 import dev.esnault.bunpyro.databinding.ItemLessonGrammarPointBinding
 import dev.esnault.bunpyro.domain.entities.GrammarPointOverview
 
@@ -26,7 +27,7 @@ class LessonGrammarAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(grammarPoints[position])
+        holder.bind(grammarPoints[position], position == grammarPoints.lastIndex)
     }
 
     override fun getItemCount(): Int = grammarPoints.size
@@ -38,9 +39,11 @@ class LessonGrammarAdapter(
         private val context: Context
             get() = itemView.context
 
-        fun bind(grammarPoint: GrammarPointOverview) {
+        fun bind(grammarPoint: GrammarPointOverview, isLast: Boolean) {
             binding.japanese.text = grammarPoint.title
             binding.english.text = grammarPoint.meaning
+
+            binding.bottomDivider.setVisible(!isLast)
         }
     }
 }
