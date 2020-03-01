@@ -59,7 +59,7 @@ class JlptLessonAdapter(
                     val tabBinding = TabLessonBinding.inflate(layoutInflater)
                     customView = tabBinding.root
 
-                    text = (position + 1).toString()
+                    tabBinding.title.text = (position + 1).toString()
 
                     lessonAdapter.lessons[position].let { lesson ->
                         val hasGrammar = lesson.size != 0

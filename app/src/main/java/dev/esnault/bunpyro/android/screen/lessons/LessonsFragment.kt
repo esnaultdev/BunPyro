@@ -8,6 +8,7 @@ import dev.esnault.bunpyro.android.res.textResId
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel.ViewState
 import dev.esnault.bunpyro.databinding.FragmentLessonsBinding
+import dev.esnault.bunpyro.databinding.TabJlptLessonBinding
 import dev.esnault.bunpyro.databinding.TabLessonBinding
 import dev.esnault.bunpyro.domain.entities.JLPT
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -40,10 +41,10 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
             tab.apply {
                 val jlpt = JLPT[5 - position]
 
-                val tabBinding = TabLessonBinding.inflate(layoutInflater)
+                val tabBinding = TabJlptLessonBinding.inflate(layoutInflater)
                 customView = tabBinding.root
 
-                setText(jlpt.textResId)
+                tabBinding.title.text = getString(jlpt.textResId)
 
                 lessonsAdapter?.jlptLessons?.get(position)?.let { jlptLesson ->
                     tabBinding.progress.max = jlptLesson.size

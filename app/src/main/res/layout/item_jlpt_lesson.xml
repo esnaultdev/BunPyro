@@ -10,12 +10,14 @@
         android:id="@+id/tabs"
         android:layout_width="0dp"
         android:layout_height="@dimen/tab_height"
+        android:elevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="center"
         app:tabMaxWidth="56dp"
         app:tabMode="scrollable"
+        app:tabRippleColor="?colorPrimary"
         />
 
     <androidx.viewpager2.widget.ViewPager2
