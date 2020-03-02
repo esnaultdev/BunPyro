@@ -1,10 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     >
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp"
+            />
+
+        <TextView
+            android:id="@+id/meaning"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="English meaning of the grammar point"
+            />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/structure_group"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:constraint_referenced_ids="structure_title,structure_text"
+            tools:visibility="visible"
+            />
+
+        <TextView
+            android:id="@+id/structure_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/grammarPoint_tab_meaning_structure"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/meaning"
+            />
+
+        <TextView
+            android:id="@+id/structure_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/structure_title"
+            tools:text="Structure of the usage of the grammar point"
+            />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/caution_group"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:constraint_referenced_ids="caution_title,caution_text"
+            tools:visibility="visible"
+            />
+
+        <TextView
+            android:id="@+id/caution_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/grammarPoint_tab_meaning_caution"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/structure_text"
+            />
+
+        <TextView
+            android:id="@+id/caution_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/caution_title"
+            tools:text="Warnings about the usage of the grammar point"
+            />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/nuance_group"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:constraint_referenced_ids="nuance_title,nuance_text"
+            tools:visibility="visible"
+            />
+
+        <TextView
+            android:id="@+id/nuance_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/grammarPoint_tab_meaning_nuance"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/caution_text"
+            />
+
+        <TextView
+            android:id="@+id/nuance_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/nuance_title"
+            tools:text="Nuance about the usage of the grammar point"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
