@@ -35,4 +35,8 @@
 
     <string name="lessons_coming_soon">Coming soon!</string>
 
+    <string name="grammarPoint_tab_meaning_title">Meaning</string>
+    <string name="grammarPoint_tab_examples_title">Examples</string>
+    <string name="grammarPoint_tab_reading_title">Reading</string>
+
 </resources>

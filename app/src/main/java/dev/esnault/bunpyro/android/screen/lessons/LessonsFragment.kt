@@ -9,7 +9,6 @@ import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel.ViewState
 import dev.esnault.bunpyro.databinding.FragmentLessonsBinding
 import dev.esnault.bunpyro.databinding.TabJlptLessonBinding
-import dev.esnault.bunpyro.databinding.TabLessonBinding
 import dev.esnault.bunpyro.domain.entities.JLPT
 import org.koin.android.viewmodel.ext.android.viewModel
 

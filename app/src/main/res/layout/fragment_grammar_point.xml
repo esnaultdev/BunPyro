@@ -13,12 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height_extended_with_tabs"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarLayout"
+        android:theme="@style/AppTheme.AppBarLayout.Colored"
         >
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
-            style="@style/Widget.App.Toolbar"
+            style="@style/Widget.App.Toolbar.Colored"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height_extended"
             app:collapsedTitleTextAppearance="?attr/textAppearanceHeadline6"
@@ -33,7 +33,7 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
-                style="@style/Widget.App.Toolbar"
+                style="@style/Widget.App.Toolbar.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="0dp"
@@ -45,7 +45,7 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
-            style="@style/Widget.MaterialComponents.TabLayout"
+            style="@style/Widget.MaterialComponents.TabLayout.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
