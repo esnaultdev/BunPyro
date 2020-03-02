@@ -28,4 +28,8 @@
         <item name="android:background">@null</item>
     </style>
 
+    <style name="TextAppearance.App.GrammarPointTitle" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textSize">28sp</item>
+    </style>
+
 </resources>
