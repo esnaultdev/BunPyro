@@ -1,5 +1,8 @@
 package dev.esnault.bunpyro.android.screen.grammarpoint
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
@@ -14,7 +17,13 @@ class GrammarPointViewModel(
     private val grammarRepo: IGrammarPointRepository
 ) : BaseViewModel() {
 
-    private var grammarPoint: GrammarPoint? = null
+    private val _viewState = MutableLiveData<ViewState>()
+    val viewState: LiveData<ViewState>
+        get() = Transformations.distinctUntilChanged(_viewState)
+
+    private var currentState: ViewState
+        get() = _viewState.value!!
+        set(value) = _viewState.postValue(value)
 
     init {
         loadGrammarPoint(id)
@@ -22,11 +31,17 @@ class GrammarPointViewModel(
 
     private fun loadGrammarPoint(id: Int) {
         viewModelScope.launch {
-            grammarPoint = withContext(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
                 // TODO Handle the errors
                 // TODO make this a flow, so that we can properly update it from the network
-                grammarRepo.getGrammarPoint(id)
+                val grammarPoint = grammarRepo.getGrammarPoint(id)
+
+                currentState = ViewState(grammarPoint)
             }
         }
     }
+
+    data class ViewState(
+        val grammarPoint: GrammarPoint
+    )
 }

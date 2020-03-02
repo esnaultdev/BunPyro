@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="tab_height">56dp</dimen>
+    <dimen name="lesson_tab_height">56dp</dimen>
+    <dimen name="app_bar_height_extended">128dp</dimen>
+    <dimen name="app_bar_height_extended_with_tabs">176dp</dimen>
+    <dimen name="app_bar_height_extended_with_tabs_top_icon">200dp</dimen>
 </resources>

@@ -1,16 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".android.screen.grammarpoint.GrammarPointFragment"
+    android:fitsSystemWindows="true"
     >
 
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height_extended_with_tabs"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarLayout"
+        >
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_layout"
+            style="@style/Widget.App.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_bar_height_extended"
+            app:collapsedTitleTextAppearance="?attr/textAppearanceHeadline6"
+            app:expandedTitleGravity="bottom"
+            app:expandedTitleMarginBottom="24dp"
+            app:expandedTitleMarginStart="16dp"
+            app:expandedTitleTextAppearance="?attr/textAppearanceHeadline5"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:maxLines="3"
+            app:toolbarId="@+id/toolbar"
+            >
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/Widget.App.Toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="0dp"
+                app:layout_collapseMode="pin"
+                tools:title="This is a long title that should span multiple lines"
+                />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            style="@style/Widget.MaterialComponents.TabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Grammar Point"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         />
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

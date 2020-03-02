@@ -11,7 +11,7 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="0dp"
-        android:layout_height="@dimen/tab_height"
+        android:layout_height="@dimen/lesson_tab_height"
         style="@style/Widget.MaterialComponents.TabLayout.Colored"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

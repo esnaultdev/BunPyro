@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="@dimen/tab_height"
+    android:layout_height="@dimen/lesson_tab_height"
     android:maxWidth="360dp"
     android:minWidth="90dp"
     android:paddingBottom="2dp"
