@@ -25,8 +25,13 @@ class GrammarPointPagerAdapter(
 
     var viewState: GrammarPointViewModel.ViewState? = null
         set(value) {
+            val oldValue = field
             field = value
-            notifyDataSetChanged()
+
+            val shouldRefresh = value?.grammarPoint != oldValue?.grammarPoint
+            if (shouldRefresh) {
+                notifyDataSetChanged()
+            }
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

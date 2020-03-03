@@ -29,9 +29,12 @@ class MeaningViewHolder(
         }
 
         binding.constraintLayout.show()
+        bindFields(grammarPoint)
+    }
 
+    private fun bindFields(grammarPoint: GrammarPoint) {
         binding.meaning.text = postProcessString(grammarPoint.meaning)
-        
+
         val structure = grammarPoint.structure
         if (!structure.isNullOrBlank()) {
             binding.structureGroup.show()

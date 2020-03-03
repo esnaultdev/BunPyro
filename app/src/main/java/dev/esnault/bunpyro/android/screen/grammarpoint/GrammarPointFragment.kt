@@ -31,6 +31,8 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
         vm.viewState.observe(this) { viewState ->
             bindViewState(viewState)
         }
+
+        bindEvents()
     }
 
     private fun setupPager() {
@@ -71,7 +73,22 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
     private fun bindViewState(viewState: ViewState) {
         val grammarPoint = viewState.grammarPoint
 
-        binding.collapsingToolbarLayout.title = grammarPoint.title
+        binding.collapsingToolbarLayout.title = if (viewState.yomikataShown) {
+            grammarPoint.yomikata
+        } else {
+            grammarPoint.title
+        }
+
         pagerAdapter?.viewState = viewState
+    }
+
+    private fun bindEvents() {
+        binding.collapsingToolbarLayout.setOnClickListener {
+            vm.onTitleClick()
+        }
+
+        binding.toolbar.setOnClickListener {
+            vm.onTitleClick()
+        }
     }
 }

@@ -21,8 +21,8 @@ class GrammarPointViewModel(
     val viewState: LiveData<ViewState>
         get() = Transformations.distinctUntilChanged(_viewState)
 
-    private var currentState: ViewState
-        get() = _viewState.value!!
+    private var currentState: ViewState?
+        get() = _viewState.value
         set(value) = _viewState.postValue(value)
 
     init {
@@ -36,12 +36,18 @@ class GrammarPointViewModel(
                 // TODO make this a flow, so that we can properly update it from the network
                 val grammarPoint = grammarRepo.getGrammarPoint(id)
 
-                currentState = ViewState(grammarPoint)
+                currentState = ViewState(grammarPoint, false)
             }
         }
     }
 
+    fun onTitleClick() {
+        val currentState = currentState ?: return
+        this.currentState = currentState.copy(yomikataShown = !currentState.yomikataShown)
+    }
+
     data class ViewState(
-        val grammarPoint: GrammarPoint
+        val grammarPoint: GrammarPoint,
+        val yomikataShown: Boolean
     )
 }
