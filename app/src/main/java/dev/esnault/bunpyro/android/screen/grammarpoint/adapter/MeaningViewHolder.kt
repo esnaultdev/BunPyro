@@ -2,8 +2,8 @@ package dev.esnault.bunpyro.android.screen.grammarpoint.adapter
 
 import android.content.Context
 import android.text.Spanned
-import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
+import dev.esnault.bunpyro.android.utils.BunProHtml
 import dev.esnault.bunpyro.common.hide
 import dev.esnault.bunpyro.common.show
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointMeaningBinding
@@ -51,14 +51,23 @@ class MeaningViewHolder(
         val nuance = grammarPoint.nuance
         if (!nuance.isNullOrBlank()) {
             binding.nuanceGroup.show()
-            binding.nuanceText.text = postProcessString(nuance)
+            binding.nuanceText.text = postProcessString(nuance, false)
         } else {
             binding.nuanceGroup.hide()
         }
     }
-}
 
-private fun postProcessString(source: String): Spanned {
-    return source.replace(",", "<br/>")
-        .let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) }
+    private fun postProcessString(source: String, secondaryBreaks: Boolean = true): Spanned {
+        return source
+            .run {
+                // Some specific characters are used to denote line breaks, but not for
+                // every field, so let's replace them if we need to
+                if (secondaryBreaks) {
+                    replace(",", "<br/>")
+                } else {
+                    this
+                }
+            }
+            .let { BunProHtml(context).format(it) }
+    }
 }

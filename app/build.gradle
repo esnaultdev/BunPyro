@@ -76,6 +76,9 @@ dependencies {
     implementation "com.squareup.moshi:moshi-kotlin:${versions.moshi}"
     implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}"
 
+    // Text utils
+    implementation "org.jsoup:jsoup:${versions.jsoup}"
+
     // Test
     testImplementation "junit:junit:${versions.junit}"
     androidTestImplementation "androidx.test:runner:${versions.androidx.test}"
