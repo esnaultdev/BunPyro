@@ -8,6 +8,7 @@ import dev.esnault.bunpyro.common.hide
 import dev.esnault.bunpyro.common.show
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointMeaningBinding
 import dev.esnault.bunpyro.domain.entities.GrammarPoint
+import me.saket.bettermovementmethod.BetterLinkMovementMethod
 
 
 class MeaningViewHolder(
@@ -16,11 +17,18 @@ class MeaningViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     data class Listener(
-        val onStudy: () -> Unit
+        val onStudy: () -> Unit,
+        val onGrammarPointClick: (id: Int) -> Unit
     )
 
     private val context: Context
         get() = itemView.context
+
+    init {
+        binding.structureText.movementMethod = BetterLinkMovementMethod.newInstance()
+        binding.cautionText.movementMethod = BetterLinkMovementMethod.newInstance()
+        binding.nuanceText.movementMethod = BetterLinkMovementMethod.newInstance()
+    }
 
     fun bind(grammarPoint: GrammarPoint?) {
         if (grammarPoint == null) {
@@ -71,7 +79,7 @@ class MeaningViewHolder(
             }
         }
             .let(::removeWhitespace)
-            .let { BunProHtml(context).format(it) }
+            .let { BunProHtml(context, listener.onGrammarPointClick).format(it) }
     }
 }
 

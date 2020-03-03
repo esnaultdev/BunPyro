@@ -2,12 +2,10 @@ package dev.esnault.bunpyro.android.utils
 
 import android.content.Context
 import android.graphics.Typeface
+import android.net.Uri
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.text.style.ForegroundColorSpan
-import android.text.style.RelativeSizeSpan
-import android.text.style.StrikethroughSpan
-import android.text.style.StyleSpan
+import android.text.style.*
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.common.getThemeColor
 import org.jsoup.Jsoup
@@ -16,7 +14,10 @@ import org.jsoup.nodes.Node
 import org.jsoup.nodes.TextNode
 
 
-class BunProHtml(private val context: Context) {
+class BunProHtml(
+    private val context: Context,
+    private val onGrammarPointClick: (id: Int) -> Unit
+) {
 
     private val chuiColor: Int by lazy(LazyThreadSafetyMode.NONE) {
         context.getThemeColor(R.attr.chuiColor)
@@ -64,7 +65,10 @@ class BunProHtml(private val context: Context) {
                 }
 
                 when (tagName) {
-                    "a" -> Unit
+                    "a" -> {
+                        val href = node.attr("href")
+                        handleLink(href, ::setSpan)
+                    }
                     "b", "strong" -> {
                         setSpan(ForegroundColorSpan(chuiColor))
                         setSpan(StyleSpan(Typeface.BOLD))
@@ -83,5 +87,34 @@ class BunProHtml(private val context: Context) {
                 }
             }
         }
+    }
+
+    /**
+     * Handle a link in the API data.
+     *
+     * This can be:
+     * - A link to a grammar point:
+     *     - https://bunpro.jp/grammar_points/59
+     *     - /grammar_points/579
+     * - A link to an external website
+     *     - https://community.bunpro.jp/t/so-how-do-you-ask-for-a-favor/9771/9?
+     *     - https://japanese.stackexchange.com/a/1715
+     *     ...
+     *
+     * If its a link to a grammar point we want to handle it in the app.
+     */
+    private fun handleLink(href: String, setSpan: (span: Any) -> Unit) {
+        val uri = Uri.parse(href)
+        if (uri.isRelative || uri.host == "bunpro.jp") {
+            val segments = uri.pathSegments
+            if (segments.size >= 2 && segments[segments.size - 2] == "grammar_points") {
+                val grammarId = segments.last()?.toIntOrNull()
+                if (grammarId != null) {
+                    setSpan(GrammarLinkSpan(grammarId, onGrammarPointClick))
+                    return
+                }
+            }
+        }
+        setSpan(URLSpan(href))
     }
 }

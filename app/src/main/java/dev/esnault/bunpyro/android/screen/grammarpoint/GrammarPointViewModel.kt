@@ -46,6 +46,10 @@ class GrammarPointViewModel(
         this.currentState = currentState.copy(yomikataShown = !currentState.yomikataShown)
     }
 
+    fun onGrammarPointClick(id: Int) {
+        navigate(GrammarPointFragmentDirections.actionGrammarPointToGrammarPoint(id))
+    }
+
     data class ViewState(
         val grammarPoint: GrammarPoint,
         val yomikataShown: Boolean

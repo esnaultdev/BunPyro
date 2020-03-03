@@ -12,15 +12,20 @@ ext.versions = [
                 room: '2.2.4',
                 test: '1.2.0',
         ],
+
         // UI
         material: '1.2.0-alpha05',
         materialprogressbar: '1.6.1',
+        betterlinkmovementmethod: '2.2.0',
+
         // "DI"
         koin: '2.0.1',
+
         // Network
         retrofit: '2.7.1',
         okhttp: '4.4.0',
         moshi: '1.9.2',
+
         // Text
         jsoup: '1.13.1',
 

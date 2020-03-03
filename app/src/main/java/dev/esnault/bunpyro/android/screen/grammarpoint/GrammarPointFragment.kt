@@ -39,7 +39,8 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
         // TODO properly setup this listener
         val listener = GrammarPointPagerAdapter.Listener(
             meaningListener = MeaningViewHolder.Listener(
-                onStudy = {}
+                onStudy = {},
+                onGrammarPointClick = vm::onGrammarPointClick
             ),
             examplesListener = ExamplesViewHolder.Listener(
                 onListen = {}

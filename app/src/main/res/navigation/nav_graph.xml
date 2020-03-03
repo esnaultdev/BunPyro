@@ -103,6 +103,11 @@
             app:argType="integer"
             />
 
+        <action
+            android:id="@+id/action_grammarPoint_to_grammarPoint"
+            app:destination="@id/grammarPointScreen"
+            />
+
     </fragment>
 
 </navigation>
