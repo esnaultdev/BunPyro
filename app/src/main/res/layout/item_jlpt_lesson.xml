@@ -17,7 +17,6 @@
         app:tabGravity="center"
         app:tabMaxWidth="56dp"
         app:tabMode="scrollable"
-        app:tabRippleColor="?colorPrimary"
         />
 
     <androidx.viewpager2.widget.ViewPager2
