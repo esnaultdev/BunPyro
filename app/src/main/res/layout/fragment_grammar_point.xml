@@ -23,7 +23,7 @@
             android:layout_height="@dimen/app_bar_height_extended"
             android:layout_gravity="top"
             app:collapsedTitleTextAppearance="?attr/textAppearanceHeadline6"
-            app:expandedTitleGravity="center_vertical"
+            app:expandedTitleGravity="bottom"
             app:expandedTitleMarginBottom="@dimen/tab_height"
             app:expandedTitleMarginStart="16dp"
             app:expandedTitleMarginTop="0dp"
