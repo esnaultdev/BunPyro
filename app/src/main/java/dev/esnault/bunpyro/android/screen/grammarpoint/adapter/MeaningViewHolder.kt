@@ -2,8 +2,8 @@ package dev.esnault.bunpyro.android.screen.grammarpoint.adapter
 
 import android.content.Context
 import android.text.Spanned
-import androidx.recyclerview.widget.RecyclerView
 import dev.esnault.bunpyro.android.utils.BunProHtml
+import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.common.hide
 import dev.esnault.bunpyro.common.show
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointMeaningBinding
@@ -14,7 +14,7 @@ import me.saket.bettermovementmethod.BetterLinkMovementMethod
 class MeaningViewHolder(
     private val binding: LayoutGrammarPointMeaningBinding,
     private val listener: Listener
-) : RecyclerView.ViewHolder(binding.root) {
+) : ViewStatePagerAdapter.ViewHolder(binding.root) {
 
     data class Listener(
         val onStudy: () -> Unit,

@@ -4,8 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
+import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.ItemJlptLessonBinding
 import dev.esnault.bunpyro.databinding.TabLessonBinding
 import dev.esnault.bunpyro.domain.entities.JlptLesson
@@ -14,14 +14,18 @@ import dev.esnault.bunpyro.domain.entities.JlptLesson
 class JlptLessonAdapter(
     context: Context,
     private val onGrammarClicked: (id: Int) -> Unit
-) : RecyclerView.Adapter<JlptLessonAdapter.ViewHolder>() {
+) : ViewStatePagerAdapter<JlptLessonAdapter.ViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
 
     var jlptLessons: List<JlptLesson> = mutableListOf()
         set(value) {
+            val oldValue = field
             field = value
-            notifyDataSetChanged()
+
+            if (oldValue != value) {
+                notifyDataSetChanged()
+            }
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,7 +33,7 @@ class JlptLessonAdapter(
         return ViewHolder(binding, onGrammarClicked)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindPageViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(jlptLessons[position])
     }
 
@@ -38,7 +42,7 @@ class JlptLessonAdapter(
     class ViewHolder(
         private val binding: ItemJlptLessonBinding,
         onGrammarClicked: (id: Int) -> Unit
-    ) : RecyclerView.ViewHolder(binding.root) {
+    ) : ViewStatePagerAdapter.ViewHolder(binding.root) {
 
         private val context: Context
             get() = itemView.context
@@ -49,12 +53,12 @@ class JlptLessonAdapter(
         private val lessonAdapter = LessonAdapter(context, onGrammarClicked)
 
         init {
-            binding.pager.adapter = lessonAdapter
+            binding.lessonsPager.adapter = lessonAdapter
             bindPagerToTabs()
         }
 
         private fun bindPagerToTabs() {
-            TabLayoutMediator(binding.tabs, binding.pager) { tab, position ->
+            TabLayoutMediator(binding.lessonsTabs, binding.lessonsPager) { tab, position ->
                 tab.apply {
                     val tabBinding = TabLessonBinding.inflate(layoutInflater)
                     customView = tabBinding.root

@@ -18,8 +18,12 @@ class LessonGrammarAdapter(
 
     var grammarPoints: List<GrammarPointOverview> = mutableListOf()
         set(value) {
+            val oldValue = field
             field = value
-            notifyDataSetChanged()
+
+            if (oldValue != value) {
+                notifyDataSetChanged()
+            }
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -30,13 +30,15 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
     }
 
     private fun setupPager() {
-        lessonsAdapter = JlptLessonAdapter(context!!) { vm.onGrammarClicked(it) }
-        binding.pager.adapter = lessonsAdapter
-        binding.pager.isUserInputEnabled = false
+        if (lessonsAdapter == null) {
+            lessonsAdapter = JlptLessonAdapter(context!!) { vm.onGrammarClicked(it) }
+        }
+        binding.jlptLessonsPager.adapter = lessonsAdapter
+        binding.jlptLessonsPager.isUserInputEnabled = false
     }
 
     private fun bindPagerToTabs() {
-        TabLayoutMediator(binding.tabs, binding.pager) { tab, position ->
+        TabLayoutMediator(binding.jlptLessonsTabs, binding.jlptLessonsPager) { tab, position ->
             tab.apply {
                 val jlpt = JLPT[5 - position]
 

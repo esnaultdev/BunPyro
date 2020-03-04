@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.common.setVisible
 import dev.esnault.bunpyro.databinding.ItemLessonBinding
 import dev.esnault.bunpyro.domain.entities.Lesson
@@ -13,14 +13,18 @@ import dev.esnault.bunpyro.domain.entities.Lesson
 class LessonAdapter(
     context: Context,
     private val onGrammarClicked: (id: Int) -> Unit
-) : RecyclerView.Adapter<LessonAdapter.ViewHolder>() {
+) : ViewStatePagerAdapter<LessonAdapter.ViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
 
     var lessons: List<Lesson> = mutableListOf()
         set(value) {
+            val oldValue = field
             field = value
-            notifyDataSetChanged()
+
+            if (oldValue != value) {
+                notifyDataSetChanged()
+            }
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,7 +32,7 @@ class LessonAdapter(
         return ViewHolder(binding, onGrammarClicked)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindPageViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(lessons[position])
     }
 
@@ -37,7 +41,7 @@ class LessonAdapter(
     class ViewHolder(
         private val binding: ItemLessonBinding,
         onGrammarClicked: (id: Int) -> Unit
-    ) : RecyclerView.ViewHolder(binding.root) {
+    ) : ViewStatePagerAdapter.ViewHolder(binding.root) {
 
         private val context: Context
             get() = itemView.context

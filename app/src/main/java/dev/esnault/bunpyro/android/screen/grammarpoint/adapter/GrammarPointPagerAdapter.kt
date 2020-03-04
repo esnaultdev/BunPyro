@@ -3,8 +3,8 @@ package dev.esnault.bunpyro.android.screen.grammarpoint.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel
+import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointExamplesBinding
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointMeaningBinding
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointReadingBinding
@@ -13,7 +13,7 @@ import dev.esnault.bunpyro.databinding.LayoutGrammarPointReadingBinding
 class GrammarPointPagerAdapter(
     context: Context,
     private val listener: Listener
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : ViewStatePagerAdapter<ViewStatePagerAdapter.ViewHolder>() {
 
     class Listener(
         val meaningListener: MeaningViewHolder.Listener,
@@ -34,7 +34,7 @@ class GrammarPointPagerAdapter(
             }
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewStatePagerAdapter.ViewHolder {
         return when (GrammarPointTab.get(viewType)) {
             GrammarPointTab.MEANING -> {
                 val binding = LayoutGrammarPointMeaningBinding.inflate(inflater, parent, false)
@@ -51,7 +51,7 @@ class GrammarPointPagerAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindPageViewHolder(holder: ViewHolder, position: Int) {
         when (GrammarPointTab.get(position)) {
             GrammarPointTab.MEANING -> {
                 (holder as MeaningViewHolder).bind(viewState?.grammarPoint)

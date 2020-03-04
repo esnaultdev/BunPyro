@@ -3,13 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".android.screen.lessons.LessonsFragment"
     >
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
+        android:id="@+id/jlpt_lessons_tabs"
         android:layout_width="0dp"
         android:layout_height="@dimen/lesson_tab_height"
         style="@style/Widget.MaterialComponents.TabLayout.Colored"
@@ -20,13 +21,13 @@
         />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pager"
+        android:id="@+id/jlpt_lessons_pager"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabs"
+        app:layout_constraintTop_toBottomOf="@+id/jlpt_lessons_tabs"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
