@@ -15,7 +15,7 @@ interface GrammarPointDao {
     @Query("SELECT * FROM grammar_point WHERE id = :id")
     suspend fun getById(id: Int): GrammarPointDb
 
-    @Query("SELECT id, lesson, title, meaning FROM grammar_point")
+    @Query("SELECT id, lesson, title, meaning, incomplete FROM grammar_point")
     fun getAllOverviews(): Flow<List<GrammarPointOverviewDb>>
 
     @Insert

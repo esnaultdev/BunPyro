@@ -8,6 +8,17 @@
     android:background="?selectableItemBackground"
     >
 
+    <View
+        android:id="@+id/background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/lesson_grammar_background"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <TextView
         android:id="@+id/japanese"
         android:layout_width="0dp"
@@ -18,6 +29,7 @@
         android:ellipsize="end"
         android:lines="1"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/lesson_grammar_text_color"
         app:layout_constraintBottom_toTopOf="@+id/english"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

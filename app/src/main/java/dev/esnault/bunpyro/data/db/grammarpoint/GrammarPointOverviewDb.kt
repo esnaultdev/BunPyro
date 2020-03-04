@@ -5,5 +5,6 @@ data class GrammarPointOverviewDb(
     val id: Int,
     val lesson: Int,
     val title: String,
-    val meaning: String
+    val meaning: String,
+    val incomplete: Boolean
 )

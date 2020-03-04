@@ -60,6 +60,10 @@ class LessonGrammarAdapter(
             binding.english.text = grammarPoint.meaning
 
             binding.bottomDivider.setVisible(!isLast)
+
+            // Completion
+            binding.background.isEnabled = !grammarPoint.incomplete
+            binding.japanese.isEnabled = !grammarPoint.incomplete
         }
     }
 }
