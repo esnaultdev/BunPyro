@@ -2,7 +2,9 @@ package dev.esnault.bunpyro.android.screen.lessons
 
 import androidx.lifecycle.*
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
+import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
+import dev.esnault.bunpyro.domain.entities.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.JlptLesson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -16,6 +18,10 @@ class LessonsViewModel(
     private val _viewState = MutableLiveData<ViewState>()
     val viewState: LiveData<ViewState>
         get() = Transformations.distinctUntilChanged(_viewState)
+
+    private val _snackbar = SingleLiveEvent<SnackBarMessage>()
+    val snackbar: LiveData<SnackBarMessage>
+        get() = _snackbar
 
     private var currentState: ViewState
         get() = _viewState.value!!
@@ -39,11 +45,19 @@ class LessonsViewModel(
         }
     }
 
-    fun onGrammarClicked(id: Int) {
-        navigate(LessonsFragmentDirections.actionLessonsToGrammarPoint(id))
+    fun onGrammarClicked(point: GrammarPointOverview) {
+        if (point.incomplete) {
+            _snackbar.postValue(SnackBarMessage.Incomplete)
+        } else {
+            navigate(LessonsFragmentDirections.actionLessonsToGrammarPoint(point.id))
+        }
     }
 
     data class ViewState(
         val lessons: List<JlptLesson>
     )
+
+    sealed class SnackBarMessage {
+        object Incomplete : SnackBarMessage()
+    }
 }

@@ -34,6 +34,7 @@
     <string name="home_lessons">Lessons</string>
 
     <string name="lessons_coming_soon">Coming soon!</string>
+    <string name="lessons_grammar_point_incomplete">Coming soon!</string>
 
     <string name="grammarPoint_tab_meaning_title">Meaning</string>
     <string name="grammarPoint_tab_examples_title">Examples</string>

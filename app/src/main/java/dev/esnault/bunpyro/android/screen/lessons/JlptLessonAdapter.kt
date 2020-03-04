@@ -8,12 +8,13 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.ItemJlptLessonBinding
 import dev.esnault.bunpyro.databinding.TabLessonBinding
+import dev.esnault.bunpyro.domain.entities.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.JlptLesson
 
 
 class JlptLessonAdapter(
     context: Context,
-    private val onGrammarClicked: (id: Int) -> Unit
+    private val onGrammarClicked: (point: GrammarPointOverview) -> Unit
 ) : ViewStatePagerAdapter<JlptLessonAdapter.ViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
@@ -41,7 +42,7 @@ class JlptLessonAdapter(
 
     class ViewHolder(
         private val binding: ItemJlptLessonBinding,
-        onGrammarClicked: (id: Int) -> Unit
+        onGrammarClicked: (point: GrammarPointOverview) -> Unit
     ) : ViewStatePagerAdapter.ViewHolder(binding.root) {
 
         private val context: Context

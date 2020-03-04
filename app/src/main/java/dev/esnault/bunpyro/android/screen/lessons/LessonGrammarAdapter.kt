@@ -11,7 +11,7 @@ import dev.esnault.bunpyro.domain.entities.GrammarPointOverview
 
 class LessonGrammarAdapter(
     context: Context,
-    private val onGrammarClicked: (id: Int) -> Unit
+    private val onGrammarClicked: (point: GrammarPointOverview) -> Unit
 ) : RecyclerView.Adapter<LessonGrammarAdapter.ViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
@@ -39,7 +39,7 @@ class LessonGrammarAdapter(
 
     class ViewHolder(
         private val binding: ItemLessonGrammarPointBinding,
-        private val onGrammarClicked: (id: Int) -> Unit
+        private val onGrammarClicked: (point: GrammarPointOverview) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val context: Context
@@ -49,7 +49,7 @@ class LessonGrammarAdapter(
 
         init {
             binding.root.setOnClickListener {
-                grammarPoint?.let { onGrammarClicked(it.id) }
+                grammarPoint?.let(onGrammarClicked)
             }
         }
 

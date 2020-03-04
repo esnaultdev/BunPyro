@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.common.setVisible
 import dev.esnault.bunpyro.databinding.ItemLessonBinding
+import dev.esnault.bunpyro.domain.entities.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.Lesson
 
 
 class LessonAdapter(
     context: Context,
-    private val onGrammarClicked: (id: Int) -> Unit
+    private val onGrammarClicked: (point: GrammarPointOverview) -> Unit
 ) : ViewStatePagerAdapter<LessonAdapter.ViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
@@ -40,7 +41,7 @@ class LessonAdapter(
 
     class ViewHolder(
         private val binding: ItemLessonBinding,
-        onGrammarClicked: (id: Int) -> Unit
+        onGrammarClicked: (point: GrammarPointOverview) -> Unit
     ) : ViewStatePagerAdapter.ViewHolder(binding.root) {
 
         private val context: Context
