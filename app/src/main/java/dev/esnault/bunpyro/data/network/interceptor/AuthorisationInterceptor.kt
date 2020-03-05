@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.data.network
+package dev.esnault.bunpyro.data.network.interceptor
 
 import dev.esnault.bunpyro.data.config.IAppConfig
 import kotlinx.coroutines.runBlocking

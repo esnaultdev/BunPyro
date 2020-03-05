@@ -25,7 +25,7 @@
     <string name="apikey_check_error_unknown_text">Please try again in a few minutes.</string>
 
     <string name="firstsync_download_title">Downloading grammar data</string>
-    <string name="firstsync_download_text">This can take up to 30s</string>
+    <string name="firstsync_download_text">This can take a few minutes</string>
     <string name="firstsync_error_network_title">Network error</string>
     <string name="firstsync_error_network_text">Make sure your network is available and try again.</string>
     <string name="firstsync_error_unknown_title">Something went wrong on our side</string>

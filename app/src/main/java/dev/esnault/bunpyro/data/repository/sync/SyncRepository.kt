@@ -20,4 +20,12 @@ class SyncRepository(private val appConfig: IAppConfig) : ISyncRepository {
     override suspend fun saveGrammarPointsETag(eTag: String?) {
         appConfig.saveGrammarPointsEtag(eTag)
     }
+
+    override suspend fun getExampleSentencesETag(): String? {
+        return appConfig.getExampleSentencesEtag()
+    }
+
+    override suspend fun saveExampleSentencesETag(eTag: String?) {
+        appConfig.saveExampleSentencesEtag(eTag)
+    }
 }

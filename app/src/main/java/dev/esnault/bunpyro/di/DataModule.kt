@@ -8,8 +8,9 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.esnault.bunpyro.data.config.AppConfig
 import dev.esnault.bunpyro.data.config.IAppConfig
 import dev.esnault.bunpyro.data.db.BunPyroDatabase
+import dev.esnault.bunpyro.data.db.examplesentence.ExampleSentenceDao
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
-import dev.esnault.bunpyro.data.network.AuthorisationInterceptor
+import dev.esnault.bunpyro.data.network.interceptor.AuthorisationInterceptor
 import dev.esnault.bunpyro.data.network.BunproApi
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
 import dev.esnault.bunpyro.data.repository.sync.ISyncRepository
@@ -49,9 +50,14 @@ val dataModule = module {
         ).build()
     }
 
-    single<GrammarPointDao> {
+    factory<GrammarPointDao> {
         val db: BunPyroDatabase = get()
         db.grammarPointDao()
+    }
+
+    factory<ExampleSentenceDao> {
+        val db: BunPyroDatabase = get()
+        db.exampleSentenceDao()
     }
 
     // endregion
@@ -103,7 +109,11 @@ val dataModule = module {
         }
 
         OkHttpClient.Builder()
-            .addInterceptor(AuthorisationInterceptor(get()))
+            .addInterceptor(
+                AuthorisationInterceptor(
+                    get()
+                )
+            )
             .addInterceptor(logging)
             .build()
     }
@@ -132,7 +142,7 @@ val dataModule = module {
     }
 
     single<ISyncService> {
-        SyncService(get(), get(), get())
+        SyncService(get(), get(), get(), get())
     }
 
     // endregion

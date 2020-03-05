@@ -7,4 +7,7 @@ interface ISyncRepository {
 
     suspend fun saveGrammarPointsETag(eTag: String?)
     suspend fun getGrammarPointsETag(): String?
+
+    suspend fun saveExampleSentencesETag(eTag: String?)
+    suspend fun getExampleSentencesETag(): String?
 }

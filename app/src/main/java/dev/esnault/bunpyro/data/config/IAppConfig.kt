@@ -12,4 +12,7 @@ interface IAppConfig {
 
     suspend fun getGrammarPointsEtag(): String?
     suspend fun saveGrammarPointsEtag(eTag: String?)
+
+    suspend fun getExampleSentencesEtag(): String?
+    suspend fun saveExampleSentencesEtag(eTag: String?)
 }
