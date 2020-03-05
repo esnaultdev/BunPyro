@@ -1,6 +1,6 @@
 package dev.esnault.bunpyro.data.repository.grammarpoint
 
-import dev.esnault.bunpyro.domain.entities.GrammarPoint
+import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 
 
 interface IGrammarPointRepository {

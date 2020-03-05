@@ -6,7 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
-import dev.esnault.bunpyro.domain.entities.GrammarPoint
+import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.domain.entities
+package dev.esnault.bunpyro.domain.entities.grammar
 
 
 data class GrammarPoint(
@@ -12,5 +12,6 @@ data class GrammarPoint(
     val lesson: Int,
     val nuance: String?,
     val incomplete: Boolean,
-    val order: Int
+    val sentences: List<ExampleSentence>,
+    val links: List<SupplementalLink>
 )

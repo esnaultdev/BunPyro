@@ -7,7 +7,7 @@ import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.common.hide
 import dev.esnault.bunpyro.common.show
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointMeaningBinding
-import dev.esnault.bunpyro.domain.entities.GrammarPoint
+import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 import me.saket.bettermovementmethod.BetterLinkMovementMethod
 
 

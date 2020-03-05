@@ -2,7 +2,7 @@ package dev.esnault.bunpyro.data.repository.grammarpoint
 
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
 import dev.esnault.bunpyro.data.mapper.dbtodomain.GrammarPointMapper
-import dev.esnault.bunpyro.domain.entities.GrammarPoint
+import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 
 
 class GrammarPointRepository(

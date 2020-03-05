@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import dev.esnault.bunpyro.common.setVisible
 import dev.esnault.bunpyro.databinding.ItemLessonGrammarPointBinding
-import dev.esnault.bunpyro.domain.entities.GrammarPointOverview
+import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 
 
 class LessonGrammarAdapter(

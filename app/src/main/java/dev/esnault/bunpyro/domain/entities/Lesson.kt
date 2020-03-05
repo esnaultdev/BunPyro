@@ -1,5 +1,7 @@
 package dev.esnault.bunpyro.domain.entities
 
+import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
+
 
 data class Lesson(
     val id: Int,

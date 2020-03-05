@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.domain.entities
+package dev.esnault.bunpyro.domain.entities.grammar
 
 
 data class GrammarPointOverview(

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.common.setVisible
 import dev.esnault.bunpyro.databinding.ItemLessonBinding
-import dev.esnault.bunpyro.domain.entities.GrammarPointOverview
+import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.Lesson
 
 

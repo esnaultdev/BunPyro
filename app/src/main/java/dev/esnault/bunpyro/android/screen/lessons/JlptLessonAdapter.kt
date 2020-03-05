@@ -8,7 +8,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.ItemJlptLessonBinding
 import dev.esnault.bunpyro.databinding.TabLessonBinding
-import dev.esnault.bunpyro.domain.entities.GrammarPointOverview
+import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.JlptLesson
 
 

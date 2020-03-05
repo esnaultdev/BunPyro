@@ -1,7 +1,7 @@
 package dev.esnault.bunpyro.data.mapper.dbtodomain
 
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointOverviewDb
-import dev.esnault.bunpyro.domain.entities.GrammarPointOverview
+import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.JLPT
 import dev.esnault.bunpyro.domain.entities.JlptLesson
 import dev.esnault.bunpyro.domain.entities.Lesson

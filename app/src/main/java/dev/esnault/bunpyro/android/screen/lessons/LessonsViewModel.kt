@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
-import dev.esnault.bunpyro.domain.entities.GrammarPointOverview
+import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.JlptLesson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
