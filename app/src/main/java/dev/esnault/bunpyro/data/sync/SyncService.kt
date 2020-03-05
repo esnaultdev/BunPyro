@@ -1,5 +1,6 @@
 package dev.esnault.bunpyro.data.sync
 
+import android.database.SQLException
 import dev.esnault.bunpyro.data.db.examplesentence.ExampleSentenceDao
 import dev.esnault.bunpyro.data.db.examplesentence.ExampleSentenceDb
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
@@ -13,7 +14,6 @@ import dev.esnault.bunpyro.data.network.responseRequest
 import dev.esnault.bunpyro.data.repository.sync.ISyncRepository
 import dev.esnault.bunpyro.data.utils.DataUpdate
 import dev.esnault.bunpyro.data.utils.fromLocalIds
-import java.sql.SQLException
 
 
 class SyncService(
@@ -112,8 +112,15 @@ class SyncService(
         eTag: String?
     ): SyncResult {
         return try {
+            val grammarPointIds = grammarPointDao.getAllIds()
             val mapper = ExampleSentenceMapper()
-            val mappedSentences = mapper.map(exampleSentences)
+
+            val mappedSentences = exampleSentences
+                // The API returns some example sentence that is not related to any grammar point
+                // Let's filter them so that we have a sane DB
+                .filter { grammarPointIds.contains(it.attributes.grammarId) }
+                .let(mapper::map)
+
             exampleSentenceDao.performDataUpdate { localIds ->
                 DataUpdate.fromLocalIds(localIds, mappedSentences, ExampleSentenceDb::id)
             }
