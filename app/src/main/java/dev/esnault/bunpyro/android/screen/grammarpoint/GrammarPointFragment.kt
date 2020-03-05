@@ -9,7 +9,9 @@ import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.*
+import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.databinding.FragmentGrammarPointBinding
+import dev.esnault.bunpyro.domain.entities.grammar.SupplementalLink
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -46,7 +48,7 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
                 onListen = {}
             ),
             readingListener = ReadingViewHolder.Listener(
-                onRead = {}
+                onClick = this::onSupplementalLinkClick
             )
         )
 
@@ -91,5 +93,9 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
         binding.toolbar.setOnClickListener {
             vm.onTitleClick()
         }
+    }
+
+    private fun onSupplementalLinkClick(link: SupplementalLink) {
+        context?.openUrlInBrowser(link.link)
     }
 }
