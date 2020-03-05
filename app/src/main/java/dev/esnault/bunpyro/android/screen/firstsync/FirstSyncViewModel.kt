@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
-import dev.esnault.bunpyro.data.sync.FirstSyncResult
+import dev.esnault.bunpyro.data.sync.SyncResult
 import dev.esnault.bunpyro.data.sync.ISyncService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -44,15 +44,15 @@ class FirstSyncViewModel(
             }
 
             when (result) {
-                FirstSyncResult.Success -> {
+                SyncResult.Success -> {
                     navigate(FirstSyncFragmentDirections.actionFirstSyncToHome())
                 }
-                is FirstSyncResult.Error -> {
+                is SyncResult.Error -> {
                     currentState = when (result) {
-                        FirstSyncResult.Error.Network -> ViewState.Error.Network
-                        FirstSyncResult.Error.DB,
-                        FirstSyncResult.Error.Server,
-                        is FirstSyncResult.Error.Unknown -> ViewState.Error.Unknown
+                        SyncResult.Error.Network -> ViewState.Error.Network
+                        SyncResult.Error.DB,
+                        SyncResult.Error.Server,
+                        is SyncResult.Error.Unknown -> ViewState.Error.Unknown
                     }
                 }
             }

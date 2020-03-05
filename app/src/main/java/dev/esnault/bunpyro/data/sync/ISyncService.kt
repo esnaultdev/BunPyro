@@ -3,12 +3,13 @@ package dev.esnault.bunpyro.data.sync
 
 interface ISyncService {
 
-    suspend fun firstSync(): FirstSyncResult
+    suspend fun firstSync(): SyncResult
+    suspend fun nextSync(): SyncResult
 }
 
-sealed class FirstSyncResult {
-    object Success : FirstSyncResult()
-    sealed class Error : FirstSyncResult() {
+sealed class SyncResult {
+    object Success : SyncResult()
+    sealed class Error : SyncResult() {
         object Network : Error()
         object DB : Error()
         object Server : Error()

@@ -1,11 +1,14 @@
 package dev.esnault.bunpyro.data.sync
 
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
+import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDb
 import dev.esnault.bunpyro.data.mapper.apitodb.GrammarPointMapper
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
 import dev.esnault.bunpyro.data.network.entities.GrammarPoint
 import dev.esnault.bunpyro.data.network.responseRequest
 import dev.esnault.bunpyro.data.repository.sync.ISyncRepository
+import dev.esnault.bunpyro.data.utils.DataUpdate
+import dev.esnault.bunpyro.data.utils.fromLocalIds
 import java.sql.SQLException
 
 
@@ -15,51 +18,58 @@ class SyncService(
     private val grammarPointDao: GrammarPointDao
 ) : ISyncService {
 
-    override suspend fun firstSync(): FirstSyncResult {
+    override suspend fun firstSync(): SyncResult {
         if (syncRepo.getFirstSyncCompleted()) {
             // The first sync has already been completed, nothing to do
-            return FirstSyncResult.Success
+            return SyncResult.Success
         }
 
+        return nextSync()
+    }
+
+    override suspend fun nextSync(): SyncResult {
         val eTag = syncRepo.getGrammarPointsETag()
 
         val result = responseRequest(
             request = { versionedApi.getGrammarPoints(eTag) },
             onSuccess = { data, response ->
                 val newEtag = response.headers().get("etag")
-                saveFirstSyncGrammarPoints(data.data, newEtag)
+                saveGrammarPoints(data.data, newEtag)
             },
-            onNotModified = { FirstSyncResult.Success },
+            onNotModified = { SyncResult.Success },
             onInvalidApiKey = {
                 // TODO disconnect the user, clear the DB and redirect to the api key screen
-                FirstSyncResult.Error.Server
+                SyncResult.Error.Server
             },
-            onServerError = { FirstSyncResult.Error.Server },
-            onNetworkError = { FirstSyncResult.Error.Network },
-            onUnknownError = { FirstSyncResult.Error.Unknown(it) }
+            onServerError = { SyncResult.Error.Server },
+            onNetworkError = { SyncResult.Error.Network },
+            onUnknownError = { SyncResult.Error.Unknown(it) }
         )
 
-        if (result is FirstSyncResult.Success) {
+        if (result is SyncResult.Success) {
             syncRepo.saveFirstSyncCompleted()
         }
 
         return result
     }
 
-    private suspend fun saveFirstSyncGrammarPoints(
+    private suspend fun saveGrammarPoints(
         grammarPoints: List<GrammarPoint>,
         eTag: String?
-    ): FirstSyncResult {
+    ): SyncResult {
         return try {
+
             val mapper = GrammarPointMapper()
-            grammarPointDao.insertAll(mapper.map(grammarPoints))
+            val mappedPoints = mapper.map(grammarPoints)
+            grammarPointDao.performDataUpdate { localIds ->
+                DataUpdate.fromLocalIds(localIds, mappedPoints, GrammarPointDb::id)
+            }
 
             syncRepo.saveGrammarPointsETag(eTag)
-            syncRepo.saveFirstSyncCompleted()
 
-            FirstSyncResult.Success
+            SyncResult.Success
         } catch (e: SQLException) {
-            FirstSyncResult.Error.DB
+            SyncResult.Error.DB
         }
     }
 }

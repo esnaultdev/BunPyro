@@ -1,23 +1,41 @@
 package dev.esnault.bunpyro.data.db.grammarpoint
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
+import dev.esnault.bunpyro.data.utils.DataUpdate
 import kotlinx.coroutines.flow.Flow
 
 
 @Dao
-interface GrammarPointDao {
+abstract class GrammarPointDao {
 
     @Query("SELECT * FROM grammar_point ORDER BY grammar_order")
-    suspend fun getAll(): List<GrammarPointDb>
+    abstract suspend fun getAll(): List<GrammarPointDb>
+
+    @Query("SELECT id FROM grammar_point")
+    abstract suspend fun getAllIds(): List<Int>
 
     @Query("SELECT * FROM grammar_point WHERE id = :id")
-    suspend fun getById(id: Int): GrammarPointDb
+    abstract suspend fun getById(id: Int): GrammarPointDb
 
     @Query("SELECT id, lesson, title, meaning, incomplete FROM grammar_point")
-    fun getAllOverviews(): Flow<List<GrammarPointOverviewDb>>
+    abstract fun getAllOverviews(): Flow<List<GrammarPointOverviewDb>>
 
     @Insert
-    suspend fun insertAll(users: List<GrammarPointDb>)
+    abstract suspend fun insertAll(users: List<GrammarPointDb>)
+
+    @Update
+    abstract suspend fun updateAll(users: List<GrammarPointDb>)
+
+    @Query("DELETE FROM grammar_point WHERE id IN (:ids)")
+    abstract suspend fun deleteAll(ids: List<Int>)
+
+    @Transaction
+    open suspend fun performDataUpdate(
+        block: (localIds: List<Int>) -> DataUpdate<GrammarPointDb, Int>
+    ) {
+        val dataUpdate = block(getAllIds())
+        insertAll(dataUpdate.toInsert)
+        updateAll(dataUpdate.toUpdate)
+        deleteAll(dataUpdate.toDelete)
+    }
 }
