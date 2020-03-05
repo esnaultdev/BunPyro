@@ -13,6 +13,7 @@ import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
 import dev.esnault.bunpyro.data.network.interceptor.AuthorisationInterceptor
 import dev.esnault.bunpyro.data.network.BunproApi
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
+import dev.esnault.bunpyro.data.network.interceptor.TimeoutInterceptor
 import dev.esnault.bunpyro.data.repository.sync.ISyncRepository
 import dev.esnault.bunpyro.data.repository.sync.SyncRepository
 import dev.esnault.bunpyro.data.sync.ISyncService
@@ -114,6 +115,7 @@ val dataModule = module {
                     get()
                 )
             )
+            .addInterceptor(TimeoutInterceptor())
             .addInterceptor(logging)
             .build()
     }
