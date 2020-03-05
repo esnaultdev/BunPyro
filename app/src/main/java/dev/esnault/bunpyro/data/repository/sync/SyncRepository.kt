@@ -28,4 +28,12 @@ class SyncRepository(private val appConfig: IAppConfig) : ISyncRepository {
     override suspend fun saveExampleSentencesETag(eTag: String?) {
         appConfig.saveExampleSentencesEtag(eTag)
     }
+
+    override suspend fun getSupplementalLinksETag(): String? {
+        return appConfig.getSupplementalLinksEtag()
+    }
+
+    override suspend fun saveSupplementalLinksETag(eTag: String?) {
+        appConfig.saveSupplementalLinksEtag(eTag)
+    }
 }

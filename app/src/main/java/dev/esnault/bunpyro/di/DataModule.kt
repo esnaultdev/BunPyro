@@ -10,6 +10,7 @@ import dev.esnault.bunpyro.data.config.IAppConfig
 import dev.esnault.bunpyro.data.db.BunPyroDatabase
 import dev.esnault.bunpyro.data.db.examplesentence.ExampleSentenceDao
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
+import dev.esnault.bunpyro.data.db.supplementallink.SupplementalLinkDao
 import dev.esnault.bunpyro.data.network.interceptor.AuthorisationInterceptor
 import dev.esnault.bunpyro.data.network.BunproApi
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
@@ -59,6 +60,11 @@ val dataModule = module {
     factory<ExampleSentenceDao> {
         val db: BunPyroDatabase = get()
         db.exampleSentenceDao()
+    }
+
+    factory<SupplementalLinkDao> {
+        val db: BunPyroDatabase = get()
+        db.supplementalLinkDao()
     }
 
     // endregion
@@ -144,7 +150,7 @@ val dataModule = module {
     }
 
     single<ISyncService> {
-        SyncService(get(), get(), get(), get())
+        SyncService(get(), get(), get(), get(), get())
     }
 
     // endregion

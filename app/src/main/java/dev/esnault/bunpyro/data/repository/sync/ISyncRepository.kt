@@ -10,4 +10,7 @@ interface ISyncRepository {
 
     suspend fun saveExampleSentencesETag(eTag: String?)
     suspend fun getExampleSentencesETag(): String?
+
+    suspend fun saveSupplementalLinksETag(eTag: String?)
+    suspend fun getSupplementalLinksETag(): String?
 }

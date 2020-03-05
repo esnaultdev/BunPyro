@@ -6,7 +6,8 @@ import androidx.core.content.edit
 private object Keys {
     const val API_KEY = "ApiKey"
     const val SYNC_GRAMMAR_POINTS_ETAG = "SyncGrammarPointsEtag"
-    const val SYNC_EXAMPLE_SENTENCES_ETAG = "SyncGrammarPointsEtag"
+    const val SYNC_EXAMPLE_SENTENCES_ETAG = "ExampleSentencesEtag"
+    const val SYNC_SUPPLEMENTAL_LINKS_ETAG = "SupplementalLinksEtag"
     const val FIRST_SYNC_COMPLETED = "FirstSyncCompleted"
 }
 
@@ -69,6 +70,20 @@ class AppConfig(private val prefs: SharedPreferences) : IAppConfig {
                 putString(Keys.SYNC_EXAMPLE_SENTENCES_ETAG, eTag)
             } else {
                 remove(Keys.SYNC_EXAMPLE_SENTENCES_ETAG)
+            }
+        }
+    }
+
+    override suspend fun getSupplementalLinksEtag(): String? {
+        return prefs.getString(Keys.SYNC_SUPPLEMENTAL_LINKS_ETAG, null)
+    }
+
+    override suspend fun saveSupplementalLinksEtag(eTag: String?) {
+        prefs.edit {
+            if (eTag != null) {
+                putString(Keys.SYNC_SUPPLEMENTAL_LINKS_ETAG, eTag)
+            } else {
+                remove(Keys.SYNC_SUPPLEMENTAL_LINKS_ETAG)
             }
         }
     }

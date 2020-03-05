@@ -3,6 +3,7 @@ package dev.esnault.bunpyro.data.network
 import dev.esnault.bunpyro.data.network.entities.DataRequest
 import dev.esnault.bunpyro.data.network.entities.ExampleSentence
 import dev.esnault.bunpyro.data.network.entities.GrammarPoint
+import dev.esnault.bunpyro.data.network.entities.SupplementalLink
 import dev.esnault.bunpyro.data.network.interceptor.Timeout
 import retrofit2.Response
 import retrofit2.http.GET
@@ -31,4 +32,10 @@ interface BunproVersionedApi {
     suspend fun getExampleSentences(
         @Header("If-None-Match") etagHeader: String?
     ): Response<DataRequest<ExampleSentence>>
+
+    @GET("v4/supplemental_links")
+    @Headers("${Timeout.READ}:20000")
+    suspend fun getSupplementalLinks(
+        @Header("If-None-Match") etagHeader: String?
+    ): Response<DataRequest<SupplementalLink>>
 }

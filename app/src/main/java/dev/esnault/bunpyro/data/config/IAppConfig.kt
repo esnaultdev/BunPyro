@@ -15,4 +15,7 @@ interface IAppConfig {
 
     suspend fun getExampleSentencesEtag(): String?
     suspend fun saveExampleSentencesEtag(eTag: String?)
+
+    suspend fun saveSupplementalLinksEtag(eTag: String?)
+    suspend fun getSupplementalLinksEtag(): String?
 }
