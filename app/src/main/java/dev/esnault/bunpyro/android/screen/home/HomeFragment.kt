@@ -27,11 +27,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setupTextViews() {
-        binding.furigana.text = SpannableStringBuilder("車日本\n図書館\n富士山").apply {
+        binding.furigana.text = SpannableStringBuilder("車が日本\n図書館\n富士山").apply {
             setSpan(RubySpan("くるま"), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            setSpan(RubySpan("にっぽん"), 1, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            setSpan(RubySpan("としょかん"), 4, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            setSpan(RubySpan("ふじさん"), 8, 11, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            setSpan(RubySpan("にっぽん"), 2, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            setSpan(RubySpan("としょかん"), 5, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            setSpan(RubySpan("ふじさん"), 9, 12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
     }
 }

@@ -10,12 +10,22 @@ import android.text.style.ReplacementSpan
  */
 class RubySpan(
     private val rubyText: String,
+    var visibility: Visibility = Visibility.VISIBLE,
     private val align: Align = Align.SPREAD,
     private val textSizeFactor: Float = 0.6f
 ) : ReplacementSpan() {
 
     enum class Align {
         SPREAD, CENTER
+    }
+
+    enum class Visibility {
+        /** The ruby text is visible */
+        VISIBLE,
+        /** The ruby text is invisible, but it still takes up space for layout purposes. */
+        INVISIBLE,
+        /** The ruby text is invisible, and it doesn't take any space for layout purposes. */
+        GONE
     }
 
     private var offsetY: Int = 0
@@ -29,40 +39,56 @@ class RubySpan(
         end: Int,
         fm: Paint.FontMetricsInt?
     ): Int {
-        if (text == null) return 0
-
         val pfm = paint.fontMetricsInt
         if (fm != null) {
-            // Without furigana       -->  With furigana
-            //
-            //                             --- top
-            //                             --- ascent
-            // --- top                     furigana
-            // --- ascent
-            // NORMAL TEXT                 NORMAL TEXT
-            // ------ baseline -----       ------ baseline -----
-            // --- descent                 --- descent
-            // --- bottom                  --- bottom
+            if (visibility == Visibility.GONE) {
+                fm.apply {
+                    leading = pfm.leading
+                    bottom = pfm.bottom
+                    descent = pfm.descent
+                    ascent = pfm.ascent
+                    top = pfm.ascent
+                }
+            } else {
+                // Without furigana       -->  With furigana
+                //
+                //                             --- top
+                //                             --- ascent
+                // --- top                     furigana
+                // --- ascent
+                // NORMAL TEXT                 NORMAL TEXT
+                // ------ baseline -----       ------ baseline -----
+                // --- descent                 --- descent
+                // --- bottom                  --- bottom
 
-            val normalTextHeight = pfm.descent - pfm.ascent
-            val topSpacing = pfm.ascent - pfm.top
+                val normalTextHeight = pfm.descent - pfm.ascent
+                val topSpacing = pfm.ascent - pfm.top
 
-            fm.apply {
-                leading = pfm.leading
-                bottom = pfm.bottom
-                descent = pfm.descent
-                ascent = pfm.ascent - topSpacing - (normalTextHeight * textSizeFactor).toInt()
-                top = ascent - topSpacing
+                fm.apply {
+                    leading = pfm.leading
+                    bottom = pfm.bottom
+                    descent = pfm.descent
+                    ascent = pfm.ascent - topSpacing - (normalTextHeight * textSizeFactor).toInt()
+                    top = ascent - topSpacing
+                }
             }
         }
         offsetY = pfm.top
 
-        textWidth = paint.measureText(text.substring(start, end))
+        textWidth = if (text != null) {
+            paint.measureText(text.substring(start, end))
+        } else {
+            0f
+        }
 
-        val textSize = paint.textSize
-        paint.textSize = textSize * textSizeFactor
-        rubyWidth = paint.measureText(rubyText)
-        paint.textSize = textSize
+        if (visibility != Visibility.GONE) {
+            val textSize = paint.textSize
+            paint.textSize = textSize * textSizeFactor
+            rubyWidth = paint.measureText(rubyText)
+            paint.textSize = textSize
+        } else {
+            rubyWidth = 0f
+        }
 
         return if (rubyWidth > textWidth) {
             rubyWidth.toInt()
@@ -82,15 +108,17 @@ class RubySpan(
         bottom: Int,
         paint: Paint
     ) {
-        if (text == null) return
-
-        // Draw the text
-        if (rubyWidth < textWidth) {
-            canvas.drawText(text, start, end, x, y.toFloat(), paint)
-        } else {
-            val offsetX = (rubyWidth - textWidth) / 2
-            canvas.drawText(text, start, end, x + offsetX, y.toFloat(), paint)
+        if (text != null) {
+            // Draw the text
+            if (rubyWidth < textWidth) {
+                canvas.drawText(text, start, end, x, y.toFloat(), paint)
+            } else {
+                val offsetX = (rubyWidth - textWidth) / 2
+                canvas.drawText(text, start, end, x + offsetX, y.toFloat(), paint)
+            }
         }
+
+        if (visibility != Visibility.VISIBLE) return
 
         // Save some attributes that we will need to restore afterwards and update the paint
         val isUnderlined = paint.isUnderlineText
