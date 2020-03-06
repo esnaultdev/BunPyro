@@ -64,7 +64,7 @@ class BunProHtml(
         }
 
         fun chuiSpan() {
-            setSpan(ForegroundColorSpan(emphasisColor))
+            setSpan(FontColorSpan(chuiColor))
             setSpan(StyleSpan(Typeface.BOLD))
         }
 
@@ -74,7 +74,7 @@ class BunProHtml(
                 handleLink(href, ::setSpan)
             }
             "b", "strong" -> {
-                setSpan(ForegroundColorSpan(chuiColor))
+                setSpan(FontColorSpan(emphasisColor))
                 setSpan(StyleSpan(Typeface.BOLD))
             }
             "br" -> spanBuilder.append("\n")
