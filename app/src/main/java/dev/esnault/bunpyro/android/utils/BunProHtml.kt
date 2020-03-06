@@ -43,47 +43,73 @@ class BunProHtml(
             }
             is Element -> {
                 val tagName = node.tag().name
-                if (tagName == "rt" || tagName == "rp") {
-                    // ruby (with rt and rp) are used for furigana
-                    // we don't support this display currently
-                    // TODO support furigana
+                if (tagName == "ruby") {
+                    // ruby is very specific, we need to handle it separately
+                    handleRubyElement(node, spanBuilder)
                     return
                 }
+                handleNormalElement(node, spanBuilder)
+            }
+        }
+    }
 
-                val preChildSize = spanBuilder.length
-                node.childNodes().forEach { child -> handleNode(child, spanBuilder) }
-                val postChildSize = spanBuilder.length
+    private fun handleNormalElement(element: Element, spanBuilder: SpannableStringBuilder) {
+        val preChildSize = spanBuilder.length
+        element.childNodes().forEach { child -> handleNode(child, spanBuilder) }
+        val postChildSize = spanBuilder.length
 
-                fun setSpan(span: Any) {
-                    spanBuilder.setSpan(
-                        span, preChildSize, postChildSize, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        fun setSpan(span: Any) {
+            spanBuilder.setSpan(
+                span, preChildSize, postChildSize, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        fun chuiSpan() {
+            setSpan(ForegroundColorSpan(emphasisColor))
+            setSpan(StyleSpan(Typeface.BOLD))
+        }
+
+        when (element.tag().name) {
+            "a" -> {
+                val href = element.attr("href")
+                handleLink(href, ::setSpan)
+            }
+            "b", "strong" -> {
+                setSpan(ForegroundColorSpan(chuiColor))
+                setSpan(StyleSpan(Typeface.BOLD))
+            }
+            "br" -> spanBuilder.append("\n")
+            "chui" -> chuiSpan()
+            "del", "s", "strike" -> setSpan(StrikethroughSpan())
+            "em", "i" -> setSpan(StyleSpan(Typeface.ITALIC))
+            "small" -> setSpan(RelativeSizeSpan(0.9f))
+            "span" -> {
+                val isChui = element.classNames().contains("chui")
+                if (isChui) {
+                    chuiSpan()
                 }
+            }
+        }
+    }
 
-                fun chuiSpan() {
-                    setSpan(ForegroundColorSpan(emphasisColor))
-                    setSpan(StyleSpan(Typeface.BOLD))
+    private fun handleRubyElement(element: Element, spanBuilder: SpannableStringBuilder) {
+        var preTextSize = spanBuilder.length
+        var postTextSize = spanBuilder.length
+
+        element.childNodes().forEach { child ->
+            when (child) {
+                is TextNode -> {
+                    preTextSize = spanBuilder.length
+                    spanBuilder.append(child.text())
+                    postTextSize = spanBuilder.length
                 }
-
-                when (tagName) {
-                    "a" -> {
-                        val href = node.attr("href")
-                        handleLink(href, ::setSpan)
+                is Element -> {
+                    if (child.tag().name == "rt") {
+                        val rubyText = child.text()
+                        val span = RubySpan(rubyText)
+                        spanBuilder.setSpan(
+                            span, preTextSize, postTextSize, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                     }
-                    "b", "strong" -> {
-                        setSpan(ForegroundColorSpan(chuiColor))
-                        setSpan(StyleSpan(Typeface.BOLD))
-                    }
-                    "br" -> spanBuilder.append("\n")
-                    "chui" -> chuiSpan()
-                    "del", "s", "strike" -> setSpan(StrikethroughSpan())
-                    "em", "i" -> setSpan(StyleSpan(Typeface.ITALIC))
-                    "small" -> setSpan(RelativeSizeSpan(0.9f))
-                    "span" -> {
-                        val isChui = node.classNames().contains("chui")
-                        if (isChui) {
-                            chuiSpan()
-                        }
-                    }
+                    // We don't support other elements inside a ruby.
                 }
             }
         }
