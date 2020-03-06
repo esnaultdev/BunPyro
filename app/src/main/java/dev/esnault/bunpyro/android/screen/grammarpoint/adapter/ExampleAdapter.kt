@@ -50,7 +50,7 @@ class ExampleAdapter(context: Context) : RecyclerView.Adapter<ExampleAdapter.Vie
         fun bind(example: ExampleSentence) {
             this.example = example
 
-            binding.japanese.text = postProcessString(example.japanese)
+            binding.japanese.text = postProcessJapanese(example.japanese)
             binding.english.text = postProcessString(example.english)
 
             if (!example.nuance.isNullOrBlank()) {
@@ -68,8 +68,14 @@ class ExampleAdapter(context: Context) : RecyclerView.Adapter<ExampleAdapter.Vie
             onGrammarPointClick = {}
         )
 
+        private fun postProcessJapanese(source: String): Spanned {
+            return context.processBunproString(
+                source, bunProTextListener, secondaryBreaks = false, furiganize = true)
+        }
+
         private fun postProcessString(source: String): Spanned {
-            return context.processBunproString(source, false, bunProTextListener)
+            return context.processBunproString(
+                source, bunProTextListener, secondaryBreaks = false, furiganize = false)
         }
 
         // endregion

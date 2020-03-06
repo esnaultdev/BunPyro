@@ -77,6 +77,7 @@ class MeaningViewHolder(
         source: String,
         secondaryBreaks: Boolean = true
     ): Spanned {
-        return context.processBunproString(source, secondaryBreaks, bunProTextListener)
+        return context.processBunproString(
+            source, bunProTextListener, secondaryBreaks, furiganize = false)
     }
 }

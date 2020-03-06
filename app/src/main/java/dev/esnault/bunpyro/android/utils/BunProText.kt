@@ -6,26 +6,48 @@ import android.text.Spanned
 
 fun Context.processBunproString(
     source: String,
-    secondaryBreaks: Boolean = true,
-    listener: BunProTextListener
+    listener: BunProTextListener,
+    secondaryBreaks: Boolean,
+    furiganize: Boolean
 ): Spanned {
-    return source.run {
-            // Some specific characters are used to denote line breaks, but not for
-            // every field, so let's replace them if we need to
+    return source.let {
             if (secondaryBreaks) {
-                replace(",", "<br/>")
+                preProcessBunproSecondaryBreaks(it)
             } else {
-                this
+                it
+            }
+        }
+        .let {
+            if (furiganize) {
+                preProcessBunproFurigana(it)
+            } else {
+                it
             }
         }
         .let(::removeWhitespace)
         .let { BunProHtml(this, listener.onGrammarPointClick).format(it) }
 }
 
+/**
+ * Some specific characters are sometimes used to denote line breaks.
+ */
+fun preProcessBunproSecondaryBreaks(source: String): String {
+    return source.replace(",", "<br/>")
+}
+
+fun preProcessBunproFurigana(source: String): String {
+    // Note that the parenthesis are not the regular ones
+    val regex = Regex("""(\p{IsHan}+)（(\p{IsHiragana}+)）""")
+    return regex.replace(source) { matchResult ->
+        val kanji = matchResult.groups[1]!!.value
+        val furigana = matchResult.groups[2]!!.value
+        "<ruby>$kanji<rt>$furigana</rt></ruby>"
+    }
+}
+
 data class BunProTextListener(
     val onGrammarPointClick: (id: Int) -> Unit
 )
-
 
 private val openBrRegex = Regex(""" *<br> *""")
 private val closeBrRegex = Regex(""" *</br> *""")
