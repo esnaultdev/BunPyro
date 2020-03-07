@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.android.screen.grammarpoint.adapter
+package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.example
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +19,10 @@ class ExamplesViewHolder(
     private val context: Context
         get() = itemView.context
 
-    private val exampleAdapter = ExampleAdapter(context)
+    private val exampleAdapter =
+        ExampleAdapter(
+            context
+        )
 
     init {
         binding.examplesRecyclerView.apply {

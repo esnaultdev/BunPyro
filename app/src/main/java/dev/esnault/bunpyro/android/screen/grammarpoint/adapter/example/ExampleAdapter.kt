@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.android.screen.grammarpoint.adapter
+package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.example
 
 import android.content.Context
 import android.text.Spanned
@@ -29,7 +29,9 @@ class ExampleAdapter(context: Context) : RecyclerView.Adapter<ExampleAdapter.Vie
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemExampleSentenceBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding)
+        return ViewHolder(
+            binding
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

@@ -4,6 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel
+import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.example.ExamplesViewHolder
+import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning.MeaningViewHolder
+import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.reading.ReadingViewHolder
 import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointExamplesBinding
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointMeaningBinding
@@ -38,15 +41,24 @@ class GrammarPointPagerAdapter(
         return when (GrammarPointTab.get(viewType)) {
             GrammarPointTab.MEANING -> {
                 val binding = LayoutGrammarPointMeaningBinding.inflate(inflater, parent, false)
-                MeaningViewHolder(binding, listener.meaningListener)
+                MeaningViewHolder(
+                    binding,
+                    listener.meaningListener
+                )
             }
             GrammarPointTab.EXAMPLES -> {
                 val binding = LayoutGrammarPointExamplesBinding.inflate(inflater, parent, false)
-                ExamplesViewHolder(binding, listener.examplesListener)
+                ExamplesViewHolder(
+                    binding,
+                    listener.examplesListener
+                )
             }
             GrammarPointTab.READING -> {
                 val binding = LayoutGrammarPointReadingBinding.inflate(inflater, parent, false)
-                ReadingViewHolder(binding, listener.readingListener)
+                ReadingViewHolder(
+                    binding,
+                    listener.readingListener
+                )
             }
         }
     }

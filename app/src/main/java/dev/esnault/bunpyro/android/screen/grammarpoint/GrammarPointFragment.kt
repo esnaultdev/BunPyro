@@ -9,6 +9,9 @@ import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.*
+import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.example.ExamplesViewHolder
+import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning.MeaningViewHolder
+import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.reading.ReadingViewHolder
 import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.databinding.FragmentGrammarPointBinding
 import dev.esnault.bunpyro.domain.entities.grammar.SupplementalLink

@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.android.screen.grammarpoint.adapter
+package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.reading
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -28,7 +28,10 @@ class SupplementalLinkAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemSupplementalLinkBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding, listener)
+        return ViewHolder(
+            binding,
+            listener
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.android.screen.grammarpoint.adapter
+package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning
 
 import android.content.Context
 import android.text.Spanned

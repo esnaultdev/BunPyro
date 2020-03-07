@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.android.screen.grammarpoint.adapter
+package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.reading
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +20,11 @@ class ReadingViewHolder(
     private val context: Context
         get() = itemView.context
 
-    private val linksAdapter = SupplementalLinkAdapter(context, listener)
+    private val linksAdapter =
+        SupplementalLinkAdapter(
+            context,
+            listener
+        )
 
     init {
         binding.readingRecyclerView.apply {
