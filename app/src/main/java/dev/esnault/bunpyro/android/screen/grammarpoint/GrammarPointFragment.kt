@@ -74,15 +74,35 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
         }
 
     private fun bindViewState(viewState: ViewState) {
-        val grammarPoint = viewState.grammarPoint
-
-        binding.collapsingToolbarLayout.title = if (viewState.yomikataShown) {
-            grammarPoint.yomikata
-        } else {
-            grammarPoint.title
-        }
+        bindViewStateToolbar(viewState)
 
         pagerAdapter?.viewState = viewState
+    }
+
+    private fun bindViewStateToolbar(viewState: ViewState) {
+        binding.collapsingToolbarLayout.title = if (viewState.titleYomikataShown) {
+            viewState.grammarPoint.yomikata
+        } else {
+            viewState.grammarPoint.title
+        }
+
+        binding.toolbar.menu.apply {
+            val furiganaItem = findItem(R.id.action_furigana)
+
+            val iconResId = if (viewState.furiganaShown) {
+                R.drawable.ic_kana_on_24dp
+            } else {
+                R.drawable.ic_kana_off_24dp
+            }
+            furiganaItem.setIcon(iconResId)
+
+            val titleResId = if (viewState.furiganaShown) {
+                R.string.action_furigana_hide
+            } else {
+                R.string.action_furigana_show
+            }
+            furiganaItem.setTitle(titleResId)
+        }
     }
 
     private fun bindEvents() {
@@ -92,6 +112,16 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
 
         binding.toolbar.setOnClickListener {
             vm.onTitleClick()
+        }
+
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_furigana -> {
+                    vm.onFuriganaClick()
+                    true
+                }
+                else -> false
+            }
         }
     }
 

@@ -36,14 +36,23 @@ class GrammarPointViewModel(
                 // TODO make this a flow, so that we can properly update it from the network
                 val grammarPoint = grammarRepo.getGrammarPoint(id)
 
-                currentState = ViewState(grammarPoint, false)
+                currentState = ViewState(
+                    grammarPoint,
+                    titleYomikataShown = false,
+                    furiganaShown = true
+                )
             }
         }
     }
 
     fun onTitleClick() {
         val currentState = currentState ?: return
-        this.currentState = currentState.copy(yomikataShown = !currentState.yomikataShown)
+        this.currentState = currentState.copy(titleYomikataShown = !currentState.titleYomikataShown)
+    }
+
+    fun onFuriganaClick() {
+        val currentState = currentState ?: return
+        this.currentState = currentState.copy(furiganaShown = !currentState.furiganaShown)
     }
 
     fun onGrammarPointClick(id: Int) {
@@ -52,6 +61,7 @@ class GrammarPointViewModel(
 
     data class ViewState(
         val grammarPoint: GrammarPoint,
-        val yomikataShown: Boolean
+        val titleYomikataShown: Boolean,
+        val furiganaShown: Boolean
     )
 }

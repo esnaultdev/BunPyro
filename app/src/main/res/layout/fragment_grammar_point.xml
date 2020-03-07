@@ -40,6 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="0dp"
+                app:menu="@menu/grammar_point"
                 app:layout_collapseMode="pin"
                 tools:title="This is a long title that should span multiple lines"
                 />
