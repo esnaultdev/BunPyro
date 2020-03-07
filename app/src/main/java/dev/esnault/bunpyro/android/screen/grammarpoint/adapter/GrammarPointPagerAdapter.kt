@@ -31,9 +31,10 @@ class GrammarPointPagerAdapter(
             val oldValue = field
             field = value
 
-            val shouldRefresh = value?.grammarPoint != oldValue?.grammarPoint
-            if (shouldRefresh) {
-                notifyDataSetChanged()
+            if (oldValue == value) {
+                return
+            } else {
+                notifyItemRangeChanged(0, itemCount)
             }
         }
 
@@ -41,24 +42,15 @@ class GrammarPointPagerAdapter(
         return when (GrammarPointTab.get(viewType)) {
             GrammarPointTab.MEANING -> {
                 val binding = LayoutGrammarPointMeaningBinding.inflate(inflater, parent, false)
-                MeaningViewHolder(
-                    binding,
-                    listener.meaningListener
-                )
+                MeaningViewHolder(binding, listener.meaningListener)
             }
             GrammarPointTab.EXAMPLES -> {
                 val binding = LayoutGrammarPointExamplesBinding.inflate(inflater, parent, false)
-                ExamplesViewHolder(
-                    binding,
-                    listener.examplesListener
-                )
+                ExamplesViewHolder(binding, listener.examplesListener)
             }
             GrammarPointTab.READING -> {
                 val binding = LayoutGrammarPointReadingBinding.inflate(inflater, parent, false)
-                ReadingViewHolder(
-                    binding,
-                    listener.readingListener
-                )
+                ReadingViewHolder(binding, listener.readingListener)
             }
         }
     }
@@ -66,10 +58,10 @@ class GrammarPointPagerAdapter(
     override fun onBindPageViewHolder(holder: ViewHolder, position: Int) {
         when (GrammarPointTab.get(position)) {
             GrammarPointTab.MEANING -> {
-                (holder as MeaningViewHolder).bind(viewState?.grammarPoint)
+                (holder as MeaningViewHolder).viewState = viewState
             }
             GrammarPointTab.EXAMPLES -> {
-                (holder as ExamplesViewHolder).bind(viewState?.grammarPoint)
+                (holder as ExamplesViewHolder).bind(viewState)
             }
             GrammarPointTab.READING -> {
                 (holder as ReadingViewHolder).bind(viewState?.grammarPoint)

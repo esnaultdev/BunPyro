@@ -16,6 +16,7 @@ import org.jsoup.nodes.TextNode
 
 class BunProHtml(
     private val context: Context,
+    private val furiganaVisibility: RubySpan.Visibility,
     private val onGrammarPointClick: (id: Int) -> Unit
 ) {
 
@@ -105,7 +106,7 @@ class BunProHtml(
                 is Element -> {
                     if (child.tag().name == "rt") {
                         val rubyText = child.text()
-                        val span = RubySpan(rubyText)
+                        val span = RubySpan(rubyText, visibility = furiganaVisibility)
                         spanBuilder.setSpan(
                             span, preTextSize, postTextSize, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                     }

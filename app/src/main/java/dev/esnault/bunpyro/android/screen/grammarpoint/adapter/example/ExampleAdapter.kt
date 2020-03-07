@@ -5,6 +5,7 @@ import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState as ViewState
 import dev.esnault.bunpyro.android.utils.BunProTextListener
 import dev.esnault.bunpyro.android.utils.processBunproString
 import dev.esnault.bunpyro.common.hide
@@ -17,28 +18,30 @@ class ExampleAdapter(context: Context) : RecyclerView.Adapter<ExampleAdapter.Vie
 
     private val inflater = LayoutInflater.from(context)
 
-    var examples: List<ExampleSentence> = emptyList()
+    var viewState: ViewState? = null
         set(value) {
             val oldValue = field
             field = value
 
-            if (oldValue != value) {
+            if (oldValue?.grammarPoint?.sentences != value?.grammarPoint?.sentences) {
                 notifyDataSetChanged()
+            } else if (oldValue?.furiganaShown != value?.furiganaShown) {
+                notifyItemRangeChanged(0, itemCount)
             }
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemExampleSentenceBinding.inflate(inflater, parent, false)
-        return ViewHolder(
-            binding
-        )
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(examples[position])
+        val viewState = viewState!!
+        val example = viewState.grammarPoint.sentences[position]
+        holder.bind(example, viewState.furiganaShown)
     }
 
-    override fun getItemCount(): Int = examples.size
+    override fun getItemCount(): Int = viewState?.grammarPoint?.sentences?.size ?: 0
 
     class ViewHolder(
         private val binding: ItemExampleSentenceBinding
@@ -49,14 +52,14 @@ class ExampleAdapter(context: Context) : RecyclerView.Adapter<ExampleAdapter.Vie
 
         private var example: ExampleSentence? = null
 
-        fun bind(example: ExampleSentence) {
+        fun bind(example: ExampleSentence, furiganaShown: Boolean) {
             this.example = example
 
-            binding.japanese.text = postProcessJapanese(example.japanese)
-            binding.english.text = postProcessString(example.english)
+            binding.japanese.text = postProcessJapanese(example.japanese, furiganaShown)
+            binding.english.text = postProcessString(example.english, furiganaShown)
 
             if (!example.nuance.isNullOrBlank()) {
-                binding.nuance.text = postProcessString(example.nuance)
+                binding.nuance.text = postProcessString(example.nuance, furiganaShown)
                 binding.nuance.show()
             } else {
                 binding.nuance.hide()
@@ -70,14 +73,24 @@ class ExampleAdapter(context: Context) : RecyclerView.Adapter<ExampleAdapter.Vie
             onGrammarPointClick = {}
         )
 
-        private fun postProcessJapanese(source: String): Spanned {
+        private fun postProcessJapanese(source: String, furigana: Boolean): Spanned {
             return context.processBunproString(
-                source, bunProTextListener, secondaryBreaks = false, furiganize = true)
+                source = source,
+                listener = bunProTextListener,
+                secondaryBreaks = false,
+                showFurigana = furigana,
+                furiganize = true
+            )
         }
 
-        private fun postProcessString(source: String): Spanned {
+        private fun postProcessString(source: String, furigana: Boolean): Spanned {
             return context.processBunproString(
-                source, bunProTextListener, secondaryBreaks = false, furiganize = false)
+                source = source,
+                listener = bunProTextListener,
+                secondaryBreaks = false,
+                showFurigana = furigana,
+                furiganize = false
+            )
         }
 
         // endregion

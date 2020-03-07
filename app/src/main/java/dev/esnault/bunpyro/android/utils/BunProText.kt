@@ -8,6 +8,7 @@ fun Context.processBunproString(
     source: String,
     listener: BunProTextListener,
     secondaryBreaks: Boolean,
+    showFurigana: Boolean,
     furiganize: Boolean
 ): Spanned {
     return source.let {
@@ -25,7 +26,14 @@ fun Context.processBunproString(
             }
         }
         .let(::removeWhitespace)
-        .let { BunProHtml(this, listener.onGrammarPointClick).format(it) }
+        .let {
+            val rubyVisibility = if (showFurigana) {
+                RubySpan.Visibility.VISIBLE
+            } else {
+                RubySpan.Visibility.GONE
+            }
+            BunProHtml(this, rubyVisibility, listener.onGrammarPointClick).format(it)
+        }
 }
 
 /**

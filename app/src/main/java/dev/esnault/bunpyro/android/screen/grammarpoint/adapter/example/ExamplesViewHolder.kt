@@ -2,9 +2,9 @@ package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.example
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
+import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel
 import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointExamplesBinding
-import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 
 
 class ExamplesViewHolder(
@@ -19,10 +19,7 @@ class ExamplesViewHolder(
     private val context: Context
         get() = itemView.context
 
-    private val exampleAdapter =
-        ExampleAdapter(
-            context
-        )
+    private val exampleAdapter = ExampleAdapter(context)
 
     init {
         binding.examplesRecyclerView.apply {
@@ -31,7 +28,7 @@ class ExamplesViewHolder(
         }
     }
 
-    fun bind(grammarPoint: GrammarPoint?) {
-        exampleAdapter.examples = grammarPoint?.sentences ?: emptyList()
+    fun bind(viewState: GrammarPointViewModel.ViewState?) {
+        exampleAdapter.viewState = viewState
     }
 }
