@@ -15,8 +15,14 @@ class RubySpan(
     private val textSizeFactor: Float = 0.6f
 ) : ReplacementSpan() {
 
+    /** Alignment of the ruby text when its smaller than the normal text */
     enum class Align {
-        SPREAD, CENTER
+        /** Spread the characters if the ruby text contains more characters than the normal text */
+        SPREAD,
+        /** Always spread the characters */
+        ALWAYS_SPREAD,
+        /** Center the characters */
+        CENTER
     }
 
     enum class Visibility {
@@ -126,10 +132,13 @@ class RubySpan(
         paint.textSize = textSize * textSizeFactor
         paint.isUnderlineText = false
 
+        val textLength = end - start
+
         // Draw the ruby
         if (rubyWidth > textWidth) {
             canvas.drawText(rubyText, x, (y + offsetY).toFloat(), paint)
-        } else if (align == Align.CENTER || rubyText.length <= 1) {
+        } else if (align == Align.CENTER || rubyText.length <= 1 ||
+            (align == Align.SPREAD && rubyText.length <= textLength)) {
             val offsetX = (textWidth - rubyWidth) / 2
             canvas.drawText(rubyText, x + offsetX, (y + offsetY).toFloat(), paint)
         } else {
