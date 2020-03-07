@@ -2,6 +2,7 @@ package dev.esnault.bunpyro.android.utils
 
 import android.content.Context
 import android.text.Spanned
+import android.widget.TextView
 
 
 fun Context.processBunproString(
@@ -27,11 +28,7 @@ fun Context.processBunproString(
         }
         .let(::removeWhitespace)
         .let {
-            val rubyVisibility = if (showFurigana) {
-                RubySpan.Visibility.VISIBLE
-            } else {
-                RubySpan.Visibility.GONE
-            }
+            val rubyVisibility = showFurigana.toRubyVisibility()
             BunProHtml(this, rubyVisibility, listener.onGrammarPointClick).format(it)
         }
 }
@@ -69,4 +66,52 @@ private fun removeWhitespace(source: String): String {
         .replace(openBrRegex, """<br>""")
         .replace(closeBrRegex, """</br>""")
         .replace(selfBrRegex, """<br/>""")
+}
+
+/**
+ * Conversion from a boolean to [RubySpan.Visibility.VISIBLE] and [RubySpan.Visibility.INVISIBLE].
+ */
+fun Boolean.toRubyVisibility(): RubySpan.Visibility {
+    return if (this) {
+        RubySpan.Visibility.VISIBLE
+    } else {
+        RubySpan.Visibility.INVISIBLE
+    }
+}
+
+/**
+ * Update the visibility of every RubySpan in the text of the TextView.
+ * Return true if the visibility change of the ruby span will trigger a new layout.
+ */
+fun updateTextViewFuriganas(textView: TextView, visibility: RubySpan.Visibility): Boolean {
+    val spanned = textView.text as? Spanned ?: return false
+    val rubySpans = spanned.getSpans(0, spanned.length, RubySpan::class.java)
+
+    var needLayout = false
+    rubySpans.forEach { rubySpan ->
+        val oldVisibility = rubySpan.visibility
+        rubySpan.visibility = visibility
+
+        if (!needLayout && needFuriganaLayout(oldVisibility, visibility)) {
+            needLayout = true
+        }
+    }
+
+    if (needLayout) {
+        textView.requestLayout()
+    } else {
+        textView.invalidate()
+    }
+    return needLayout
+}
+
+private fun needFuriganaLayout(
+    oldVisibility: RubySpan.Visibility,
+    newVisibility: RubySpan.Visibility
+): Boolean {
+    return when (oldVisibility) {
+        RubySpan.Visibility.VISIBLE -> newVisibility == RubySpan.Visibility.GONE
+        RubySpan.Visibility.INVISIBLE -> newVisibility == RubySpan.Visibility.GONE
+        RubySpan.Visibility.GONE -> newVisibility != RubySpan.Visibility.GONE
+    }
 }

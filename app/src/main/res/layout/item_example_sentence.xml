@@ -10,7 +10,10 @@
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
     app:cardBackgroundColor="?attr/colorSurface"
+    app:cardElevation="0dp"
     app:cardUseCompatPadding="false"
+    app:strokeColor="@color/card_stroke_color"
+    app:strokeWidth="1dp"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout

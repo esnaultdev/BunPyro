@@ -2,12 +2,8 @@ package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning
 
 import android.content.Context
 import android.text.Spanned
-import android.widget.TextView
-import androidx.transition.TransitionManager
+import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState as ViewState
-import dev.esnault.bunpyro.android.utils.BunProTextListener
-import dev.esnault.bunpyro.android.utils.RubySpan
-import dev.esnault.bunpyro.android.utils.processBunproString
 import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.common.hide
 import dev.esnault.bunpyro.common.show
@@ -56,7 +52,7 @@ class MeaningViewHolder(
 
         if (newState.grammarPoint != oldState?.grammarPoint) {
             bindFields(newState)
-        } else if (newState.furiganaShown != oldState?.furiganaShown) {
+        } else if (newState.furiganaShown != oldState.furiganaShown) {
             updateFuriganaShown(newState.furiganaShown)
         }
     }
@@ -93,28 +89,11 @@ class MeaningViewHolder(
     }
 
     private fun updateFuriganaShown(furiganaShow: Boolean) {
-        TransitionManager.beginDelayedTransition(binding.constraintLayout)
-
-        updateFuriganas(binding.meaning, furiganaShow)
-        updateFuriganas(binding.structureText, furiganaShow)
-        updateFuriganas(binding.cautionText, furiganaShow)
-        updateFuriganas(binding.nuanceText, furiganaShow)
-    }
-
-    private fun updateFuriganas(textView: TextView, furiganaShow: Boolean) {
-        val spanned = textView.text as? Spanned ?: return
-        val rubySpans = spanned.getSpans(0, spanned.length, RubySpan::class.java)
-
-        rubySpans.forEach { rubySpan ->
-            rubySpan.visibility = if (furiganaShow) {
-                RubySpan.Visibility.VISIBLE
-            } else
-                RubySpan.Visibility.GONE
-            }
-
-        if (rubySpans.isNotEmpty()) {
-            textView.requestLayout()
-        }
+        val visibility = furiganaShow.toRubyVisibility()
+        updateTextViewFuriganas(binding.meaning, visibility)
+        updateTextViewFuriganas(binding.structureText, visibility)
+        updateTextViewFuriganas(binding.cautionText, visibility)
+        updateTextViewFuriganas(binding.nuanceText, visibility)
     }
 
     private val bunProTextListener = BunProTextListener(
