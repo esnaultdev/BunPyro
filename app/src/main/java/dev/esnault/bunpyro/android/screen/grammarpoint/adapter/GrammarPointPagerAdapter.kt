@@ -3,6 +3,7 @@ package dev.esnault.bunpyro.android.screen.grammarpoint.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.example.ExamplesViewHolder
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning.MeaningViewHolder
@@ -34,11 +35,19 @@ class GrammarPointPagerAdapter(
             if (oldValue == value) {
                 return
             } else {
-                notifyItemRangeChanged(0, itemCount)
+                // ViewPager2 doesn't just update the view holders when we call an item range change
+                // notifyItemRangeChanged(0, itemCount). In its current state, ViewPager2 will
+                // unbind (recycle) and rebind the viewholders, and might also recreate some
+                // view holders as well, which is a real pain for animations.
+                // Since we only have 3 pages, that are always there and at the same position,
+                // let's refresh our display manually.
+                updatePages()
             }
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewStatePagerAdapter.ViewHolder {
+    private var viewHolders = arrayOfNulls<ViewHolder>(itemCount)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (GrammarPointTab.get(viewType)) {
             GrammarPointTab.MEANING -> {
                 val binding = LayoutGrammarPointMeaningBinding.inflate(inflater, parent, false)
@@ -65,6 +74,22 @@ class GrammarPointPagerAdapter(
             }
             GrammarPointTab.READING -> {
                 (holder as ReadingViewHolder).bind(viewState?.grammarPoint)
+            }
+        }
+        viewHolders[position] = holder
+    }
+
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        if (holder.oldPosition != RecyclerView.NO_POSITION) {
+            viewHolders[holder.oldPosition] = null
+        }
+    }
+
+    private fun updatePages() {
+        viewHolders.forEachIndexed { index, viewHolder ->
+            if (viewHolder != null) {
+                onBindPageViewHolder(viewHolder, index)
             }
         }
     }
