@@ -3,6 +3,7 @@ package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.example
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel
 import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointExamplesBinding
@@ -26,7 +27,10 @@ class ExamplesViewHolder(
         binding.examplesRecyclerView.apply {
             adapter = exampleAdapter
             layoutManager = LinearLayoutManager(context)
-            (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
+            (itemAnimator as? SimpleItemAnimator)?.apply {
+                supportsChangeAnimations = false
+                moveDuration = ScreenConfig.Transition.furiganaDuration
+            }
         }
     }
 

@@ -14,6 +14,7 @@ import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
 import com.transitionseverywhere.ChangeText
 import dev.esnault.bunpyro.R
+import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.common.hide
@@ -100,8 +101,10 @@ class ExampleAdapter(context: Context) : RecyclerView.Adapter<ExampleAdapter.Vie
 
         private fun updateFurigana(furiganaShown: Boolean) {
             val transition = TransitionSet().apply {
-                addTransition(ChangeBounds())
+                ordering = TransitionSet.ORDERING_TOGETHER
+                duration = ScreenConfig.Transition.furiganaDuration
                 addTransition(ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN))
+                addTransition(ChangeBounds())
             }
             TransitionManager.beginDelayedTransition(binding.frameLayout, transition)
 
