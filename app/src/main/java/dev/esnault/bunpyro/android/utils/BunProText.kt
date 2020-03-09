@@ -75,7 +75,7 @@ fun Boolean.toRubyVisibility(): RubySpan.Visibility {
     return if (this) {
         RubySpan.Visibility.VISIBLE
     } else {
-        RubySpan.Visibility.INVISIBLE
+        RubySpan.Visibility.GONE
     }
 }
 
@@ -84,7 +84,22 @@ fun Boolean.toRubyVisibility(): RubySpan.Visibility {
  * Return true if the visibility change of the ruby span will trigger a new layout.
  */
 fun updateTextViewFuriganas(textView: TextView, visibility: RubySpan.Visibility): Boolean {
-    val spanned = textView.text as? Spanned ?: return false
+    val needLayout = updateTextFuriganas(textView.text, visibility)
+
+    if (needLayout) {
+        textView.requestLayout()
+    } else {
+        textView.invalidate()
+    }
+    return needLayout
+}
+
+/**
+ * Update the visibility of every RubySpan in the text.
+ * Return true if the visibility change of the ruby span will trigger a new layout.
+ */
+fun updateTextFuriganas(text: CharSequence?, visibility: RubySpan.Visibility): Boolean {
+    val spanned = text as? Spanned ?: return false
     val rubySpans = spanned.getSpans(0, spanned.length, RubySpan::class.java)
 
     var needLayout = false
@@ -97,11 +112,6 @@ fun updateTextViewFuriganas(textView: TextView, visibility: RubySpan.Visibility)
         }
     }
 
-    if (needLayout) {
-        textView.requestLayout()
-    } else {
-        textView.invalidate()
-    }
     return needLayout
 }
 

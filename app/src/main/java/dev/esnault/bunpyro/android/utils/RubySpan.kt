@@ -2,18 +2,19 @@ package dev.esnault.bunpyro.android.utils
 
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.text.NoCopySpan
 import android.text.style.ReplacementSpan
 
 
 /**
  * A span to display some ruby above normal text.
  */
-class RubySpan(
+data class RubySpan(
     private val rubyText: String,
     var visibility: Visibility = Visibility.VISIBLE,
     private val align: Align = Align.SPREAD,
     private val textSizeFactor: Float = 0.6f
-) : ReplacementSpan() {
+) : ReplacementSpan(), NoCopySpan {
 
     /** Alignment of the ruby text when its smaller than the normal text */
     enum class Align {
