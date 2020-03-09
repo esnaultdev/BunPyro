@@ -4,6 +4,8 @@ import android.text.TextPaint
 
 import android.text.style.MetricAffectingSpan
 import android.text.style.ReplacementSpan
+import androidx.core.graphics.ColorUtils
+import androidx.core.graphics.alpha
 
 
 /**
@@ -18,6 +20,8 @@ class FontColorSpan(private val color: Int) : MetricAffectingSpan() {
     }
 
     override fun updateDrawState(textPaint: TextPaint) {
-        textPaint.color = color
+        val alpha = textPaint.color.alpha
+        val newColor = ColorUtils.setAlphaComponent(color, alpha)
+        textPaint.color = newColor
     }
 }
