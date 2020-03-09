@@ -49,35 +49,17 @@
                 app:layout_constraintGuide_end="8dp"
                 />
 
-            <TextSwitcher
-                android:id="@+id/japanese_switcher"
+            <TextView
+                android:id="@+id/japanese"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:measureAllChildren="false"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toTopOf="parent"
-                >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                    android:textSize="18sp"
-                    tools:text="Sentence in Japanese"
-                    />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                    android:textSize="18sp"
-                    tools:text="Sentence in Japanese"
-                    />
-
-            </TextSwitcher>
+                tools:text="Sentence in Japanese"
+                />
 
             <TextView
                 android:id="@+id/english"
@@ -88,7 +70,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@+id/japanese_switcher"
+                app:layout_constraintTop_toBottomOf="@+id/japanese"
                 tools:text="Sentence in english"
                 />
 

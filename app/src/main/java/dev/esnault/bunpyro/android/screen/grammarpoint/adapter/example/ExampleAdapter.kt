@@ -11,6 +11,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
+import androidx.transition.TransitionSet
+import com.transitionseverywhere.ChangeText
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState
 import dev.esnault.bunpyro.android.utils.*
@@ -65,13 +67,6 @@ class ExampleAdapter(context: Context) : RecyclerView.Adapter<ExampleAdapter.Vie
         private var example: ExampleSentence? = null
         private var furiganaShown: Boolean = false
 
-        init {
-            val inAnim = AnimationUtils.loadAnimation(context, R.anim.furigana_fade_in)
-            val outAnim = AnimationUtils.loadAnimation(context, R.anim.furigana_fade_out)
-            binding.japaneseSwitcher.inAnimation = inAnim
-            binding.japaneseSwitcher.outAnimation = outAnim
-        }
-
         fun bind(example: ExampleSentence, furiganaShown: Boolean) {
             val exampleChanged = example != this.example
             val furiganaChanged = furiganaShown != this.furiganaShown
@@ -92,7 +87,7 @@ class ExampleAdapter(context: Context) : RecyclerView.Adapter<ExampleAdapter.Vie
         }
 
         private fun bindExample(example: ExampleSentence, furiganaShown: Boolean) {
-            binding.japaneseSwitcher.setText(postProcessJapanese(example.japanese, furiganaShown))
+            binding.japanese.text = postProcessJapanese(example.japanese, furiganaShown)
             binding.english.text = postProcessString(example.english, furiganaShown)
 
             if (!example.nuance.isNullOrBlank()) {
@@ -104,25 +99,18 @@ class ExampleAdapter(context: Context) : RecyclerView.Adapter<ExampleAdapter.Vie
         }
 
         private fun updateFurigana(furiganaShown: Boolean) {
-            val transition = ChangeBounds()
+            val transition = TransitionSet().apply {
+                addTransition(ChangeBounds())
+                addTransition(ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN))
+            }
             TransitionManager.beginDelayedTransition(binding.frameLayout, transition)
 
             val visibility = furiganaShown.toRubyVisibility()
-            updateViewSwitcherFuriganas(binding.japaneseSwitcher, visibility)
+            updateTextViewFuriganas(binding.japanese, visibility)
             updateTextViewFuriganas(binding.english, visibility)
             if (binding.nuance.isVisible) {
                 updateTextViewFuriganas(binding.nuance, visibility)
             }
-        }
-
-        private fun updateViewSwitcherFuriganas(
-            switcher: TextSwitcher,
-            visibility: RubySpan.Visibility
-        ) {
-            val textView = switcher.currentView as TextView
-            val duplicatedText = duplicateRubySpannedString(textView.text)
-            updateTextFuriganas(duplicatedText, visibility)
-            switcher.setText(duplicatedText)
         }
 
         // region Text processing

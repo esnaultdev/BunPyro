@@ -51,6 +51,7 @@ dependencies {
     implementation "com.google.android.material:material:${versions.material}"
     implementation "me.zhanghai.android.materialprogressbar:library:${versions.materialprogressbar}"
     implementation "me.saket:better-link-movement-method:${versions.betterlinkmovementmethod}"
+    implementation "com.andkulikov:transitionseverywhere:${versions.transitionseverywhere}"
 
     // Architecture components
     implementation "androidx.navigation:navigation-fragment-ktx:${versions.androidx.navigation}"
