@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
+import dev.esnault.bunpyro.domain.entities.grammar.ExampleSentence
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,7 +40,10 @@ class GrammarPointViewModel(
                 currentState = ViewState(
                     grammarPoint,
                     titleYomikataShown = false,
-                    furiganaShown = true
+                    furiganaShown = true,
+                    examples = grammarPoint.sentences.map { sentence ->
+                        ViewState.Example(sentence = sentence, collapsed = true)
+                    }
                 )
             }
         }
@@ -59,9 +63,28 @@ class GrammarPointViewModel(
         navigate(GrammarPointFragmentDirections.actionGrammarPointToGrammarPoint(id))
     }
 
+    fun onToggleSentence(example: ViewState.Example) {
+        val currentState = currentState ?: return
+        val sentenceId = example.sentence.id
+        val newExamples = currentState.examples.map { example ->
+            if (example.sentence.id == sentenceId) {
+                example.copy(collapsed = !example.collapsed)
+            } else {
+                example
+            }
+        }
+        this.currentState = currentState.copy(examples = newExamples)
+    }
+
     data class ViewState(
         val grammarPoint: GrammarPoint,
         val titleYomikataShown: Boolean,
-        val furiganaShown: Boolean
-    )
+        val furiganaShown: Boolean,
+        val examples: List<Example>
+    ) {
+        data class Example(
+            val sentence: ExampleSentence,
+            val collapsed: Boolean
+        )
+    }
 }

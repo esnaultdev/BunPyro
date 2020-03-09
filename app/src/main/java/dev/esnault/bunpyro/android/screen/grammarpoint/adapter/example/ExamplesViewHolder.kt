@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import dev.esnault.bunpyro.android.screen.ScreenConfig
-import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel
+import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState
 import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointExamplesBinding
 
@@ -15,13 +15,14 @@ class ExamplesViewHolder(
 ) : ViewStatePagerAdapter.ViewHolder(binding.root) {
 
     data class Listener(
-        val onListen: (exampleId: Int) -> Unit
+        val onListen: (exampleId: Int) -> Unit,
+        val onToggleSentence: (example: ViewState.Example) -> Unit
     )
 
     private val context: Context
         get() = itemView.context
 
-    private val exampleAdapter = ExampleAdapter(context)
+    private val exampleAdapter = ExampleAdapter(context, listener)
 
     init {
         binding.examplesRecyclerView.apply {
@@ -29,12 +30,12 @@ class ExamplesViewHolder(
             layoutManager = LinearLayoutManager(context)
             (itemAnimator as? SimpleItemAnimator)?.apply {
                 supportsChangeAnimations = false
-                moveDuration = ScreenConfig.Transition.furiganaDuration
+                moveDuration = ScreenConfig.Transition.exampleChangeDuration
             }
         }
     }
 
-    fun bind(viewState: GrammarPointViewModel.ViewState?) {
+    fun bind(viewState: ViewState?) {
         exampleAdapter.viewState = viewState
     }
 }

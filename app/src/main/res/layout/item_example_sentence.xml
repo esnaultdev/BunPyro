@@ -30,7 +30,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
-            android:paddingBottom="8dp"
             >
 
             <androidx.constraintlayout.widget.Guideline
@@ -68,10 +67,12 @@
                 android:layout_marginTop="16dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 android:textSize="16sp"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/japanese"
                 tools:text="Sentence in english"
+                tools:visibility="visible"
                 />
 
             <TextView
@@ -86,6 +87,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/english"
                 tools:text="Some nuance about the sentence"
                 tools:visibility="visible"
+                />
+
+            <View
+                android:id="@+id/actions_divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/card_stroke_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nuance"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/expand_button"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/grammarPoint_tab_examples_expand"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/actions_divider"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

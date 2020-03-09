@@ -48,7 +48,8 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
                 onGrammarPointClick = vm::onGrammarPointClick
             ),
             examplesListener = ExamplesViewHolder.Listener(
-                onListen = {}
+                onListen = {},
+                onToggleSentence = vm::onToggleSentence
             ),
             readingListener = ReadingViewHolder.Listener(
                 onClick = this::onSupplementalLinkClick
