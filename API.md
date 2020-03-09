@@ -227,6 +227,56 @@ Example response
         },
         [...]
     ],
+    "ghost_reviews": [
+        {
+            "id": 2,
+            "user_id": 1,
+            "study_question_id": 628,
+            "grammar_point_id": 11,
+            "history": [
+                {
+                    "id": 628,
+                    "time": "2019-03-31 21:00:00 +0000",
+                    "status": true,
+                    "attempts": 1,
+                    "streak": 1
+                },
+                {
+                    "id": 628,
+                    "time": "2019-04-01 10:00:00 +0000",
+                    "status": true,
+                    "attempts": 1,
+                    "streak": 2
+                },
+                {
+                    "id": 628,
+                    "time": "2019-04-02 11:00:00 +0000",
+                    "status": true,
+                    "attempts": 1,
+                    "streak": 3
+                },
+                {
+                    "id": 628,
+                    "time": "2019-04-04 22:00:00 +0000",
+                    "status": true,
+                    "attempts": 1,
+                    "streak": 4
+                }
+            ],
+            "times_correct": 4,
+            "times_incorrect": 0,
+            "streak": 4,
+            "next_review": "2039-04-04T22:00:00.000Z",
+            "last_studied_at": "2019-04-04T22:23:43.854Z",
+            "review_misses": 0,
+            "was_correct": true,
+            "self_study": false,
+            "created_at": "2019-03-31T16:54:39.563Z",
+            "updated_at": "2019-04-04T22:23:43.856Z",
+            "review_type": "ghost"
+        },
+        [...]
+    ],
     "self_study_reviews": []
 }
 ```
