@@ -13,4 +13,7 @@ interface ISyncRepository {
 
     suspend fun saveSupplementalLinksETag(eTag: String?)
     suspend fun getSupplementalLinksETag(): String?
+
+    suspend fun saveReviewsETag(eTag: String?)
+    suspend fun getReviewsETag(): String?
 }

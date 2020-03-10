@@ -31,19 +31,5 @@ data class GhostReview(
     @Json(name = "created_at") val createdAt: Date,
     @Json(name = "updated_at") val updatedAt: Date,
     @Json(name = "last_studied_at") val lastStudiedAt: Date?,
-    val history: List<History>
-) {
-
-    /**
-     * History element of a ghost review.
-     *
-     * The id field is ignored since its the same as grammar_point_id
-     */
-    data class History(
-        val time: BunProDate,
-        val status: Boolean,
-        val attempts: Int,
-        val streak: Int
-    )
-}
-
+    val history: List<ReviewHistory>
+)

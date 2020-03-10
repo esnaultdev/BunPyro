@@ -18,4 +18,7 @@ interface IAppConfig {
 
     suspend fun saveSupplementalLinksEtag(eTag: String?)
     suspend fun getSupplementalLinksEtag(): String?
+
+    suspend fun saveReviewsEtag(eTag: String?)
+    suspend fun getReviewsEtag(): String?
 }

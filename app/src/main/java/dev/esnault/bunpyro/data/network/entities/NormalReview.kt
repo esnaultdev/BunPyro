@@ -33,16 +33,7 @@ data class NormalReview(
     @Json(name = "updated_at") val updatedAt: Date,
     @Json(name = "last_studied_at") val lastStudiedAt: Date?,
     val readings: List<Int>,
-    val history: List<History>,
+    val history: List<ReviewHistory>,
     @Json(name = "missed_question_ids") val missedQuestionIds: List<Int>,
     @Json(name = "studied_question_ids") val studiedQuestionIds: List<Int>
-) {
-
-    data class History(
-        @Json(name = "id") val questionId: Int,
-        val time: BunProDate,
-        val status: Boolean,
-        val attempts: Int,
-        val streak: Int
-    )
-}
+)
