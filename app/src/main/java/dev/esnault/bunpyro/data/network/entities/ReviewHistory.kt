@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 
 
 data class ReviewHistory(
-    @Json(name = "id") val questionId: Int,
+    @Json(name = "id") val questionId: Long,
     val time: BunProDate,
     val status: Boolean,
     val attempts: Int,

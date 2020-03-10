@@ -20,7 +20,7 @@ import java.util.*
 data class ReviewHistoryDb(
     @PrimaryKey
     @Embedded val id: ItemId,
-    @ColumnInfo(name = "question_id") val questionId: Int,
+    @ColumnInfo(name = "question_id") val questionId: Long,
     val time: Date,
     val status: Boolean,
     val attempts: Int,
@@ -29,6 +29,6 @@ data class ReviewHistoryDb(
 
     data class ItemId(
         @ColumnInfo(name = "history_index") val index: Int,
-        @ColumnInfo(name = "review_id") val reviewId: Int
+        @ColumnInfo(name = "review_id") val reviewId: Long
     )
 }

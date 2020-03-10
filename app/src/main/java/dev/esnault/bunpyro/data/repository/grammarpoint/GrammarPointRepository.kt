@@ -11,7 +11,7 @@ class GrammarPointRepository(
 
     private val mapper = GrammarPointMapper()
 
-    override suspend fun getGrammarPoint(id: Int): GrammarPoint {
+    override suspend fun getGrammarPoint(id: Long): GrammarPoint {
         val point = grammarPointDao.getById(id)
         return mapper.map(point)
     }

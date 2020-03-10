@@ -51,7 +51,7 @@ fun preProcessBunproFurigana(source: String): String {
 }
 
 data class BunProTextListener(
-    val onGrammarPointClick: (id: Int) -> Unit
+    val onGrammarPointClick: (id: Long) -> Unit
 )
 
 private val openBrRegex = Regex(""" *<br> *""")

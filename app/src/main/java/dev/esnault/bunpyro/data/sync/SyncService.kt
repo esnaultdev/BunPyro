@@ -69,7 +69,7 @@ class SyncService(
             syncRepo.saveFirstSyncCompleted()
         }
 
-        return supplementalLinksResult
+        return reviewsResult
     }
 
     private suspend fun <T> syncApiEndpoint(
@@ -119,7 +119,7 @@ class SyncService(
 
             SyncResult.Success
         } catch (e: SQLException) {
-            SyncResult.Error.DB
+            SyncResult.Error.DB(e)
         }
     }
 
@@ -161,7 +161,7 @@ class SyncService(
 
             SyncResult.Success
         } catch (e: SQLException) {
-            SyncResult.Error.DB
+            SyncResult.Error.DB(e)
         }
     }
 
@@ -203,13 +203,13 @@ class SyncService(
 
             SyncResult.Success
         } catch (e: SQLException) {
-            SyncResult.Error.DB
+            SyncResult.Error.DB(e)
         }
     }
 
     // endregion
 
-    // region Supplemental links
+    // region Reviews
 
     private suspend fun syncReviews(): SyncResult {
         val eTag = syncRepo.getReviewsETag()
@@ -241,12 +241,10 @@ class SyncService(
 
             val mappedNormalReviews = normalReviewMapper.map(reviewsData.reviews)
             val mappedGhostReviews = ghostReviewMapper.map(reviewsData.ghostReviews)
+            val mappedReviews = mappedNormalReviews + mappedGhostReviews
 
             reviewDao.performDataUpdate { localIds ->
-                DataUpdate.fromLocalIds(localIds, mappedNormalReviews, ReviewDb::id)
-            }
-            reviewDao.performDataUpdate { localIds ->
-                DataUpdate.fromLocalIds(localIds, mappedGhostReviews, ReviewDb::id)
+                DataUpdate.fromLocalIds(localIds, mappedReviews, ReviewDb::id)
             }
 
             val mappedNormalReviewsHistory =
@@ -263,7 +261,7 @@ class SyncService(
 
             SyncResult.Success
         } catch (e: SQLException) {
-            SyncResult.Error.DB
+            SyncResult.Error.DB(e)
         }
     }
 

@@ -100,7 +100,7 @@
 
         <argument
             android:name="id"
-            app:argType="integer"
+            app:argType="long"
             />
 
         <action

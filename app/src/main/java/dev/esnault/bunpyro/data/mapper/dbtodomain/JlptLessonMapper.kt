@@ -35,7 +35,7 @@ class JlptLessonMapper {
             id = o.id,
             title = o.title,
             meaning = o.meaning,
-            studied = false, // TODO get this info from the DB
+            studied = o.studied,
             incomplete = o.incomplete
         )
     }

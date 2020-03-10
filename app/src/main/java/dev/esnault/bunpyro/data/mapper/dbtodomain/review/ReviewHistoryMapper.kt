@@ -16,7 +16,7 @@ class ReviewHistoryMapper {
         return o.flatMap { normalReview -> map(normalReview.id, normalReview.history) }
     }
 
-    fun map(reviewId: Int, o: List<ReviewHistory>): List<ReviewHistoryDb> {
+    fun map(reviewId: Long, o: List<ReviewHistory>): List<ReviewHistoryDb> {
         val isSorted = o.asSequence()
             .zipWithNext()
             .all { (current, next) -> current.time.date.time <= next.time.date.time }
@@ -30,7 +30,7 @@ class ReviewHistoryMapper {
         return sorted.mapIndexed { index, reviewHistory -> map(reviewId, index, reviewHistory) }
     }
 
-    private fun map(reviewId: Int, index: Int, o: ReviewHistory): ReviewHistoryDb {
+    private fun map(reviewId: Long, index: Int, o: ReviewHistory): ReviewHistoryDb {
         val id = ReviewHistoryDb.ItemId(
             index = index,
             reviewId = reviewId

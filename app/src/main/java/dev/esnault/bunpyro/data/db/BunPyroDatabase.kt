@@ -7,6 +7,7 @@ import dev.esnault.bunpyro.data.db.examplesentence.ExampleSentenceDao
 import dev.esnault.bunpyro.data.db.examplesentence.ExampleSentenceDb
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDb
+import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointOverviewDb
 import dev.esnault.bunpyro.data.db.review.ReviewDao
 import dev.esnault.bunpyro.data.db.review.ReviewDb
 import dev.esnault.bunpyro.data.db.reviewhistory.ReviewHistoryDao

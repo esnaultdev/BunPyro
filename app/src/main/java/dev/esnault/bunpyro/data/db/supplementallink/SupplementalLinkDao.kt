@@ -8,7 +8,7 @@ import dev.esnault.bunpyro.data.utils.DataUpdate
 abstract class SupplementalLinkDao {
 
     @Query("SELECT id FROM supplemental_link")
-    abstract suspend fun getAllIds(): List<Int>
+    abstract suspend fun getAllIds(): List<Long>
 
     @Insert
     abstract suspend fun insertAll(links: List<SupplementalLinkDb>)
@@ -17,11 +17,11 @@ abstract class SupplementalLinkDao {
     abstract suspend fun updateAll(links: List<SupplementalLinkDb>)
 
     @Query("DELETE FROM supplemental_link WHERE id IN (:ids)")
-    abstract suspend fun deleteAll(ids: List<Int>)
+    abstract suspend fun deleteAll(ids: List<Long>)
 
     @Transaction
     open suspend fun performDataUpdate(
-        block: (localIds: List<Int>) -> DataUpdate<SupplementalLinkDb, Int>
+        block: (localIds: List<Long>) -> DataUpdate<SupplementalLinkDb, Long>
     ) {
         val dataUpdate = block(getAllIds())
         insertAll(dataUpdate.toInsert)

@@ -18,7 +18,7 @@ class MeaningViewHolder(
 
     data class Listener(
         val onStudy: () -> Unit,
-        val onGrammarPointClick: (id: Int) -> Unit
+        val onGrammarPointClick: (id: Long) -> Unit
     )
 
     private val context: Context

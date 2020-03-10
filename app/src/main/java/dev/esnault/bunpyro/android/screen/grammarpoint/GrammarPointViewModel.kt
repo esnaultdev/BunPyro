@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 
 
 class GrammarPointViewModel(
-    id: Int,
+    id: Long,
     private val grammarRepo: IGrammarPointRepository
 ) : BaseViewModel() {
 
@@ -30,7 +30,7 @@ class GrammarPointViewModel(
         loadGrammarPoint(id)
     }
 
-    private fun loadGrammarPoint(id: Int) {
+    private fun loadGrammarPoint(id: Long) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 // TODO Handle the errors
@@ -59,7 +59,7 @@ class GrammarPointViewModel(
         this.currentState = currentState.copy(furiganaShown = !currentState.furiganaShown)
     }
 
-    fun onGrammarPointClick(id: Int) {
+    fun onGrammarPointClick(id: Long) {
         navigate(GrammarPointFragmentDirections.actionGrammarPointToGrammarPoint(id))
     }
 

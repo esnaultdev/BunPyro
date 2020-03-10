@@ -12,13 +12,18 @@ abstract class GrammarPointDao {
     abstract suspend fun getAll(): List<GrammarPointDb>
 
     @Query("SELECT id FROM grammar_point")
-    abstract suspend fun getAllIds(): List<Int>
+    abstract suspend fun getAllIds(): List<Long>
 
     @Transaction
     @Query("SELECT * FROM grammar_point WHERE id = :id")
-    abstract suspend fun getById(id: Int): FullGrammarPointDb
+    abstract suspend fun getById(id: Long): FullGrammarPointDb
 
-    @Query("SELECT id, lesson, title, meaning, incomplete FROM grammar_point")
+    @Query("""
+SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
+COUNT(review.id) AS studied FROM grammar_point AS gp
+LEFT JOIN review ON review.grammar_id = gp.id AND review.type = 0
+GROUP BY gp.id
+""")
     abstract fun getAllOverviews(): Flow<List<GrammarPointOverviewDb>>
 
     @Insert
@@ -28,11 +33,11 @@ abstract class GrammarPointDao {
     abstract suspend fun updateAll(users: List<GrammarPointDb>)
 
     @Query("DELETE FROM grammar_point WHERE id IN (:ids)")
-    abstract suspend fun deleteAll(ids: List<Int>)
+    abstract suspend fun deleteAll(ids: List<Long>)
 
     @Transaction
     open suspend fun performDataUpdate(
-        block: (localIds: List<Int>) -> DataUpdate<GrammarPointDb, Int>
+        block: (localIds: List<Long>) -> DataUpdate<GrammarPointDb, Long>
     ) {
         val dataUpdate = block(getAllIds())
         insertAll(dataUpdate.toInsert)

@@ -17,7 +17,7 @@ import org.jsoup.nodes.TextNode
 class BunProHtml(
     private val context: Context,
     private val furiganaVisibility: RubySpan.Visibility,
-    private val onGrammarPointClick: (id: Int) -> Unit
+    private val onGrammarPointClick: (id: Long) -> Unit
 ) {
 
     private val chuiColor: Int by lazy(LazyThreadSafetyMode.NONE) {
@@ -135,7 +135,7 @@ class BunProHtml(
         if (uri.isRelative || uri.host == "bunpro.jp") {
             val segments = uri.pathSegments
             if (segments.size >= 2 && segments[segments.size - 2] == "grammar_points") {
-                val grammarId = segments.last()?.toIntOrNull()
+                val grammarId = segments.last()?.toLongOrNull()
                 if (grammarId != null) {
                     setSpan(GrammarLinkSpan(grammarId, onGrammarPointClick))
                     return

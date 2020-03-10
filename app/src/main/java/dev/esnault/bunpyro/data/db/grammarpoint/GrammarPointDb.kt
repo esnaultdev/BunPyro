@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "grammar_point")
 data class GrammarPointDb(
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Long,
     val title: String,
     val yomikata: String,
     val meaning: String,

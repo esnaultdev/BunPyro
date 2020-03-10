@@ -8,7 +8,7 @@ import dev.esnault.bunpyro.data.utils.DataUpdate
 abstract class ExampleSentenceDao {
 
     @Query("SELECT id FROM example_sentence")
-    abstract suspend fun getAllIds(): List<Int>
+    abstract suspend fun getAllIds(): List<Long>
 
     @Insert
     abstract suspend fun insertAll(sentences: List<ExampleSentenceDb>)
@@ -17,11 +17,11 @@ abstract class ExampleSentenceDao {
     abstract suspend fun updateAll(sentences: List<ExampleSentenceDb>)
 
     @Query("DELETE FROM example_sentence WHERE id IN (:ids)")
-    abstract suspend fun deleteAll(ids: List<Int>)
+    abstract suspend fun deleteAll(ids: List<Long>)
 
     @Transaction
     open suspend fun performDataUpdate(
-        block: (localIds: List<Int>) -> DataUpdate<ExampleSentenceDb, Int>
+        block: (localIds: List<Long>) -> DataUpdate<ExampleSentenceDb, Long>
     ) {
         val dataUpdate = block(getAllIds())
         insertAll(dataUpdate.toInsert)

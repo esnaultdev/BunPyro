@@ -8,8 +8,8 @@ import android.view.View
  * A span displaying a link to a grammar point
  */
 class GrammarLinkSpan(
-    val grammarPointId: Int,
-    var listener: (id: Int) -> Unit
+    val grammarPointId: Long,
+    var listener: (id: Long) -> Unit
 ) : ClickableSpan() {
 
     override fun onClick(widget: View) {

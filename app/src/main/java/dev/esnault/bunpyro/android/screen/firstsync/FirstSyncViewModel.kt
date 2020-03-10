@@ -50,7 +50,7 @@ class FirstSyncViewModel(
                 is SyncResult.Error -> {
                     currentState = when (result) {
                         SyncResult.Error.Network -> ViewState.Error.Network
-                        SyncResult.Error.DB,
+                        is SyncResult.Error.DB,
                         SyncResult.Error.Server,
                         is SyncResult.Error.Unknown -> ViewState.Error.Unknown
                     }

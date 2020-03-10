@@ -23,7 +23,7 @@ abstract class ReviewHistoryDao {
     }
 
     @Query("DELETE FROM review_history WHERE history_index = :index AND review_id = :reviewId ")
-    protected abstract suspend fun delete(index: Int, reviewId: Int)
+    protected abstract suspend fun delete(index: Int, reviewId: Long)
 
     @Transaction
     open suspend fun performDataUpdate(

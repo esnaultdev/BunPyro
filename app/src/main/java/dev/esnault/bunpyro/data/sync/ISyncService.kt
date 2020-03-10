@@ -11,7 +11,7 @@ sealed class SyncResult {
     object Success : SyncResult()
     sealed class Error : SyncResult() {
         object Network : Error()
-        object DB : Error()
+        class DB(val exception: Throwable) : Error()
         object Server : Error()
         class Unknown(val exception: Throwable) : Error()
     }

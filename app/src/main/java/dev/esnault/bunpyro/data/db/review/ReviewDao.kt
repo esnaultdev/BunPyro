@@ -8,7 +8,7 @@ import dev.esnault.bunpyro.data.utils.DataUpdate
 abstract class ReviewDao {
 
     @Query("SELECT id FROM review")
-    abstract suspend fun getAllIds(): List<Int>
+    abstract suspend fun getAllIds(): List<Long>
 
     @Insert
     abstract suspend fun insertAll(reviews: List<ReviewDb>)
@@ -17,11 +17,11 @@ abstract class ReviewDao {
     abstract suspend fun updateAll(reviews: List<ReviewDb>)
 
     @Query("DELETE FROM review WHERE id IN (:ids)")
-    abstract suspend fun deleteAll(ids: List<Int>)
+    abstract suspend fun deleteAll(ids: List<Long>)
 
     @Transaction
     open suspend fun performDataUpdate(
-        block: (localIds: List<Int>) -> DataUpdate<ReviewDb, Int>
+        block: (localIds: List<Long>) -> DataUpdate<ReviewDb, Long>
     ) {
         val dataUpdate = block(getAllIds())
         insertAll(dataUpdate.toInsert)

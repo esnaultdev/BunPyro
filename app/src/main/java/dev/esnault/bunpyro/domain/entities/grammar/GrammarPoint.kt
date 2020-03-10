@@ -2,7 +2,7 @@ package dev.esnault.bunpyro.domain.entities.grammar
 
 
 data class GrammarPoint(
-    val id: Int,
+    val id: Long,
     val title: String,
     val yomikata: String,
     val meaning: String,

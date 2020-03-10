@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 
 
 data class GrammarPoint(
-    val id: Int,
+    val id: Long,
     val attributes: Attributes
 ) {
 

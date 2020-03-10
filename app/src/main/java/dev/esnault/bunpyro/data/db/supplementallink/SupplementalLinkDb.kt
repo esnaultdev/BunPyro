@@ -19,8 +19,8 @@ import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDb
     ]
 )
 data class SupplementalLinkDb(
-    @PrimaryKey val id: Int,
-    @ColumnInfo(name = "grammar_id", index = true) val grammarId: Int,
+    @PrimaryKey val id: Long,
+    @ColumnInfo(name = "grammar_id", index = true) val grammarId: Long,
     val site: String,
     val link: String,
     val description: String
