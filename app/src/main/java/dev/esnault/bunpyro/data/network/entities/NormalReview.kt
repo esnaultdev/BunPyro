@@ -39,7 +39,7 @@ data class NormalReview(
 ) {
 
     data class History(
-        val id: Int,
+        @Json(name = "id") val questionId: Int,
         val time: BunProDate,
         val status: Boolean,
         val attempts: Int,

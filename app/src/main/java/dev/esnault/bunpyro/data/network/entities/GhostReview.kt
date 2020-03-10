@@ -1,7 +1,6 @@
 package dev.esnault.bunpyro.data.network.entities
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import java.util.*
 
 
@@ -35,8 +34,12 @@ data class GhostReview(
     val history: List<History>
 ) {
 
+    /**
+     * History element of a ghost review.
+     *
+     * The id field is ignored since its the same as grammar_point_id
+     */
     data class History(
-        val id: Int,
         val time: BunProDate,
         val status: Boolean,
         val attempts: Int,
