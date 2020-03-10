@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.esnault.bunpyro.data.config.AppConfig
 import dev.esnault.bunpyro.data.config.IAppConfig
@@ -11,9 +12,11 @@ import dev.esnault.bunpyro.data.db.BunPyroDatabase
 import dev.esnault.bunpyro.data.db.examplesentence.ExampleSentenceDao
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
 import dev.esnault.bunpyro.data.db.supplementallink.SupplementalLinkDao
-import dev.esnault.bunpyro.data.network.interceptor.AuthorisationInterceptor
 import dev.esnault.bunpyro.data.network.BunproApi
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
+import dev.esnault.bunpyro.data.network.adapter.BunProDateAdapter
+import dev.esnault.bunpyro.data.network.entities.BunProDate
+import dev.esnault.bunpyro.data.network.interceptor.AuthorisationInterceptor
 import dev.esnault.bunpyro.data.network.interceptor.TimeoutInterceptor
 import dev.esnault.bunpyro.data.repository.sync.ISyncRepository
 import dev.esnault.bunpyro.data.repository.sync.SyncRepository
@@ -27,6 +30,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.*
 
 
 @Suppress("RemoveExplicitTypeArguments")
@@ -73,6 +77,8 @@ val dataModule = module {
 
     single<Moshi> {
         Moshi.Builder()
+            .add(BunProDate::class.java, BunProDateAdapter())
+            .add(Date::class.java, Rfc3339DateJsonAdapter())
             .add(KotlinJsonAdapterFactory())
             .build()
     }

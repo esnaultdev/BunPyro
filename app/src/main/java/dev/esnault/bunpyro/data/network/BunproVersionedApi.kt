@@ -1,9 +1,6 @@
 package dev.esnault.bunpyro.data.network
 
-import dev.esnault.bunpyro.data.network.entities.DataRequest
-import dev.esnault.bunpyro.data.network.entities.ExampleSentence
-import dev.esnault.bunpyro.data.network.entities.GrammarPoint
-import dev.esnault.bunpyro.data.network.entities.SupplementalLink
+import dev.esnault.bunpyro.data.network.entities.*
 import dev.esnault.bunpyro.data.network.interceptor.Timeout
 import retrofit2.Response
 import retrofit2.http.GET
@@ -38,4 +35,10 @@ interface BunproVersionedApi {
     suspend fun getSupplementalLinks(
         @Header("If-None-Match") etagHeader: String?
     ): Response<DataRequest<SupplementalLink>>
+
+    @GET("v4/reviews/all_reviews_total")
+    @Headers("${Timeout.READ}:20000")
+    suspend fun getAllReviews(
+        @Header("If-None-Match") etagHeader: String?
+    ): Response<ReviewsData>
 }
