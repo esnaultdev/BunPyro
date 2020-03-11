@@ -2,10 +2,9 @@ package dev.esnault.bunpyro.android.screen.lessons
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import dev.esnault.bunpyro.common.setVisible
 import dev.esnault.bunpyro.databinding.ItemLessonGrammarPointBinding
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 
@@ -60,8 +59,8 @@ class LessonGrammarAdapter(
             binding.japanese.text = grammarPoint.title
             binding.english.text = grammarPoint.meaning
 
-            binding.bottomDivider.setVisible(!isLast)
-            binding.studyHanko.setVisible(grammarPoint.studied)
+            binding.bottomDivider.isVisible = !isLast
+            binding.studyHanko.isVisible = grammarPoint.studied
 
             // Completion
             binding.background.isEnabled = !grammarPoint.incomplete

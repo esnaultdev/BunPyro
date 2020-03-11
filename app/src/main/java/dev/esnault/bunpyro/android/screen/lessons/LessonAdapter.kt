@@ -3,9 +3,9 @@ package dev.esnault.bunpyro.android.screen.lessons
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
-import dev.esnault.bunpyro.common.setVisible
 import dev.esnault.bunpyro.databinding.ItemLessonBinding
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.Lesson
@@ -59,7 +59,7 @@ class LessonAdapter(
         fun bind(lesson: Lesson) {
             grammarAdapter.grammarPoints = lesson.points
 
-            binding.comingSoon.setVisible(lesson.size == 0)
+            binding.comingSoon.isVisible = lesson.size == 0
         }
     }
 }

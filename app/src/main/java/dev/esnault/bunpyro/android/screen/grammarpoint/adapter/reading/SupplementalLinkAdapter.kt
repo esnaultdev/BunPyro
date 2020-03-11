@@ -3,8 +3,8 @@ package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.reading
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import dev.esnault.bunpyro.common.setVisible
 import dev.esnault.bunpyro.databinding.ItemSupplementalLinkBinding
 import dev.esnault.bunpyro.domain.entities.grammar.SupplementalLink
 
@@ -62,7 +62,7 @@ class SupplementalLinkAdapter(
             binding.description.text = supplementalLink.description
             binding.site.text = supplementalLink.site
 
-            binding.bottomDivider.setVisible(!isLast)
+            binding.bottomDivider.isVisible = !isLast
         }
     }
 }
