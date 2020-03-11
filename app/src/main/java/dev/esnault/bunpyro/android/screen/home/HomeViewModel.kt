@@ -9,4 +9,8 @@ class HomeViewModel() : BaseViewModel() {
     fun onLessonsTap() {
         navigate(HomeFragmentDirections.actionHomeToLessons())
     }
+
+    fun onAllGrammarTap() {
+        navigate(HomeFragmentDirections.actionHomeToAllGrammar())
+    }
 }

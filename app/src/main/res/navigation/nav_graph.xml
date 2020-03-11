@@ -77,6 +77,11 @@
             app:destination="@id/lessonsScreen"
             />
 
+        <action
+            android:id="@+id/action_home_to_all_grammar"
+            app:destination="@id/allGrammarScreen"
+            />
+
     </fragment>
 
     <fragment
@@ -109,5 +114,11 @@
             />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/allGrammarScreen"
+        android:name="dev.esnault.bunpyro.android.screen.allgrammar.AllGrammarFragment"
+        tools:layout="@layout/fragment_all_grammar"
+        />
 
 </navigation>

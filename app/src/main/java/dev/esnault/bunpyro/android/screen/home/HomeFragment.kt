@@ -19,5 +19,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.lessonsButton.setOnClickListener {
             vm.onLessonsTap()
         }
+
+        binding.allGrammarButton.setOnClickListener {
+            vm.onAllGrammarTap()
+        }
     }
 }

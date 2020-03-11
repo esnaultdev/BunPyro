@@ -1,6 +1,7 @@
 package dev.esnault.bunpyro.di
 
 
+import dev.esnault.bunpyro.android.screen.allgrammar.AllGrammarViewModel
 import dev.esnault.bunpyro.android.screen.apikey.ApiKeyViewModel
 import dev.esnault.bunpyro.android.screen.firstsync.FirstSyncViewModel
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointFragmentArgs
@@ -23,4 +24,5 @@ val appModule = module {
         val args: GrammarPointFragmentArgs = params[0]
         GrammarPointViewModel(args.id, get())
     }
+    viewModel { AllGrammarViewModel() }
 }

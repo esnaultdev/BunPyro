@@ -32,6 +32,7 @@
     <string name="firstsync_error_unknown_text">Please try again in a few minutes.</string>
 
     <string name="home_lessons">Lessons</string>
+    <string name="home_all_grammar">All grammar</string>
 
     <string name="lessons_coming_soon">Coming soon!</string>
     <string name="lessons_grammar_point_incomplete">Coming soon!</string>
