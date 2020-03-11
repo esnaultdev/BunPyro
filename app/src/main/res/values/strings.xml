@@ -49,4 +49,6 @@
     <string name="action_furigana_show">Show furigana</string>
     <string name="action_furigana_hide">Hide furigana</string>
 
+    <string name="contentDescription_studiedHanko">Studied</string>
+
 </resources>
