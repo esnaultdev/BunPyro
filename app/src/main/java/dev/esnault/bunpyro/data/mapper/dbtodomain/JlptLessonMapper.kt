@@ -1,7 +1,6 @@
 package dev.esnault.bunpyro.data.mapper.dbtodomain
 
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointOverviewDb
-import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.JLPT
 import dev.esnault.bunpyro.domain.entities.JlptLesson
 import dev.esnault.bunpyro.domain.entities.Lesson
@@ -9,10 +8,12 @@ import dev.esnault.bunpyro.domain.entities.Lesson
 
 class JlptLessonMapper {
 
+    private val grammarPointMapper = GrammarPointOverviewMapper()
+
     fun map(o: List<GrammarPointOverviewDb>): List<JlptLesson> {
         val pointsByLesson = o.groupBy(
             keySelector = { it.lesson },
-            valueTransform = ::mapGrammarPoint
+            valueTransform = grammarPointMapper::map
         )
 
         // Each JLPT level has 10 lessons, with ids from 1 to 50:
@@ -28,15 +29,5 @@ class JlptLessonMapper {
                 lessons = lessons
             )
         }
-    }
-
-    private fun mapGrammarPoint(o: GrammarPointOverviewDb): GrammarPointOverview {
-        return GrammarPointOverview(
-            id = o.id,
-            title = o.title,
-            meaning = o.meaning,
-            studied = o.studied,
-            incomplete = o.incomplete
-        )
     }
 }

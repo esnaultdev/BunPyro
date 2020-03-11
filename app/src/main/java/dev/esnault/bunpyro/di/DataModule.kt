@@ -9,6 +9,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.esnault.bunpyro.data.config.AppConfig
 import dev.esnault.bunpyro.data.config.IAppConfig
 import dev.esnault.bunpyro.data.db.BunPyroDatabase
+import dev.esnault.bunpyro.data.db.bunPyroDbMigrations
 import dev.esnault.bunpyro.data.db.examplesentence.ExampleSentenceDao
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
 import dev.esnault.bunpyro.data.db.review.ReviewDao
@@ -22,6 +23,8 @@ import dev.esnault.bunpyro.data.network.interceptor.AuthorisationInterceptor
 import dev.esnault.bunpyro.data.network.interceptor.TimeoutInterceptor
 import dev.esnault.bunpyro.data.repository.sync.ISyncRepository
 import dev.esnault.bunpyro.data.repository.sync.SyncRepository
+import dev.esnault.bunpyro.data.service.search.ISearchService
+import dev.esnault.bunpyro.data.service.search.SearchService
 import dev.esnault.bunpyro.data.sync.ISyncService
 import dev.esnault.bunpyro.data.sync.SyncService
 import okhttp3.OkHttpClient
@@ -55,7 +58,9 @@ val dataModule = module {
             androidApplication(),
             BunPyroDatabase::class.java,
             "bunpyro_db"
-        ).build()
+        )
+            .addMigrations(*bunPyroDbMigrations)
+            .build()
     }
 
     factory<GrammarPointDao> {
@@ -161,14 +166,14 @@ val dataModule = module {
 
     // endregion
 
-    // region Sync
-
-    single<ISyncRepository> {
-        SyncRepository(get())
-    }
+    // region Services
 
     single<ISyncService> {
         SyncService(get(), get(), get(), get(), get(), get(), get())
+    }
+
+    factory<ISearchService> {
+        SearchService(get())
     }
 
     // endregion

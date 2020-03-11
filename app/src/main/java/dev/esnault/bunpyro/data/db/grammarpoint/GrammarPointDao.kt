@@ -26,6 +26,17 @@ GROUP BY gp.id
 """)
     abstract fun getAllOverviews(): Flow<List<GrammarPointOverviewDb>>
 
+    @Transaction
+    @Query("""
+SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
+COUNT(review.id) AS studied FROM grammar_point AS gp
+JOIN grammar_point_fts ON gp.id = grammar_point_fts.docid
+AND grammar_point_fts MATCH :term
+LEFT JOIN review ON review.grammar_id = gp.id AND review.type = 0
+GROUP BY gp.id
+""")
+    abstract suspend fun searchByTerm(term: String): List<GrammarPointOverviewDb>
+
     @Insert
     abstract suspend fun insertAll(users: List<GrammarPointDb>)
 
