@@ -16,10 +16,8 @@ class AllGrammarViewModel(
     init {
         viewModelScope.launch {
             val search = withContext(Dispatchers.IO) {
-                searchService.search("here")
+                searchService.search("kore")
             }
-            // Silly line to get a breakpoint
-            search.forEach { Unit }
         }
     }
 }

@@ -37,6 +37,14 @@ GROUP BY gp.id
 """)
     abstract suspend fun searchByTerm(term: String): List<GrammarPointOverviewDb>
 
+    suspend fun searchByTermWithKana(term: String, kana: String): List<GrammarPointOverviewDb> {
+        // We need a single match with a specific expression, so let's build it here
+        // We only compare the yomikata of the grammar point to the kana
+        // See https://www.sqlite.org/fts3.html#termprefix for some documentation about prefixes
+        val ftsTerm = "$term OR yomikata:$kana"
+        return searchByTerm(ftsTerm)
+    }
+
     @Insert
     abstract suspend fun insertAll(users: List<GrammarPointDb>)
 
