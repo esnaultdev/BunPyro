@@ -11,7 +11,7 @@ open class BaseViewModel : ViewModel() {
     val navigationCommands: LiveData<NavigationCommand>
         get() = _navigationCommands
 
-    private fun navigate(command: NavigationCommand) {
+    fun navigate(command: NavigationCommand) {
         _navigationCommands.postValue(command)
     }
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import dev.esnault.bunpyro.android.display.adapter.GrammarOverviewAdapter
 import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
 import dev.esnault.bunpyro.android.display.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.ItemLessonBinding
@@ -47,7 +48,11 @@ class LessonAdapter(
         private val context: Context
             get() = itemView.context
 
-        private val grammarAdapter = LessonGrammarAdapter(context, listener)
+        private val grammarAdapter =
+            GrammarOverviewAdapter(
+                context,
+                listener
+            )
 
         init {
             binding.recyclerView.apply {

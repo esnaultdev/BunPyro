@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.android.screen.lessons
+package dev.esnault.bunpyro.android.display.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import dev.esnault.bunpyro.databinding.ItemGrammarPointOverviewBinding
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 
 
-class LessonGrammarAdapter(
+class GrammarOverviewAdapter(
     context: Context,
     private val listener: GrammarOverviewViewHolder.Listener
 ) : RecyclerView.Adapter<GrammarOverviewViewHolder>() {

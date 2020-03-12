@@ -5,26 +5,37 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
-import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointFragmentDirections
+import dev.esnault.bunpyro.android.screen.base.NavigationCommand
 import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
+import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.domain.entities.JlptGrammar
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
 class AllGrammarViewModel(
-    private val grammarRepo: IGrammarPointRepository
+    private val grammarRepo: IGrammarPointRepository,
+    private val searchService: ISearchService
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
     val viewState: LiveData<ViewState>
         get() = Transformations.distinctUntilChanged(_viewState)
 
-    private var currentState: ViewState?
-        get() = _viewState.value
-        set(value) = _viewState.postValue(value)
+    private var currentState = ViewState(
+        searching = false,
+        jlptGrammar = emptyList(),
+        searchResults = emptyList()
+    )
+        set(value) {
+            field = value
+            _viewState.postValue(value)
+        }
+
+    private var searchJob: Job? = null
 
     init {
         observeGrammar()
@@ -35,7 +46,9 @@ class AllGrammarViewModel(
             grammarRepo.getAllGrammar()
                 .collect { jlptGrammar ->
                     // TODO Handle the errors
-                    this@AllGrammarViewModel.currentState = ViewState(jlptGrammar)
+                    this@AllGrammarViewModel.currentState = currentState.copy(
+                        jlptGrammar = jlptGrammar
+                    )
                 }
         }
     }
@@ -45,7 +58,45 @@ class AllGrammarViewModel(
         navigate(AllGrammarFragmentDirections.actionAllGrammarToGrammarPoint(id))
     }
 
+    fun onBackPressed() {
+        if (currentState.searching) {
+            onCloseSearch()
+        } else {
+            navigate(NavigationCommand.Back)
+        }
+    }
+
+    fun onOpenSearch() {
+        currentState = currentState.copy(searching = true)
+    }
+
+    fun onCloseSearch() {
+        if (searchJob?.isActive == true) {
+            searchJob?.cancel()
+        }
+
+        currentState = currentState.copy(searching = false, searchResults = emptyList())
+    }
+
+    fun onSearch(query: String?) {
+        if (searchJob?.isActive == true) {
+            searchJob?.cancel()
+        }
+
+        if (query.isNullOrBlank()) {
+            currentState = currentState.copy(searchResults = emptyList())
+            return
+        }
+
+        searchJob = viewModelScope.launch(Dispatchers.IO) {
+            val results = searchService.search(query)
+            currentState = currentState.copy(searchResults = results)
+        }
+    }
+
     data class ViewState(
-        val jlptGrammar: List<JlptGrammar>
+        val searching: Boolean,
+        val jlptGrammar: List<JlptGrammar>,
+        val searchResults: List<GrammarPointOverview>
     )
 }

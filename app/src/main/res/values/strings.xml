@@ -51,6 +51,9 @@
     <string name="action_furigana_hide">Hide furigana</string>
 
     <string name="allGrammar_title">All grammar</string>
+    <string name="allGrammar_search">Search</string>
+
+    <string name="search_hint">English, 漢字, かな, romaji</string>
 
     <string name="contentDescription_studiedHanko">Studied</string>
 

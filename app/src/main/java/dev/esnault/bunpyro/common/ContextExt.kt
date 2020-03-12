@@ -1,11 +1,14 @@
 package dev.esnault.bunpyro.common
 
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.TypedArray
 import android.net.Uri
 import android.util.TypedValue
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
@@ -32,4 +35,10 @@ fun Context.getThemeColor(@AttrRes colorAttrId: Int): Int {
 
     a.recycle()
     return color
+}
+
+fun Context.hideKeyboardFrom(view: View) {
+    val imm: InputMethodManager =
+        getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
 }

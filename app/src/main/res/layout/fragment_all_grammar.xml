@@ -15,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarLayout">
+        android:theme="@style/AppTheme.AppBarLayout"
+        >
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -23,17 +24,30 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_collapseMode="pin"
+            app:menu="@menu/all_grammar"
             app:title="@string/allGrammar_title"
             />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/all_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/item_grammar_point_overview"
+        tools:visibility="gone"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_grammar_point_overview"
+        tools:visibility="visible"
         />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
