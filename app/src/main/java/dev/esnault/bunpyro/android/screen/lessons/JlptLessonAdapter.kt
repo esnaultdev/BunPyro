@@ -5,7 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.tabs.TabLayoutMediator
-import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
+import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
+import dev.esnault.bunpyro.android.display.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.ItemJlptLessonBinding
 import dev.esnault.bunpyro.databinding.TabLessonBinding
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
@@ -51,7 +52,12 @@ class JlptLessonAdapter(
         private val layoutInflater: LayoutInflater
             get() = LayoutInflater.from(context)
 
-        private val lessonAdapter = LessonAdapter(context, onGrammarClicked)
+        private val lessonAdapter = kotlin.run {
+            val grammarPointListener = GrammarOverviewViewHolder.Listener(
+                onGrammarClicked = onGrammarClicked
+            )
+            LessonAdapter(context, grammarPointListener)
+        }
 
         init {
             binding.lessonsPager.adapter = lessonAdapter

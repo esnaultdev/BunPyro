@@ -2,7 +2,7 @@ package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.reading
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
-import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
+import dev.esnault.bunpyro.android.display.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointReadingBinding
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 import dev.esnault.bunpyro.domain.entities.grammar.SupplementalLink

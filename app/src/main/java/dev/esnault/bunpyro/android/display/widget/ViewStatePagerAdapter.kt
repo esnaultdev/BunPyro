@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.android.widget
+package dev.esnault.bunpyro.android.display.widget
 
 import android.os.Bundle
 import android.os.Parcelable

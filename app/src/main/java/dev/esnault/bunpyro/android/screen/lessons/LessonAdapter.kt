@@ -5,15 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import dev.esnault.bunpyro.android.widget.ViewStatePagerAdapter
+import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
+import dev.esnault.bunpyro.android.display.widget.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.ItemLessonBinding
-import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.Lesson
 
 
 class LessonAdapter(
     context: Context,
-    private val onGrammarClicked: (point: GrammarPointOverview) -> Unit
+    private val listener: GrammarOverviewViewHolder.Listener
 ) : ViewStatePagerAdapter<LessonAdapter.ViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
@@ -30,7 +30,7 @@ class LessonAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemLessonBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding, onGrammarClicked)
+        return ViewHolder(binding, listener)
     }
 
     override fun onBindPageViewHolder(holder: ViewHolder, position: Int) {
@@ -41,13 +41,13 @@ class LessonAdapter(
 
     class ViewHolder(
         private val binding: ItemLessonBinding,
-        onGrammarClicked: (point: GrammarPointOverview) -> Unit
+        listener: GrammarOverviewViewHolder.Listener
     ) : ViewStatePagerAdapter.ViewHolder(binding.root) {
 
         private val context: Context
             get() = itemView.context
 
-        private val grammarAdapter = LessonGrammarAdapter(context, onGrammarClicked)
+        private val grammarAdapter = LessonGrammarAdapter(context, listener)
 
         init {
             binding.recyclerView.apply {

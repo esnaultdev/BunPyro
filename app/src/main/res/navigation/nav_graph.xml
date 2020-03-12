@@ -119,6 +119,13 @@
         android:id="@+id/allGrammarScreen"
         android:name="dev.esnault.bunpyro.android.screen.allgrammar.AllGrammarFragment"
         tools:layout="@layout/fragment_all_grammar"
-        />
+        >
+
+        <action
+            android:id="@+id/action_allGrammar_to_grammarPoint"
+            app:destination="@id/grammarPointScreen"
+            />
+
+    </fragment>
 
 </navigation>
