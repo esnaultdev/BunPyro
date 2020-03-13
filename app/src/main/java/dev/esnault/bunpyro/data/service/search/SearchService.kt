@@ -19,7 +19,7 @@ class SearchService(
         val result = if (!useKana) {
             grammarPointDao.searchByTerm("*$term*")
         } else {
-            grammarPointDao.searchByTermWithKana("*$term*", "*$kanaTerm*")
+            grammarPointDao.searchByTermWithKana(term, kanaTerm)
         }
 
         val mapper = GrammarPointOverviewMapper()

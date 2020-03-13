@@ -26,24 +26,42 @@ GROUP BY gp.id
 """)
     abstract fun getAllOverviews(): Flow<List<GrammarPointOverviewDb>>
 
+    suspend fun searchByTerm(term: String): List<GrammarPointOverviewDb> {
+        // Since the fts MATCH only works with prefixes but without suffixes, and since
+        // its tokenizer works on a word basis, it doesn't match japanese text properly.
+        //
+        // To achieve a decent search, we use reserved copies of the yomikata and title,
+        // to match using a prefix, which becomes to a suffix.
+        val rTerm = term.reversed()
+        val matchString = "*$term* OR r_title:*$rTerm* OR r_yomikata:*$rTerm*"
+        return searchByMatch(matchString)
+    }
+
+    suspend fun searchByTermWithKana(term: String, kana: String): List<GrammarPointOverviewDb> {
+        // We need a single match with a specific expression
+        // We only compare the yomikata of the grammar point to the kana
+        // See https://www.sqlite.org/fts3.html#termprefix for some documentation about prefixes
+        //
+        // Since the fts MATCH only works with prefixes but without suffixes, and since
+        // its tokenizer works on a word basis, it doesn't match japanese text properly.
+        //
+        // To achieve a decent search, we use reserved copies of the yomikata and title,
+        // to match using a prefix, which becomes to a suffix.
+        val rKana = kana.reversed()
+        val matchString = "*$term* OR yomikata:*$kana* OR r_yomikata:*$rKana*"
+        return searchByMatch(matchString)
+    }
+
     @Transaction
     @Query("""
 SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
 COUNT(review.id) AS studied FROM grammar_point AS gp
 JOIN grammar_point_fts ON gp.id = grammar_point_fts.docid
-AND grammar_point_fts MATCH :term
+AND grammar_point_fts MATCH :match
 LEFT JOIN review ON review.grammar_id = gp.id AND review.type = 0
 GROUP BY gp.id
 """)
-    abstract suspend fun searchByTerm(term: String): List<GrammarPointOverviewDb>
-
-    suspend fun searchByTermWithKana(term: String, kana: String): List<GrammarPointOverviewDb> {
-        // We need a single match with a specific expression, so let's build it here
-        // We only compare the yomikata of the grammar point to the kana
-        // See https://www.sqlite.org/fts3.html#termprefix for some documentation about prefixes
-        val ftsTerm = "$term OR yomikata:$kana"
-        return searchByTerm(ftsTerm)
-    }
+    protected abstract suspend fun searchByMatch(match: String): List<GrammarPointOverviewDb>
 
     @Insert
     abstract suspend fun insertAll(users: List<GrammarPointDb>)
