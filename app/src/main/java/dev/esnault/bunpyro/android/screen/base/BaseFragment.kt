@@ -55,6 +55,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
             ViewGroup::class.java,
             Boolean::class.javaPrimitiveType
         )
+        @Suppress("UNCHECKED_CAST")
         _binding = inflateMethod.invoke(null, inflater, container, false) as VB
         return binding.root
     }

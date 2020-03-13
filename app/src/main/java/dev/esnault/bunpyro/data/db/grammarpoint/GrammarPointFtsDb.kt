@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.Fts4
 
 
-@Fts4(contentEntity = GrammarPointDb::class)
+@Fts4(contentEntity = GrammarPointDb::class, tokenizer = "character")
 @Entity(tableName = "grammar_point_fts")
 class GrammarPointFtsDb(
     val title: String,

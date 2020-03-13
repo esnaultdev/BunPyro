@@ -12,6 +12,7 @@ import dev.esnault.bunpyro.data.db.BunPyroDatabase
 import dev.esnault.bunpyro.data.db.bunPyroDbMigrations
 import dev.esnault.bunpyro.data.db.examplesentence.ExampleSentenceDao
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
+import dev.esnault.bunpyro.data.db.org.OrgSQLiteOpenHelperFactory
 import dev.esnault.bunpyro.data.db.review.ReviewDao
 import dev.esnault.bunpyro.data.db.reviewhistory.ReviewHistoryDao
 import dev.esnault.bunpyro.data.db.supplementallink.SupplementalLinkDao
@@ -21,8 +22,6 @@ import dev.esnault.bunpyro.data.network.adapter.BunProDateAdapter
 import dev.esnault.bunpyro.data.network.entities.BunProDate
 import dev.esnault.bunpyro.data.network.interceptor.AuthorisationInterceptor
 import dev.esnault.bunpyro.data.network.interceptor.TimeoutInterceptor
-import dev.esnault.bunpyro.data.repository.sync.ISyncRepository
-import dev.esnault.bunpyro.data.repository.sync.SyncRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.data.service.search.SearchService
 import dev.esnault.bunpyro.data.sync.ISyncService
@@ -54,11 +53,15 @@ val dataModule = module {
     // region DB
 
     single<BunPyroDatabase> {
+        val appContext = androidApplication()
+        val path = appContext.getDatabasePath("bunpyro.db").path
+
         Room.databaseBuilder(
             androidApplication(),
             BunPyroDatabase::class.java,
-            "bunpyro_db"
+            path
         )
+            .openHelperFactory(OrgSQLiteOpenHelperFactory())
             .addMigrations(*bunPyroDbMigrations)
             .build()
     }
