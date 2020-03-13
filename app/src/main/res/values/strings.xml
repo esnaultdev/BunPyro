@@ -31,8 +31,10 @@
     <string name="firstsync_error_unknown_title">Something went wrong on our side</string>
     <string name="firstsync_error_unknown_text">Please try again in a few minutes.</string>
 
-    <string name="home_lessons">Lessons</string>
-    <string name="home_all_grammar">All grammar</string>
+    <string name="home_lessons_japanese">課</string>
+    <string name="home_lessons_english">Lessons</string>
+    <string name="home_all_grammar_japanese">文法</string>
+    <string name="home_all_grammar_english">All grammar</string>
 
     <string name="lessons_coming_soon">Coming soon!</string>
     <string name="lessons_grammar_point_incomplete">Coming soon!</string>

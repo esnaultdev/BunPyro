@@ -16,11 +16,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.lessonsButton.setOnClickListener {
+        binding.lessonsCard.setOnClickListener {
             vm.onLessonsTap()
         }
 
-        binding.allGrammarButton.setOnClickListener {
+        binding.allGrammarCard.setOnClickListener {
             vm.onAllGrammarTap()
         }
     }
