@@ -27,25 +27,45 @@ GROUP BY gp.id
     abstract fun getAllOverviews(): Flow<List<GrammarPointOverviewDb>>
 
     suspend fun searchByTerm(term: String): List<GrammarPointOverviewDb> {
-        val matchString = "\"$term\""
-        return searchByMatch(matchString)
-    }
-
-    suspend fun searchByTermWithKana(term: String, kana: String): List<GrammarPointOverviewDb> {
-        val matchString = "\"$kana\""
-        return searchByMatch(matchString)
+        return searchByTermImpl("\"$term\"")
     }
 
     @Transaction
     @Query("""
 SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
-COUNT(review.id) AS studied FROM grammar_point AS gp
+COUNT(review.id) AS studied, gp.grammar_order FROM grammar_point AS gp
 JOIN grammar_point_fts ON gp.id = grammar_point_fts.docid
-AND grammar_point_fts MATCH :match
+AND grammar_point_fts MATCH :term
 LEFT JOIN review ON review.grammar_id = gp.id AND review.type = 0
 GROUP BY gp.id
+ORDER BY gp.grammar_order
 """)
-    protected abstract suspend fun searchByMatch(match: String): List<GrammarPointOverviewDb>
+    protected abstract suspend fun searchByTermImpl(term: String): List<GrammarPointOverviewDb>
+
+    suspend fun searchByTermWithKana(term: String, kana: String): List<GrammarPointOverviewDb> {
+        return searchByTermWithKanaImpl("\"$term\"", "\"$kana\"")
+    }
+
+    @Transaction
+    @Query("""
+SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
+COUNT(review.id) AS studied, 1 AS rank, gp.grammar_order
+FROM grammar_point AS gp
+JOIN grammar_point_fts ON gp.id = grammar_point_fts.docid
+AND grammar_point_fts.yomikata MATCH :kana
+LEFT JOIN review ON review.grammar_id = gp.id AND review.type = 0
+GROUP BY gp.id
+UNION
+SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
+COUNT(review.id) AS studied, 2 AS rank, gp.grammar_order
+FROM grammar_point AS gp
+JOIN grammar_point_fts ON gp.id = grammar_point_fts.docid
+AND grammar_point_fts.meaning MATCH :term
+LEFT JOIN review ON review.grammar_id = gp.id AND review.type = 0
+GROUP BY gp.id
+ORDER BY rank, gp.grammar_order
+""")
+    protected abstract suspend fun searchByTermWithKanaImpl(term: String, kana: String): List<GrammarPointOverviewDb>
 
     @Insert
     abstract suspend fun insertAll(users: List<GrammarPointDb>)
