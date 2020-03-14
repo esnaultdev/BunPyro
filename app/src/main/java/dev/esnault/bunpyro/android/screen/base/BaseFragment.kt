@@ -31,8 +31,12 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
             when (command) {
                 is NavigationCommand.To ->
                     navController.navigate(command.directions)
-                is NavigationCommand.Back ->
-                    navController.popBackStack()
+                is NavigationCommand.Back -> {
+                    if (!navController.popBackStack()) {
+                        // If we're at the root of the back stack, we want the activity to close
+                        activity?.finish()
+                    }
+                }
                 is NavigationCommand.BackTo ->
                     navController.popBackStack(command.destinationId, false)
             }
