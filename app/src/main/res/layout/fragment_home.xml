@@ -35,9 +35,10 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
+                    android:layout_marginBottom="4dp"
                     android:contentDescription="@string/contentDescription_appLogo"
                     android:src="@drawable/ic_bunpyro_small"
-                    android:layout_marginBottom="4dp"/>
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -61,7 +62,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/all_grammar_card"
             style="@style/Widget.MaterialComponents.CardView"
             android:layout_width="0dp"
@@ -71,6 +72,7 @@
             android:layout_marginEnd="8dp"
             android:clickable="true"
             android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
             app:cardElevation="2dp"
             app:layout_constraintEnd_toStartOf="@+id/lessons_card"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,9 +107,9 @@
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/lessons_card"
             style="@style/Widget.MaterialComponents.CardView"
             android:layout_width="0dp"
@@ -117,6 +119,7 @@
             android:layout_marginEnd="16dp"
             android:clickable="true"
             android:focusable="true"
+            app:cardBackgroundColor="#FFFFFF"
             app:cardElevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/all_grammar_card"
@@ -151,7 +154,7 @@
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
