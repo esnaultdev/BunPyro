@@ -19,7 +19,6 @@ import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.adapter.GrammarOverviewAdapter
 import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
-import dev.esnault.bunpyro.common.hide
 import dev.esnault.bunpyro.common.hideKeyboardFrom
 import dev.esnault.bunpyro.databinding.FragmentAllGrammarBinding
 import org.koin.android.viewmodel.ext.android.viewModel
