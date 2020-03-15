@@ -22,9 +22,11 @@ class GrammarPointViewModel(
     val viewState: LiveData<ViewState>
         get() = Transformations.distinctUntilChanged(_viewState)
 
-    private var currentState: ViewState?
-        get() = _viewState.value
-        set(value) = _viewState.postValue(value)
+    private var currentState: ViewState? = null
+        set(value) {
+            field = value
+            _viewState.postValue(value)
+        }
 
     init {
         loadGrammarPoint(id)
