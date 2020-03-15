@@ -135,6 +135,7 @@ class OrgSQLiteOpenHelper implements SupportSQLiteOpenHelper {
 
         @Override
         public void onConfigure(SQLiteDatabase db) {
+            initCustomExtensions(db);
             mCallback.onConfigure(getWrappedDb(db));
         }
 
@@ -146,7 +147,6 @@ class OrgSQLiteOpenHelper implements SupportSQLiteOpenHelper {
 
         @Override
         public void onOpen(SQLiteDatabase db) {
-            initCustomExtensions(db);
             if (!mMigrated) {
                 // if we've migrated, we'll re-open the db so we should not call the callback.
                 mCallback.onOpen(getWrappedDb(db));
