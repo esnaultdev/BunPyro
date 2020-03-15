@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="chuiColor" format="color" />
+    <attr name="textEmphasisColor" format="color" />
+    <attr name="colorOnToolbar" format="color" />
+    <attr name="secondaryColorOnToolbar" format="color" />
 </resources>

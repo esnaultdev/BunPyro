@@ -25,7 +25,7 @@ class BunProHtml(
     }
 
     private val emphasisColor: Int by lazy(LazyThreadSafetyMode.NONE) {
-        context.getThemeColor(R.attr.colorPrimaryDark)
+        context.getThemeColor(R.attr.textEmphasisColor)
     }
 
     fun format(source: String): SpannableStringBuilder {

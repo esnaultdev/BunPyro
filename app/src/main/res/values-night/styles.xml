@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="DayNight.AppTheme">
+        <item name="secondaryColorOnToolbar">@color/secondary_color_on_primary</item>
+        <item name="textEmphasisColor">?colorAccent</item>
+    </style>
+
+    <style name="AppTheme.AppBarLayout.Colored" parent="">
+        <item name="android:textColorPrimary">?attr/colorOnSurface</item>
+        <item name="colorControlNormal">?attr/colorOnSurface</item>
+        <item name="android:editTextColor">?attr/colorOnSurface</item>
+        <item name="android:textColorHint">@color/secondary_color_on_primary</item>
+        <item name="colorOnToolbar">?colorOnSurface</item>
+        <item name="android:textColorSecondary">?attr/colorOnSurface</item>
+    </style>
+
+</resources>

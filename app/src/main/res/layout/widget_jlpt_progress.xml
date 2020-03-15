@@ -170,7 +170,7 @@
     <ProgressBar
         android:id="@+id/n1_progress"
         style="@style/Widget.JlptProgress.ProgressBar"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@id/end_guideline"
