@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="40dp"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="72dp"
+        />
+
+    <TextView
+        android:id="@+id/n5_text"
+        style="@style/Widget.JlptProgress.LevelText"
+        android:text="@string/jlpt_n5"
+        app:layout_constraintBottom_toBottomOf="@id/n5_progress"
+        app:layout_constraintEnd_toEndOf="@+id/start_guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/n5_progress"
+        />
+
+    <TextView
+        android:id="@+id/n5_count"
+        style="@style/Widget.JlptProgress.CountText"
+        app:layout_constraintBottom_toBottomOf="@id/n5_progress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/end_guideline"
+        app:layout_constraintTop_toTopOf="@+id/n5_progress"
+        tools:text="123/125"
+        />
+
+    <ProgressBar
+        android:id="@+id/n5_progress"
+        style="@style/Widget.JlptProgress.ProgressBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:max="100"
+        tools:progress="50"
+        />
+
+    <TextView
+        android:id="@+id/n4_text"
+        style="@style/Widget.JlptProgress.LevelText"
+        android:text="@string/jlpt_n4"
+        app:layout_constraintBottom_toBottomOf="@id/n4_progress"
+        app:layout_constraintEnd_toEndOf="@+id/start_guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/n4_progress"
+        />
+
+    <TextView
+        android:id="@+id/n4_count"
+        style="@style/Widget.JlptProgress.CountText"
+        app:layout_constraintBottom_toBottomOf="@id/n4_progress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/end_guideline"
+        app:layout_constraintTop_toTopOf="@+id/n4_progress"
+        tools:text="123/125"
+        />
+
+    <ProgressBar
+        android:id="@+id/n4_progress"
+        style="@style/Widget.JlptProgress.ProgressBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/n5_progress"
+        tools:max="100"
+        tools:progress="50"
+        />
+
+    <TextView
+        android:id="@+id/n3_text"
+        style="@style/Widget.JlptProgress.LevelText"
+        android:text="@string/jlpt_n3"
+        app:layout_constraintBottom_toBottomOf="@id/n3_progress"
+        app:layout_constraintEnd_toEndOf="@+id/start_guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/n3_progress"
+        />
+
+    <TextView
+        android:id="@+id/n3_count"
+        style="@style/Widget.JlptProgress.CountText"
+        app:layout_constraintBottom_toBottomOf="@id/n3_progress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/end_guideline"
+        app:layout_constraintTop_toTopOf="@+id/n3_progress"
+        tools:text="123/125"
+        />
+
+    <ProgressBar
+        android:id="@+id/n3_progress"
+        style="@style/Widget.JlptProgress.ProgressBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/n4_progress"
+        tools:max="100"
+        tools:progress="50"
+        />
+
+    <TextView
+        android:id="@+id/n2_text"
+        style="@style/Widget.JlptProgress.LevelText"
+        android:text="@string/jlpt_n2"
+        app:layout_constraintBottom_toBottomOf="@id/n2_progress"
+        app:layout_constraintEnd_toEndOf="@+id/start_guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/n2_progress"
+        />
+
+    <TextView
+        android:id="@+id/n2_count"
+        style="@style/Widget.JlptProgress.CountText"
+        app:layout_constraintBottom_toBottomOf="@id/n2_progress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/end_guideline"
+        app:layout_constraintTop_toTopOf="@+id/n2_progress"
+        tools:text="12/125"
+        />
+
+    <ProgressBar
+        android:id="@+id/n2_progress"
+        style="@style/Widget.JlptProgress.ProgressBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/n3_progress"
+        tools:max="100"
+        tools:progress="50"
+        />
+
+    <TextView
+        android:id="@+id/n1_text"
+        style="@style/Widget.JlptProgress.LevelText"
+        android:text="@string/jlpt_n1"
+        app:layout_constraintBottom_toBottomOf="@id/n1_progress"
+        app:layout_constraintEnd_toEndOf="@+id/start_guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/n1_progress"
+        />
+
+    <TextView
+        android:id="@+id/n1_count"
+        style="@style/Widget.JlptProgress.CountText"
+        app:layout_constraintBottom_toBottomOf="@id/n1_progress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/end_guideline"
+        app:layout_constraintTop_toTopOf="@+id/n1_progress"
+        tools:text="1/125"
+        />
+
+    <ProgressBar
+        android:id="@+id/n1_progress"
+        style="@style/Widget.JlptProgress.ProgressBar"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/end_guideline"
+        app:layout_constraintStart_toEndOf="@+id/start_guideline"
+        app:layout_constraintTop_toBottomOf="@+id/n2_progress"
+        tools:max="100"
+        tools:progress="50"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

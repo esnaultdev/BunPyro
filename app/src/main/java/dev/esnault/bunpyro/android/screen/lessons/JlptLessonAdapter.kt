@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
-import dev.esnault.bunpyro.android.display.widget.ViewStatePagerAdapter
+import dev.esnault.bunpyro.android.display.adapter.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.ItemJlptLessonBinding
 import dev.esnault.bunpyro.databinding.TabLessonBinding
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview

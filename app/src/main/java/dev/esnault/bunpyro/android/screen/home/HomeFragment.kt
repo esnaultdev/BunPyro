@@ -135,6 +135,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         searchAdapter?.grammarPoints = viewState.searchResults
+        binding.jlptProgress.progress = viewState.jlptProgress
 
         binding.contentConstraintLayout.isVisible = !viewState.searching
         binding.searchRecyclerView.isVisible = viewState.searching

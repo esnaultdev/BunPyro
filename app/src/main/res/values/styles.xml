@@ -33,4 +33,29 @@
         <item name="android:textSize">28sp</item>
     </style>
 
+    <style name="Widget.JlptProgress.ProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/jlpt_progressbar_height</item>
+        <item name="android:indeterminate">false</item>
+        <item name="android:progressDrawable">@drawable/progress_jlpt</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:max">100</item>
+    </style>
+
+    <style name="Widget.JlptProgress.LevelText" parent="@style/TextAppearance.MaterialComponents.Body1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Widget.JlptProgress.CountText" parent="@style/TextAppearance.MaterialComponents.Body1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:textSize">12sp</item>
+        <item name="layout_constraintHorizontal_bias">0</item>
+        <item name="android:layout_marginStart">8dp</item>
+    </style>
+
 </resources>

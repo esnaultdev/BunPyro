@@ -4,7 +4,7 @@ import android.content.Context
 import android.text.Spanned
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState as ViewState
-import dev.esnault.bunpyro.android.display.widget.ViewStatePagerAdapter
+import dev.esnault.bunpyro.android.display.adapter.ViewStatePagerAdapter
 import dev.esnault.bunpyro.common.hide
 import dev.esnault.bunpyro.common.show
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointMeaningBinding

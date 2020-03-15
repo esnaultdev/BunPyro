@@ -6,15 +6,19 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.NavigationCommand
+import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
+import dev.esnault.bunpyro.domain.entities.JlptProgress
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
 class HomeViewModel(
-    private val searchService: ISearchService
+    private val searchService: ISearchService,
+    private val lessonRepo: ILessonRepository
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -23,7 +27,8 @@ class HomeViewModel(
 
     private var currentState = ViewState(
         searching = false,
-        searchResults = emptyList()
+        searchResults = emptyList(),
+        jlptProgress = null
     )
         set(value) {
             field = value
@@ -31,6 +36,18 @@ class HomeViewModel(
         }
 
     private var searchJob: Job? = null
+
+    init {
+        observeJlptProgress()
+    }
+
+    private fun observeJlptProgress() {
+        viewModelScope.launch(Dispatchers.IO) {
+            lessonRepo.getProgress().collect { progress ->
+                currentState = currentState.copy(jlptProgress = progress)
+            }
+        }
+    }
 
     fun onLessonsTap() {
         navigate(HomeFragmentDirections.actionHomeToLessons())
@@ -83,6 +100,7 @@ class HomeViewModel(
 
     data class ViewState(
         val searching: Boolean,
-        val searchResults: List<GrammarPointOverview>
+        val searchResults: List<GrammarPointOverview>,
+        val jlptProgress: JlptProgress?
     )
 }

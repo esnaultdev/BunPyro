@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState
-import dev.esnault.bunpyro.android.display.widget.ViewStatePagerAdapter
+import dev.esnault.bunpyro.android.display.adapter.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointExamplesBinding
 
 

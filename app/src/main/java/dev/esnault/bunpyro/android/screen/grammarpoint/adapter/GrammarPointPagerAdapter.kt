@@ -7,7 +7,7 @@ import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.example.ExamplesViewHolder
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning.MeaningViewHolder
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.reading.ReadingViewHolder
-import dev.esnault.bunpyro.android.display.widget.ViewStatePagerAdapter
+import dev.esnault.bunpyro.android.display.adapter.ViewStatePagerAdapter
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointExamplesBinding
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointMeaningBinding
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointReadingBinding

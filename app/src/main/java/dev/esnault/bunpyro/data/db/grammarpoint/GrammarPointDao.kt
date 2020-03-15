@@ -2,6 +2,7 @@ package dev.esnault.bunpyro.data.db.grammarpoint
 
 import androidx.room.*
 import dev.esnault.bunpyro.data.utils.DataUpdate
+import dev.esnault.bunpyro.domain.entities.JlptProgress
 import kotlinx.coroutines.flow.Flow
 
 
@@ -66,6 +67,16 @@ GROUP BY gp.id
 ORDER BY rank, gp.grammar_order
 """)
     protected abstract suspend fun searchByTermWithKanaImpl(term: String, kana: String): List<GrammarPointOverviewDb>
+
+    @Query("""
+SELECT lesson, COUNT(NULLIF(gp_studied, 0)) AS studied, COUNT(gp_studied) AS total FROM
+(SELECT gp.lesson, COUNT(review.id) AS gp_studied FROM grammar_point AS gp
+LEFT JOIN review ON review.grammar_id = gp.id AND review.type = 0
+WHERE gp.incomplete = 0
+GROUP BY gp.id)
+GROUP BY lesson
+""")
+    abstract fun getLessonsProgress(): Flow<List<LessonProgressDb>>
 
     @Insert
     abstract suspend fun insertAll(users: List<GrammarPointDb>)
