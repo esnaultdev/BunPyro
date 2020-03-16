@@ -8,10 +8,11 @@
         >
 
         <ListPreference
-            app:key="night_mode"
-            app:title="@string/settings_root_nightMode"
+            app:defaultValue="system"
             app:entries="@array/night_mode_entries"
             app:entryValues="@array/night_mode_values"
+            app:key="night_mode"
+            app:title="@string/settings_root_nightMode"
             />
 
     </PreferenceCategory>
