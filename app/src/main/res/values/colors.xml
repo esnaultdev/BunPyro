@@ -5,4 +5,5 @@
     <color name="colorAccent">#40C4FF</color>
 
     <color name="chuiTextColor">#F57C00</color>
+    <color name="launchScreenBackgroundColor">#424242</color>
 </resources>

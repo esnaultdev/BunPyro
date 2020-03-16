@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private val settingsRepo : ISettingsRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         initNightMode()
         super.onCreate(savedInstanceState)
 
