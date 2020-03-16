@@ -3,6 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
+        app:key="category_display"
+        app:title="@string/settings_root_category_display"
+        >
+
+        <ListPreference
+            app:key="night_mode"
+            app:title="@string/settings_root_nightMode"
+            app:entries="@array/night_mode_entries"
+            app:entryValues="@array/night_mode_values"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:key="category_about"
         app:title="@string/settings_root_category_about"
         >

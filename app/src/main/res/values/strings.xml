@@ -64,6 +64,11 @@
     <string name="contentDescription_studiedHanko">Studied</string>
     <string name="contentDescription_appLogo">App Logo</string>
 
+    <string name="settings_root_category_display">Display</string>
+    <string name="settings_root_nightMode">Night mode</string>
+    <string name="settings_root_nightMode_always">Always (Dark Mode)</string>
+    <string name="settings_root_nightMode_never">Never (Light Mode)</string>
+    <string name="settings_root_nightMode_system">Same as system</string>
     <string name="settings_root_category_about">About</string>
     <string name="settings_root_about">About BunPyro</string>
     <string name="settings_root_licenses">Licenses</string>

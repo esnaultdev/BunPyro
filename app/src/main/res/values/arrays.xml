@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="night_mode_entries">
+        <item>@string/settings_root_nightMode_system</item>
+        <item>@string/settings_root_nightMode_always</item>
+        <item>@string/settings_root_nightMode_never</item>
+    </string-array>
+
+    <string-array name="night_mode_values">
+        <item>system</item>
+        <item>always</item>
+        <item>never</item>
+    </string-array>
+
+</resources>
