@@ -9,6 +9,30 @@
     tools:context=".android.screen.firstsync.FirstSyncFragment"
     >
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarLayout.Colored"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.App.Toolbar.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            >
+
+            <include layout="@layout/layout_appbar_title" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.constraintlayout.widget.Group
         android:id="@+id/downloading_group"
         android:layout_width="0dp"
@@ -30,7 +54,7 @@
         app:layout_constraintBottom_toTopOf="@+id/downloading_progress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintWidth_max="300dp"
         />
@@ -84,7 +108,7 @@
         app:layout_constraintBottom_toTopOf="@+id/error_subtext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintWidth_max="300dp"
         />

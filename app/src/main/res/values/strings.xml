@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">BunPyro</string>
+    <string name="app_title_end">パイロ</string>
 
     <string name="common_ok">OK</string>
     <string name="common_retry">Retry</string>
@@ -31,7 +32,6 @@
     <string name="firstsync_error_unknown_title">Something went wrong on our side</string>
     <string name="firstsync_error_unknown_text">Please try again in a few minutes.</string>
 
-    <string name="home_title_end">パイロ</string>
     <string name="home_lessons_japanese">課</string>
     <string name="home_lessons_english">Lessons</string>
     <string name="home_all_grammar_japanese">文法</string>

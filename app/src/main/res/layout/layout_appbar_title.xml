@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginBottom="4dp"
+        android:contentDescription="@string/contentDescription_appLogo"
+        android:src="@drawable/ic_bunpyro_small"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="@string/app_title_end"
+        android:textColor="?colorOnToolbar"
+        android:textSize="20sp"
+        />
+
+</LinearLayout>

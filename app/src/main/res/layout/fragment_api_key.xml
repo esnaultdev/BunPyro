@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/apikey_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".android.screen.apikey.ApiKeyFragment">
+    tools:context=".android.screen.apikey.ApiKeyFragment"
+    >
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarLayout.Colored"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.App.Toolbar.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            >
+
+            <include layout="@layout/layout_appbar_title" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/apikey_default_group"
@@ -13,7 +39,8 @@
         android:layout_height="0dp"
         android:visibility="visible"
         app:constraint_referenced_ids="apikey_intro,apikey_input_layout,apikey_save,apikey_privacy"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        />
 
     <TextView
         android:id="@+id/apikey_intro"
@@ -25,8 +52,9 @@
         app:layout_constraintBottom_toTopOf="@+id/apikey_input_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/apikey_input_layout"
@@ -42,14 +70,16 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/apikey_intro"
-        app:layout_constraintWidth_max="300dp">
+        app:layout_constraintWidth_max="300dp"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/apikey_input_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
-            android:singleLine="true" />
+            android:singleLine="true"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,7 +93,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/apikey_input_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/apikey_input_layout"
-        app:layout_constraintTop_toTopOf="@+id/apikey_input_layout" />
+        app:layout_constraintTop_toTopOf="@+id/apikey_input_layout"
+        />
 
     <Button
         android:id="@+id/apikey_privacy"
@@ -74,7 +105,8 @@
         android:text="@string/apikey_privacy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/apikey_checking_group"
@@ -82,7 +114,8 @@
         android:layout_height="0dp"
         android:visibility="gone"
         app:constraint_referenced_ids="apikey_checking_text,apikey_checking_progress"
-        tools:visibility="gone" />
+        tools:visibility="gone"
+        />
 
     <TextView
         android:id="@+id/apikey_checking_text"
@@ -94,8 +127,9 @@
         app:layout_constraintBottom_toTopOf="@+id/apikey_checking_progress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
 
     <ProgressBar
         android:id="@+id/apikey_checking_progress"
@@ -106,7 +140,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/apikey_checking_text" />
+        app:layout_constraintTop_toBottomOf="@+id/apikey_checking_text"
+        />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/apikey_error_group"
@@ -114,7 +149,8 @@
         android:layout_height="0dp"
         android:visibility="gone"
         app:constraint_referenced_ids="apikey_error_text,apikey_error_subtext,apikey_error_button"
-        tools:visibility="gone" />
+        tools:visibility="gone"
+        />
 
     <TextView
         android:id="@+id/apikey_error_text"
@@ -127,9 +163,10 @@
         app:layout_constraintBottom_toTopOf="@+id/apikey_error_subtext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintWidth_max="300dp" />
+        app:layout_constraintWidth_max="300dp"
+        />
 
     <TextView
         android:id="@+id/apikey_error_subtext"
@@ -145,7 +182,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/apikey_error_text"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintWidth_max="300dp" />
+        app:layout_constraintWidth_max="300dp"
+        />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/apikey_error_button"
@@ -156,7 +194,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/apikey_error_subtext" />
+        app:layout_constraintTop_toBottomOf="@+id/apikey_error_subtext"
+        />
 
     <TextView
         android:id="@+id/apikey_welcome"
@@ -170,9 +209,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintWidth_max="300dp"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
