@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import kotlin.reflect.KClass
 
@@ -25,22 +23,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        vm?.navigationCommands?.observe(this) { command ->
-            val navController = findNavController()
-            when (command) {
-                is NavigationCommand.To ->
-                    navController.navigate(command.directions)
-                is NavigationCommand.Back -> {
-                    if (!navController.popBackStack()) {
-                        // If we're at the root of the back stack, we want the activity to close
-                        activity?.finish()
-                    }
-                }
-                is NavigationCommand.BackTo ->
-                    navController.popBackStack(command.destinationId, false)
-            }
-        }
+        vm?.let { NavigatorListener(this, it.navigationCommands) }
     }
 
     override fun onCreateView(

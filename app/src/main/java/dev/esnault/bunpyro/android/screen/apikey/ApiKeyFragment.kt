@@ -8,6 +8,7 @@ import androidx.lifecycle.observe
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import dev.esnault.bunpyro.R
+import dev.esnault.bunpyro.android.screen.ScreenConfig
 
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.common.hide
@@ -39,7 +40,7 @@ class ApiKeyFragment : BaseFragment<FragmentApiKeyBinding>() {
         }
 
         binding.apikeyPrivacy.setOnClickListener {
-            context?.openUrlInBrowser("https://www.bunpro.jp/privacy")
+            context?.openUrlInBrowser(ScreenConfig.privacyUrl)
         }
 
         binding.apikeyErrorButton.setOnClickListener {

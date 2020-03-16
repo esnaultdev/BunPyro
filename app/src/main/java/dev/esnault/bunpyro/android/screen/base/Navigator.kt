@@ -1,22 +1,19 @@
 package dev.esnault.bunpyro.android.screen.base
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
 
 
-open class BaseViewModel : ViewModel() {
-
-    val navigator = Navigator()
-
+class Navigator {
+    private val _navigationCommands = SingleLiveEvent<NavigationCommand>()
     val navigationCommands: LiveData<NavigationCommand>
-        get() = navigator.navigationCommands
+        get() = _navigationCommands
 
     fun navigate(command: NavigationCommand) {
-        navigator.navigate(command)
+        _navigationCommands.postValue(command)
     }
 
     fun navigate(directions: NavDirections) {
-        navigator.navigate(NavigationCommand.To(directions))
+        _navigationCommands.postValue(NavigationCommand.To(directions))
     }
 }

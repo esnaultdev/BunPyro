@@ -49,11 +49,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         setupRecyclerViews()
 
         binding.lessonsCard.setOnClickListener {
-            vm.onLessonsTap()
+            vm.onLessonsClick()
         }
 
         binding.allGrammarCard.setOnClickListener {
-            vm.onAllGrammarTap()
+            vm.onAllGrammarClick()
         }
 
         vm.viewState.observe(this) { viewState ->
@@ -119,6 +119,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     return true
                 }
             })
+        }
+
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            if (menuItem.itemId == R.id.settings) {
+                vm.onSettingsClick()
+                true
+            } else {
+                false
+            }
         }
     }
 

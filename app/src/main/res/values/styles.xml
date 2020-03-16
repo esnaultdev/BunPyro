@@ -24,6 +24,7 @@
         <item name="android:editTextColor">?attr/colorOnPrimarySurface</item>
         <item name="android:textColorHint">@color/secondary_color_on_primary</item>
         <item name="colorOnToolbar">?colorOnPrimarySurface</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
     <style name="Widget.App.Toolbar" parent="Widget.MaterialComponents.Toolbar.Surface">

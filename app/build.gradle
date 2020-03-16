@@ -44,7 +44,8 @@ dependencies {
 
     // AndroidX
     implementation "androidx.appcompat:appcompat:${versions.androidx.appcompat}"
-    implementation "androidx.core:core-ktx:${versions.androidx.core_ktx}"
+    implementation "androidx.core:core-ktx:${versions.androidx.core}"
+    implementation "androidx.preference:preference:${versions.androidx.preference}"
 
     // UI
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidx.constraintlayout}"

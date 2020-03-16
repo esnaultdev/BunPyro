@@ -49,17 +49,21 @@ class HomeViewModel(
         }
     }
 
-    fun onLessonsTap() {
+    fun onLessonsClick() {
         navigate(HomeFragmentDirections.actionHomeToLessons())
     }
 
-    fun onAllGrammarTap() {
+    fun onAllGrammarClick() {
         navigate(HomeFragmentDirections.actionHomeToAllGrammar())
     }
 
     fun onGrammarPointClick(grammarPoint: GrammarPointOverview) {
         val id = grammarPoint.id
         navigate(HomeFragmentDirections.actionHomeToGrammarPoint(id))
+    }
+
+    fun onSettingsClick() {
+        navigate(HomeFragmentDirections.actionHomeToSettings())
     }
 
     fun onBackPressed() {
