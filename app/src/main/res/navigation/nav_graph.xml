@@ -141,6 +141,19 @@
     <fragment
         android:id="@+id/settingsScreen"
         android:name="dev.esnault.bunpyro.android.screen.settings.SettingsFragment"
+        >
+
+        <action
+            android:id="@+id/action_settings_to_settingsLicenses"
+            app:destination="@id/settingsLicensesScreen"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsLicensesScreen"
+        android:name="dev.esnault.bunpyro.android.screen.settings.licenses.SettingsLicensesFragment"
+        tools:layout="@layout/fragment_settings_licenses"
         />
 
 </navigation>

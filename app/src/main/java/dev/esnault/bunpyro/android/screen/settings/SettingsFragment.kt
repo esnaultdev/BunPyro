@@ -31,7 +31,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         findPreference<Preference>("about_licenses")?.setOnPreferenceClickListener {
-
+            navigate(SettingsFragmentDirections.actionSettingsToSettingsLicenses())
             true
         }
     }
