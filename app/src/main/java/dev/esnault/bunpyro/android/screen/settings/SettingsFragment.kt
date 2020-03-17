@@ -43,7 +43,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         findPreference<Preference>("about_privacy")?.setOnPreferenceClickListener {
-            context?.openUrlInBrowser(ScreenConfig.privacyUrl)
+            context?.openUrlInBrowser(ScreenConfig.Url.privacy)
             true
         }
 

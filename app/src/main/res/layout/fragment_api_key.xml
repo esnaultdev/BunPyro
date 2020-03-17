@@ -38,22 +38,22 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="visible"
-        app:constraint_referenced_ids="apikey_intro,apikey_input_layout,apikey_save,apikey_privacy"
+        app:constraint_referenced_ids="apikey_intro_title,apikey_input_layout,apikey_intro_text,apikey_logo,apikey_save,apikey_bunpro_website,apikey_privacy"
         tools:visibility="visible"
         />
 
     <TextView
-        android:id="@+id/apikey_intro"
+        android:id="@+id/apikey_intro_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/apikey_intro"
+        android:text="@string/apikey_intro_title"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        app:layout_constraintBottom_toTopOf="@+id/apikey_input_layout"
+        android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
-        app:layout_constraintVertical_chainStyle="packed"
         />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -62,15 +62,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="4dp"
         android:hint="@string/apikey_hint"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@+id/apikey_privacy"
         app:layout_constraintEnd_toStartOf="@+id/apikey_save"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/apikey_intro"
-        app:layout_constraintWidth_max="300dp"
+        app:layout_constraintTop_toBottomOf="@+id/apikey_intro_title"
+        app:layout_constraintWidth_max="@dimen/text_max_width"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -95,6 +95,48 @@
         app:layout_constraintStart_toEndOf="@+id/apikey_input_layout"
         app:layout_constraintTop_toTopOf="@+id/apikey_input_layout"
         />
+
+    <TextView
+        android:id="@+id/apikey_intro_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_horizontal"
+        android:text="@string/apikey_intro_text"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/apikey_input_layout"
+        app:layout_constraintWidth_max="@dimen/text_max_width"
+        />
+
+    <Button
+        android:id="@+id/apikey_bunpro_website"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/apikey_intro_bunpro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/apikey_intro_text"
+        />
+
+    <ImageView
+        android:id="@+id/apikey_logo"
+        android:layout_width="144dp"
+        android:layout_height="144dp"
+        android:alpha="0.2"
+        android:contentDescription="@string/contentDescription_appLogo"
+        android:src="@drawable/bunpyro_144dp"
+        app:layout_constraintBottom_toTopOf="@+id/apikey_privacy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/apikey_intro_text"
+        />
+
 
     <Button
         android:id="@+id/apikey_privacy"

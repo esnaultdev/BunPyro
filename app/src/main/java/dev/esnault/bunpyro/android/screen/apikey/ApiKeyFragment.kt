@@ -39,8 +39,12 @@ class ApiKeyFragment : BaseFragment<FragmentApiKeyBinding>() {
             vm.onSaveApiKey()
         }
 
+        binding.apikeyBunproWebsite.setOnClickListener {
+            context?.openUrlInBrowser(ScreenConfig.Url.bunpro)
+        }
+
         binding.apikeyPrivacy.setOnClickListener {
-            context?.openUrlInBrowser(ScreenConfig.privacyUrl)
+            context?.openUrlInBrowser(ScreenConfig.Url.privacy)
         }
 
         binding.apikeyErrorButton.setOnClickListener {

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.common.openUrlInBrowser
@@ -21,15 +22,15 @@ class SettingsAboutFragment : BaseFragment<FragmentSettingsAboutBinding>() {
         NavigationUI.setupWithNavController(binding.toolbar, findNavController())
 
         binding.bunproButton.setOnClickListener {
-            context?.openUrlInBrowser("https://bunpro.jp/")
+            context?.openUrlInBrowser(ScreenConfig.Url.bunpro)
         }
 
         binding.devButton.setOnClickListener {
-            context?.openUrlInBrowser("https://esnault.dev/")
+            context?.openUrlInBrowser(ScreenConfig.Url.devWebsite)
         }
 
         binding.sourcesButton.setOnClickListener {
-            context?.openUrlInBrowser("https://github.com/esnaultdev/BunPyro")
+            context?.openUrlInBrowser(ScreenConfig.Url.githubRepo)
         }
     }
 }
