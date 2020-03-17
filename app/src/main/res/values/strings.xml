@@ -74,4 +74,13 @@
     <string name="settings_root_licenses">Licenses</string>
     <string name="settings_root_privacy">Privacy</string>
 
+    <string name="about_intro">BunPyro is a companion application for Bunpro, the website to learn Japanese grammar.</string>
+    <string name="about_checkBunpro">Check BunPro</string>
+    <string name="about_dev_text">Developed by Matthieu Esnault.</string>
+    <string name="about_dev_website">Personal Website</string>
+    <string name="about_api">"I want to have reviews, cram sessions, paths, everything working offline in BunPyro. However, I can't develop this using the current API. If you're interested in these features, make sure to tell the Bunpro team to improve their API!"</string>
+    <string name="about_affiliation">"This app is a personal project that is not affiliated, associated, authorized, endorsed by or in any way officially connected to Bunpro."</string>
+    <string name="about_sources_text">"The source code of BunPyro is available on Github. Feel free to take a look."</string>
+    <string name="about_sources_action">Source code</string>
+
 </resources>

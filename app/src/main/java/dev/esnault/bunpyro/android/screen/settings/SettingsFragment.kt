@@ -38,7 +38,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun setupAbout() {
         findPreference<Preference>("about_app")?.setOnPreferenceClickListener {
-
+            navigate(SettingsFragmentDirections.actionSettingsToSettingsAbout())
             true
         }
 
