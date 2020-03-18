@@ -141,6 +141,7 @@
     <fragment
         android:id="@+id/settingsScreen"
         android:name="dev.esnault.bunpyro.android.screen.settings.SettingsFragment"
+        tools:layout="@layout/fragment_settings"
         >
 
         <action
