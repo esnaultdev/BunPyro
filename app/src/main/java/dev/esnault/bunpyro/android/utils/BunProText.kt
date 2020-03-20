@@ -42,7 +42,7 @@ fun preProcessBunproSecondaryBreaks(source: String): String {
 
 fun preProcessBunproFurigana(source: String): String {
     // Note that the parenthesis are not the regular ones
-    val regex = Regex("""(\p{IsHan}+)（(\p{IsHiragana}+)）""")
+    val regex = Regex("""(\p{Han}+)（(\p{Hiragana}+)）""")
     return regex.replace(source) { matchResult ->
         val kanji = matchResult.groups[1]!!.value
         val furigana = matchResult.groups[2]!!.value

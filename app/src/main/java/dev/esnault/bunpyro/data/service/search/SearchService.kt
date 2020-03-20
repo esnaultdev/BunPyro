@@ -13,7 +13,7 @@ class SearchService(
 
     private val wanakana = WanaKanaJava(false)
     private val canBecomeKanaRegex = Regex("""[a-zA-Z]+""")
-    private val isHiraganaRegex = Regex("""\p{IsHiragana}+""")
+    private val isHiraganaRegex = Regex("""\p{Hiragana}+""")
 
     override suspend fun search(term: String): List<GrammarPointOverview> {
         val canBecomeKana = canBecomeKanaRegex.matches(term)
