@@ -5,7 +5,7 @@
     android:id="@+id/examples_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/card_list_background"
+    android:background="@drawable/card_list_background"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:paddingBottom="16dp"

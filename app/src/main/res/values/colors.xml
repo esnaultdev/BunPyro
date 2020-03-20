@@ -6,4 +6,5 @@
 
     <color name="chuiTextColor">#F57C00</color>
     <color name="launchScreenBackgroundColor">#424242</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>
