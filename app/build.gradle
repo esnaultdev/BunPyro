@@ -97,6 +97,10 @@ dependencies {
     testImplementation "junit:junit:${versions.junit}"
     androidTestImplementation "androidx.test:runner:${versions.androidx.test}"
     testImplementation "androidx.room:room-testing:${versions.androidx.room}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${versions.androidx.espresso}"
+    androidTestImplementation "androidx.test:rules:${versions.androidx.testrules}"
+    androidTestImplementation "androidx.test.ext:junit:${versions.androidx.junit}"
+    implementation "androidx.test.espresso:espresso-idling-resource:${versions.androidx.espresso}"
 }
 
 

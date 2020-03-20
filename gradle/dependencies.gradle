@@ -7,11 +7,14 @@ ext.versions = [
                 appcompat: '1.1.0',
                 constraintlayout: '1.1.3',
                 core: '1.2.0',
+                espresso: '3.2.0',
                 lifecycle: '2.2.0',
                 navigation: '2.2.1',
                 preference: '1.1.0',
                 room: '2.2.4',
                 test: '1.2.0',
+                testrules: '1.3.0-alpha05',
+                junit: '1.1.1',
         ],
         firebase: [
                 crashlytics: '17.0.0-beta02'

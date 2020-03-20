@@ -14,22 +14,18 @@ class FakeBunproVersionedApi(
 ) : BunproVersionedApi {
 
     override suspend fun getGrammarPoints(etagHeader: String?): Response<DataRequest<GrammarPoint>> {
-        delay(500L)
         return grammarPoints.toResponse()
     }
 
     override suspend fun getExampleSentences(etagHeader: String?): Response<DataRequest<ExampleSentence>> {
-        delay(500L)
         return exampleSentences.toResponse()
     }
 
     override suspend fun getSupplementalLinks(etagHeader: String?): Response<DataRequest<SupplementalLink>> {
-        delay(500L)
         return supplementalLinks.toResponse()
     }
 
     override suspend fun getAllReviews(etagHeader: String?): Response<ReviewsData> {
-        delay(500L)
         return allReviews.toResponse()
     }
 }
