@@ -21,15 +21,13 @@ class AppConfig(private val prefs: SharedPreferences) : IAppConfig {
         return prefs.getString(Keys.API_KEY, null)
     }
 
-    override suspend fun saveApiKey(apiKey: String) {
+    override suspend fun setApiKey(apiKey: String?) {
         prefs.edit {
-            putString(Keys.API_KEY, apiKey)
-        }
-    }
-
-    override suspend fun deleteApiKey() {
-        prefs.edit {
-            remove(Keys.API_KEY)
+            if (apiKey != null) {
+                putString(Keys.API_KEY, apiKey)
+            } else {
+                remove(Keys.API_KEY)
+            }
         }
     }
 

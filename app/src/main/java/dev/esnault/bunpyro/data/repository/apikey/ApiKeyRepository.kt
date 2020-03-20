@@ -24,7 +24,7 @@ class ApiKeyRepository(
         return withContext(Dispatchers.IO) {
             val checkResult = checkApiKey(apiKey)
             if (checkResult is ApiKeyCheckResult.Success) {
-                appConfig.saveApiKey(apiKey)
+                appConfig.setApiKey(apiKey)
             }
             checkResult
         }

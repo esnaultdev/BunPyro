@@ -4,8 +4,7 @@ package dev.esnault.bunpyro.data.config
 interface IAppConfig {
 
     suspend fun getApiKey(): String?
-    suspend fun saveApiKey(apiKey: String)
-    suspend fun deleteApiKey()
+    suspend fun setApiKey(apiKey: String?)
 
     suspend fun getFirstSyncCompleted(): Boolean
     suspend fun saveFirstSyncCompleted(completed: Boolean)

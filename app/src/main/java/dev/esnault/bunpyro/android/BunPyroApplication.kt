@@ -1,12 +1,12 @@
 package dev.esnault.bunpyro.android
 
 import android.app.Application
-import dev.esnault.bunpyro.di.appModule
-import dev.esnault.bunpyro.di.dataModule
-import dev.esnault.bunpyro.di.repoModule
+import dev.esnault.bunpyro.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
+
+private const val MOCKING = false
 
 class BunPyroApplication : Application() {
 
@@ -15,7 +15,14 @@ class BunPyroApplication : Application() {
 
         startKoin {
             androidContext(this@BunPyroApplication)
-            modules(listOf(appModule, dataModule, repoModule))
+
+            modules(listOf(appModule, serviceModule, repoModule, daoModule))
+
+            if (!MOCKING) {
+                modules(listOf(configModule, dbModule, networkModule))
+            } else {
+                modules(listOf(fakeConfigModule, fakeDbModule, fakeNetworkModule))
+            }
         }
     }
 }
