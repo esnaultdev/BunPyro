@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2020-03-21
+### Fixed
+- Fix a crash on lower SDK devices due to a regex not compiling
+- Fix a crash for SDK 21 due to a drawable/color mismatch
+
 ## [0.1.1] - 2020-03-20
 ### Added
 - This CHANGELOG file
