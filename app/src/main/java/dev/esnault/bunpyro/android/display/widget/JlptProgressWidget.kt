@@ -2,12 +2,20 @@ package dev.esnault.bunpyro.android.display.widget
 
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.ScaleDrawable
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import dev.esnault.bunpyro.R
+import dev.esnault.bunpyro.common.Alpha
+import dev.esnault.bunpyro.common.getThemeColor
+import dev.esnault.bunpyro.common.withAlpha
 import dev.esnault.bunpyro.databinding.WidgetJlptProgressBinding
 import dev.esnault.bunpyro.domain.entities.JlptProgress
 import kotlin.properties.Delegates
@@ -25,6 +33,7 @@ class JlptProgressWidget : FrameLayout {
     init {
         val inflater = LayoutInflater.from(context)
         binding = WidgetJlptProgressBinding.inflate(inflater, this, true)
+        initProgress()
     }
 
     var progress: JlptProgress? by Delegates.observable<JlptProgress?>(null) { _, oldValue, newValue ->
@@ -81,5 +90,42 @@ class JlptProgressWidget : FrameLayout {
         countTextView.text = countText
 
         return animator.startDelay
+    }
+
+    private fun initProgress() {
+        binding.n5Progress.progressDrawable = buildProgressDrawable()
+        binding.n4Progress.progressDrawable = buildProgressDrawable()
+        binding.n3Progress.progressDrawable = buildProgressDrawable()
+        binding.n2Progress.progressDrawable = buildProgressDrawable()
+        binding.n1Progress.progressDrawable = buildProgressDrawable()
+    }
+
+    // Drawable used for the progress bars
+    // I would prefer using XML to define it, but SDK 21 has some troubles with colors.
+    private fun buildProgressDrawable(): Drawable {
+        val backgroundColor = context.getThemeColor(R.attr.colorOnSurface).withAlpha(Alpha.p08)
+        val progressColor = context.getThemeColor(R.attr.colorAccent)
+        val progressCornerRadius = context.resources.getDimension(R.dimen.jlpt_progressbar_height)
+
+        return LayerDrawable(
+            arrayOf(
+                GradientDrawable().apply {
+                    setColor(backgroundColor)
+                    cornerRadius = progressCornerRadius
+                },
+                ScaleDrawable(
+                    GradientDrawable().apply {
+                        setColor(progressColor)
+                        cornerRadius = progressCornerRadius
+                    },
+                    Gravity.START,
+                    1f,
+                    -1f
+                )
+            )
+        ).apply {
+            setId(0, android.R.id.background)
+            setId(1, android.R.id.progress)
+        }
     }
 }

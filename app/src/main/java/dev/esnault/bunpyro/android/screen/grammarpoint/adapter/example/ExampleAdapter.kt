@@ -1,9 +1,12 @@
 package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.example
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.graphics.ColorUtils
+import androidx.core.graphics.alpha
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.AutoTransition
@@ -15,6 +18,9 @@ import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState
 import dev.esnault.bunpyro.android.utils.*
+import dev.esnault.bunpyro.common.Alpha
+import dev.esnault.bunpyro.common.getThemeColor
+import dev.esnault.bunpyro.common.withAlpha
 import dev.esnault.bunpyro.databinding.ItemExampleSentenceBinding
 
 
@@ -71,6 +77,12 @@ class ExampleAdapter(
             binding.expandButton.setOnClickListener {
                 example?.let(listener.onToggleSentence)
             }
+
+            // Defining this color in xml has some issues on SDK 21, so we set it programmatically
+            val cardLineColor = context.getThemeColor(R.attr.colorOnSurface)
+                .withAlpha(Alpha.p20)
+            binding.cardView.setStrokeColor(ColorStateList.valueOf(cardLineColor))
+            binding.actionsDivider.setBackgroundColor(cardLineColor)
         }
 
         fun bind(example: ViewState.Example, furiganaShown: Boolean) {
