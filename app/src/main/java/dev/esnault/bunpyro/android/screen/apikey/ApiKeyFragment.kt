@@ -16,7 +16,7 @@ import dev.esnault.bunpyro.common.hideKeyboard
 import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.common.show
 import dev.esnault.bunpyro.databinding.FragmentApiKeyBinding
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ApiKeyFragment : BaseFragment<FragmentApiKeyBinding>() {

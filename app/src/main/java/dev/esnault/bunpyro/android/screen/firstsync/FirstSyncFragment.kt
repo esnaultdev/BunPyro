@@ -12,7 +12,7 @@ import dev.esnault.bunpyro.common.hide
 import dev.esnault.bunpyro.common.show
 import dev.esnault.bunpyro.databinding.FragmentFirstSyncBinding
 import dev.esnault.bunpyro.android.screen.firstsync.FirstSyncViewModel.ViewState as ViewState
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FirstSyncFragment : BaseFragment<FragmentFirstSyncBinding>() {
 

@@ -9,7 +9,7 @@ import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel
 import dev.esnault.bunpyro.android.screen.home.HomeViewModel
 import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel
 import dev.esnault.bunpyro.android.screen.start.StartViewModel
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 

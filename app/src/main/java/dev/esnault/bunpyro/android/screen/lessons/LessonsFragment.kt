@@ -13,7 +13,7 @@ import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel.ViewState
 import dev.esnault.bunpyro.databinding.FragmentLessonsBinding
 import dev.esnault.bunpyro.databinding.TabJlptLessonBinding
 import dev.esnault.bunpyro.domain.entities.JLPT
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {

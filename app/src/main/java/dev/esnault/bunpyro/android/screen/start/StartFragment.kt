@@ -3,7 +3,7 @@ package dev.esnault.bunpyro.android.screen.start
 
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.databinding.FragmentStartBinding
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /**

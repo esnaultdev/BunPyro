@@ -19,3 +19,52 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+# Firebase (Crashlytics)
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+-keep class com.google.firebase.crashlytics.** { *; }
+-dontwarn com.google.firebase.crashlytics.**
+
+
+# SQLite
+-keep class org.sqlite.** { *; }
+-keep class org.sqlite.database.** { *; }
+
+
+# ViewBinding
+# Since we use reflection to inflate the fragment bindings,
+# we need to preserve the inflate methods.
+-keep class dev.esnault.bunpyro.databinding.** {
+  public * inflate(...);
+}
+
+
+# OkHttp, Retrofit and Moshi
+-dontwarn okhttp3.**
+-dontwarn retrofit2.Platform$Java8
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}
+-keepclasseswithmembers class * {
+    @com.squareup.moshi.* <methods>;
+}
+-keep @com.squareup.moshi.JsonQualifier interface *
+-dontwarn org.jetbrains.annotations.**
+-keep class kotlin.Metadata { *; }
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}
+
+-keepclassmembers class * {
+    @com.squareup.moshi.FromJson <methods>;
+    @com.squareup.moshi.ToJson <methods>;
+}
+
+-keepnames @kotlin.Metadata class dev.esnault.bunpyro.data.network.entities.**
+-keep class dev.esnault.bunpyro.data.network.entities.** { *; }
+-keepclassmembers class dev.esnault.bunpyro.data.network.entities.** { *; }
