@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2020-03-22
+### Added
+- Non fatal exceptions logging using crashlytics
+
+### Fixed
+- Fix crashes in release builds due to proguard
+
 ## [0.1.2] - 2020-03-21
 ### Fixed
 - Fix a crash on lower SDK devices due to a regex not compiling
