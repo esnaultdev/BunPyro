@@ -4,12 +4,11 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.text.Spanned
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.ViewGroup
-import androidx.core.graphics.ColorUtils
-import androidx.core.graphics.alpha
+import android.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.AutoTransition
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
@@ -76,6 +75,10 @@ class ExampleAdapter(
         init {
             binding.expandButton.setOnClickListener {
                 example?.let(listener.onToggleSentence)
+            }
+
+            binding.more.setOnClickListener {
+                openMoreMenu()
             }
 
             // Defining this color in xml has some issues on SDK 21, so we set it programmatically
@@ -194,6 +197,32 @@ class ExampleAdapter(
                 showFurigana = furigana,
                 furiganize = false
             )
+        }
+
+        // endregion
+
+        // region More menu
+
+        private fun openMoreMenu() {
+            PopupMenu(context, binding.more).apply {
+                menuInflater.inflate(R.menu.example, menu)
+                show()
+                setOnMenuItemClickListener { item -> onMenuMoreItemClick(item) }
+            }
+        }
+
+        private fun onMenuMoreItemClick(item: MenuItem): Boolean {
+            return when (item.itemId) {
+                R.id.copy_japanese -> {
+                    example?.let { listener.onCopyJapanese(it) }
+                    true
+                }
+                R.id.copy_english -> {
+                    example?.let { listener.onCopyEnglish(it) }
+                    true
+                }
+                else -> false
+            }
         }
 
         // endregion

@@ -1,6 +1,8 @@
 package dev.esnault.bunpyro.di
 
 
+import dev.esnault.bunpyro.android.action.clipboard.Clipboard
+import dev.esnault.bunpyro.android.action.clipboard.IClipboard
 import dev.esnault.bunpyro.android.screen.allgrammar.AllGrammarViewModel
 import dev.esnault.bunpyro.android.screen.apikey.ApiKeyViewModel
 import dev.esnault.bunpyro.android.screen.firstsync.FirstSyncViewModel
@@ -9,6 +11,7 @@ import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel
 import dev.esnault.bunpyro.android.screen.home.HomeViewModel
 import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel
 import dev.esnault.bunpyro.android.screen.start.StartViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -22,7 +25,9 @@ val appModule = module {
     viewModel { LessonsViewModel(get()) }
     viewModel { params ->
         val args: GrammarPointFragmentArgs = params[0]
-        GrammarPointViewModel(args.id, get())
+        GrammarPointViewModel(args.id, get(), get())
     }
     viewModel { AllGrammarViewModel(get(), get()) }
+
+    factory<IClipboard> { Clipboard(androidContext()) }
 }

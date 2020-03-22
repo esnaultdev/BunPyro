@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState
+import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.SnackBarMessage
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.*
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.example.ExamplesViewHolder
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning.MeaningViewHolder
@@ -33,9 +35,8 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
         setupPager()
         bindPagerToTabs()
 
-        vm.viewState.observe(this) { viewState ->
-            bindViewState(viewState)
-        }
+        vm.viewState.observe(this) { viewState -> bindViewState(viewState) }
+        vm.snackbar.observe(this) { message -> showSnackbar(message) }
 
         bindEvents()
     }
@@ -49,7 +50,9 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
             ),
             examplesListener = ExamplesViewHolder.Listener(
                 onListen = {},
-                onToggleSentence = vm::onToggleSentence
+                onToggleSentence = vm::onToggleSentence,
+                onCopyJapanese = vm::onCopyJapanese,
+                onCopyEnglish = vm::onCopyEnglish
             ),
             readingListener = ReadingViewHolder.Listener(
                 onClick = this::onSupplementalLinkClick
@@ -131,5 +134,18 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
 
     private fun onSupplementalLinkClick(link: SupplementalLink) {
         context?.openUrlInBrowser(link.link)
+    }
+
+    private fun showSnackbar(message: SnackBarMessage) {
+        val textResId = when (message) {
+            is SnackBarMessage.JapaneseCopied -> R.string.grammarPoint_snackbar_japaneseCopied
+            is SnackBarMessage.EnglishCopied -> R.string.grammarPoint_snackbar_englishCopied
+        }
+
+        // We're using the coordinator layout as the context view to have the swipe to dismiss
+        // gesture
+        val contextView = binding.coordinatorLayout
+        Snackbar.make(contextView, textResId, Snackbar.LENGTH_SHORT)
+            .show()
     }
 }

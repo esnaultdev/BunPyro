@@ -55,6 +55,10 @@
     <string name="grammarPoint_tab_meaning_related">Related</string>
     <string name="grammarPoint_tab_examples_expand">Show more</string>
     <string name="grammarPoint_tab_examples_collapse">Show less</string>
+    <string name="grammarPoint_tab_examples_copyJapanese">Copy Japanese</string>
+    <string name="grammarPoint_tab_examples_copyEnglish">Copy English</string>
+    <string name="grammarPoint_snackbar_japaneseCopied">Japanese text copied</string>
+    <string name="grammarPoint_snackbar_englishCopied">English text copied</string>
 
     <string name="action_furigana_show">Show furigana</string>
     <string name="action_furigana_hide">Hide furigana</string>
@@ -65,6 +69,7 @@
 
     <string name="contentDescription_studiedHanko">Studied</string>
     <string name="contentDescription_appLogo">App Logo</string>
+    <string name="contentDescription_more">More</string>
 
     <string name="settings_root_title">Settings</string>
     <string name="settings_root_category_display">Display</string>

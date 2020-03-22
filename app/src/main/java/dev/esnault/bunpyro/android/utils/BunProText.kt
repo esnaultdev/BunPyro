@@ -3,6 +3,7 @@ package dev.esnault.bunpyro.android.utils
 import android.content.Context
 import android.text.Spanned
 import android.widget.TextView
+import org.jsoup.Jsoup
 
 
 fun Context.processBunproString(
@@ -31,6 +32,11 @@ fun Context.processBunproString(
             val rubyVisibility = showFurigana.toRubyVisibility()
             BunProHtml(this, rubyVisibility, listener.onGrammarPointClick).format(it)
         }
+}
+
+fun String.toClipBoardString(): String {
+    return preProcessBunproFurigana(this)
+        .let { Jsoup.parse(it).text() }
 }
 
 /**

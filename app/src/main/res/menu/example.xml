@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <item
+        android:id="@+id/copy_japanese"
+        android:icon="@drawable/ic_copy_24dp"
+        android:title="@string/grammarPoint_tab_examples_copyJapanese"
+        />
+
+    <item
+        android:id="@+id/copy_english"
+        android:icon="@drawable/ic_copy_24dp"
+        android:title="@string/grammarPoint_tab_examples_copyEnglish"
+        />
+
+</menu>

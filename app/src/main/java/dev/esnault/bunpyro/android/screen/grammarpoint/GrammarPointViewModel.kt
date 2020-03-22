@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
+import dev.esnault.bunpyro.android.action.clipboard.IClipboard
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
+import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
+import dev.esnault.bunpyro.android.utils.toClipBoardString
 import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
 import dev.esnault.bunpyro.domain.entities.grammar.ExampleSentence
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
@@ -15,12 +18,17 @@ import kotlinx.coroutines.withContext
 
 class GrammarPointViewModel(
     id: Long,
-    private val grammarRepo: IGrammarPointRepository
+    private val grammarRepo: IGrammarPointRepository,
+    private val clipboard: IClipboard
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
     val viewState: LiveData<ViewState>
         get() = Transformations.distinctUntilChanged(_viewState)
+
+    private val _snackbar = SingleLiveEvent<SnackBarMessage>()
+    val snackbar: LiveData<SnackBarMessage>
+        get() = _snackbar
 
     private var currentState: ViewState? = null
         set(value) {
@@ -65,6 +73,8 @@ class GrammarPointViewModel(
         navigate(GrammarPointFragmentDirections.actionGrammarPointToGrammarPoint(id))
     }
 
+    // region Example actions
+
     fun onToggleSentence(example: ViewState.Example) {
         val currentState = currentState ?: return
         val sentenceId = example.sentence.id
@@ -78,6 +88,24 @@ class GrammarPointViewModel(
         this.currentState = currentState.copy(examples = newExamples)
     }
 
+    fun onCopyJapanese(example: ViewState.Example) {
+        val sentence = example.sentence
+        clipboard.copy(buildCopyLabel(sentence), sentence.japanese.toClipBoardString())
+        _snackbar.postValue(SnackBarMessage.JapaneseCopied)
+    }
+
+    fun onCopyEnglish(example: ViewState.Example) {
+        val sentence = example.sentence
+        clipboard.copy(buildCopyLabel(sentence), sentence.english.toClipBoardString())
+        _snackbar.postValue(SnackBarMessage.EnglishCopied)
+    }
+
+    private fun buildCopyLabel(sentence: ExampleSentence): String {
+        return "Bunpro Example #${sentence.id}"
+    }
+
+    // endregion
+
     data class ViewState(
         val grammarPoint: GrammarPoint,
         val titleYomikataShown: Boolean,
@@ -88,5 +116,10 @@ class GrammarPointViewModel(
             val sentence: ExampleSentence,
             val collapsed: Boolean
         )
+    }
+
+    sealed class SnackBarMessage {
+        object JapaneseCopied : SnackBarMessage()
+        object EnglishCopied : SnackBarMessage()
     }
 }

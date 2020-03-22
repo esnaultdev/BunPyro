@@ -93,10 +93,10 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_marginTop="8dp"
-                tools:background="#20000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nuance"
+                tools:background="#20000000"
                 />
 
             <com.google.android.material.button.MaterialButton
@@ -108,6 +108,19 @@
                 android:text="@string/grammarPoint_tab_examples_expand"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/actions_divider"
+                />
+
+            <ImageView
+                android:id="@+id/more"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/contentDescription_more"
+                android:padding="12dp"
+                android:src="@drawable/ic_more_24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/expand_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/expand_button"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

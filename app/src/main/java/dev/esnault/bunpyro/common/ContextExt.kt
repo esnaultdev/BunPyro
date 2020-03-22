@@ -38,7 +38,6 @@ fun Context.getThemeColor(@AttrRes colorAttrId: Int): Int {
 }
 
 fun Context.hideKeyboardFrom(view: View) {
-    val imm: InputMethodManager =
-        getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
