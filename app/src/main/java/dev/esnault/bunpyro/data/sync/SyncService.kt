@@ -25,6 +25,7 @@ import dev.esnault.bunpyro.data.network.entities.SupplementalLink
 import dev.esnault.bunpyro.data.network.responseRequest
 import dev.esnault.bunpyro.data.repository.sync.ISyncRepository
 import dev.esnault.bunpyro.data.utils.DataUpdate
+import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
 import dev.esnault.bunpyro.data.utils.fromLocalIds
 import retrofit2.Response
 
@@ -36,7 +37,8 @@ class SyncService(
     private val exampleSentenceDao: ExampleSentenceDao,
     private val supplementalLinkDao: SupplementalLinkDao,
     private val reviewDao: ReviewDao,
-    private val reviewHistoryDao: ReviewHistoryDao
+    private val reviewHistoryDao: ReviewHistoryDao,
+    private val crashReporter: ICrashReporter
 ) : ISyncService {
 
     override suspend fun firstSync(): SyncResult {
@@ -84,9 +86,15 @@ class SyncService(
                 // TODO disconnect the user, clear the DB and redirect to the api key screen
                 SyncResult.Error.Server
             },
-            onServerError = { SyncResult.Error.Server },
+            onServerError = { _, error ->
+                crashReporter.recordNonFatal(error)
+                SyncResult.Error.Server
+            },
             onNetworkError = { SyncResult.Error.Network },
-            onUnknownError = { SyncResult.Error.Unknown(it) }
+            onUnknownError = { error ->
+                crashReporter.recordNonFatal(error)
+                SyncResult.Error.Unknown(error)
+            }
         )
     }
 

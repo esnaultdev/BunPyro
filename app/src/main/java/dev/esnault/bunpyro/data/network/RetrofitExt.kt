@@ -20,9 +20,9 @@ suspend fun <T, R> simpleRequest(
     request: suspend () -> T,
     onSuccess: suspend (T) -> R,
     onInvalidApiKey: suspend () -> R,
-    onServerError: suspend (code: Int) -> R,
+    onServerError: suspend (code: Int, error: Exception) -> R,
     onNetworkError: suspend () -> R,
-    onUnknownError: suspend (error: Throwable) -> R,
+    onUnknownError: suspend (error: Exception) -> R,
     onOtherHttpError: (suspend (code: Int) -> R)? = null // onUnknownError is called if not provided
 ): R {
     return try {
@@ -30,7 +30,7 @@ suspend fun <T, R> simpleRequest(
     } catch (e: HttpException) {
         when (val code = e.code()) {
             401 -> onInvalidApiKey()
-            in 500..599 -> onServerError(code)
+            in 500..599 -> onServerError(code, e)
             else -> if (onOtherHttpError != null) {
                 onOtherHttpError(code)
             } else {
@@ -55,9 +55,9 @@ suspend fun <T, R> responseRequest(
     onSuccess: suspend (T, Response<T>) -> R,
     onNotModified: suspend () -> R,
     onInvalidApiKey: suspend () -> R,
-    onServerError: suspend (code: Int) -> R,
+    onServerError: suspend (code: Int, error: Exception) -> R,
     onNetworkError: suspend () -> R,
-    onUnknownError: suspend (error: Throwable) -> R,
+    onUnknownError: suspend (error: Exception) -> R,
     onOtherHttpError: (suspend (code: Int) -> R)? = null // onUnknownError is called if not provided
 ): R {
     return try {
@@ -68,7 +68,7 @@ suspend fun <T, R> responseRequest(
             else -> {
                 when (val code = response.code()) {
                     401 -> onInvalidApiKey()
-                    in 500..599 -> onServerError(code)
+                    in 500..599 -> onServerError(code, HttpException(response))
                     else -> if (onOtherHttpError != null) {
                         onOtherHttpError(code)
                     } else {

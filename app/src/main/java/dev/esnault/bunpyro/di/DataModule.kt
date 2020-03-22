@@ -9,6 +9,8 @@ import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.data.service.search.SearchService
 import dev.esnault.bunpyro.data.sync.ISyncService
 import dev.esnault.bunpyro.data.sync.SyncService
+import dev.esnault.bunpyro.data.utils.crashreport.CrashlyticsReporter
+import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -40,10 +42,14 @@ val fakeConfigModule = module {
 @Suppress("RemoveExplicitTypeArguments")
 val serviceModule = module {
     single<ISyncService> {
-        SyncService(get(), get(), get(), get(), get(), get(), get())
+        SyncService(get(), get(), get(), get(), get(), get(), get(), get())
     }
 
     factory<ISearchService> {
         SearchService(get())
+    }
+
+    single<ICrashReporter> {
+        CrashlyticsReporter()
     }
 }
