@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ability to copy the example text
 - Setting for the default furigana display
 
+### Fixed
+- Hide text scrollbars when toggling off furigana in example sentences
+
 ## [0.1.3] - 2020-03-22
 ### Added
 - Non fatal exceptions logging using crashlytics
