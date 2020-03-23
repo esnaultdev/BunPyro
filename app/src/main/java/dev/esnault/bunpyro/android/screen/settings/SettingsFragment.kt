@@ -65,6 +65,10 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                     true
                 }
             }
+
+            findPreference<ListPreference>("furigana_default")?.apply {
+                summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+            }
         }
 
         private fun setupAbout() {

@@ -13,4 +13,14 @@
         <item>never</item>
     </string-array>
 
+    <string-array name="furigana_default_entries">
+        <item>@string/settings_root_furiganaDefault_shown</item>
+        <item>@string/settings_root_furiganaDefault_hidden</item>
+    </string-array>
+
+    <string-array name="furigana_default_values">
+        <item>shown</item>
+        <item>hidden</item>
+    </string-array>
+
 </resources>

@@ -9,8 +9,10 @@ import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.android.utils.toClipBoardString
 import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
+import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.domain.entities.grammar.ExampleSentence
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
+import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -19,6 +21,7 @@ import kotlinx.coroutines.withContext
 class GrammarPointViewModel(
     id: Long,
     private val grammarRepo: IGrammarPointRepository,
+    private val settingsRepo: ISettingsRepository,
     private val clipboard: IClipboard
 ) : BaseViewModel() {
 
@@ -43,6 +46,9 @@ class GrammarPointViewModel(
     private fun loadGrammarPoint(id: Long) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
+                val furiganaDefault = settingsRepo.getFurigana()
+                val furiganaShown = furiganaDefault == FuriganaSetting.SHOWN
+
                 // TODO Handle the errors
                 // TODO make this a flow, so that we can properly update it from the network
                 val grammarPoint = grammarRepo.getGrammarPoint(id)
@@ -50,7 +56,7 @@ class GrammarPointViewModel(
                 currentState = ViewState(
                     grammarPoint,
                     titleYomikataShown = false,
-                    furiganaShown = true,
+                    furiganaShown = furiganaShown,
                     examples = grammarPoint.sentences.map { sentence ->
                         ViewState.Example(sentence = sentence, collapsed = true)
                     }

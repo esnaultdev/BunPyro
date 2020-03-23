@@ -15,6 +15,14 @@
             app:title="@string/settings_root_nightMode"
             />
 
+        <ListPreference
+            app:defaultValue="shown"
+            app:entries="@array/furigana_default_entries"
+            app:entryValues="@array/furigana_default_values"
+            app:key="furigana_default"
+            app:title="@string/settings_root_furiganaDefault"
+            />
+
     </PreferenceCategory>
 
     <PreferenceCategory
