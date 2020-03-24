@@ -27,37 +27,21 @@
         tools:text="N5"
         />
 
-    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+    <ProgressBar
         android:id="@+id/progress"
-        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="40dp"
         android:layout_height="4dp"
         android:indeterminate="false"
-        android:visibility="visible"
+        android:progressDrawable="@drawable/lesson_tab_progressbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
-        app:mpb_progressBackgroundTint="@color/jlpt_tabs_progress_background_color_selector"
-        app:mpb_progressStyle="horizontal"
-        app:mpb_progressTint="@color/jlpt_tabs_progress_color_selector"
-        app:mpb_useIntrinsicPadding="false"
-        tools:visibility="invisible"
-        />
-
-    <ImageView
-        android:id="@+id/completed_hanko"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
-        android:layout_marginStart="2dp"
-        android:contentDescription="@string/contentDescription_studiedHanko"
-        android:src="@drawable/ic_bunpyro_hanko"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/progress"
-        app:layout_constraintStart_toEndOf="@+id/title"
-        app:layout_constraintTop_toTopOf="@+id/progress"
-        app:layout_constraintVertical_bias="0.9"
-        tools:visibility="visible"
+        tools:max="100"
+        tools:progress="50"
+        tools:progressBackgroundTint="#50ffffff"
+        tools:progressTint="#ffffff"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
