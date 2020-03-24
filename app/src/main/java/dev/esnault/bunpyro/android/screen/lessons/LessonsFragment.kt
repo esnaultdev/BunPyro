@@ -2,6 +2,7 @@ package dev.esnault.bunpyro.android.screen.lessons
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
@@ -52,8 +53,18 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
                 tabBinding.title.text = getString(jlpt.textResId)
 
                 lessonsAdapter?.jlptLessons?.get(position)?.let { jlptLesson ->
-                    tabBinding.progress.max = jlptLesson.size
-                    tabBinding.progress.progress = jlptLesson.studied
+                    tabBinding.apply {
+                        if (jlptLesson.completed) {
+                            progress.visibility = View.INVISIBLE
+                            completedHanko.isVisible = true
+                        } else {
+                            progress.visibility = View.VISIBLE
+                            completedHanko.isVisible = false
+
+                            progress.max = jlptLesson.size
+                            progress.progress = jlptLesson.studied
+                        }
+                    }
                 }
             }
         }.attach()

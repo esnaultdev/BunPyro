@@ -30,6 +30,7 @@
         android:layout_width="40dp"
         android:layout_height="4dp"
         android:indeterminate="false"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,6 +39,22 @@
         app:mpb_progressStyle="horizontal"
         app:mpb_progressTint="@color/lesson_tabs_progress_color_selector"
         app:mpb_useIntrinsicPadding="false"
+        tools:visibility="invisible"
+        />
+
+    <ImageView
+        android:id="@+id/completed_hanko"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="2dp"
+        android:contentDescription="@string/contentDescription_studiedHanko"
+        android:src="@drawable/ic_bunpyro_hanko"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/progress"
+        app:layout_constraintTop_toTopOf="@+id/progress"
+        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintStart_toEndOf="@+id/title"
+        tools:visibility="visible"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

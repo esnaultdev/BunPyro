@@ -16,7 +16,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="center"
+        app:tabMinWidth="56dp"
         app:tabMaxWidth="56dp"
+        app:tabPaddingStart="0dp"
+        app:tabPaddingEnd="0dp"
         app:tabMode="scrollable"
         />
 

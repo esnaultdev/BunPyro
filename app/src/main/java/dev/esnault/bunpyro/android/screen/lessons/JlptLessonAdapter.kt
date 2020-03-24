@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
 import dev.esnault.bunpyro.android.display.adapter.ViewStatePagerAdapter
@@ -75,14 +76,19 @@ class JlptLessonAdapter(
                     lessonAdapter.lessons[position].let { lesson ->
                         val hasGrammar = lesson.size != 0
 
-                        tabBinding.progress.apply {
-                            if (hasGrammar) {
-                                max = lesson.size
-                                progress = lesson.studied
-
-                                visibility = View.VISIBLE
+                        tabBinding.apply {
+                            if (!hasGrammar) {
+                                progress.visibility = View.INVISIBLE
+                                completedHanko.isVisible = false
+                            } else if (lesson.completed) {
+                                progress.visibility = View.INVISIBLE
+                                completedHanko.isVisible = true
                             } else {
-                                visibility = View.INVISIBLE
+                                progress.visibility = View.VISIBLE
+                                completedHanko.isVisible = false
+
+                                progress.max = lesson.size
+                                progress.progress = lesson.studied
                             }
                         }
                     }
