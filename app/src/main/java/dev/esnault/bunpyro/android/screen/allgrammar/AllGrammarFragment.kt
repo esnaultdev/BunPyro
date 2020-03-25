@@ -1,25 +1,17 @@
 package dev.esnault.bunpyro.android.screen.allgrammar
 
 
-import android.app.SearchManager
-import android.content.Context
 import android.os.Bundle
-import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import androidx.activity.addCallback
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
-import dev.esnault.bunpyro.R
-import dev.esnault.bunpyro.android.display.adapter.GrammarOverviewAdapter
 import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
-import dev.esnault.bunpyro.common.hideKeyboardFrom
+import dev.esnault.bunpyro.android.screen.search.SearchUiHelper
 import dev.esnault.bunpyro.databinding.FragmentAllGrammarBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -29,11 +21,9 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
     override val vm: AllGrammarViewModel by viewModel()
     override val bindingClass = FragmentAllGrammarBinding::class
 
-    private var searchView: SearchView? = null
-
     private var allAdapter: AllGrammarAdapter? = null
-    private var searchAdapter: GrammarOverviewAdapter? = null
     private var oldViewState: AllGrammarViewModel.ViewState? = null
+    private var searchUiHelper: SearchUiHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +36,8 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupToolbar()
-        setupRecyclerViews()
+        setupRecyclerView()
+        setupSearchUiHelper()
 
         vm.viewState.observe(this) { viewState ->
             val oldViewState = oldViewState
@@ -58,10 +48,10 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        searchView = null
+        searchUiHelper = null
     }
 
-    private fun setupRecyclerViews() {
+    private fun setupRecyclerView() {
         val context = requireContext()
         val listener = GrammarOverviewViewHolder.Listener(
             onGrammarClicked = vm::onGrammarPointClick
@@ -72,53 +62,22 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
             adapter = allAdapter
             layoutManager = LinearLayoutManager(context)
         }
-
-        searchAdapter = GrammarOverviewAdapter(context, listener)
-        binding.searchRecyclerView.apply {
-            adapter = searchAdapter
-            layoutManager = LinearLayoutManager(context)
-
-            addOnItemTouchListener(object : RecyclerView.SimpleOnItemTouchListener() {
-                override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                    hideSearchIme()
-                    return false
-                }
-            })
-        }
     }
 
-    private fun setupToolbar() {
-        val searchItem = binding.toolbar.menu.findItem(R.id.search)
-        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                vm.onOpenSearch()
-                return true
-            }
+    private fun setupSearchUiHelper() {
+        val listener = SearchUiHelper.Listener(
+            onOpenSearch = vm::onOpenSearch,
+            onCloseSearch = vm::onCloseSearch,
+            onSearch = vm::onSearch,
+            onGrammarClicked = vm::onGrammarPointClick
+        )
 
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                vm.onCloseSearch()
-                return true
-            }
-        })
-
-        searchView = searchItem.actionView as SearchView
-        searchView?.apply {
-            val searchManager =
-                requireContext().getSystemService(Context.SEARCH_SERVICE) as SearchManager
-            setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
-
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    hideSearchIme()
-                    return true
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    vm.onSearch(newText)
-                    return true
-                }
-            })
-        }
+        searchUiHelper = SearchUiHelper(
+            toolbar = binding.toolbar,
+            resultsRecyclerView = binding.searchRecyclerView,
+            listener = listener,
+            componentName = requireActivity().componentName
+        )
     }
 
     private fun bindViewState(
@@ -134,32 +93,11 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
         }
 
         allAdapter?.set(viewState.jlptGrammar)
-        searchAdapter?.grammarPoints = viewState.searchResults
+        searchUiHelper?.searchResults = viewState.searchResults
 
         binding.allRecyclerView.isVisible = !viewState.searching
         binding.searchRecyclerView.isVisible = viewState.searching
 
-        updateSearchViewExpansion(searchingChanged, viewState)
-    }
-
-    private fun updateSearchViewExpansion(
-        searchingChanged: Boolean,
-        viewState: AllGrammarViewModel.ViewState
-    ) {
-        if (searchingChanged) {
-            // The searching state is sometimes updated by the view model
-            // (for example, on back pressed), so we might need to update
-            // the search view's expansion
-            val searchItem = binding.toolbar.menu.findItem(R.id.search)
-            if (viewState.searching && !searchItem.isActionViewExpanded) {
-                searchItem.expandActionView()
-            } else if (!viewState.searching && searchItem.isActionViewExpanded) {
-                searchItem.collapseActionView()
-            }
-        }
-    }
-
-    private fun hideSearchIme() {
-        searchView?.let { context?.hideKeyboardFrom(it) }
+        searchUiHelper?.updateSearchViewExpansion(searchingChanged, viewState.searching)
     }
 }
