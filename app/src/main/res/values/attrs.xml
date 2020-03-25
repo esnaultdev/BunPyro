@@ -4,4 +4,5 @@
     <attr name="textEmphasisColor" format="color" />
     <attr name="colorOnToolbar" format="color" />
     <attr name="secondaryColorOnToolbar" format="color" />
+    <attr name="secondaryColorOnPrimary" format="color" />
 </resources>

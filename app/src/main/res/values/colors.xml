@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#1565C0</color>
     <color name="colorAccent">#40C4FF</color>
 
+    <color name="white_80">#CCFFFFFF</color>
+    <color name="black_80">#CC000000</color>
+
     <color name="chuiTextColor">#F57C00</color>
     <color name="launchScreenBackgroundColor">#424242</color>
     <color name="transparent">#00FFFFFF</color>
