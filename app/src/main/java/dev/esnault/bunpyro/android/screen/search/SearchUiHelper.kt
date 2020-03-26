@@ -33,7 +33,7 @@ class SearchUiHelper(
     )
 
     private val context: Context
-        get() = toolbar.context
+        get() = resultsRecyclerView.context
 
     private var searchView: SearchView? = null
     private var searchAdapter: GrammarOverviewAdapter? = null
