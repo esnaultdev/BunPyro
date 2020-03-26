@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.NavigationCommand
+import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
 import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.domain.entities.JlptProgress
@@ -18,7 +19,8 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val searchService: ISearchService,
-    private val lessonRepo: ILessonRepository
+    private val lessonRepo: ILessonRepository,
+    private val serviceStarter: IAndroidServiceStarter
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -64,6 +66,11 @@ class HomeViewModel(
 
     fun onSettingsClick() {
         navigate(HomeFragmentDirections.actionHomeToSettings())
+    }
+
+    fun onSyncClick() {
+        // TODO Handle spamming this button
+        serviceStarter.startSync()
     }
 
     fun onBackPressed() {

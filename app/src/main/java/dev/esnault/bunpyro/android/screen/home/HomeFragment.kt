@@ -59,11 +59,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun setupToolbar() {
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
-            if (menuItem.itemId == R.id.settings) {
-                vm.onSettingsClick()
-                true
-            } else {
-                false
+            when (menuItem.itemId) {
+                R.id.settings -> {
+                    vm.onSettingsClick()
+                    true
+                }
+                R.id.sync -> {
+                    vm.onSyncClick()
+                    true
+                }
+                else -> false
             }
         }
     }
