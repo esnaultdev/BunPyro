@@ -52,9 +52,11 @@ ORDER BY gp.grammar_order
 SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
 COUNT(review.id) AS studied, 1 AS rank, gp.grammar_order
 FROM grammar_point AS gp
-JOIN grammar_point_fts ON gp.id = grammar_point_fts.docid
-AND grammar_point_fts.yomikata MATCH :kana
 LEFT JOIN review ON review.grammar_id = gp.id AND review.type = 0
+WHERE gp.id in
+(SELECT docid FROM grammar_point_fts WHERE yomikata MATCH :kana
+UNION
+SELECT docid FROM grammar_point_fts WHERE title MATCH :kana)
 GROUP BY gp.id
 UNION
 SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
