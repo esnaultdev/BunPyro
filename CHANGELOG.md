@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed more color issues on SDK 21
 - Fixed the lessons progress being cropped
 - Fixed a crash when searching for punctuation
+- Fixed a crash when opening the app after a long time
 
 ## [0.2.1] - 2020-03-27
 ### Fixed

@@ -1,5 +1,6 @@
 package dev.esnault.bunpyro.android.display.adapter
 
+import android.os.BadParcelableException
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.SparseArray
@@ -101,10 +102,29 @@ private fun View.saveInstanceState(): Parcelable {
 private fun View.restoreInstanceState(parcelable: Parcelable) {
     // We need to unwrap the sparseArray used in saveInstanceState
     val bundle = parcelable as? Bundle ?: return
-    val container: SparseArray<Parcelable> =
-        bundle.getSparseParcelableArray(bundleKeyViewHolderState) ?: return
 
-    restoreHierarchyState(container)
+    try {
+        val container: SparseArray<Parcelable> =
+            bundle.getSparseParcelableArray(bundleKeyViewHolderState) ?: return
+
+        restoreHierarchyState(container)
+    } catch (e: BadParcelableException) {
+        // Do nothing and lose our state
+        // This only happens when the app is recreated after being killed.
+        // It's easily reproduced with the developer option "Don't keep activities"
+        //
+        // The specific error is due to
+        // ClassNotFoundException when unmarshalling: androidx.core.widget.NestedScrollView$SavedState
+        // when android.os.Parcel.readParcelableCreator is called
+        // NestedScrollView here is just an example here, it also happens to RecyclerView, etc.
+        //
+        // I'm not quite sure what a proper fix would be.
+        // I took a look at other container widgets that do the same thing (i.e. capturing
+        // hierarchy state manually and restoring it afterwards) and it's basically the same
+        // approach.
+        // For example, the implementation of NavigationMenuPresenter is very similar.
+        // https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/internal/NavigationMenuPresenter.java
+    }
 }
 
 // endregion
