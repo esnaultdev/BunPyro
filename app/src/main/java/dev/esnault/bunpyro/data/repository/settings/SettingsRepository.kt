@@ -1,6 +1,7 @@
 package dev.esnault.bunpyro.data.repository.settings
 
 import android.content.Context
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
 import dev.esnault.bunpyro.domain.entities.settings.NightModeSetting
@@ -18,5 +19,11 @@ class SettingsRepository(context: Context) : ISettingsRepository {
     override suspend fun getFurigana(): FuriganaSetting {
         val value = sharedPreferences.getString("furigana_default", "shown")
         return FuriganaSetting.fromValue(value)
+    }
+
+    override suspend fun setFurigana(setting: FuriganaSetting) {
+        sharedPreferences.edit {
+            putString("furigana_default", setting.value)
+        }
     }
 }

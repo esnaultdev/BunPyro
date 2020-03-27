@@ -6,5 +6,7 @@ import dev.esnault.bunpyro.domain.entities.settings.NightModeSetting
 
 interface ISettingsRepository {
     suspend fun getNightMode(): NightModeSetting
+
     suspend fun getFurigana(): FuriganaSetting
+    suspend fun setFurigana(setting: FuriganaSetting)
 }
