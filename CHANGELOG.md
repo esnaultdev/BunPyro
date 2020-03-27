@@ -9,11 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Manual sync option
 
 ### Fixed
-- Fixed some search issues with romaji
 - Fixed more color issues on SDK 21
 - Fixed the lessons progress being cropped
 
-## [0.1.4] - 2020-03-23
+## [0.2.1] - 2020-03-27
+### Fixed
+- Fixed some search issues with romaji
+
+## [0.2.0] - 2020-03-23
 ### Added
 - Ability to copy the example text
 - Setting for the default furigana display
