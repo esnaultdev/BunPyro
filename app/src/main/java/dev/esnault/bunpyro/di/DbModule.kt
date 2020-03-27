@@ -5,7 +5,7 @@ import dev.esnault.bunpyro.data.db.BunPyroDatabase
 import dev.esnault.bunpyro.data.db.bunPyroDbMigrations
 import dev.esnault.bunpyro.data.db.examplesentence.ExampleSentenceDao
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
-import dev.esnault.bunpyro.data.db.grammarpoint.GrammarSearchDao
+import dev.esnault.bunpyro.data.db.search.GrammarSearchDao
 import dev.esnault.bunpyro.data.db.org.OrgSQLiteOpenHelperFactory
 import dev.esnault.bunpyro.data.db.review.ReviewDao
 import dev.esnault.bunpyro.data.db.reviewhistory.ReviewHistoryDao

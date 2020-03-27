@@ -93,7 +93,7 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
         }
 
         allAdapter?.set(viewState.jlptGrammar)
-        searchUiHelper?.searchResults = viewState.searchResults
+        searchUiHelper?.searchResult = viewState.searchResult
 
         binding.allRecyclerView.isVisible = !viewState.searching
         binding.searchRecyclerView.isVisible = viewState.searching

@@ -1,9 +1,9 @@
 package dev.esnault.bunpyro.data.service.search
 
 import com.wanakanajava.WanaKanaJava
-import dev.esnault.bunpyro.data.db.grammarpoint.GrammarSearchDao
-import dev.esnault.bunpyro.data.mapper.dbtodomain.GrammarPointOverviewMapper
-import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
+import dev.esnault.bunpyro.data.db.search.GrammarSearchDao
+import dev.esnault.bunpyro.data.mapper.dbtodomain.search.GrammarSearchResultMapper
+import dev.esnault.bunpyro.domain.entities.search.SearchResult
 import java.util.*
 
 
@@ -15,22 +15,45 @@ class SearchService(
     private val canBecomeKanaRegex = Regex("""[a-zA-Z]+""")
     private val isHiraganaRegex = Regex("""\p{Hiragana}+""")
 
-    override suspend fun search(term: String): List<GrammarPointOverview> {
+    override suspend fun search(term: String): SearchResult {
         val canBecomeKana = canBecomeKanaRegex.matches(term)
-        val result = if (canBecomeKana) {
+        return if (canBecomeKana) {
             val kanaTerm = wanakana.toKana(term.toLowerCase(Locale.ENGLISH))
             // We don't to use the kana string if it's not been entirely converted to kana
             // For example, "toutrtr" will be converted to "とうtrtr", which is no good.
             if (isHiraganaRegex.matches(kanaTerm)) {
-                grammarSearchDao.searchByTermWithKana(term, kanaTerm)
+                searchWithKana(term, kanaTerm)
             } else {
-                grammarSearchDao.searchByTerm(term)
+                searchWithoutKana(term)
             }
         } else {
-            grammarSearchDao.searchByTerm(term)
+            searchWithoutKana(term)
         }
+    }
 
-        val mapper = GrammarPointOverviewMapper()
-        return result.let(mapper::map)
+    private suspend fun searchWithKana(term: String, kanaTerm: String): SearchResult {
+        val results = grammarSearchDao.searchByTermWithKana(term, kanaTerm)
+        val mapper = GrammarSearchResultMapper()
+
+        val (kanaResults, baseResults) = results.partition { it.rank == 1 }
+
+        return SearchResult(
+            baseQuery = term,
+            baseResults = mapper.map(baseResults),
+            kanaQuery = kanaTerm,
+            kanaResults = mapper.map(kanaResults)
+        )
+    }
+
+    private suspend fun searchWithoutKana(term: String): SearchResult {
+        val results = grammarSearchDao.searchByTerm(term)
+        val mapper = GrammarSearchResultMapper()
+
+        return SearchResult(
+            baseQuery = term,
+            baseResults = mapper.map(results),
+            kanaQuery = null,
+            kanaResults = emptyList()
+        )
     }
 }

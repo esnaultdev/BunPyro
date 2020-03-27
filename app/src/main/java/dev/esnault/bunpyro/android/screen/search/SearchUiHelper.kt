@@ -10,10 +10,11 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dev.esnault.bunpyro.R
-import dev.esnault.bunpyro.android.display.adapter.GrammarOverviewAdapter
+import dev.esnault.bunpyro.android.display.adapter.SearchAdapter
 import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
 import dev.esnault.bunpyro.common.hideKeyboardFrom
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
+import dev.esnault.bunpyro.domain.entities.search.SearchResult
 
 
 /**
@@ -36,12 +37,12 @@ class SearchUiHelper(
         get() = resultsRecyclerView.context
 
     private var searchView: SearchView? = null
-    private var searchAdapter: GrammarOverviewAdapter? = null
+    private var searchAdapter: SearchAdapter? = null
 
-    var searchResults: List<GrammarPointOverview>
-        get() = searchAdapter?.grammarPoints ?: emptyList()
+    var searchResult: SearchResult?
+        get() = searchAdapter?.searchResult
         set(value) {
-            searchAdapter?.grammarPoints = value
+            searchAdapter?.searchResult = value ?: SearchResult.EMPTY
         }
 
     init {
@@ -53,7 +54,7 @@ class SearchUiHelper(
         val grammarListener = GrammarOverviewViewHolder.Listener(
             onGrammarClicked = listener.onGrammarClicked
         )
-        searchAdapter = GrammarOverviewAdapter(context, grammarListener)
+        searchAdapter = SearchAdapter(context, grammarListener)
 
         resultsRecyclerView.apply {
             adapter = searchAdapter

@@ -10,6 +10,7 @@ import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.domain.entities.JlptGrammar
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
+import dev.esnault.bunpyro.domain.entities.search.SearchResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -28,7 +29,7 @@ class AllGrammarViewModel(
     private var currentState = ViewState(
         searching = false,
         jlptGrammar = emptyList(),
-        searchResults = emptyList()
+        searchResult = SearchResult.EMPTY
     )
         set(value) {
             field = value
@@ -75,7 +76,7 @@ class AllGrammarViewModel(
             searchJob?.cancel()
         }
 
-        currentState = currentState.copy(searching = false, searchResults = emptyList())
+        currentState = currentState.copy(searching = false, searchResult = SearchResult.EMPTY)
     }
 
     fun onSearch(query: String?) {
@@ -84,19 +85,19 @@ class AllGrammarViewModel(
         }
 
         if (query.isNullOrBlank()) {
-            currentState = currentState.copy(searchResults = emptyList())
+            currentState = currentState.copy(searchResult = SearchResult.EMPTY)
             return
         }
 
         searchJob = viewModelScope.launch(Dispatchers.IO) {
-            val results = searchService.search(query)
-            currentState = currentState.copy(searchResults = results)
+            val result = searchService.search(query)
+            currentState = currentState.copy(searchResult = result)
         }
     }
 
     data class ViewState(
         val searching: Boolean,
         val jlptGrammar: List<JlptGrammar>,
-        val searchResults: List<GrammarPointOverview>
+        val searchResult: SearchResult
     )
 }

@@ -11,6 +11,7 @@ import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.domain.entities.JlptProgress
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
+import dev.esnault.bunpyro.domain.entities.search.SearchResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -29,7 +30,7 @@ class HomeViewModel(
 
     private var currentState = ViewState(
         searching = false,
-        searchResults = emptyList(),
+        searchResult = SearchResult.EMPTY,
         jlptProgress = null
     )
         set(value) {
@@ -90,7 +91,7 @@ class HomeViewModel(
             searchJob?.cancel()
         }
 
-        currentState = currentState.copy(searching = false, searchResults = emptyList())
+        currentState = currentState.copy(searching = false, searchResult = SearchResult.EMPTY)
     }
 
     fun onSearch(query: String?) {
@@ -99,19 +100,19 @@ class HomeViewModel(
         }
 
         if (query.isNullOrBlank()) {
-            currentState = currentState.copy(searchResults = emptyList())
+            currentState = currentState.copy(searchResult = SearchResult.EMPTY)
             return
         }
 
         searchJob = viewModelScope.launch(Dispatchers.IO) {
-            val results = searchService.search(query)
-            currentState = currentState.copy(searchResults = results)
+            val result = searchService.search(query)
+            currentState = currentState.copy(searchResult = result)
         }
     }
 
     data class ViewState(
         val searching: Boolean,
-        val searchResults: List<GrammarPointOverview>,
+        val searchResult: SearchResult,
         val jlptProgress: JlptProgress?
     )
 }
