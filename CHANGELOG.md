@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.4] - 2020-03-23
+## [0.2.1] - 2020-03-27
+### Fixed
+- Fixed some search issues with romaji
+
+## [0.2.0] - 2020-03-23
 ### Added
 - Ability to copy the example text
 - Setting for the default furigana display
