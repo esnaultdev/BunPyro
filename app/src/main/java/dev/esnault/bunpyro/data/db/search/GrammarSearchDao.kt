@@ -14,7 +14,7 @@ abstract class GrammarSearchDao {
 
     @Transaction
     @Query("""
-SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
+SELECT gp.id, gp.lesson, gp.title, gp.yomikata, gp.meaning, gp.incomplete,
 COUNT(review.id) AS studied, 2 AS rank, gp.grammar_order FROM grammar_point AS gp
 JOIN grammar_point_fts ON gp.id = grammar_point_fts.docid
 AND grammar_point_fts MATCH :term
@@ -30,7 +30,7 @@ ORDER BY gp.grammar_order
 
     @Transaction
     @Query("""
-SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
+SELECT gp.id, gp.lesson, gp.title, gp.yomikata, gp.meaning, gp.incomplete,
 COUNT(review.id) AS studied, 1 AS rank, gp.grammar_order
 FROM grammar_point AS gp
 LEFT JOIN review ON review.grammar_id = gp.id AND review.type = 0
@@ -40,7 +40,7 @@ UNION
 SELECT docid FROM grammar_point_fts WHERE title MATCH :kana)
 GROUP BY gp.id
 UNION
-SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
+SELECT gp.id, gp.lesson, gp.title, gp.yomikata, gp.meaning, gp.incomplete,
 COUNT(review.id) AS studied, 2 AS rank, gp.grammar_order
 FROM grammar_point AS gp
 JOIN grammar_point_fts ON gp.id = grammar_point_fts.docid

@@ -11,9 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.adapter.SearchAdapter
-import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
 import dev.esnault.bunpyro.common.hideKeyboardFrom
-import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
+import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchResult
 
 
@@ -30,7 +29,7 @@ class SearchUiHelper(
         val onOpenSearch: () -> Unit,
         val onCloseSearch: () -> Unit,
         val onSearch: (query: String?) -> Unit,
-        val onGrammarClicked: (point: GrammarPointOverview) -> Unit
+        val onGrammarClicked: (point: SearchGrammarOverview) -> Unit
     )
 
     private val context: Context
@@ -51,7 +50,7 @@ class SearchUiHelper(
     }
 
     private fun setupRecyclerView() {
-        val grammarListener = GrammarOverviewViewHolder.Listener(
+        val grammarListener = SearchAdapter.Listener(
             onGrammarClicked = listener.onGrammarClicked
         )
         searchAdapter = SearchAdapter(context, grammarListener)

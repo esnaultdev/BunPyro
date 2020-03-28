@@ -10,6 +10,7 @@ import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.domain.entities.JlptGrammar
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
+import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -55,6 +56,11 @@ class AllGrammarViewModel(
     }
 
     fun onGrammarPointClick(grammarPoint: GrammarPointOverview) {
+        val id = grammarPoint.id
+        navigate(AllGrammarFragmentDirections.actionAllGrammarToGrammarPoint(id))
+    }
+
+    fun onGrammarPointClick(grammarPoint: SearchGrammarOverview) {
         val id = grammarPoint.id
         navigate(AllGrammarFragmentDirections.actionAllGrammarToGrammarPoint(id))
     }

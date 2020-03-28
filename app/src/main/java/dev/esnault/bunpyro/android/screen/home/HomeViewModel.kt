@@ -11,6 +11,7 @@ import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.domain.entities.JlptProgress
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
+import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -61,6 +62,11 @@ class HomeViewModel(
     }
 
     fun onGrammarPointClick(grammarPoint: GrammarPointOverview) {
+        val id = grammarPoint.id
+        navigate(HomeFragmentDirections.actionHomeToGrammarPoint(id))
+    }
+
+    fun onGrammarPointClick(grammarPoint: SearchGrammarOverview) {
         val id = grammarPoint.id
         navigate(HomeFragmentDirections.actionHomeToGrammarPoint(id))
     }

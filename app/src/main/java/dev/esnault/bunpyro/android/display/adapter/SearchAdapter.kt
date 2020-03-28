@@ -1,21 +1,29 @@
 package dev.esnault.bunpyro.android.display.adapter
 
 import android.content.Context
+import android.graphics.Typeface
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import dev.esnault.bunpyro.R
-import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
+import dev.esnault.bunpyro.android.res.textResId
 import dev.esnault.bunpyro.databinding.ItemGrammarPointOverviewBinding
 import dev.esnault.bunpyro.databinding.ItemSearchHeaderBinding
+import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchResult
 
 
 class SearchAdapter(
     context: Context,
-    private val listener: GrammarOverviewViewHolder.Listener
+    private val listener: Listener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    class Listener(
+        val onGrammarClicked: (point: SearchGrammarOverview) -> Unit
+    )
 
     object ViewType {
         const val HEADER = 0
@@ -95,10 +103,10 @@ class SearchAdapter(
                 position
             }
             val isLast = basePosition == searchResult.baseResults.size
-            holder.bind(searchResult.baseResults[basePosition - 1], isLast)
+            holder.bind(searchResult.baseResults[basePosition - 1], searchResult.baseQuery, isLast)
         } else { // Kana
             val isLast = position == searchResult.kanaResults.size
-            holder.bind(searchResult.kanaResults[position - 1], isLast)
+            holder.bind(searchResult.kanaResults[position - 1], searchResult.kanaQuery, isLast)
         }
     }
 
@@ -131,6 +139,83 @@ class SearchAdapter(
             }
 
             binding.separator.isVisible = showSeparator
+        }
+    }
+
+    class GrammarOverviewViewHolder(
+        private val binding: ItemGrammarPointOverviewBinding,
+        private val listener: Listener
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        private val context: Context
+            get() = itemView.context
+
+        private var grammarPoint: SearchGrammarOverview? = null
+
+        init {
+            binding.root.setOnClickListener {
+                grammarPoint?.let(listener.onGrammarClicked)
+            }
+
+            binding.jlptTag.isVisible = true
+        }
+
+        fun bind(grammarPoint: SearchGrammarOverview, searchTerm: String?, isLast: Boolean) {
+            this.grammarPoint = grammarPoint
+
+            binding.japanese.text =
+                emphasisTitleSearchTerm(grammarPoint.title, grammarPoint.yomikata, searchTerm)
+            binding.english.text =
+                emphasisMeaningSearchTerm(grammarPoint.processedMeaning, searchTerm)
+
+            binding.bottomDivider.isVisible = !isLast
+            binding.studyHanko.isVisible = grammarPoint.studied
+
+            binding.jlptTag.setText(grammarPoint.jlpt.textResId)
+
+            // Incomplete
+            binding.background.isEnabled = !grammarPoint.incomplete
+            binding.japanese.isEnabled = !grammarPoint.incomplete
+        }
+
+        /**
+         * Bold the search term in the title.
+         * If the search term only matched the yomikata, the yomikata is displayed instead
+         */
+        private fun emphasisTitleSearchTerm(
+            title: String,
+            yomikata: String,
+            searchTerm: String?
+        ) : CharSequence {
+            if (searchTerm == null) return title
+
+            val (index, text) = when (val titleIndex = title.indexOf(searchTerm)) {
+                -1 -> when (val yomikataIndex = yomikata.indexOf(searchTerm)) {
+                    -1 -> return title
+                    else -> yomikataIndex to yomikata
+                }
+                else -> titleIndex to title
+            }
+
+            val result = SpannableStringBuilder(text)
+            val flags = SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+            result.setSpan(StyleSpan(Typeface.BOLD), index, index + searchTerm.length, flags)
+            return result
+        }
+
+        /**
+         * Bold the search term in the meaning.
+         */
+        private fun emphasisMeaningSearchTerm(text: String, searchTerm: String?): CharSequence {
+            if (searchTerm == null) return text
+
+            val index = text.indexOf(searchTerm)
+            if (index == -1) return text
+
+            val result = SpannableStringBuilder(text)
+            val flags = SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+            result.setSpan(StyleSpan(Typeface.BOLD), index, index + searchTerm.length, flags)
+            return result
         }
     }
 }
