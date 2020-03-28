@@ -3,7 +3,10 @@ package dev.esnault.bunpyro.android.screen.grammarpoint
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.esnault.bunpyro.R
@@ -32,6 +35,7 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupToolbar()
         setupPager()
         bindPagerToTabs()
 
@@ -39,6 +43,10 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
         vm.snackbar.observe(this) { message -> showSnackbar(message) }
 
         bindEvents()
+    }
+
+    private fun setupToolbar() {
+        binding.collapsingToolbarLayout.setupWithNavController(binding.toolbar, findNavController())
     }
 
     private fun setupPager() {

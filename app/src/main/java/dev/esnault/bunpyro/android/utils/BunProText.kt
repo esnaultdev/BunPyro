@@ -3,6 +3,8 @@ package dev.esnault.bunpyro.android.utils
 import android.content.Context
 import android.text.Spanned
 import android.widget.TextView
+import dev.esnault.bunpyro.android.display.span.ruby.RubySpan
+import dev.esnault.bunpyro.android.display.span.ruby.duplicateRubySpannedString
 import org.jsoup.Jsoup
 
 
@@ -90,7 +92,10 @@ fun Boolean.toRubyVisibility(): RubySpan.Visibility {
  * Return true if the visibility change of the ruby span will trigger a new layout.
  */
 fun updateTextViewFuriganas(textView: TextView, visibility: RubySpan.Visibility): Boolean {
-    val duplicatedText = duplicateRubySpannedString(textView.text)
+    val duplicatedText =
+        duplicateRubySpannedString(
+            textView.text
+        )
     val needLayout = updateTextFuriganas(duplicatedText, visibility)
     textView.text = duplicatedText
 

@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.android.utils
+package dev.esnault.bunpyro.android.display.span.ruby
 
 import android.text.SpannableStringBuilder
 import android.text.Spanned

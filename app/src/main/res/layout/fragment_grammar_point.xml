@@ -26,7 +26,8 @@
             app:collapsedTitleTextAppearance="?attr/textAppearanceHeadline6"
             app:expandedTitleGravity="bottom"
             app:expandedTitleMarginBottom="@dimen/tab_height"
-            app:expandedTitleMarginStart="16dp"
+            app:expandedTitleMarginStart="72dp"
+            app:expandedTitleMarginEnd="56dp"
             app:expandedTitleMarginTop="0dp"
             app:expandedTitleTextAppearance="@style/TextAppearance.App.GrammarPointTitle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
@@ -40,8 +41,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:elevation="0dp"
-                app:menu="@menu/grammar_point"
                 app:layout_collapseMode="pin"
+                app:menu="@menu/grammar_point"
                 tools:title="This is a long title that should span multiple lines"
                 />
 

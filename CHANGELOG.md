@@ -7,12 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Manual sync option
+- Search headers to separate romaji search from the base search
+- Navigation icons on most screens
 
 ### Fixed
 - Fixed more color issues on SDK 21
 - Fixed the lessons progress being cropped
 - Fixed a crash when searching for punctuation
 - Fixed a crash when opening the app after a long time
+- Fixed the display of grammar with html content in lists
 
 ## [0.2.1] - 2020-03-27
 ### Fixed

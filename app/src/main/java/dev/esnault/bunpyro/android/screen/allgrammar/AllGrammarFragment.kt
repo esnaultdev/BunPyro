@@ -6,12 +6,14 @@ import android.view.View
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.search.SearchUiHelper
+import dev.esnault.bunpyro.android.utils.setupWithNav
 import dev.esnault.bunpyro.databinding.FragmentAllGrammarBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -36,6 +38,7 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupToolbar()
         setupRecyclerView()
         setupSearchUiHelper()
 
@@ -49,6 +52,10 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
     override fun onDestroyView() {
         super.onDestroyView()
         searchUiHelper = null
+    }
+
+    private fun setupToolbar() {
+        binding.toolbar.setupWithNav(findNavController())
     }
 
     private fun setupRecyclerView() {
