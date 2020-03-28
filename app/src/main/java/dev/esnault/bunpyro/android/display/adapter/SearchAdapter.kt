@@ -3,6 +3,7 @@ package dev.esnault.bunpyro.android.display.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
@@ -76,10 +77,12 @@ class SearchAdapter(
     }
 
     private fun bindHeaderViewHolder(holder: HeaderViewHolder, position: Int) {
-        if (position == 0 && hasKana) {
-            holder.bind(searchResult.kanaQuery, searchResult.kanaResults.size)
+        val isFirst = position == 0
+        if (isFirst && hasKana) {
+            holder.bind(searchResult.kanaQuery, searchResult.kanaResults.size, false)
         } else {
-            holder.bind(searchResult.baseQuery, searchResult.baseResults.size)
+            val showSeparator = !isFirst && searchResult.kanaResults.isNotEmpty()
+            holder.bind(searchResult.baseQuery, searchResult.baseResults.size, showSeparator)
         }
     }
 
@@ -120,9 +123,14 @@ class SearchAdapter(
         val context: Context
             get() = itemView.context
 
-        fun bind(term: String?, count: Int) {
+        fun bind(term: String?, count: Int, showSeparator: Boolean) {
             binding.title.text = term
-            binding.count.text = context.getString(R.string.search_header_count, count)
+            binding.count.apply {
+                text = context.getString(R.string.search_header_count, count)
+                requestLayout()
+            }
+
+            binding.separator.isVisible = showSeparator
         }
     }
 }

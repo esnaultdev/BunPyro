@@ -88,6 +88,7 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
         if (searchingChanged) {
             val transition = AutoTransition().apply {
                 excludeChildren(binding.appbarLayout, true)
+                excludeChildren(binding.searchRecyclerView, true)
             }
             TransitionManager.beginDelayedTransition(binding.coordinatorLayout, transition)
         }
