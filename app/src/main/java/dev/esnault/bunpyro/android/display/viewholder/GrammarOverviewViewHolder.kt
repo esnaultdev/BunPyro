@@ -31,7 +31,7 @@ class GrammarOverviewViewHolder(
         this.grammarPoint = grammarPoint
 
         binding.japanese.text = grammarPoint.title
-        binding.english.text = grammarPoint.meaning
+        binding.english.text = grammarPoint.processedMeaning
 
         binding.bottomDivider.isVisible = !isLast
         binding.studyHanko.isVisible = grammarPoint.studied
