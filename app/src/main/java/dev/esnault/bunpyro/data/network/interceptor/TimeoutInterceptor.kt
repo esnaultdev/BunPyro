@@ -1,6 +1,5 @@
 package dev.esnault.bunpyro.data.network.interceptor
 
-import android.text.TextUtils
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -24,18 +23,18 @@ class TimeoutInterceptor : Interceptor {
         var readTimeout: Int = chain.readTimeoutMillis()
         var writeTimeout: Int = chain.writeTimeoutMillis()
 
-        val connectNew = request.header(Timeout.CONNECT)
-        val readNew = request.header(Timeout.READ)
-        val writeNew = request.header(Timeout.WRITE)
+        val connectNew = request.header(Timeout.CONNECT)?.toIntOrNull()
+        val readNew = request.header(Timeout.READ)?.toIntOrNull()
+        val writeNew = request.header(Timeout.WRITE)?.toIntOrNull()
 
-        if (!TextUtils.isEmpty(connectNew)) {
-            connectTimeout = Integer.valueOf(connectNew)
+        if (connectNew != null) {
+            connectTimeout = connectNew
         }
-        if (!TextUtils.isEmpty(readNew)) {
-            readTimeout = Integer.valueOf(readNew)
+        if (readNew != null) {
+            readTimeout = readNew
         }
-        if (!TextUtils.isEmpty(writeNew)) {
-            writeTimeout = Integer.valueOf(writeNew)
+        if (writeNew != null) {
+            writeTimeout = writeNew
         }
 
         val builder: Request.Builder = request.newBuilder()
