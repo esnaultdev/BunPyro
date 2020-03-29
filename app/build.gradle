@@ -60,7 +60,7 @@ dependencies {
     // UI
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidx.constraintlayout}"
     implementation "com.google.android.material:material:${versions.material}"
-    implementation "me.zhanghai.android.materialprogressbar:library:${versions.materialprogressbar}"
+    implementation "com.afollestad.material-dialogs:core:${versions.materialdialogs}"
     implementation "me.saket:better-link-movement-method:${versions.betterlinkmovementmethod}"
     implementation "com.andkulikov:transitionseverywhere:${versions.transitionseverywhere}"
 

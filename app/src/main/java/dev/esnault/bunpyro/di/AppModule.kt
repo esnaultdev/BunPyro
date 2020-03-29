@@ -34,7 +34,7 @@ val appModule = module {
         val args: GrammarPointFragmentArgs = params[0]
         GrammarPointViewModel(args.id, get(), get(), get())
     }
-    viewModel { AllGrammarViewModel(get(), get()) }
+    viewModel { AllGrammarViewModel(get(), get(), get()) }
 
     // endregion
 

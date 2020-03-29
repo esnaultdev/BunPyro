@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Manual sync option
 - Search headers to separate romaji search from the base search
 - JLPT tags in the search results
-- JLPT level in search results
+- JLPT filters for all grammar
 - Highlight query in search results
 - Navigation icons on most screens
 

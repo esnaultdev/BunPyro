@@ -10,11 +10,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.listItemsMultiChoice
+import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
+import dev.esnault.bunpyro.android.res.longTextResId
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.search.SearchUiHelper
 import dev.esnault.bunpyro.android.utils.setupWithNav
 import dev.esnault.bunpyro.databinding.FragmentAllGrammarBinding
+import dev.esnault.bunpyro.domain.entities.JLPT
+import dev.esnault.bunpyro.domain.entities.JlptGrammar
+import dev.esnault.bunpyro.domain.entities.grammar.AllGrammarFilter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -24,8 +31,9 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
     override val bindingClass = FragmentAllGrammarBinding::class
 
     private var allAdapter: AllGrammarAdapter? = null
-    private var oldViewState: AllGrammarViewModel.ViewState? = null
+    private var oldSearchState: AllGrammarViewModel.ViewState.Search? = null
     private var searchUiHelper: SearchUiHelper? = null
+    private var filterDialog: MaterialDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +50,16 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
         setupRecyclerView()
         setupSearchUiHelper()
 
-        vm.viewState.observe(this) { viewState ->
-            val oldViewState = oldViewState
-            this.oldViewState = viewState
-            bindViewState(oldViewState, viewState)
+        vm.allGrammar.observe(this) { allGrammar ->
+            bindAllGrammar(allGrammar)
+        }
+
+        vm.searchState.observe(this) { searchState ->
+            bindSearchState(searchState)
+        }
+
+        vm.filterDialog.observe(this) { filterDialog ->
+            bindFilterDialog(filterDialog)
         }
     }
 
@@ -56,6 +70,15 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
 
     private fun setupToolbar() {
         binding.toolbar.setupWithNav(findNavController())
+
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            if (item.itemId == R.id.filter) {
+                vm.onFilterClick()
+                true
+            } else {
+                false
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -87,11 +110,15 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
         )
     }
 
-    private fun bindViewState(
-        oldState: AllGrammarViewModel.ViewState?,
-        viewState: AllGrammarViewModel.ViewState
-    ) {
-        val searchingChanged = oldState?.searching != viewState.searching
+    private fun bindAllGrammar(allGrammar: List<JlptGrammar>) {
+        allAdapter?.set(allGrammar)
+    }
+
+    private fun bindSearchState(searchState: AllGrammarViewModel.ViewState.Search) {
+        val oldSearchState = oldSearchState
+        this.oldSearchState = searchState
+
+        val searchingChanged = oldSearchState?.searching != searchState.searching
         if (searchingChanged) {
             val transition = AutoTransition().apply {
                 excludeChildren(binding.appbarLayout, true)
@@ -100,12 +127,53 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
             TransitionManager.beginDelayedTransition(binding.coordinatorLayout, transition)
         }
 
-        allAdapter?.set(viewState.jlptGrammar)
-        searchUiHelper?.searchResult = viewState.searchResult
+        searchUiHelper?.searchResult = searchState.searchResult
 
-        binding.allRecyclerView.isVisible = !viewState.searching
-        binding.searchRecyclerView.isVisible = viewState.searching
+        binding.allRecyclerView.isVisible = !searchState.searching
+        binding.searchRecyclerView.isVisible = searchState.searching
 
-        searchUiHelper?.updateSearchViewExpansion(searchingChanged, viewState.searching)
+        searchUiHelper?.updateSearchViewExpansion(searchingChanged, searchState.searching)
+    }
+
+    private fun bindFilterDialog(dialogState: AllGrammarFilter?) {
+        filterDialog?.dismiss()
+
+        if (dialogState == null) {
+            this.filterDialog = null
+        } else {
+            openFilterDialog(dialogState)
+        }
+    }
+
+    private fun openFilterDialog(dialogState: AllGrammarFilter) {
+        val context = requireContext()
+
+        val options = listOf(JLPT.N5, JLPT.N4, JLPT.N3, JLPT.N2, JLPT.N1)
+        val items = options.map { context.getString(it.longTextResId) }
+
+        val initialSelection = options.withIndex()
+            .filter { it.value in dialogState.jlpt }
+            .map { it.index }
+            .toIntArray()
+
+        filterDialog = MaterialDialog(requireContext())
+            .title(R.string.allGrammar_filterDialog_title)
+            .positiveButton(R.string.common_ok)
+            .listItemsMultiChoice(
+                items = items,
+                initialSelection = (initialSelection),
+                waitForPositiveButton = true,
+                allowEmptySelection = true
+            ) { _, indices, _ -> // onPositiveButton
+                val selectedOptions = options.slice(indices.asIterable())
+                val newFilter = AllGrammarFilter(selectedOptions.toSet())
+                vm.onFilterUpdated(newFilter)
+            }
+            .apply {
+                setOnDismissListener {
+                    vm.onFilterDialogClosed()
+                }
+                show()
+            }
     }
 }
