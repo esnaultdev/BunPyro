@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2020-03-31
+### Added
+- Highlight query in search results using color
+
+### Fixed
+- Fixed the sync not working for some users
+- Fixed the filter dialog auto closing after navigating back
+
 ## [0.3.0] - 2020-03-29
 ### Added
 - Manual sync option
