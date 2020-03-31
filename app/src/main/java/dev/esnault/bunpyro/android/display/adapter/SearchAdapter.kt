@@ -187,12 +187,16 @@ class SearchAdapter(
         ) : CharSequence {
             if (searchTerm == null) return title
 
-            val (index, text) = when (val titleIndex = title.indexOf(searchTerm)) {
-                -1 -> when (val yomikataIndex = yomikata.indexOf(searchTerm)) {
-                    -1 -> return title
-                    else -> yomikataIndex to yomikata
+            val titleIndex = title.indexOf(searchTerm, ignoreCase = true)
+            val (index, text) = if (titleIndex == -1) {
+                val yomikataIndex = yomikata.indexOf(searchTerm, ignoreCase = true)
+                if (yomikataIndex == -1) {
+                    return title
+                } else {
+                    yomikataIndex to yomikata
                 }
-                else -> titleIndex to title
+            } else {
+                titleIndex to title
             }
 
             val result = SpannableStringBuilder(text)
@@ -206,7 +210,7 @@ class SearchAdapter(
         private fun emphasisMeaningSearchTerm(text: String, searchTerm: String?): CharSequence {
             if (searchTerm == null) return text
 
-            val index = text.indexOf(searchTerm)
+            val index = text.indexOf(searchTerm, ignoreCase = true)
             if (index == -1) return text
 
             val result = SpannableStringBuilder(text)
