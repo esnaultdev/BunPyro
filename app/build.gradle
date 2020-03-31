@@ -69,13 +69,11 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:${versions.androidx.navigation}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidx.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${versions.androidx.lifecycle}"
 
     // DI
     implementation "org.koin:koin-android:${versions.koin}"
     implementation "org.koin:koin-androidx-viewmodel:${versions.koin}"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     testImplementation "org.koin:koin-test:${versions.koin}"
 
     // DB
