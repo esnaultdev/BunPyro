@@ -34,7 +34,7 @@ val migration_1_2 = object : Migration(1, 2) {
         database.execSQL("CREATE TABLE `review_history_tmp` (`question_id` INTEGER NOT NULL, `time` INTEGER NOT NULL, `status` INTEGER NOT NULL, `attempts` INTEGER NOT NULL, `streak` INTEGER NOT NULL, `history_index` INTEGER NOT NULL, `review_id` INTEGER NOT NULL, `review_type` INTEGER NOT NULL, PRIMARY KEY(`history_index`, `review_id`, `review_type`), FOREIGN KEY(`review_id`, `review_type`) REFERENCES `review_tmp`(`id`, `type`) ON UPDATE NO ACTION ON DELETE CASCADE )")
         // Copy `review_history to `review_history_tmp`
         // Since `review_history` did not contain the review type, we need to fetch it from `review`
-        database.execSQL("INSERT INTO `review_history_tmp` SELECT `question_id`, `time`, `status`, `attempts`, `streak`, `history_index`, `review_id`, `review.type` FROM `review_history` INNER JOIN `review` ON `review_history.review_id` = `review.id`")
+        database.execSQL("INSERT INTO `review_history_tmp` SELECT `question_id`, `time`, `status`, `attempts`, `streak`, `history_index`, `review_id`, `review`.`type` FROM `review_history` INNER JOIN `review` ON `review_history`.`review_id` = `review`.`id`")
 
         // Drop `review_history`
         // This also deletes the `index_review_history_review_id` index
