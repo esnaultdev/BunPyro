@@ -136,11 +136,17 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
     }
 
     private fun bindFilterDialog(dialogState: AllGrammarFilter?) {
-        filterDialog?.dismiss()
-
         if (dialogState == null) {
-            this.filterDialog = null
+            filterDialog?.dismiss()
+            filterDialog = null
         } else {
+            // Dismiss the previous dialog without notifying the VM
+            filterDialog?.run {
+                setOnDismissListener {}
+                dismiss()
+            }
+            filterDialog = null
+
             openFilterDialog(dialogState)
         }
     }
