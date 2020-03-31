@@ -1,0 +1,428 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "9e1b1bfa39635b78ead2273b85252735",
+    "entities": [
+      {
+        "tableName": "grammar_point",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `yomikata` TEXT NOT NULL, `meaning` TEXT NOT NULL, `caution` TEXT, `structure` TEXT, `level` TEXT, `lesson` INTEGER NOT NULL, `nuance` TEXT, `incomplete` INTEGER NOT NULL, `grammar_order` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "yomikata",
+            "columnName": "yomikata",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "meaning",
+            "columnName": "meaning",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "caution",
+            "columnName": "caution",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "structure",
+            "columnName": "structure",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "level",
+            "columnName": "level",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lesson",
+            "columnName": "lesson",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nuance",
+            "columnName": "nuance",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "incomplete",
+            "columnName": "incomplete",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "order",
+            "columnName": "grammar_order",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "ftsVersion": "FTS4",
+        "ftsOptions": {
+          "tokenizer": "character",
+          "tokenizerArgs": [],
+          "contentTable": "grammar_point",
+          "languageIdColumnName": "",
+          "matchInfo": "FTS4",
+          "notIndexedColumns": [],
+          "prefixSizes": [],
+          "preferredOrder": "ASC"
+        },
+        "contentSyncTriggers": [
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_grammar_point_fts_BEFORE_UPDATE BEFORE UPDATE ON `grammar_point` BEGIN DELETE FROM `grammar_point_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_grammar_point_fts_BEFORE_DELETE BEFORE DELETE ON `grammar_point` BEGIN DELETE FROM `grammar_point_fts` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_grammar_point_fts_AFTER_UPDATE AFTER UPDATE ON `grammar_point` BEGIN INSERT INTO `grammar_point_fts`(`docid`, `title`, `yomikata`, `meaning`) VALUES (NEW.`rowid`, NEW.`title`, NEW.`yomikata`, NEW.`meaning`); END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_grammar_point_fts_AFTER_INSERT AFTER INSERT ON `grammar_point` BEGIN INSERT INTO `grammar_point_fts`(`docid`, `title`, `yomikata`, `meaning`) VALUES (NEW.`rowid`, NEW.`title`, NEW.`yomikata`, NEW.`meaning`); END"
+        ],
+        "tableName": "grammar_point_fts",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`title` TEXT NOT NULL, `yomikata` TEXT NOT NULL, `meaning` TEXT NOT NULL, tokenize=character, content=`grammar_point`)",
+        "fields": [
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "yomikata",
+            "columnName": "yomikata",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "meaning",
+            "columnName": "meaning",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "example_sentence",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `grammar_id` INTEGER NOT NULL, `japanese` TEXT NOT NULL, `english` TEXT NOT NULL, `nuance` TEXT, `audioLink` TEXT, `sentence_order` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`grammar_id`) REFERENCES `grammar_point`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "grammarId",
+            "columnName": "grammar_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "japanese",
+            "columnName": "japanese",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "english",
+            "columnName": "english",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nuance",
+            "columnName": "nuance",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "audioLink",
+            "columnName": "audioLink",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "order",
+            "columnName": "sentence_order",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_example_sentence_grammar_id",
+            "unique": false,
+            "columnNames": [
+              "grammar_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_example_sentence_grammar_id` ON `${TABLE_NAME}` (`grammar_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "grammar_point",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "grammar_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "supplemental_link",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `grammar_id` INTEGER NOT NULL, `site` TEXT NOT NULL, `link` TEXT NOT NULL, `description` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`grammar_id`) REFERENCES `grammar_point`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "grammarId",
+            "columnName": "grammar_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "site",
+            "columnName": "site",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "link",
+            "columnName": "link",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_supplemental_link_grammar_id",
+            "unique": false,
+            "columnNames": [
+              "grammar_id"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_supplemental_link_grammar_id` ON `${TABLE_NAME}` (`grammar_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "grammar_point",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "grammar_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "review",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`grammar_id` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, `next_review` INTEGER NOT NULL, `last_studied_at` INTEGER, `id` INTEGER NOT NULL, `type` INTEGER NOT NULL, PRIMARY KEY(`id`, `type`))",
+        "fields": [
+          {
+            "fieldPath": "grammarId",
+            "columnName": "grammar_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nextReview",
+            "columnName": "next_review",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastStudiedAt",
+            "columnName": "last_studied_at",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "id.id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id.type",
+            "columnName": "type",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id",
+            "type"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "review_history",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`question_id` INTEGER NOT NULL, `time` INTEGER NOT NULL, `status` INTEGER NOT NULL, `attempts` INTEGER NOT NULL, `streak` INTEGER NOT NULL, `history_index` INTEGER NOT NULL, `review_id` INTEGER NOT NULL, `review_type` INTEGER NOT NULL, PRIMARY KEY(`history_index`, `review_id`, `review_type`), FOREIGN KEY(`review_id`, `review_type`) REFERENCES `review`(`id`, `type`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "questionId",
+            "columnName": "question_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "time",
+            "columnName": "time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "attempts",
+            "columnName": "attempts",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "streak",
+            "columnName": "streak",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id.index",
+            "columnName": "history_index",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id.reviewId",
+            "columnName": "review_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id.reviewType",
+            "columnName": "review_type",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "history_index",
+            "review_id",
+            "review_type"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_review_history_review_id_review_type",
+            "unique": false,
+            "columnNames": [
+              "review_id",
+              "review_type"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_review_history_review_id_review_type` ON `${TABLE_NAME}` (`review_id`, `review_type`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "review",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "review_id",
+              "review_type"
+            ],
+            "referencedColumns": [
+              "id",
+              "type"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9e1b1bfa39635b78ead2273b85252735')"
+    ]
+  }
+}

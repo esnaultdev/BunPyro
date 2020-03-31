@@ -10,8 +10,7 @@ class GhostReviewMapper : IMapper<GhostReview, ReviewDb> {
 
     override fun map(o: GhostReview): ReviewDb {
         return ReviewDb(
-            id = o.id,
-            type = ReviewType.NORMAL,
+            id = ReviewDb.Id(o.id, ReviewType.NORMAL),
             grammarId = o.grammarId,
             createdAt = o.createdAt,
             updatedAt = o.updatedAt,

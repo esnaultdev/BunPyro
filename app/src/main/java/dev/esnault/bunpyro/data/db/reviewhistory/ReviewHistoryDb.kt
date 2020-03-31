@@ -2,6 +2,7 @@ package dev.esnault.bunpyro.data.db.reviewhistory
 
 import androidx.room.*
 import dev.esnault.bunpyro.data.db.review.ReviewDb
+import dev.esnault.bunpyro.data.db.review.ReviewType
 import java.util.*
 
 
@@ -10,12 +11,12 @@ import java.util.*
     foreignKeys = [
         ForeignKey(
             entity = ReviewDb::class,
-            parentColumns = ["id"],
-            childColumns = ["review_id"],
+            parentColumns = ["id", "type"],
+            childColumns = ["review_id", "review_type"],
             onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index("review_id")]
+    indices = [Index(value = ["review_id", "review_type"])]
 )
 data class ReviewHistoryDb(
     @PrimaryKey
@@ -29,6 +30,7 @@ data class ReviewHistoryDb(
 
     data class ItemId(
         @ColumnInfo(name = "history_index") val index: Int,
-        @ColumnInfo(name = "review_id") val reviewId: Long
+        @ColumnInfo(name = "review_id") val reviewId: Long,
+        @ColumnInfo(name = "review_type") val reviewType: ReviewType
     )
 }
