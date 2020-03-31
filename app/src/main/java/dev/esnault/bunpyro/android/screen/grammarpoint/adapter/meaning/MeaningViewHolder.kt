@@ -2,6 +2,7 @@ package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning
 
 import android.content.Context
 import android.text.Spanned
+import android.text.method.LinkMovementMethod
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState as ViewState
 import dev.esnault.bunpyro.android.display.adapter.ViewStatePagerAdapter
@@ -35,9 +36,9 @@ class MeaningViewHolder(
         }
 
     init {
-        binding.structureText.movementMethod = BetterLinkMovementMethod.newInstance()
-        binding.cautionText.movementMethod = BetterLinkMovementMethod.newInstance()
-        binding.nuanceText.movementMethod = BetterLinkMovementMethod.newInstance()
+        binding.structureText.movementMethod = BestLinkMovementMethod()
+        binding.cautionText.movementMethod = BestLinkMovementMethod()
+        binding.nuanceText.movementMethod = BestLinkMovementMethod()
     }
 
     private fun bind(oldState: ViewState?, newState: ViewState?) {
