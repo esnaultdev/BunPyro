@@ -8,6 +8,7 @@ import dev.esnault.bunpyro.data.db.examplesentence.ExampleSentenceDb
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDb
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointFtsDb
+import dev.esnault.bunpyro.data.db.search.GrammarSearchDao
 import dev.esnault.bunpyro.data.db.review.ReviewDao
 import dev.esnault.bunpyro.data.db.review.ReviewDb
 import dev.esnault.bunpyro.data.db.reviewhistory.ReviewHistoryDao
@@ -25,11 +26,12 @@ import dev.esnault.bunpyro.data.db.supplementallink.SupplementalLinkDb
         ReviewDb::class,
         ReviewHistoryDb::class
     ],
-    version = 1
+    version = 2
 )
 @TypeConverters(Converters::class)
 abstract class BunPyroDatabase : RoomDatabase() {
     abstract fun grammarPointDao(): GrammarPointDao
+    abstract fun grammarSearchDao(): GrammarSearchDao
     abstract fun exampleSentenceDao(): ExampleSentenceDao
     abstract fun supplementalLinkDao(): SupplementalLinkDao
 

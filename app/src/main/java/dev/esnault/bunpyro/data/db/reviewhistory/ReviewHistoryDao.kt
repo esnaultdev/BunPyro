@@ -4,7 +4,7 @@ import androidx.room.*
 import dev.esnault.bunpyro.data.utils.DataUpdate
 
 
-private const val itemId = "history_index, review_id"
+private const val itemId = "history_index, review_id, review_type"
 
 @Dao
 abstract class ReviewHistoryDao {

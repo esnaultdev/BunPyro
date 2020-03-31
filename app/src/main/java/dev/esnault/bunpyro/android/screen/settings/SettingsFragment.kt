@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -15,6 +14,7 @@ import dev.esnault.bunpyro.android.res.toNightMode
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
+import dev.esnault.bunpyro.android.utils.setupWithNav
 import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.databinding.FragmentSettingsBinding
 import dev.esnault.bunpyro.domain.entities.settings.NightModeSetting
@@ -29,8 +29,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         val navController = findNavController()
-
-        NavigationUI.setupWithNavController(binding.toolbar, navController)
+        binding.toolbar.setupWithNav(navController)
 
         val prefFragment = PreferenceFragment().apply {
             this.navController = navController

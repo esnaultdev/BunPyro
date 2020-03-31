@@ -14,6 +14,7 @@ import dev.esnault.bunpyro.domain.entities.grammar.ExampleSentence
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -39,6 +40,8 @@ class GrammarPointViewModel(
             _viewState.postValue(value)
         }
 
+    private var furiganaSettingJob: Job? = null
+
     init {
         loadGrammarPoint(id)
     }
@@ -46,8 +49,7 @@ class GrammarPointViewModel(
     private fun loadGrammarPoint(id: Long) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val furiganaDefault = settingsRepo.getFurigana()
-                val furiganaShown = furiganaDefault == FuriganaSetting.SHOWN
+                val furiganaShown = settingsRepo.getFurigana().asBoolean()
 
                 // TODO Handle the errors
                 // TODO make this a flow, so that we can properly update it from the network
@@ -72,7 +74,19 @@ class GrammarPointViewModel(
 
     fun onFuriganaClick() {
         val currentState = currentState ?: return
-        this.currentState = currentState.copy(furiganaShown = !currentState.furiganaShown)
+
+        val furiganaShown = !currentState.furiganaShown
+        this.currentState = currentState.copy(furiganaShown = furiganaShown)
+        updateFuriganaSetting(furiganaShown)
+    }
+
+    private fun updateFuriganaSetting(furiganaShown: Boolean) {
+        val setting = FuriganaSetting.fromBoolean(furiganaShown)
+
+        furiganaSettingJob?.cancel()
+        furiganaSettingJob = viewModelScope.launch(Dispatchers.IO) {
+            settingsRepo.setFurigana(setting)
+        }
     }
 
     fun onGrammarPointClick(id: Long) {

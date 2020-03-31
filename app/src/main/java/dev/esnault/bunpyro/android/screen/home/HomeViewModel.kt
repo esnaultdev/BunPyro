@@ -6,10 +6,13 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.NavigationCommand
+import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
 import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.domain.entities.JlptProgress
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
+import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
+import dev.esnault.bunpyro.domain.entities.search.SearchResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -18,7 +21,8 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val searchService: ISearchService,
-    private val lessonRepo: ILessonRepository
+    private val lessonRepo: ILessonRepository,
+    private val serviceStarter: IAndroidServiceStarter
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -27,7 +31,7 @@ class HomeViewModel(
 
     private var currentState = ViewState(
         searching = false,
-        searchResults = emptyList(),
+        searchResult = SearchResult.EMPTY,
         jlptProgress = null
     )
         set(value) {
@@ -62,8 +66,18 @@ class HomeViewModel(
         navigate(HomeFragmentDirections.actionHomeToGrammarPoint(id))
     }
 
+    fun onGrammarPointClick(grammarPoint: SearchGrammarOverview) {
+        val id = grammarPoint.id
+        navigate(HomeFragmentDirections.actionHomeToGrammarPoint(id))
+    }
+
     fun onSettingsClick() {
         navigate(HomeFragmentDirections.actionHomeToSettings())
+    }
+
+    fun onSyncClick() {
+        // TODO Handle spamming this button
+        serviceStarter.startSync()
     }
 
     fun onBackPressed() {
@@ -83,7 +97,7 @@ class HomeViewModel(
             searchJob?.cancel()
         }
 
-        currentState = currentState.copy(searching = false, searchResults = emptyList())
+        currentState = currentState.copy(searching = false, searchResult = SearchResult.EMPTY)
     }
 
     fun onSearch(query: String?) {
@@ -92,19 +106,19 @@ class HomeViewModel(
         }
 
         if (query.isNullOrBlank()) {
-            currentState = currentState.copy(searchResults = emptyList())
+            currentState = currentState.copy(searchResult = SearchResult.EMPTY)
             return
         }
 
         searchJob = viewModelScope.launch(Dispatchers.IO) {
-            val results = searchService.search(query)
-            currentState = currentState.copy(searchResults = results)
+            val result = searchService.search(query)
+            currentState = currentState.copy(searchResult = result)
         }
     }
 
     data class ViewState(
         val searching: Boolean,
-        val searchResults: List<GrammarPointOverview>,
+        val searchResult: SearchResult,
         val jlptProgress: JlptProgress?
     )
 }

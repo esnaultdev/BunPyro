@@ -7,6 +7,9 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.*
 import dev.esnault.bunpyro.R
+import dev.esnault.bunpyro.android.display.span.ruby.RubySpan
+import dev.esnault.bunpyro.android.display.span.FontColorSpan
+import dev.esnault.bunpyro.android.display.span.GrammarLinkSpan
 import dev.esnault.bunpyro.common.getThemeColor
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
@@ -65,7 +68,11 @@ class BunProHtml(
         }
 
         fun chuiSpan() {
-            setSpan(FontColorSpan(chuiColor))
+            setSpan(
+                FontColorSpan(
+                    chuiColor
+                )
+            )
             setSpan(StyleSpan(Typeface.BOLD))
         }
 
@@ -75,7 +82,11 @@ class BunProHtml(
                 handleLink(href, ::setSpan)
             }
             "b", "strong" -> {
-                setSpan(FontColorSpan(emphasisColor))
+                setSpan(
+                    FontColorSpan(
+                        emphasisColor
+                    )
+                )
                 setSpan(StyleSpan(Typeface.BOLD))
             }
             "br" -> spanBuilder.append("\n")
@@ -106,7 +117,11 @@ class BunProHtml(
                 is Element -> {
                     if (child.tag().name == "rt") {
                         val rubyText = child.text()
-                        val span = RubySpan(rubyText, visibility = furiganaVisibility)
+                        val span =
+                            RubySpan(
+                                rubyText,
+                                visibility = furiganaVisibility
+                            )
                         spanBuilder.setSpan(
                             span, preTextSize, postTextSize, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                     }
@@ -137,7 +152,12 @@ class BunProHtml(
             if (segments.size >= 2 && segments[segments.size - 2] == "grammar_points") {
                 val grammarId = segments.last()?.toLongOrNull()
                 if (grammarId != null) {
-                    setSpan(GrammarLinkSpan(grammarId, onGrammarPointClick))
+                    setSpan(
+                        GrammarLinkSpan(
+                            grammarId,
+                            onGrammarPointClick
+                        )
+                    )
                     return
                 }
             }

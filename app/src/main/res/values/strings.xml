@@ -14,6 +14,12 @@
     <string name="jlpt_n2">N2</string>
     <string name="jlpt_n1">N1</string>
 
+    <string name="jlptLong_n5">JLPT N5</string>
+    <string name="jlptLong_n4">JLPT N4</string>
+    <string name="jlptLong_n3">JLPT N3</string>
+    <string name="jlptLong_n2">JLPT N2</string>
+    <string name="jlptLong_n1">JLPT N1</string>
+
     <string name="apikey_hint">Api Key</string>
     <string name="apikey_start">Go</string>
     <string name="apikey_privacy">Privacy</string>
@@ -42,6 +48,7 @@
     <string name="home_all_grammar_japanese">文法</string>
     <string name="home_all_grammar_english">All grammar</string>
     <string name="home_progress_count">%1$d/%2$d</string>
+    <string name="home_menu_sync">Sync data</string>
 
     <string name="lessons_coming_soon">Coming soon!</string>
     <string name="lessons_grammar_point_incomplete">Coming soon!</string>
@@ -64,8 +71,11 @@
     <string name="action_furigana_hide">Hide furigana</string>
 
     <string name="allGrammar_title">All grammar</string>
+    <string name="allGrammar_menu_filter">Filter</string>
+    <string name="allGrammar_filterDialog_title">Filter</string>
 
     <string name="search_hint">English, 漢字, かな, romaji</string>
+    <string name="search_header_count">%d found</string>
 
     <string name="contentDescription_studiedHanko">Studied</string>
     <string name="contentDescription_appLogo">App Logo</string>
@@ -94,4 +104,7 @@
     <string name="about_sources_text">"The source code of BunPyro is available on Github. Feel free to take a look."</string>
     <string name="about_sources_action">Source code</string>
 
+    <string name="notification_sync_inProgress">Syncing grammar…</string>
+    <string name="notificationChannel_sync_name">Sync</string>
+    <string name="notificationChannel_sync_description">Synchronization of data with BunPro</string>
 </resources>

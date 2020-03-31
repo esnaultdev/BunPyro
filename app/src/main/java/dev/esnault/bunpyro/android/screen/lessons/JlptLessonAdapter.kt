@@ -1,12 +1,20 @@
 package dev.esnault.bunpyro.android.screen.lessons
 
 import android.content.Context
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.ScaleDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
 import dev.esnault.bunpyro.android.display.adapter.ViewStatePagerAdapter
+import dev.esnault.bunpyro.common.Alpha
+import dev.esnault.bunpyro.common.getThemeColor
+import dev.esnault.bunpyro.common.withAlpha
 import dev.esnault.bunpyro.databinding.ItemJlptLessonBinding
 import dev.esnault.bunpyro.databinding.TabLessonBinding
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
@@ -61,6 +69,7 @@ class JlptLessonAdapter(
 
         init {
             binding.lessonsPager.adapter = lessonAdapter
+            setupTabs()
             bindPagerToTabs()
         }
 
@@ -69,20 +78,22 @@ class JlptLessonAdapter(
                 tab.apply {
                     val tabBinding = TabLessonBinding.inflate(layoutInflater)
                     customView = tabBinding.root
+                    tab.tag = tabBinding
 
                     tabBinding.title.text = (position + 1).toString()
+                    updateTabColors(tabBinding, false)
 
                     lessonAdapter.lessons[position].let { lesson ->
                         val hasGrammar = lesson.size != 0
 
-                        tabBinding.progress.apply {
-                            if (hasGrammar) {
-                                max = lesson.size
-                                progress = lesson.studied
-
-                                visibility = View.VISIBLE
+                        tabBinding.apply {
+                            if (!hasGrammar) {
+                                progress.visibility = View.INVISIBLE
                             } else {
-                                visibility = View.INVISIBLE
+                                progress.visibility = View.VISIBLE
+
+                                progress.max = lesson.size
+                                progress.progress = lesson.studied
                             }
                         }
                     }
@@ -93,5 +104,73 @@ class JlptLessonAdapter(
         fun bind(jlptLesson: JlptLesson) {
             lessonAdapter.lessons = jlptLesson.lessons
         }
+
+        // region Tabs
+
+        private fun setupTabs() {
+            binding.lessonsTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabReselected(tab: TabLayout.Tab?) {}
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    (tab?.tag as? TabLessonBinding)?.let { updateTabColors(it, false) }
+                }
+
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    (tab?.tag as? TabLessonBinding)?.let { updateTabColors(it, true) }
+                }
+            })
+        }
+
+        // Update the progress bar colors for the selected tab.
+        // Using a colorStateList for the progress and background drawables doesn't work on API 21
+        // so we need to update the drawables colors manually
+        private fun updateTabColors(tabBinding: TabLessonBinding, selected: Boolean) {
+            (tabBinding.progress.progressDrawable as? LayerDrawable)?.apply {
+                findDrawableByLayerId(android.R.id.progress)
+                    ?.let { it as? ScaleDrawable }
+                    ?.drawable
+                    ?.mutate()
+                    ?.let { it as? GradientDrawable }
+                    ?.apply {
+                        val color = if (selected) {
+                            tabProgressColorSelected
+                        } else {
+                            tabProgressColorNormal
+                        }
+                        setColor(color)
+                    }
+
+                findDrawableByLayerId(android.R.id.background)
+                    ?.mutate()
+                    ?.let { it as? GradientDrawable }
+                    ?.apply {
+                        val color = if (selected) {
+                            tabBackgroundColorSelected
+                        } else {
+                            tabBackgroundColorNormal
+                        }
+                        setColor(color)
+                    }
+            }
+        }
+
+        // endregion
+
+        // region Resources
+
+        private val tabProgressColorNormal: Int by lazy(LazyThreadSafetyMode.NONE) {
+            context.getThemeColor(R.attr.colorOnSurface).withAlpha(Alpha.p25)
+        }
+        private val tabProgressColorSelected: Int by lazy(LazyThreadSafetyMode.NONE) {
+            context.getThemeColor(R.attr.colorControlActivated)
+        }
+        private val tabBackgroundColorNormal: Int by lazy(LazyThreadSafetyMode.NONE) {
+            context.getThemeColor(R.attr.colorOnSurface).withAlpha(Alpha.p10)
+        }
+        private val tabBackgroundColorSelected: Int by lazy(LazyThreadSafetyMode.NONE) {
+            context.getThemeColor(R.attr.colorControlActivated).withAlpha(Alpha.p20)
+        }
+
+        // endregion
     }
 }

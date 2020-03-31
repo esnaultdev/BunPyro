@@ -6,7 +6,8 @@
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".android.screen.lessons.LessonsFragment">
+    tools:context=".android.screen.lessons.LessonsFragment"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout"
@@ -17,13 +18,15 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/jlpt_lessons_tabs"
+            style="@style/Widget.MaterialComponents.TabLayout.Colored"
             android:layout_width="0dp"
             android:layout_height="@dimen/lesson_tab_height"
-            style="@style/Widget.MaterialComponents.TabLayout.Colored"
+            android:elevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:elevation="4dp"
+            app:tabPaddingEnd="0dp"
+            app:tabPaddingStart="0dp"
             />
 
         <androidx.viewpager2.widget.ViewPager2

@@ -6,6 +6,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2020-03-31
+### Added
+- Highlight query in search results using color
+
+### Fixed
+- Fixed the sync not working for some users
+- Fixed the filter dialog auto closing after navigating back
+
+## [0.3.0] - 2020-03-29
+### Added
+- Manual sync option
+- Search headers to separate romaji search from the base search
+- JLPT tags in the search results
+- JLPT filters for all grammar
+- Highlight query in search results
+- Navigation icons on most screens
+
+### Fixed
+- Fixed more color issues on SDK 21
+- Fixed the lessons progress being cropped
+- Fixed a crash when searching for punctuation
+- Fixed a crash when opening the app after a long time
+- Fixed the display of grammar with html content in lists
+
 ## [0.2.1] - 2020-03-27
 ### Fixed
 - Fixed some search issues with romaji

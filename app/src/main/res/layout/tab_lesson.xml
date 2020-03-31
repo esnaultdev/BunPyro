@@ -24,20 +24,21 @@
         tools:text="1"
         />
 
-    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+    <ProgressBar
         android:id="@+id/progress"
-        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="40dp"
         android:layout_height="4dp"
         android:indeterminate="false"
+        android:progressDrawable="@drawable/lesson_tab_progressbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
-        app:mpb_progressBackgroundTint="@color/lesson_tabs_progress_background_color_selector"
-        app:mpb_progressStyle="horizontal"
-        app:mpb_progressTint="@color/lesson_tabs_progress_color_selector"
-        app:mpb_useIntrinsicPadding="false"
+        tools:max="100"
+        tools:progress="50"
+        tools:progressBackgroundTint="@color/colorPrimaryDark"
+        tools:progressTint="@color/colorAccent"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

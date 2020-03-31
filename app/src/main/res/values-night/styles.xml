@@ -2,7 +2,9 @@
 <resources>
 
     <style name="AppTheme" parent="DayNight.AppTheme">
-        <item name="secondaryColorOnToolbar">@color/secondary_color_on_primary</item>
+        <item name="secondaryColorOnPrimary">@color/white_80</item>
+        <item name="secondaryColorOnToolbar">?secondaryColorOnPrimary</item>
+        <item name="colorSurfaceSecondary">@color/surfaceColorSecondary_dark</item>
         <item name="textEmphasisColor">?colorAccent</item>
     </style>
 
@@ -10,7 +12,7 @@
         <item name="android:textColorPrimary">?attr/colorOnSurface</item>
         <item name="colorControlNormal">?attr/colorOnSurface</item>
         <item name="android:editTextColor">?attr/colorOnSurface</item>
-        <item name="android:textColorHint">@color/secondary_color_on_primary</item>
+        <item name="android:textColorHint">?secondaryColorOnPrimary</item>
         <item name="colorOnToolbar">?colorOnSurface</item>
         <item name="android:textColorSecondary">?attr/colorOnSurface</item>
     </style>

@@ -25,18 +25,20 @@ class GrammarOverviewViewHolder(
         binding.root.setOnClickListener {
             grammarPoint?.let(listener.onGrammarClicked)
         }
+
+        binding.jlptTag.isVisible = false
     }
 
     fun bind(grammarPoint: GrammarPointOverview, isLast: Boolean) {
         this.grammarPoint = grammarPoint
 
         binding.japanese.text = grammarPoint.title
-        binding.english.text = grammarPoint.meaning
+        binding.english.text = grammarPoint.processedMeaning
 
         binding.bottomDivider.isVisible = !isLast
         binding.studyHanko.isVisible = grammarPoint.studied
 
-        // Completion
+        // Incomplete
         binding.background.isEnabled = !grammarPoint.incomplete
         binding.japanese.isEnabled = !grammarPoint.incomplete
     }

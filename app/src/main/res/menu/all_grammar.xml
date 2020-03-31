@@ -12,4 +12,11 @@
         app:showAsAction="always|collapseActionView"
         />
 
+    <item
+        android:id="@+id/filter"
+        android:icon="@drawable/ic_filter_list_24dp"
+        android:title="@string/allGrammar_menu_filter"
+        app:showAsAction="ifRoom"
+        />
+
 </menu>

@@ -12,3 +12,12 @@ val JLPT.textResId: Int
         JLPT.N2 -> R.string.jlpt_n2
         JLPT.N1 -> R.string.jlpt_n1
     }
+
+val JLPT.longTextResId: Int
+    get() = when (this) {
+        JLPT.N5 -> R.string.jlptLong_n5
+        JLPT.N4 -> R.string.jlptLong_n4
+        JLPT.N3 -> R.string.jlptLong_n3
+        JLPT.N2 -> R.string.jlptLong_n2
+        JLPT.N1 -> R.string.jlptLong_n1
+    }

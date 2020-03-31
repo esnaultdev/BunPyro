@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.res.toNightMode
+import dev.esnault.bunpyro.data.db.loadCustomSQLite
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
@@ -13,9 +14,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         init {
-            // Load the custom SQLite library with its tokenizers
-            System.loadLibrary("sqliteX")
-            System.loadLibrary("tokenizers")
+            loadCustomSQLite()
         }
     }
 

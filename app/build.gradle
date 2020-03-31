@@ -13,9 +13,16 @@ android {
         applicationId "dev.esnault.bunpyro"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 7
-        versionName "0.2.1"
+        versionCode 9
+        versionName "0.3.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -42,6 +49,11 @@ android {
     viewBinding {
         enabled = true
     }
+
+    sourceSets {
+        // Adds exported schema location as test app assets.
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
 }
 
 dependencies {
@@ -60,7 +72,7 @@ dependencies {
     // UI
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidx.constraintlayout}"
     implementation "com.google.android.material:material:${versions.material}"
-    implementation "me.zhanghai.android.materialprogressbar:library:${versions.materialprogressbar}"
+    implementation "com.afollestad.material-dialogs:core:${versions.materialdialogs}"
     implementation "me.saket:better-link-movement-method:${versions.betterlinkmovementmethod}"
     implementation "com.andkulikov:transitionseverywhere:${versions.transitionseverywhere}"
 
@@ -69,19 +81,18 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:${versions.androidx.navigation}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidx.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${versions.androidx.lifecycle}"
 
     // DI
     implementation "org.koin:koin-android:${versions.koin}"
     implementation "org.koin:koin-androidx-viewmodel:${versions.koin}"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     testImplementation "org.koin:koin-test:${versions.koin}"
 
     // DB
     implementation "androidx.room:room-runtime:${versions.androidx.room}"
     kapt "androidx.room:room-compiler:${versions.androidx.room}"
     implementation "androidx.room:room-ktx:${versions.androidx.room}"
+    androidTestImplementation "androidx.room:room-testing:${versions.androidx.room}"
 
     // Network
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"

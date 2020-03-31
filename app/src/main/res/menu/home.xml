@@ -18,4 +18,10 @@
         app:showAsAction="never"
         />
 
+    <item
+        android:id="@+id/sync"
+        android:title="@string/home_menu_sync"
+        app:showAsAction="never"
+        />
+
 </menu>

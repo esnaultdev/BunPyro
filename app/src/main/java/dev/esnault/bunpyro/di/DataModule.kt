@@ -2,6 +2,7 @@ package dev.esnault.bunpyro.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import dev.esnault.bunpyro.BuildConfig
 import dev.esnault.bunpyro.data.config.AppConfig
 import dev.esnault.bunpyro.data.config.FakeAppConfig
 import dev.esnault.bunpyro.data.config.IAppConfig
@@ -11,6 +12,7 @@ import dev.esnault.bunpyro.data.sync.ISyncService
 import dev.esnault.bunpyro.data.sync.SyncService
 import dev.esnault.bunpyro.data.utils.crashreport.CrashlyticsReporter
 import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
+import dev.esnault.bunpyro.data.utils.crashreport.LogCrashReporter
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -50,6 +52,10 @@ val serviceModule = module {
     }
 
     single<ICrashReporter> {
-        CrashlyticsReporter()
+        if (BuildConfig.DEBUG) {
+            LogCrashReporter()
+        } else {
+            CrashlyticsReporter()
+        }
     }
 }

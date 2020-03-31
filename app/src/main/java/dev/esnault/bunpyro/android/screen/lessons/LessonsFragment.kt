@@ -1,15 +1,22 @@
 package dev.esnault.bunpyro.android.screen.lessons
 
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.ScaleDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.res.textResId
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel.SnackBarMessage
 import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel.ViewState
+import dev.esnault.bunpyro.common.Alpha
+import dev.esnault.bunpyro.common.getThemeColor
+import dev.esnault.bunpyro.common.withAlpha
 import dev.esnault.bunpyro.databinding.FragmentLessonsBinding
 import dev.esnault.bunpyro.databinding.TabJlptLessonBinding
 import dev.esnault.bunpyro.domain.entities.JLPT
@@ -27,6 +34,7 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         setupPager()
+        setupTabs()
         bindPagerToTabs()
 
         vm.viewState.observe(this) { viewState -> bindViewState(viewState) }
@@ -48,12 +56,16 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
 
                 val tabBinding = TabJlptLessonBinding.inflate(layoutInflater)
                 customView = tabBinding.root
+                tag = tabBinding
 
                 tabBinding.title.text = getString(jlpt.textResId)
+                updateTabColors(tabBinding, false)
 
                 lessonsAdapter?.jlptLessons?.get(position)?.let { jlptLesson ->
-                    tabBinding.progress.max = jlptLesson.size
-                    tabBinding.progress.progress = jlptLesson.studied
+                    tabBinding.apply {
+                        progress.max = jlptLesson.size
+                        progress.progress = jlptLesson.studied
+                    }
                 }
             }
         }.attach()
@@ -74,4 +86,72 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
         Snackbar.make(contextView, textResId, Snackbar.LENGTH_SHORT)
             .show()
     }
+
+    // region Tabs
+
+    private fun setupTabs() {
+        binding.jlptLessonsTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                (tab?.tag as? TabJlptLessonBinding)?.let { updateTabColors(it, false) }
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                (tab?.tag as? TabJlptLessonBinding)?.let { updateTabColors(it, true) }
+            }
+        })
+    }
+
+    // Update the progress bar colors for the selected tab.
+    // Using a colorStateList for the progress and background drawables doesn't work on API 21
+    // so we need to update the drawables colors manually
+    private fun updateTabColors(tabBinding: TabJlptLessonBinding, selected: Boolean) {
+        (tabBinding.progress.progressDrawable as? LayerDrawable)?.apply {
+            findDrawableByLayerId(android.R.id.progress)
+                ?.let { it as? ScaleDrawable }
+                ?.drawable
+                ?.mutate()
+                ?.let { it as? GradientDrawable }
+                ?.apply {
+                    val color = if (selected) {
+                        tabProgressColorSelected
+                    } else {
+                        tabProgressColorNormal
+                    }
+                    setColor(color)
+                }
+
+            findDrawableByLayerId(android.R.id.background)
+                ?.mutate()
+                ?.let { it as? GradientDrawable }
+                ?.apply {
+                    val color = if (selected) {
+                        tabBackgroundColorSelected
+                    } else {
+                        tabBackgroundColorNormal
+                    }
+                    setColor(color)
+                }
+        }
+    }
+
+    // endregion
+
+    // region Resources
+
+    private val tabProgressColorNormal: Int by lazy(LazyThreadSafetyMode.NONE) {
+        requireContext().getThemeColor(R.attr.colorOnPrimary).withAlpha(Alpha.p40)
+    }
+    private val tabProgressColorSelected: Int by lazy(LazyThreadSafetyMode.NONE) {
+        requireContext().getThemeColor(R.attr.colorOnPrimary)
+    }
+    private val tabBackgroundColorNormal: Int by lazy(LazyThreadSafetyMode.NONE) {
+        requireContext().getThemeColor(R.attr.colorOnPrimary).withAlpha(Alpha.p20)
+    }
+    private val tabBackgroundColorSelected: Int by lazy(LazyThreadSafetyMode.NONE) {
+        requireContext().getThemeColor(R.attr.colorOnPrimary).withAlpha(Alpha.p30)
+    }
+
+    // endregion
 }
