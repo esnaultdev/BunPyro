@@ -49,6 +49,11 @@ android {
     viewBinding {
         enabled = true
     }
+
+    sourceSets {
+        // Adds exported schema location as test app assets.
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
 }
 
 dependencies {
@@ -87,7 +92,7 @@ dependencies {
     implementation "androidx.room:room-runtime:${versions.androidx.room}"
     kapt "androidx.room:room-compiler:${versions.androidx.room}"
     implementation "androidx.room:room-ktx:${versions.androidx.room}"
-    testImplementation "androidx.room:room-testing:${versions.androidx.room}"
+    androidTestImplementation "androidx.room:room-testing:${versions.androidx.room}"
 
     // Network
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
