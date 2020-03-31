@@ -1,5 +1,6 @@
 package dev.esnault.bunpyro.android.screen.grammarpoint.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ import dev.esnault.bunpyro.databinding.LayoutGrammarPointReadingBinding
 
 
 class GrammarPointPagerAdapter(
-    context: Context,
+    private val activity: Activity,
     private val listener: Listener
 ) : ViewStatePagerAdapter<ViewStatePagerAdapter.ViewHolder>() {
 
@@ -24,7 +25,7 @@ class GrammarPointPagerAdapter(
         val readingListener: ReadingViewHolder.Listener
     )
 
-    private val inflater = LayoutInflater.from(context)
+    private val inflater = LayoutInflater.from(activity)
 
     var viewState: GrammarPointViewModel.ViewState? = null
         set(value) {
@@ -43,7 +44,7 @@ class GrammarPointPagerAdapter(
         return when (GrammarPointTab.get(viewType)) {
             GrammarPointTab.MEANING -> {
                 val binding = LayoutGrammarPointMeaningBinding.inflate(inflater, parent, false)
-                MeaningViewHolder(binding, listener.meaningListener)
+                MeaningViewHolder(activity, binding, listener.meaningListener)
             }
             GrammarPointTab.EXAMPLES -> {
                 val binding = LayoutGrammarPointExamplesBinding.inflate(inflater, parent, false)

@@ -66,7 +66,7 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
             )
         )
 
-        pagerAdapter = GrammarPointPagerAdapter(context!!, listener)
+        pagerAdapter = GrammarPointPagerAdapter(requireActivity(), listener)
         binding.pager.adapter = pagerAdapter
     }
 

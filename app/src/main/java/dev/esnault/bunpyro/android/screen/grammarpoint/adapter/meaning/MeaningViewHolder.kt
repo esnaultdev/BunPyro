@@ -1,18 +1,19 @@
 package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning
 
+import android.app.Activity
 import android.content.Context
 import android.text.Spanned
-import android.text.method.LinkMovementMethod
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState as ViewState
 import dev.esnault.bunpyro.android.display.adapter.ViewStatePagerAdapter
+import dev.esnault.bunpyro.common.addFocusRemover
 import dev.esnault.bunpyro.common.hide
 import dev.esnault.bunpyro.common.show
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointMeaningBinding
-import me.saket.bettermovementmethod.BetterLinkMovementMethod
 
 
 class MeaningViewHolder(
+    private val activity: Activity,
     private val binding: LayoutGrammarPointMeaningBinding,
     private val listener: Listener
 ) : ViewStatePagerAdapter.ViewHolder(binding.root) {
@@ -23,7 +24,7 @@ class MeaningViewHolder(
     )
 
     private val context: Context
-        get() = itemView.context
+        get() = activity
 
     var viewState: ViewState? = null
         set(value) {
@@ -39,6 +40,8 @@ class MeaningViewHolder(
         binding.structureText.movementMethod = BestLinkMovementMethod()
         binding.cautionText.movementMethod = BestLinkMovementMethod()
         binding.nuanceText.movementMethod = BestLinkMovementMethod()
+
+        binding.meaningScrollView.addFocusRemover(activity)
     }
 
     private fun bind(oldState: ViewState?, newState: ViewState?) {
