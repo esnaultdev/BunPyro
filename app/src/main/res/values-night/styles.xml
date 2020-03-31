@@ -4,6 +4,7 @@
     <style name="AppTheme" parent="DayNight.AppTheme">
         <item name="secondaryColorOnPrimary">@color/white_80</item>
         <item name="secondaryColorOnToolbar">?secondaryColorOnPrimary</item>
+        <item name="colorSurfaceSecondary">@color/surfaceColorSecondary_dark</item>
         <item name="textEmphasisColor">?colorAccent</item>
     </style>
 

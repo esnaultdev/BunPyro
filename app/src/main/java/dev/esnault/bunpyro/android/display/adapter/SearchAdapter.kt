@@ -3,6 +3,7 @@ package dev.esnault.bunpyro.android.display.adapter
 import android.content.Context
 import android.graphics.Typeface
 import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.res.textResId
+import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.databinding.ItemGrammarPointOverviewBinding
 import dev.esnault.bunpyro.databinding.ItemSearchHeaderBinding
 import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
@@ -85,12 +87,10 @@ class SearchAdapter(
     }
 
     private fun bindHeaderViewHolder(holder: HeaderViewHolder, position: Int) {
-        val isFirst = position == 0
-        if (isFirst && hasKana) {
-            holder.bind(searchResult.kanaQuery, searchResult.kanaResults.size, false)
+        if (position == 0 && hasKana) {
+            holder.bind(searchResult.kanaQuery, searchResult.kanaResults.size)
         } else {
-            val showSeparator = !isFirst && searchResult.kanaResults.isNotEmpty()
-            holder.bind(searchResult.baseQuery, searchResult.baseResults.size, showSeparator)
+            holder.bind(searchResult.baseQuery, searchResult.baseResults.size)
         }
     }
 
@@ -131,14 +131,12 @@ class SearchAdapter(
         val context: Context
             get() = itemView.context
 
-        fun bind(term: String?, count: Int, showSeparator: Boolean) {
+        fun bind(term: String?, count: Int) {
             binding.title.text = term
             binding.count.apply {
                 text = context.getString(R.string.search_header_count, count)
                 requestLayout()
             }
-
-            binding.separator.isVisible = showSeparator
         }
     }
 
@@ -198,8 +196,7 @@ class SearchAdapter(
             }
 
             val result = SpannableStringBuilder(text)
-            val flags = SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
-            result.setSpan(StyleSpan(Typeface.BOLD), index, index + searchTerm.length, flags)
+            result.setEmphasisSpan(index, searchTerm.length)
             return result
         }
 
@@ -213,9 +210,15 @@ class SearchAdapter(
             if (index == -1) return text
 
             val result = SpannableStringBuilder(text)
-            val flags = SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
-            result.setSpan(StyleSpan(Typeface.BOLD), index, index + searchTerm.length, flags)
+            result.setEmphasisSpan(index, searchTerm.length)
             return result
+        }
+
+        private fun SpannableStringBuilder.setEmphasisSpan(index: Int, length: Int) {
+            val textColor = context.getThemeColor(R.attr.colorPrimary)
+            val flags = SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+            setSpan(StyleSpan(Typeface.BOLD), index, index + length, flags)
+            setSpan(ForegroundColorSpan(textColor), index, index + length, flags)
         }
     }
 }

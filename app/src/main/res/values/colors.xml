@@ -2,10 +2,16 @@
 <resources>
     <color name="colorPrimary">#1E88E5</color>
     <color name="colorPrimaryDark">#1565C0</color>
+    <color name="colorPrimaryLight">#90CAF9</color>
     <color name="colorAccent">#40C4FF</color>
 
     <color name="white_80">#CCFFFFFF</color>
+    <color name="black_87">#DE000000</color>
     <color name="black_80">#CC000000</color>
+    <color name="black_60">#99000000</color>
+
+    <color name="surfaceColorSecondary_light">#EEEEEE</color>
+    <color name="surfaceColorSecondary_dark">#222222</color>
 
     <color name="chuiTextColor">#F57C00</color>
     <color name="launchScreenBackgroundColor">#424242</color>

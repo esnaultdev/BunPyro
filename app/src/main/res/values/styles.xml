@@ -13,6 +13,7 @@
     </style>
 
     <style name="AppTheme" parent="DayNight.AppTheme">
+        <item name="colorSurfaceSecondary">@color/surfaceColorSecondary_light</item>
         <item name="secondaryColorOnToolbar">?colorOnToolbar</item>
         <item name="secondaryColorOnPrimary">@color/white_80</item>
         <item name="textEmphasisColor">?colorPrimaryDark</item>
