@@ -5,7 +5,6 @@ import android.view.View
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
@@ -124,9 +123,16 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
         binding.collapsingToolbarLayout.setOnClickListener {
             vm.onTitleClick()
         }
-
+        binding.collapsingToolbarLayout.setOnLongClickListener {
+            vm.onTitleLongClick()
+            true
+        }
         binding.toolbar.setOnClickListener {
             vm.onTitleClick()
+        }
+        binding.toolbar.setOnLongClickListener {
+            vm.onTitleLongClick()
+            true
         }
 
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
@@ -148,6 +154,7 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
         val textResId = when (message) {
             is SnackBarMessage.JapaneseCopied -> R.string.grammarPoint_snackbar_japaneseCopied
             is SnackBarMessage.EnglishCopied -> R.string.grammarPoint_snackbar_englishCopied
+            is SnackBarMessage.TitleCopied -> R.string.grammarPoint_snackbar_titleCopied
         }
 
         // We're using the coordinator layout as the context view to have the swipe to dismiss

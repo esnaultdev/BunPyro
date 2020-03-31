@@ -72,6 +72,17 @@ class GrammarPointViewModel(
         this.currentState = currentState.copy(titleYomikataShown = !currentState.titleYomikataShown)
     }
 
+    fun onTitleLongClick() {
+        val currentState = currentState ?: return
+        val toCopy = if (currentState.titleYomikataShown) {
+            currentState.grammarPoint.yomikata
+        } else {
+            currentState.grammarPoint.title
+        }
+        clipboard.copy(buildCopyLabel(currentState.grammarPoint), toCopy)
+        _snackbar.postValue(SnackBarMessage.TitleCopied)
+    }
+
     fun onFuriganaClick() {
         val currentState = currentState ?: return
 
@@ -120,6 +131,10 @@ class GrammarPointViewModel(
         _snackbar.postValue(SnackBarMessage.EnglishCopied)
     }
 
+    private fun buildCopyLabel(grammarPoint: GrammarPoint): String {
+        return "Bunpro Grammar #${grammarPoint.id}"
+    }
+
     private fun buildCopyLabel(sentence: ExampleSentence): String {
         return "Bunpro Example #${sentence.id}"
     }
@@ -141,5 +156,6 @@ class GrammarPointViewModel(
     sealed class SnackBarMessage {
         object JapaneseCopied : SnackBarMessage()
         object EnglishCopied : SnackBarMessage()
+        object TitleCopied : SnackBarMessage()
     }
 }

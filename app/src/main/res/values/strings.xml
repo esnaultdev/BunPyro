@@ -66,6 +66,7 @@
     <string name="grammarPoint_tab_examples_copyEnglish">Copy English</string>
     <string name="grammarPoint_snackbar_japaneseCopied">Japanese text copied</string>
     <string name="grammarPoint_snackbar_englishCopied">English text copied</string>
+    <string name="grammarPoint_snackbar_titleCopied">Text copied</string>
 
     <string name="action_furigana_show">Show furigana</string>
     <string name="action_furigana_hide">Hide furigana</string>
