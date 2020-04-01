@@ -92,10 +92,7 @@ fun Boolean.toRubyVisibility(): RubySpan.Visibility {
  * Return true if the visibility change of the ruby span will trigger a new layout.
  */
 fun updateTextViewFuriganas(textView: TextView, visibility: RubySpan.Visibility): Boolean {
-    val duplicatedText =
-        duplicateRubySpannedString(
-            textView.text
-        )
+    val duplicatedText = duplicateRubySpannedString(textView.text)
     val needLayout = updateTextFuriganas(duplicatedText, visibility)
     textView.text = duplicatedText
 

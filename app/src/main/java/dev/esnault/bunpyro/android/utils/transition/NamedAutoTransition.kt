@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.android.utils
+package dev.esnault.bunpyro.android.utils.transition
 
 import androidx.transition.AutoTransition
 import androidx.transition.ChangeBounds

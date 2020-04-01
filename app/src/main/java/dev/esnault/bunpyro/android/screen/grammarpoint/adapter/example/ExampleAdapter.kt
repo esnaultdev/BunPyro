@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
-import com.transitionseverywhere.ChangeText
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState
 import dev.esnault.bunpyro.android.utils.*
+import dev.esnault.bunpyro.android.utils.transition.ChangeText
+import dev.esnault.bunpyro.android.utils.transition.NamedAutoTransition
 import dev.esnault.bunpyro.common.Alpha
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.common.withAlpha
@@ -141,7 +142,8 @@ class ExampleAdapter(
         }
 
         private fun updateExpansion(example: ViewState.Example) {
-            val transition = NamedAutoTransition().apply {
+            val transition = NamedAutoTransition()
+                .apply {
                 // The change bounds needs to be in sync with the animations made by the recycler
                 // view moving this view to its new position
                 ordering = TransitionSet.ORDERING_TOGETHER
