@@ -47,15 +47,22 @@
                 app:layout_constraintGuide_end="8dp"
                 />
 
+            <!--
+             * WORKAROUND
+             * Having these TextViews use match_constraint breaks the textIsSelectable
+             * when the view holder gets recycled.
+             -->
             <TextView
                 android:id="@+id/japanese"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 android:textIsSelectable="true"
                 android:textSize="18sp"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Sentence in Japanese"
@@ -63,7 +70,7 @@
 
             <TextView
                 android:id="@+id/english"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:scrollbars="none"
@@ -71,7 +78,9 @@
                 android:textIsSelectable="true"
                 android:textSize="16sp"
                 android:visibility="visible"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/japanese"
                 tools:text="Sentence in english"
@@ -80,14 +89,16 @@
 
             <TextView
                 android:id="@+id/nuance"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:scrollbars="none"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 android:textIsSelectable="true"
                 android:visibility="gone"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/english"
                 tools:text="Some nuance about the sentence"

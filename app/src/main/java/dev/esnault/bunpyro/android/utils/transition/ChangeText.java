@@ -21,12 +21,12 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
+import android.text.SpannableStringBuilder;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Map;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -194,7 +194,7 @@ public class ChangeText extends Transition {
         } else {
             startSelectionStart = startSelectionEnd = endSelectionStart = endSelectionEnd = -1;
         }
-        if (!startText.equals(endText)) {
+        if (!isSameText(startText, endText)) {
             final int startColor;
             final int endColor;
             if (mChangeBehavior != CHANGE_BEHAVIOR_IN) {
@@ -333,8 +333,15 @@ public class ChangeText extends Transition {
 
     // WORKAROUND
     private static boolean isSameText(CharSequence first, CharSequence second) {
-        // Let's be careful about nulls
-        return Objects.equals(Objects.toString(first), Objects.toString(second));
+        if (first == null || second == null) {
+            return first == null && second == null;
+        }
+
+        // By copying the text, we're getting rid of the NoCopySpans
+        // that are making the equals() comparison fail
+        SpannableStringBuilder firstSpanned = new SpannableStringBuilder(first);
+        SpannableStringBuilder secondSpanned = new SpannableStringBuilder(second);
+
+        return firstSpanned.equals(secondSpanned);
     }
 }
-
