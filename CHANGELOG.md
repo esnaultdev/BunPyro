@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.2] - 2020-04-01
+### Added
+- Selectable text for a grammar point's name, details (structure, caution, ...) and examples
+
 ## [0.3.1] - 2020-03-31
 ### Added
 - Highlight query in search results using color
