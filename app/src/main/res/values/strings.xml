@@ -95,6 +95,7 @@
     <string name="settings_root_about">About BunPyro</string>
     <string name="settings_root_licenses">Licenses</string>
     <string name="settings_root_privacy">Privacy</string>
+    <string name="settings_root_version">Version</string>
 
     <string name="about_intro">BunPyro is a companion application for Bunpro, the website to learn Japanese grammar.</string>
     <string name="about_checkBunpro">Check BunPro</string>

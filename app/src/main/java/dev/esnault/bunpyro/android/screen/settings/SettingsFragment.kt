@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import dev.esnault.bunpyro.BuildConfig
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.res.toNightMode
 import dev.esnault.bunpyro.android.screen.ScreenConfig
@@ -67,6 +68,17 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
             findPreference<ListPreference>("furigana_default")?.apply {
                 summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+            }
+
+            findPreference<Preference>("about_version")?.apply {
+                val versionName = BuildConfig.VERSION_NAME
+                val versionCode = BuildConfig.VERSION_CODE
+
+                summary = if (BuildConfig.DEBUG) {
+                    "$versionName ($versionCode) debug"
+                } else {
+                    "$versionName ($versionCode)"
+                }
             }
         }
 

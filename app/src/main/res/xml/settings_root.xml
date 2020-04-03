@@ -45,6 +45,11 @@
             app:title="@string/settings_root_licenses"
             />
 
+        <Preference
+            app:key="about_version"
+            app:title="@string/settings_root_version"
+            />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
