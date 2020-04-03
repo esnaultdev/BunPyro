@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.NavigationCommand
+import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
@@ -39,6 +40,10 @@ class AllGrammarViewModel(
     private val _filterDialog = MutableLiveData<AllGrammarFilter?>()
     val filterDialog: LiveData<AllGrammarFilter?>
         get() = _filterDialog
+
+    private val _snackbar = SingleLiveEvent<SnackBarMessage>()
+    val snackbar: LiveData<SnackBarMessage>
+        get() = _snackbar
 
     // endregion
 
@@ -84,13 +89,19 @@ class AllGrammarViewModel(
     }
 
     fun onGrammarPointClick(grammarPoint: GrammarPointOverview) {
-        val id = grammarPoint.id
-        navigate(AllGrammarFragmentDirections.actionAllGrammarToGrammarPoint(id))
+        onNavigateToGrammarPoint(grammarPoint.incomplete, grammarPoint.id)
     }
 
     fun onGrammarPointClick(grammarPoint: SearchGrammarOverview) {
-        val id = grammarPoint.id
-        navigate(AllGrammarFragmentDirections.actionAllGrammarToGrammarPoint(id))
+        onNavigateToGrammarPoint(grammarPoint.incomplete, grammarPoint.id)
+    }
+
+    private fun onNavigateToGrammarPoint(incomplete: Boolean, id: Long) {
+        if (incomplete) {
+            _snackbar.postValue(SnackBarMessage.Incomplete)
+        } else {
+            navigate(AllGrammarFragmentDirections.actionAllGrammarToGrammarPoint(id))
+        }
     }
 
     // endregion
@@ -201,4 +212,8 @@ class AllGrammarViewModel(
         val searchResult: SearchResult,
         val filter: AllGrammarFilter
     )
+
+    sealed class SnackBarMessage {
+        object Incomplete : SnackBarMessage()
+    }
 }

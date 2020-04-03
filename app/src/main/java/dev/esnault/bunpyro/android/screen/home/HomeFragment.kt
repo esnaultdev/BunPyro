@@ -8,8 +8,10 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
+import com.google.android.material.snackbar.Snackbar
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
+import dev.esnault.bunpyro.android.screen.home.HomeViewModel.SnackBarMessage
 import dev.esnault.bunpyro.android.screen.search.SearchUiHelper
 import dev.esnault.bunpyro.databinding.FragmentHomeBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -50,6 +52,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             this.oldViewState = viewState
             bindViewState(oldViewState, viewState)
         }
+
+        vm.snackbar.observe(this) { snackBarMessage -> showSnackbar(snackBarMessage) }
     }
 
     override fun onDestroyView() {
@@ -109,5 +113,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.searchRecyclerView.isVisible = viewState.searching
 
         searchUiHelper?.updateSearchViewExpansion(searchingChanged, viewState.searching)
+    }
+
+    private fun showSnackbar(message: SnackBarMessage) {
+        val textResId = when (message) {
+            is SnackBarMessage.Incomplete -> R.string.common_grammarPoint_incomplete
+        }
+
+        // We're using the coordinator layout as the context view to have the swipe to dismiss
+        // gesture
+        val contextView = binding.coordinatorLayout
+        Snackbar.make(contextView, textResId, Snackbar.LENGTH_SHORT)
+            .show()
     }
 }

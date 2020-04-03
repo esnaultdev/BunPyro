@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.NavigationCommand
+import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
 import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
@@ -28,6 +29,10 @@ class HomeViewModel(
     private val _viewState = MutableLiveData<ViewState>()
     val viewState: LiveData<ViewState>
         get() = Transformations.distinctUntilChanged(_viewState)
+
+    private val _snackbar = SingleLiveEvent<SnackBarMessage>()
+    val snackbar: LiveData<SnackBarMessage>
+        get() = _snackbar
 
     private var currentState = ViewState(
         searching = false,
@@ -62,13 +67,19 @@ class HomeViewModel(
     }
 
     fun onGrammarPointClick(grammarPoint: GrammarPointOverview) {
-        val id = grammarPoint.id
-        navigate(HomeFragmentDirections.actionHomeToGrammarPoint(id))
+        onNavigateToGrammarPoint(grammarPoint.incomplete, grammarPoint.id)
     }
 
     fun onGrammarPointClick(grammarPoint: SearchGrammarOverview) {
-        val id = grammarPoint.id
-        navigate(HomeFragmentDirections.actionHomeToGrammarPoint(id))
+        onNavigateToGrammarPoint(grammarPoint.incomplete, grammarPoint.id)
+    }
+
+    private fun onNavigateToGrammarPoint(incomplete: Boolean, id: Long) {
+        if (incomplete) {
+            _snackbar.postValue(SnackBarMessage.Incomplete)
+        } else {
+            navigate(HomeFragmentDirections.actionHomeToGrammarPoint(id))
+        }
     }
 
     fun onSettingsClick() {
@@ -121,4 +132,8 @@ class HomeViewModel(
         val searchResult: SearchResult,
         val jlptProgress: JlptProgress?
     )
+
+    sealed class SnackBarMessage {
+        object Incomplete : SnackBarMessage()
+    }
 }

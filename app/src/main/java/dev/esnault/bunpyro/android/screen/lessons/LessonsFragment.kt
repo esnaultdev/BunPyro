@@ -77,7 +77,7 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
 
     private fun showSnackbar(message: SnackBarMessage) {
         val textResId = when (message) {
-            is SnackBarMessage.Incomplete -> R.string.lessons_grammar_point_incomplete
+            is SnackBarMessage.Incomplete -> R.string.common_grammarPoint_incomplete
         }
 
         // We're using the coordinator layout as the context view to have the swipe to dismiss

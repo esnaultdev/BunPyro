@@ -12,9 +12,11 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
+import com.google.android.material.snackbar.Snackbar
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
 import dev.esnault.bunpyro.android.res.longTextResId
+import dev.esnault.bunpyro.android.screen.allgrammar.AllGrammarViewModel.SnackBarMessage
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.search.SearchUiHelper
 import dev.esnault.bunpyro.android.utils.setupWithNav
@@ -61,6 +63,8 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
         vm.filterDialog.observe(this) { filterDialog ->
             bindFilterDialog(filterDialog)
         }
+
+        vm.snackbar.observe(this) { snackBarMessage -> showSnackbar(snackBarMessage) }
     }
 
     override fun onDestroyView() {
@@ -181,5 +185,17 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
                 }
                 show()
             }
+    }
+
+    private fun showSnackbar(message: SnackBarMessage) {
+        val textResId = when (message) {
+            is SnackBarMessage.Incomplete -> R.string.common_grammarPoint_incomplete
+        }
+
+        // We're using the coordinator layout as the context view to have the swipe to dismiss
+        // gesture
+        val contextView = binding.coordinatorLayout
+        Snackbar.make(contextView, textResId, Snackbar.LENGTH_SHORT)
+            .show()
     }
 }

@@ -4,6 +4,7 @@
 
     <string name="common_ok">OK</string>
     <string name="common_retry">Retry</string>
+    <string name="common_grammarPoint_incomplete">Coming soon!</string>
 
     <string name="menu_search">Search</string>
     <string name="menu_settings">Settings</string>
@@ -51,7 +52,6 @@
     <string name="home_menu_sync">Sync data</string>
 
     <string name="lessons_coming_soon">Coming soon!</string>
-    <string name="lessons_grammar_point_incomplete">Coming soon!</string>
 
     <string name="grammarPoint_tab_meaning_title">Meaning</string>
     <string name="grammarPoint_tab_examples_title">Examples</string>
