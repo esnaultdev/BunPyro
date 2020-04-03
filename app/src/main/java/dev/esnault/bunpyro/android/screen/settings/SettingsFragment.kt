@@ -70,6 +70,10 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                 summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
             }
 
+            findPreference<ListPreference>("example_details")?.apply {
+                summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+            }
+
             findPreference<Preference>("about_version")?.apply {
                 val versionName = BuildConfig.VERSION_NAME
                 val versionCode = BuildConfig.VERSION_CODE

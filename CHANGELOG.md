@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Setting to control the default visibility of example details
+- Studied and not studied filters for all grammar
 - Version in settings
 
 ### Fixed

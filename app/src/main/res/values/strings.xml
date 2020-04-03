@@ -94,6 +94,9 @@
     <string name="settings_root_furiganaDefault">Furigana</string>
     <string name="settings_root_furiganaDefault_shown">Shown by default</string>
     <string name="settings_root_furiganaDefault_hidden">Hidden by default</string>
+    <string name="settings_root_exampleDetails">Example details</string>
+    <string name="settings_root_exampleDetails_shown">Shown by default</string>
+    <string name="settings_root_exampleDetails_hidden">Hidden by default</string>
     <string name="settings_root_category_about">About</string>
     <string name="settings_root_about">About BunPyro</string>
     <string name="settings_root_licenses">Licenses</string>

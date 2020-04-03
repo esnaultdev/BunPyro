@@ -9,18 +9,26 @@
 
         <ListPreference
             app:defaultValue="system"
-            app:entries="@array/night_mode_entries"
-            app:entryValues="@array/night_mode_values"
+            app:entries="@array/nightMode_entries"
+            app:entryValues="@array/nightMode_values"
             app:key="night_mode"
             app:title="@string/settings_root_nightMode"
             />
 
         <ListPreference
             app:defaultValue="shown"
-            app:entries="@array/furigana_default_entries"
-            app:entryValues="@array/furigana_default_values"
+            app:entries="@array/furiganaDefault_entries"
+            app:entryValues="@array/furiganaDefault_values"
             app:key="furigana_default"
             app:title="@string/settings_root_furiganaDefault"
+            />
+
+        <ListPreference
+            app:defaultValue="hidden"
+            app:entries="@array/exampleDetails_entries"
+            app:entryValues="@array/exampleDetails_values"
+            app:key="example_details"
+            app:title="@string/settings_root_exampleDetails"
             />
 
     </PreferenceCategory>

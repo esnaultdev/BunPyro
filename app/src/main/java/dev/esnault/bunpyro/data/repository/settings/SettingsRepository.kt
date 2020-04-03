@@ -6,6 +6,7 @@ import androidx.preference.PreferenceManager
 import dev.esnault.bunpyro.data.mapper.settings.AllGrammarFilterFromStringMapper
 import dev.esnault.bunpyro.data.mapper.settings.AllGrammarFilterToStringMapper
 import dev.esnault.bunpyro.domain.entities.grammar.AllGrammarFilter
+import dev.esnault.bunpyro.domain.entities.settings.ExampleDetailsSetting
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
 import dev.esnault.bunpyro.domain.entities.settings.NightModeSetting
 
@@ -28,6 +29,11 @@ class SettingsRepository(context: Context) : ISettingsRepository {
         sharedPreferences.edit {
             putString("furigana_default", setting.value)
         }
+    }
+
+    override suspend fun getExampleDetails(): ExampleDetailsSetting {
+        val value = sharedPreferences.getString("example_details", "shown")
+        return ExampleDetailsSetting.fromValue(value)
     }
 
     override suspend fun getAllGrammarFilter(): AllGrammarFilter {

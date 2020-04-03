@@ -1,24 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="night_mode_entries">
+    <string-array name="nightMode_entries">
         <item>@string/settings_root_nightMode_system</item>
         <item>@string/settings_root_nightMode_always</item>
         <item>@string/settings_root_nightMode_never</item>
     </string-array>
 
-    <string-array name="night_mode_values">
+    <string-array name="nightMode_values">
         <item>system</item>
         <item>always</item>
         <item>never</item>
     </string-array>
 
-    <string-array name="furigana_default_entries">
+    <string-array name="furiganaDefault_entries">
         <item>@string/settings_root_furiganaDefault_shown</item>
         <item>@string/settings_root_furiganaDefault_hidden</item>
     </string-array>
 
-    <string-array name="furigana_default_values">
+    <string-array name="furiganaDefault_values">
+        <item>shown</item>
+        <item>hidden</item>
+    </string-array>
+
+    <string-array name="exampleDetails_entries">
+        <item>@string/settings_root_exampleDetails_shown</item>
+        <item>@string/settings_root_exampleDetails_hidden</item>
+    </string-array>
+
+    <string-array name="exampleDetails_values">
         <item>shown</item>
         <item>hidden</item>
     </string-array>

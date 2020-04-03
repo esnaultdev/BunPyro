@@ -50,6 +50,7 @@ class GrammarPointViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val furiganaShown = settingsRepo.getFurigana().asBoolean()
+                val exampleDetailsShown = settingsRepo.getExampleDetails().asBoolean()
 
                 // TODO Handle the errors
                 // TODO make this a flow, so that we can properly update it from the network
@@ -60,7 +61,7 @@ class GrammarPointViewModel(
                     titleYomikataShown = false,
                     furiganaShown = furiganaShown,
                     examples = grammarPoint.sentences.map { sentence ->
-                        ViewState.Example(sentence = sentence, collapsed = true)
+                        ViewState.Example(sentence = sentence, collapsed = !exampleDetailsShown)
                     }
                 )
             }
