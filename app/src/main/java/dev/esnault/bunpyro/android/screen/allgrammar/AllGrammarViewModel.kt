@@ -84,8 +84,27 @@ class AllGrammarViewModel(
         allGrammar: List<JlptGrammar>,
         filter: AllGrammarFilter
     ): List<JlptGrammar> {
-        val filterSet = filter.jlpt.toSet()
-        return allGrammar.filter { it.level in filterSet }
+        val jlptFiltered = if (filter.jlpt.size == 5) {
+            allGrammar
+        } else {
+            allGrammar.filter { it.level in filter.jlpt }
+        }
+
+        val studiedFilter = if (filter.studied && filter.nonStudied) {
+            jlptFiltered
+        } else if (!filter.studied && !filter.nonStudied) {
+            // That's kind of a dumb filter, but let's roll with it
+            emptyList()
+        } else {
+            // One of the two filter is set but no the other.
+            // We can filter based on a match to studied in this case.
+            jlptFiltered.map { jlptGrammar ->
+                val points = jlptGrammar.grammar.filter { it.studied == filter.studied }
+                JlptGrammar(jlptGrammar.level, points)
+            }
+        }
+
+        return studiedFilter
     }
 
     fun onGrammarPointClick(grammarPoint: GrammarPointOverview) {

@@ -20,14 +20,18 @@ class AllGrammarFilterFromStringMapper : IMapper<String?, AllGrammarFilter> {
         val jsoned = moshi.adapter(AllGrammarFilterJson::class.java).fromJson(o)
         if (jsoned == null) return AllGrammarFilter.DEFAULT
 
-        return AllGrammarFilter(jsoned.jlpt.mapTo(mutableSetOf()) { level -> JLPT[level] })
+        return AllGrammarFilter(
+            jlpt = jsoned.jlpt.mapTo(mutableSetOf()) { level -> JLPT[level] },
+            studied = jsoned.studied ?: true,
+            nonStudied = jsoned.nonStudied ?: true
+        )
     }
 }
 
 class AllGrammarFilterToStringMapper : IMapper<AllGrammarFilter, String> {
 
     override fun map(o: AllGrammarFilter): String {
-        val jsonable = AllGrammarFilterJson(o.jlpt.map { it.level })
+        val jsonable = AllGrammarFilterJson(o.jlpt.map { it.level }, o.studied, o.nonStudied)
         return moshi.adapter(AllGrammarFilterJson::class.java).toJson(jsonable)
     }
 }
@@ -36,5 +40,7 @@ class AllGrammarFilterToStringMapper : IMapper<AllGrammarFilter, String> {
  * Alternate version of [AllGrammarFilter] made for easier JSON parsing.
  */
 private data class AllGrammarFilterJson(
-    val jlpt: List<Int>
+    val jlpt: List<Int>,
+    val studied: Boolean?,
+    val nonStudied: Boolean?
 )

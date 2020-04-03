@@ -73,7 +73,10 @@
 
     <string name="allGrammar_title">All grammar</string>
     <string name="allGrammar_menu_filter">Filter</string>
-    <string name="allGrammar_filterDialog_title">Filter</string>
+    <string name="allGrammar_filterDialog_jlpt">JLPT</string>
+    <string name="allGrammar_filterDialog_study">Study</string>
+    <string name="allGrammar_filterDialog_studied">Studied</string>
+    <string name="allGrammar_filterDialog_notStudied">Not studied</string>
 
     <string name="search_hint">English, 漢字, かな, romaji</string>
     <string name="search_header_count">%d found</string>

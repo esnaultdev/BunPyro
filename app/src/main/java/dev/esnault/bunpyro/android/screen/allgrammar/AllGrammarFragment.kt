@@ -11,17 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.google.android.material.snackbar.Snackbar
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
-import dev.esnault.bunpyro.android.res.longTextResId
 import dev.esnault.bunpyro.android.screen.allgrammar.AllGrammarViewModel.SnackBarMessage
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.search.SearchUiHelper
 import dev.esnault.bunpyro.android.utils.setupWithNav
 import dev.esnault.bunpyro.databinding.FragmentAllGrammarBinding
-import dev.esnault.bunpyro.domain.entities.JLPT
 import dev.esnault.bunpyro.domain.entities.JlptGrammar
 import dev.esnault.bunpyro.domain.entities.grammar.AllGrammarFilter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -156,35 +153,12 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
     }
 
     private fun openFilterDialog(dialogState: AllGrammarFilter) {
-        val context = requireContext()
-
-        val options = listOf(JLPT.N5, JLPT.N4, JLPT.N3, JLPT.N2, JLPT.N1)
-        val items = options.map { context.getString(it.longTextResId) }
-
-        val initialSelection = options.withIndex()
-            .filter { it.value in dialogState.jlpt }
-            .map { it.index }
-            .toIntArray()
-
-        filterDialog = MaterialDialog(requireContext())
-            .title(R.string.allGrammar_filterDialog_title)
-            .positiveButton(R.string.common_ok)
-            .listItemsMultiChoice(
-                items = items,
-                initialSelection = (initialSelection),
-                waitForPositiveButton = true,
-                allowEmptySelection = true
-            ) { _, indices, _ -> // onPositiveButton
-                val selectedOptions = options.slice(indices.asIterable())
-                val newFilter = AllGrammarFilter(selectedOptions.toSet())
-                vm.onFilterUpdated(newFilter)
+        filterDialog = buildFilterDialog(requireContext(), dialogState, vm::onFilterUpdated).apply {
+            setOnDismissListener {
+                vm.onFilterDialogClosed()
             }
-            .apply {
-                setOnDismissListener {
-                    vm.onFilterDialogClosed()
-                }
-                show()
-            }
+            show()
+        }
     }
 
     private fun showSnackbar(message: SnackBarMessage) {

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MD_ListItem.Choice"
+    >
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/control"
+        style="@style/MD_ListItem_Control"
+        />
+
+    <com.afollestad.materialdialogs.internal.rtl.RtlTextView
+        android:id="@+id/title"
+        tools:text="Item"
+        style="@style/MD_ListItemText.Choice"
+        />
+
+</LinearLayout>
