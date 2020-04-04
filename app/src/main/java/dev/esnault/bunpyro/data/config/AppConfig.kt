@@ -2,6 +2,10 @@ package dev.esnault.bunpyro.data.config
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import dev.esnault.bunpyro.common.getIntOrNull
+import dev.esnault.bunpyro.common.putOrRemoveInt
+import dev.esnault.bunpyro.common.putOrRemoveString
+
 
 private object Keys {
     const val API_KEY = "ApiKey"
@@ -23,11 +27,7 @@ class AppConfig(private val prefs: SharedPreferences) : IAppConfig {
 
     override suspend fun setApiKey(apiKey: String?) {
         prefs.edit {
-            if (apiKey != null) {
-                putString(Keys.API_KEY, apiKey)
-            } else {
-                remove(Keys.API_KEY)
-            }
+            putOrRemoveString(Keys.API_KEY, apiKey)
         }
     }
 
@@ -51,11 +51,7 @@ class AppConfig(private val prefs: SharedPreferences) : IAppConfig {
 
     override suspend fun saveGrammarPointsEtag(eTag: String?) {
         prefs.edit {
-            if (eTag != null) {
-                putString(Keys.SYNC_GRAMMAR_POINTS_ETAG, eTag)
-            } else {
-                remove(Keys.SYNC_GRAMMAR_POINTS_ETAG)
-            }
+            putOrRemoveString(Keys.SYNC_GRAMMAR_POINTS_ETAG, eTag)
         }
     }
 
@@ -65,11 +61,7 @@ class AppConfig(private val prefs: SharedPreferences) : IAppConfig {
 
     override suspend fun saveExampleSentencesEtag(eTag: String?) {
         prefs.edit {
-            if (eTag != null) {
-                putString(Keys.SYNC_EXAMPLE_SENTENCES_ETAG, eTag)
-            } else {
-                remove(Keys.SYNC_EXAMPLE_SENTENCES_ETAG)
-            }
+            putOrRemoveString(Keys.SYNC_EXAMPLE_SENTENCES_ETAG, eTag)
         }
     }
 
@@ -79,11 +71,7 @@ class AppConfig(private val prefs: SharedPreferences) : IAppConfig {
 
     override suspend fun saveReviewsEtag(eTag: String?) {
         prefs.edit {
-            if (eTag != null) {
-                putString(Keys.SYNC_REVIEWS_ETAG, eTag)
-            } else {
-                remove(Keys.SYNC_REVIEWS_ETAG)
-            }
+            putOrRemoveString(Keys.SYNC_REVIEWS_ETAG, eTag)
         }
     }
 
@@ -93,12 +81,22 @@ class AppConfig(private val prefs: SharedPreferences) : IAppConfig {
 
     override suspend fun saveSupplementalLinksEtag(eTag: String?) {
         prefs.edit {
-            if (eTag != null) {
-                putString(Keys.SYNC_SUPPLEMENTAL_LINKS_ETAG, eTag)
-            } else {
-                remove(Keys.SYNC_SUPPLEMENTAL_LINKS_ETAG)
-            }
+            putOrRemoveString(Keys.SYNC_SUPPLEMENTAL_LINKS_ETAG, eTag)
         }
+    }
+
+    // endregion
+
+    // region Study count
+
+    override suspend fun setStudyQueueCount(count: Int?) {
+        prefs.edit {
+            putOrRemoveInt("study_queue_count", count)
+        }
+    }
+
+    override suspend fun getStudyQueueCount(): Int? {
+        return prefs.getIntOrNull("study_queue_count")
     }
 
     // endregion

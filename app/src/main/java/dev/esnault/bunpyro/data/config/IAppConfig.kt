@@ -20,4 +20,7 @@ interface IAppConfig {
 
     suspend fun saveReviewsEtag(eTag: String?)
     suspend fun getReviewsEtag(): String?
+
+    suspend fun getStudyQueueCount(): Int?
+    suspend fun setStudyQueueCount(count: Int?)
 }

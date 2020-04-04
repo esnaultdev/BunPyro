@@ -7,7 +7,8 @@ class FakeAppConfig(
     var grammarPointsEtag: String? = null,
     var exampleSentencesEtag: String? = null,
     var supplementalLinksEtag: String? = null,
-    var reviewsEtag: String? = null
+    var reviewsEtag: String? = null,
+    var studyQueueCount: Int? = null
 ) : IAppConfig {
 
     override suspend fun getApiKey(): String? = apiKey
@@ -45,4 +46,10 @@ class FakeAppConfig(
     }
 
     override suspend fun getReviewsEtag(): String? = reviewsEtag
+
+    override suspend fun getStudyQueueCount(): Int? = studyQueueCount
+
+    override suspend fun setStudyQueueCount(count: Int?) {
+        studyQueueCount = count
+    }
 }
