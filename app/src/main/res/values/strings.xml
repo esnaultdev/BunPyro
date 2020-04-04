@@ -46,8 +46,10 @@
 
     <string name="home_lessons_japanese">課</string>
     <string name="home_lessons_english">Lessons</string>
-    <string name="home_all_grammar_japanese">文法</string>
-    <string name="home_all_grammar_english">All grammar</string>
+    <string name="home_allGrammar_japanese">文法</string>
+    <string name="home_allGrammar_english">All grammar</string>
+    <string name="home_reviews_japanese">復習</string>
+    <string name="home_reviews_english">Reviews</string>
     <string name="home_progress_count">%1$d/%2$d</string>
     <string name="home_menu_sync">Sync data</string>
 

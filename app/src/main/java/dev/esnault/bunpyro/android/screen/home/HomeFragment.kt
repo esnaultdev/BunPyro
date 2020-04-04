@@ -113,6 +113,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.searchRecyclerView.isVisible = viewState.searching
 
         searchUiHelper?.updateSearchViewExpansion(searchingChanged, viewState.searching)
+
+        bindReviewCount()
+    }
+
+    private fun bindReviewCount() {
+        // TODO
     }
 
     private fun showSnackbar(message: SnackBarMessage) {

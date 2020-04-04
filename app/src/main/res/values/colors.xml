@@ -17,4 +17,5 @@
     <color name="launchScreenBackgroundColor">#424242</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="hanko">#aa0000</color>
+    <color name="badge_background">#C62828</color>
 </resources>

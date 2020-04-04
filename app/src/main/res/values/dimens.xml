@@ -12,5 +12,6 @@
     <dimen name="text_max_width">300dp</dimen>
 
     <dimen name="jlptTag_height">32dp</dimen>
-    <dimen name="jlptTag_textSize">32dp</dimen>
+
+    <dimen name="reviewBadge_height">32dp</dimen>
 </resources>
