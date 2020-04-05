@@ -8,9 +8,11 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.snackbar.Snackbar
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
+import dev.esnault.bunpyro.android.screen.home.HomeViewModel.DialogMessage
 import dev.esnault.bunpyro.android.screen.home.HomeViewModel.SnackBarMessage
 import dev.esnault.bunpyro.android.screen.search.SearchUiHelper
 import dev.esnault.bunpyro.databinding.FragmentHomeBinding
@@ -24,6 +26,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private var oldViewState: HomeViewModel.ViewState? = null
     private var searchUiHelper: SearchUiHelper? = null
+    private var dialog: MaterialDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +57,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         vm.snackbar.observe(this) { snackBarMessage -> showSnackbar(snackBarMessage) }
+        vm.dialog.observe(this) { dialogMessage -> showDialog(dialogMessage) }
     }
 
     override fun onDestroyView() {
@@ -128,6 +132,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.reviewsCardBadge.text = count?.toString()
     }
 
+    // region Snackbar
+
     private fun showSnackbar(message: SnackBarMessage) {
         val textResId = when (message) {
             is SnackBarMessage.IncompleteGrammar -> R.string.common_grammarPoint_incomplete
@@ -147,4 +153,46 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
             .show()
     }
+
+    // endregion
+
+    // region Dialog
+
+    private fun showDialog(dialogMessage: DialogMessage?) {
+        when (dialogMessage) {
+            is DialogMessage.SyncConfirm -> showSyncConfirmDialog()
+            null -> dismissDialog()
+        }
+    }
+
+    private fun dismissDialog() {
+        dialog?.dismiss()
+        dialog = null
+    }
+
+    private fun dismissDialogSilently() {
+        dialog?.apply {
+            setOnDismissListener(null)
+            dismiss()
+        }
+        dialog = null
+    }
+
+    private fun showSyncConfirmDialog() {
+        dismissDialogSilently()
+        dialog = MaterialDialog(requireContext())
+            .show {
+                title(R.string.home_sync_warning_title)
+                message(R.string.home_sync_warning_message)
+                negativeButton(R.string.common_cancel)
+                positiveButton(R.string.home_sync_warning_ok) {
+                    vm.onSyncConfirm()
+                }
+                setOnDismissListener {
+                    vm.onDialogDismiss()
+                }
+            }
+    }
+
+    // endregion
 }

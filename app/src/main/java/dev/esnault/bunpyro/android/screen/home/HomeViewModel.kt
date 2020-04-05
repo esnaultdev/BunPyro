@@ -39,6 +39,10 @@ class HomeViewModel(
     val snackbar: LiveData<SnackBarMessage>
         get() = _snackbar
 
+    private val _dialog = MutableLiveData<DialogMessage?>()
+    val dialog: LiveData<DialogMessage?>
+        get() = _dialog
+
     private var currentState = ViewState(
         searching = false,
         searchResult = SearchResult.EMPTY,
@@ -124,8 +128,18 @@ class HomeViewModel(
     }
 
     fun onSyncClick() {
-        // TODO Handle spamming this button
+        _dialog.postValue(DialogMessage.SyncConfirm)
+    }
+
+    fun onSyncConfirm() {
         serviceStarter.startSync()
+    }
+
+    fun onDialogDismiss() {
+        // null the dialog live data value on dismiss so that when rotated (or other change):
+        // - if the dialog was displayed, the dialog is still displayed
+        // - if the dialog was not displayed, the dialog is not displayed again
+        _dialog.postValue(null)
     }
 
     fun onSyncRetry() {
@@ -180,5 +194,9 @@ class HomeViewModel(
         object IncompleteGrammar : SnackBarMessage()
         object SyncSuccess : SnackBarMessage()
         object SyncError : SnackBarMessage()
+    }
+
+    sealed class DialogMessage {
+        object SyncConfirm : DialogMessage()
     }
 }
