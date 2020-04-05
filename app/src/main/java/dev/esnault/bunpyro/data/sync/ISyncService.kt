@@ -1,7 +1,10 @@
 package dev.esnault.bunpyro.data.sync
 
+import kotlinx.coroutines.flow.Flow
+
 
 interface ISyncService {
+    suspend fun getSyncInProgress(): Flow<Boolean>
 
     suspend fun firstSync(): SyncResult
     suspend fun nextSync(): SyncResult

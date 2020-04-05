@@ -39,6 +39,27 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
+        <ProgressBar
+            android:id="@+id/sync_progress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/sync_progress_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/sync_progress_guideline"
+            tools:visibility="visible"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/sync_progress_guideline"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="1dp"
+            />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/all_grammar_card"
             style="@style/Widget.MaterialComponents.CardView"

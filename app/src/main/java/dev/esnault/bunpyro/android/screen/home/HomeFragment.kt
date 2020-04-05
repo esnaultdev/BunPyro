@@ -120,6 +120,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         searchUiHelper?.updateSearchViewExpansion(searchingChanged, viewState.searching)
 
         bindReviewCount(viewState.reviewCount)
+        binding.syncProgress.isVisible = viewState.syncInProgress
     }
 
     private fun bindReviewCount(count: Int?) {

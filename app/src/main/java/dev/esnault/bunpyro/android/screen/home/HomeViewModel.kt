@@ -11,6 +11,7 @@ import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
 import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
 import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
+import dev.esnault.bunpyro.data.sync.ISyncService
 import dev.esnault.bunpyro.domain.entities.JlptProgress
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
@@ -25,7 +26,8 @@ class HomeViewModel(
     private val searchService: ISearchService,
     private val lessonRepo: ILessonRepository,
     private val reviewRepo: IReviewRepository,
-    private val serviceStarter: IAndroidServiceStarter
+    private val serviceStarter: IAndroidServiceStarter,
+    private val syncService: ISyncService
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -40,7 +42,8 @@ class HomeViewModel(
         searching = false,
         searchResult = SearchResult.EMPTY,
         jlptProgress = null,
-        reviewCount = null
+        reviewCount = null,
+        syncInProgress = false
     )
         set(value) {
             field = value
@@ -52,6 +55,7 @@ class HomeViewModel(
     init {
         observeJlptProgress()
         observeReviewCount()
+        observeSyncInProgress()
     }
 
     private fun observeJlptProgress() {
@@ -66,6 +70,14 @@ class HomeViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             reviewRepo.getReviewCount().collect { reviewCount ->
                 currentState = currentState.copy(reviewCount = reviewCount)
+            }
+        }
+    }
+
+    private fun observeSyncInProgress() {
+        viewModelScope.launch {
+            syncService.getSyncInProgress().collect { syncInProgress ->
+                currentState = currentState.copy(syncInProgress = syncInProgress)
             }
         }
     }
@@ -149,7 +161,8 @@ class HomeViewModel(
         val searching: Boolean,
         val searchResult: SearchResult,
         val jlptProgress: JlptProgress?,
-        val reviewCount: Int?
+        val reviewCount: Int?,
+        val syncInProgress: Boolean
     )
 
     sealed class SnackBarMessage {

@@ -27,6 +27,9 @@ import dev.esnault.bunpyro.data.repository.sync.ISyncRepository
 import dev.esnault.bunpyro.data.utils.DataUpdate
 import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
 import dev.esnault.bunpyro.data.utils.fromLocalIds
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import retrofit2.Response
 
 
@@ -41,6 +44,12 @@ class SyncService(
     private val crashReporter: ICrashReporter
 ) : ISyncService {
 
+    private val syncInProgressChannel = ConflatedBroadcastChannel<Boolean>(false)
+
+    override suspend fun getSyncInProgress(): Flow<Boolean> {
+        return syncInProgressChannel.asFlow()
+    }
+
     override suspend fun firstSync(): SyncResult {
         if (syncRepo.getFirstSyncCompleted()) {
             // The first sync has already been completed, nothing to do
@@ -51,6 +60,13 @@ class SyncService(
     }
 
     override suspend fun nextSync(): SyncResult {
+        syncInProgressChannel.send(true)
+        val result = performNextSync()
+        syncInProgressChannel.send(false)
+        return result
+    }
+
+    private suspend fun performNextSync(): SyncResult {
         val grammarSyncResult = syncGrammarPoints()
         if (grammarSyncResult !is SyncResult.Success) {
             return grammarSyncResult
