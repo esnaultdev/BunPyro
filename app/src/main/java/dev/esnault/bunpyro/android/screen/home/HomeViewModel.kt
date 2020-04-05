@@ -12,6 +12,7 @@ import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
 import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.data.sync.ISyncService
+import dev.esnault.bunpyro.data.sync.SyncEvent
 import dev.esnault.bunpyro.domain.entities.JlptProgress
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
@@ -76,8 +77,14 @@ class HomeViewModel(
 
     private fun observeSyncInProgress() {
         viewModelScope.launch {
-            syncService.getSyncInProgress().collect { syncInProgress ->
-                currentState = currentState.copy(syncInProgress = syncInProgress)
+            syncService.getSyncEvent().collect { syncEvent ->
+                val inProgress = syncEvent == SyncEvent.IN_PROGRESS
+                currentState = currentState.copy(syncInProgress = inProgress)
+
+                when (syncEvent) {
+                    SyncEvent.ERROR -> _snackbar.postValue(SnackBarMessage.SyncError)
+                    SyncEvent.SUCCESS -> _snackbar.postValue(SnackBarMessage.SyncSuccess)
+                }
             }
         }
     }
@@ -106,7 +113,7 @@ class HomeViewModel(
 
     private fun onNavigateToGrammarPoint(incomplete: Boolean, id: Long) {
         if (incomplete) {
-            _snackbar.postValue(SnackBarMessage.Incomplete)
+            _snackbar.postValue(SnackBarMessage.IncompleteGrammar)
         } else {
             navigate(HomeFragmentDirections.actionHomeToGrammarPoint(id))
         }
@@ -118,6 +125,10 @@ class HomeViewModel(
 
     fun onSyncClick() {
         // TODO Handle spamming this button
+        serviceStarter.startSync()
+    }
+
+    fun onSyncRetry() {
         serviceStarter.startSync()
     }
 
@@ -166,6 +177,8 @@ class HomeViewModel(
     )
 
     sealed class SnackBarMessage {
-        object Incomplete : SnackBarMessage()
+        object IncompleteGrammar : SnackBarMessage()
+        object SyncSuccess : SnackBarMessage()
+        object SyncError : SnackBarMessage()
     }
 }

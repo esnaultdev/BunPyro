@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface ISyncService {
-    suspend fun getSyncInProgress(): Flow<Boolean>
+    suspend fun getSyncEvent(): Flow<SyncEvent>
 
     suspend fun firstSync(): SyncResult
     suspend fun nextSync(): SyncResult
@@ -19,3 +19,5 @@ sealed class SyncResult {
         class Unknown(val exception: Throwable) : Error()
     }
 }
+
+enum class SyncEvent { IN_PROGRESS, SUCCESS, ERROR }

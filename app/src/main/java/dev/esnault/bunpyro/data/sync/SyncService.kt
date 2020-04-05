@@ -44,10 +44,10 @@ class SyncService(
     private val crashReporter: ICrashReporter
 ) : ISyncService {
 
-    private val syncInProgressChannel = ConflatedBroadcastChannel<Boolean>(false)
+    private val syncEventChannel = ConflatedBroadcastChannel<SyncEvent>()
 
-    override suspend fun getSyncInProgress(): Flow<Boolean> {
-        return syncInProgressChannel.asFlow()
+    override suspend fun getSyncEvent(): Flow<SyncEvent> {
+        return syncEventChannel.asFlow()
     }
 
     override suspend fun firstSync(): SyncResult {
@@ -60,9 +60,16 @@ class SyncService(
     }
 
     override suspend fun nextSync(): SyncResult {
-        syncInProgressChannel.send(true)
+        syncEventChannel.send(SyncEvent.IN_PROGRESS)
+
         val result = performNextSync()
-        syncInProgressChannel.send(false)
+
+        val resultEvent = when (result) {
+            is SyncResult.Success -> SyncEvent.SUCCESS
+            is SyncResult.Error -> SyncEvent.ERROR
+        }
+        syncEventChannel.send(resultEvent)
+
         return result
     }
 

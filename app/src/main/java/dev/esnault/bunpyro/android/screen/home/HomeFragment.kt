@@ -130,13 +130,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun showSnackbar(message: SnackBarMessage) {
         val textResId = when (message) {
-            is SnackBarMessage.Incomplete -> R.string.common_grammarPoint_incomplete
+            is SnackBarMessage.IncompleteGrammar -> R.string.common_grammarPoint_incomplete
+            is SnackBarMessage.SyncSuccess -> R.string.home_sync_success
+            is SnackBarMessage.SyncError -> R.string.home_sync_error
         }
 
         // We're using the coordinator layout as the context view to have the swipe to dismiss
         // gesture
         val contextView = binding.coordinatorLayout
-        Snackbar.make(contextView, textResId, Snackbar.LENGTH_SHORT)
+        Snackbar.make(contextView, textResId, Snackbar.LENGTH_SHORT).apply {
+                if (message is SnackBarMessage.SyncError) {
+                    setAction(R.string.common_retry) {
+                        vm.onSyncRetry()
+                    }
+                }
+            }
             .show()
     }
 }

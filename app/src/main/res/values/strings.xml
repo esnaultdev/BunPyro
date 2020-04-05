@@ -52,6 +52,8 @@
     <string name="home_reviews_english">Reviews</string>
     <string name="home_progress_count">%1$d/%2$d</string>
     <string name="home_menu_sync">Sync data</string>
+    <string name="home_sync_success">Sync success</string>
+    <string name="home_sync_error">Sync error</string>
 
     <string name="lessons_coming_soon">Coming soon!</string>
 
