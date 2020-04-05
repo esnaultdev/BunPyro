@@ -9,6 +9,7 @@ import dev.esnault.bunpyro.android.screen.base.NavigationCommand
 import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
 import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
+import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.domain.entities.JlptProgress
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     private val searchService: ISearchService,
     private val lessonRepo: ILessonRepository,
+    private val reviewRepo: IReviewRepository,
     private val serviceStarter: IAndroidServiceStarter
 ) : BaseViewModel() {
 
@@ -37,7 +39,8 @@ class HomeViewModel(
     private var currentState = ViewState(
         searching = false,
         searchResult = SearchResult.EMPTY,
-        jlptProgress = null
+        jlptProgress = null,
+        reviewCount = null
     )
         set(value) {
             field = value
@@ -48,6 +51,7 @@ class HomeViewModel(
 
     init {
         observeJlptProgress()
+        observeReviewCount()
     }
 
     private fun observeJlptProgress() {
@@ -55,6 +59,20 @@ class HomeViewModel(
             lessonRepo.getProgress().collect { progress ->
                 currentState = currentState.copy(jlptProgress = progress)
             }
+        }
+    }
+
+    private fun observeReviewCount() {
+        viewModelScope.launch(Dispatchers.IO) {
+            reviewRepo.getReviewCount().collect { reviewCount ->
+                currentState = currentState.copy(reviewCount = reviewCount)
+            }
+        }
+    }
+
+    fun onResume() {
+        viewModelScope.launch(Dispatchers.IO) {
+            reviewRepo.refreshReviewCount()
         }
     }
 
@@ -130,7 +148,8 @@ class HomeViewModel(
     data class ViewState(
         val searching: Boolean,
         val searchResult: SearchResult,
-        val jlptProgress: JlptProgress?
+        val jlptProgress: JlptProgress?,
+        val reviewCount: Int?
     )
 
     sealed class SnackBarMessage {

@@ -13,6 +13,11 @@ import dev.esnault.bunpyro.data.sync.SyncService
 import dev.esnault.bunpyro.data.utils.crashreport.CrashlyticsReporter
 import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
 import dev.esnault.bunpyro.data.utils.crashreport.LogCrashReporter
+import dev.esnault.bunpyro.data.utils.log.AndroidLogger
+import dev.esnault.bunpyro.data.utils.log.ILogger
+import dev.esnault.bunpyro.data.utils.log.NoOpLogger
+import dev.esnault.bunpyro.data.utils.time.ITimeProvider
+import dev.esnault.bunpyro.data.utils.time.TimeProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -57,5 +62,17 @@ val serviceModule = module {
         } else {
             CrashlyticsReporter()
         }
+    }
+
+    single<ILogger> {
+        if (BuildConfig.DEBUG) {
+            AndroidLogger()
+        } else {
+            NoOpLogger()
+        }
+    }
+
+    factory<ITimeProvider> {
+        TimeProvider()
     }
 }

@@ -61,6 +61,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         searchUiHelper = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        vm.onResume()
+    }
+
     private fun setupToolbar() {
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
@@ -114,11 +119,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         searchUiHelper?.updateSearchViewExpansion(searchingChanged, viewState.searching)
 
-        bindReviewCount()
+        bindReviewCount(viewState.reviewCount)
     }
 
-    private fun bindReviewCount() {
-        // TODO
+    private fun bindReviewCount(count: Int?) {
+        binding.reviewsCardBadge.isVisible = count != null
+        binding.reviewsCardBadge.text = count?.toString()
     }
 
     private fun showSnackbar(message: SnackBarMessage) {

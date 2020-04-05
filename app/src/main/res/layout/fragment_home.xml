@@ -211,7 +211,6 @@
                     app:layout_constraintBottom_toTopOf="@+id/reviews_card_japanese"
                     app:layout_constraintStart_toEndOf="@+id/reviews_card_japanese"
                     app:layout_constraintTop_toTopOf="@+id/reviews_card_japanese"
-                    app:layout_constraintEnd_toEndOf="@+id/reviews_card_japanese"
                     tools:text="68"
                     tools:visibility="visible"
                     />
