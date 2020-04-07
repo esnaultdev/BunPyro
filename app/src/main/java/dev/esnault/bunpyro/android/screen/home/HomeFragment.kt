@@ -11,10 +11,12 @@ import androidx.transition.TransitionManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.snackbar.Snackbar
 import dev.esnault.bunpyro.R
+import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.home.HomeViewModel.DialogMessage
 import dev.esnault.bunpyro.android.screen.home.HomeViewModel.SnackBarMessage
 import dev.esnault.bunpyro.android.screen.search.SearchUiHelper
+import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.databinding.FragmentHomeBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -48,6 +50,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         binding.allGrammarCard.setOnClickListener {
             vm.onAllGrammarClick()
+        }
+
+        binding.reviewsCard.setOnClickListener {
+            context?.openUrlInBrowser(ScreenConfig.Url.bunproReviews)
         }
 
         vm.viewState.observe(this) { viewState ->
