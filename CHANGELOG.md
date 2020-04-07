@@ -4,10 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## Unreleased
+
+## [0.3.3] - 2020-04-07
 ### Added
-- Setting to control the default visibility of example details
 - Studied and not studied filters for all grammar
+- Setting to control the default visibility of example details
+- Review button with review count (that redirects to Bunpro for now)
+- Better UX for the manual sync
 - Version in settings
 
 ### Fixed
