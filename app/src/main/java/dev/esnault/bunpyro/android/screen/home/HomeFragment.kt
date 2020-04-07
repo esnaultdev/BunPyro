@@ -56,6 +56,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             context?.openUrlInBrowser(ScreenConfig.Url.bunproReviews)
         }
 
+        binding.cramCard.setOnClickListener {
+            context?.openUrlInBrowser(ScreenConfig.Url.bunproCram)
+        }
+
         vm.viewState.observe(this) { viewState ->
             val oldViewState = oldViewState
             this.oldViewState = viewState
