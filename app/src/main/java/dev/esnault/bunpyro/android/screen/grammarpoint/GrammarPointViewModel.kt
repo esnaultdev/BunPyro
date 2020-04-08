@@ -55,13 +55,18 @@ class GrammarPointViewModel(
                 // TODO Handle the errors
                 // TODO make this a flow, so that we can properly update it from the network
                 val grammarPoint = grammarRepo.getGrammarPoint(id)
+                val splitTitle = grammarPoint.title.split('・')
 
                 currentState = ViewState(
                     grammarPoint,
                     titleYomikataShown = false,
                     furiganaShown = furiganaShown,
                     examples = grammarPoint.sentences.map { sentence ->
-                        ViewState.Example(sentence = sentence, collapsed = !exampleDetailsShown)
+                        ViewState.Example(
+                            titles = splitTitle,
+                            sentence = sentence,
+                            collapsed = !exampleDetailsShown
+                        )
                     }
                 )
             }
@@ -149,6 +154,7 @@ class GrammarPointViewModel(
         val examples: List<Example>
     ) {
         data class Example(
+            val titles: List<String>, // Split title used to highlight the sentence
             val sentence: ExampleSentence,
             val collapsed: Boolean
         )

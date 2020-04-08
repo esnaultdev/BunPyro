@@ -113,7 +113,7 @@ class ExampleAdapter(
 
         private fun bindExample(example: ViewState.Example, furiganaShown: Boolean) {
             val sentence = example.sentence
-            binding.japanese.text = postProcessJapanese(sentence.japanese, furiganaShown)
+            binding.japanese.text = postProcessJapanese(sentence.japanese, furiganaShown, example.titles)
             binding.english.text = postProcessString(sentence.english, furiganaShown)
 
             val nuanceIsBlank = sentence.nuance.isNullOrBlank()
@@ -181,14 +181,18 @@ class ExampleAdapter(
             onGrammarPointClick = {}
         )
 
-        private fun postProcessJapanese(source: String, furigana: Boolean): Spanned {
+        private fun postProcessJapanese(
+            source: String,
+            furigana: Boolean,
+            titles: List<String>
+        ): Spanned {
             return context.processBunproString(
                 source = source,
                 listener = bunProTextListener,
                 secondaryBreaks = false,
                 showFurigana = furigana,
                 furiganize = true
-            )
+            ).postEmphasis(context, titles)
         }
 
         private fun postProcessString(source: String, furigana: Boolean): Spanned {

@@ -1,10 +1,17 @@
 package dev.esnault.bunpyro.android.utils
 
 import android.content.Context
+import android.graphics.Typeface
+import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.style.StyleSpan
 import android.widget.TextView
+import dev.esnault.bunpyro.R
+import dev.esnault.bunpyro.android.display.span.FontColorSpan
 import dev.esnault.bunpyro.android.display.span.ruby.RubySpan
 import dev.esnault.bunpyro.android.display.span.ruby.duplicateRubySpannedString
+import dev.esnault.bunpyro.common.getThemeColor
+import dev.esnault.bunpyro.common.stdlib.findAllOf
 import org.jsoup.Jsoup
 
 
@@ -14,7 +21,7 @@ fun Context.processBunproString(
     secondaryBreaks: Boolean,
     showFurigana: Boolean,
     furiganize: Boolean
-): Spanned {
+): SpannableStringBuilder {
     return source.let {
             if (secondaryBreaks) {
                 preProcessBunproSecondaryBreaks(it)
@@ -34,6 +41,24 @@ fun Context.processBunproString(
             val rubyVisibility = showFurigana.toRubyVisibility()
             BunProHtml(this, rubyVisibility, listener.onGrammarPointClick).format(it)
         }
+}
+
+fun SpannableStringBuilder.postEmphasis(context: Context, toEmphasis: List<String>): Spanned {
+    val emphasisColor = context.getThemeColor(R.attr.textEmphasisColor)
+
+    val emphasisSpansStart = getSpans(0, length, FontColorSpan::class.java)
+        .mapTo(mutableSetOf()) { getSpanStart(it) }
+    val flags = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+
+    findAllOf(toEmphasis, 0)
+        .filter { !emphasisSpansStart.contains(it.first) }
+        .forEach { (index, emphasisString) ->
+            val end = index + emphasisString.length
+            setSpan(FontColorSpan(emphasisColor), index, end, flags)
+            setSpan(StyleSpan(Typeface.BOLD), index, end, flags)
+        }
+
+    return this
 }
 
 fun String.toClipBoardString(): String {
