@@ -82,6 +82,10 @@ class ExampleAdapter(
                 openMoreMenu()
             }
 
+            binding.audioIcon.setOnClickListener {
+                example?.let(listener.onAudioClick)
+            }
+
             // Defining this color in xml has some issues on SDK 21, so we set it programmatically
             val cardLineColor = context.getThemeColor(R.attr.colorOnSurface)
                 .withAlpha(Alpha.p20)
@@ -104,6 +108,7 @@ class ExampleAdapter(
             } else if (expansionChanged) {
                 updateExpansion(example)
             }
+            bindAudioState(example.audioState)
         }
 
         fun unbind() {
@@ -172,6 +177,29 @@ class ExampleAdapter(
                 R.string.grammarPoint_tab_examples_collapse
             }
             binding.expandButton.setText(buttonResId)
+        }
+
+        private fun bindAudioState(audioState: ViewState.AudioState?) {
+            if (audioState == null) {
+                binding.audioIcon.isVisible = false
+                binding.audioLoading.isVisible = false
+            } else {
+                binding.audioIcon.isVisible = true
+                when (audioState) {
+                    ViewState.AudioState.STOPPED -> {
+                        binding.audioIcon.setImageResource(R.drawable.ic_play_arrow_24dp)
+                        binding.audioLoading.isVisible = false
+                    }
+                    ViewState.AudioState.LOADING -> {
+                        binding.audioIcon.setImageResource(R.drawable.ic_stop_24dp)
+                        binding.audioLoading.isVisible = true
+                    }
+                    ViewState.AudioState.PLAYING -> {
+                        binding.audioIcon.setImageResource(R.drawable.ic_stop_24dp)
+                        binding.audioLoading.isVisible = false
+                    }
+                }
+            }
         }
 
         // region Text processing

@@ -62,10 +62,14 @@ class GrammarPointViewModel(
                     titleYomikataShown = false,
                     furiganaShown = furiganaShown,
                     examples = grammarPoint.sentences.map { sentence ->
+                        val audioState = ViewState.AudioState.STOPPED
+                            .takeUnless { sentence.audioLink.isNullOrBlank() }
+
                         ViewState.Example(
                             titles = splitTitle,
                             sentence = sentence,
-                            collapsed = !exampleDetailsShown
+                            collapsed = !exampleDetailsShown,
+                            audioState = audioState
                         )
                     }
                 )
@@ -112,6 +116,30 @@ class GrammarPointViewModel(
 
     // region Example actions
 
+    fun onAudioClick(example: ViewState.Example) {
+        val currentState = currentState ?: return
+        val sentenceId = example.sentence.id
+        val newExamples = currentState.examples.map { example ->
+            if (example.sentence.id == sentenceId) {
+                example.copy(audioState = onUpdateAudioState(example.audioState))
+            } else {
+                example
+            }
+        }
+
+        this.currentState = currentState.copy(examples = newExamples)
+    }
+
+    private fun onUpdateAudioState(audioState: ViewState.AudioState?): ViewState.AudioState? {
+        // TODO update the audio player
+        return when (audioState) {
+            null -> null
+            ViewState.AudioState.STOPPED -> ViewState.AudioState.LOADING
+            ViewState.AudioState.LOADING -> ViewState.AudioState.STOPPED
+            ViewState.AudioState.PLAYING -> ViewState.AudioState.STOPPED
+        }
+    }
+
     fun onToggleSentence(example: ViewState.Example) {
         val currentState = currentState ?: return
         val sentenceId = example.sentence.id
@@ -156,8 +184,11 @@ class GrammarPointViewModel(
         data class Example(
             val titles: List<String>, // Split title used to highlight the sentence
             val sentence: ExampleSentence,
-            val collapsed: Boolean
+            val collapsed: Boolean,
+            val audioState: AudioState?
         )
+
+        enum class AudioState { STOPPED, LOADING, PLAYING }
     }
 
     sealed class SnackBarMessage {

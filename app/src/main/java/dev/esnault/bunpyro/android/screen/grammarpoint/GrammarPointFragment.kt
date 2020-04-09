@@ -56,7 +56,7 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
                 onGrammarPointClick = vm::onGrammarPointClick
             ),
             examplesListener = ExamplesViewHolder.Listener(
-                onListen = {},
+                onAudioClick = vm::onAudioClick,
                 onToggleSentence = vm::onToggleSentence,
                 onCopyJapanese = vm::onCopyJapanese,
                 onCopyEnglish = vm::onCopyEnglish

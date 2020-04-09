@@ -128,6 +128,37 @@
                 />
 
             <ImageView
+                android:id="@+id/audio_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/contentDescription_audioControl"
+                android:padding="12dp"
+                android:src="@drawable/ic_stop_24dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/expand_button"
+                app:layout_constraintEnd_toStartOf="@+id/more"
+                app:layout_constraintTop_toTopOf="@+id/expand_button"
+                tools:visibility="visible"
+                />
+
+            <ProgressBar
+                android:id="@+id/audio_loading"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:indeterminate="true"
+                android:indeterminateTint="?colorControlNormal"
+                android:padding="6dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/audio_icon"
+                app:layout_constraintEnd_toEndOf="@id/audio_icon"
+                app:layout_constraintStart_toStartOf="@id/audio_icon"
+                app:layout_constraintTop_toTopOf="@id/audio_icon"
+                tools:visibility="visible"
+                />
+
+            <ImageView
                 android:id="@+id/more"
                 android:layout_width="48dp"
                 android:layout_height="48dp"

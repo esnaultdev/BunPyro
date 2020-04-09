@@ -94,6 +94,7 @@
     <string name="contentDescription_studiedHanko">Studied</string>
     <string name="contentDescription_appLogo">App Logo</string>
     <string name="contentDescription_more">More</string>
+    <string name="contentDescription_audioControl">Audio control</string>
 
     <string name="settings_root_title">Settings</string>
     <string name="settings_root_category_display">Display</string>
