@@ -52,7 +52,12 @@ class ExampleAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val viewState = viewState!!
         val example = viewState.examples[position]
-        holder.bind(example, viewState.furiganaShown)
+        val audioState = if (viewState.currentAudio?.exampleId == example.sentence.id) {
+            viewState.currentAudio.state
+        } else {
+            ViewState.AudioState.STOPPED.takeUnless { example.sentence.audioLink.isNullOrBlank() }
+        }
+        holder.bind(example, audioState, viewState.furiganaShown)
     }
 
     override fun onViewRecycled(holder: ViewHolder) {
@@ -93,7 +98,11 @@ class ExampleAdapter(
             binding.actionsDivider.setBackgroundColor(cardLineColor)
         }
 
-        fun bind(example: ViewState.Example, furiganaShown: Boolean) {
+        fun bind(
+            example: ViewState.Example,
+            audioState: ViewState.AudioState?,
+            furiganaShown: Boolean
+        ) {
             val sentenceChanged = example.sentence != this.example?.sentence
             val furiganaChanged = furiganaShown != this.furiganaShown
             val expansionChanged = example.collapsed != this.example?.collapsed
@@ -108,7 +117,7 @@ class ExampleAdapter(
             } else if (expansionChanged) {
                 updateExpansion(example)
             }
-            bindAudioState(example.audioState)
+            bindAudioState(audioState)
         }
 
         fun unbind() {

@@ -37,6 +37,9 @@ ext.versions = [
         // Text
         jsoup: '1.13.1',
 
+        // Media
+        exoplayer: '2.11.4',
+
         // Test
         junit: '4.12',
 ]

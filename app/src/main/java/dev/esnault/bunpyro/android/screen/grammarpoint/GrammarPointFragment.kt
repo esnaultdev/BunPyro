@@ -44,6 +44,11 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
         bindEvents()
     }
 
+    override fun onStop() {
+        vm.onStop()
+        super.onStop()
+    }
+
     private fun setupToolbar() {
         binding.collapsingToolbarLayout.setupWithNavController(binding.toolbar, findNavController())
     }

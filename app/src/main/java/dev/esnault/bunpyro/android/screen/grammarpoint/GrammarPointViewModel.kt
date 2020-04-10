@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.action.clipboard.IClipboard
+import dev.esnault.bunpyro.android.media.IAudioPlayer
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.android.utils.toClipBoardString
@@ -23,7 +24,8 @@ class GrammarPointViewModel(
     id: Long,
     private val grammarRepo: IGrammarPointRepository,
     private val settingsRepo: ISettingsRepository,
-    private val clipboard: IClipboard
+    private val clipboard: IClipboard,
+    private val audioPlayer: IAudioPlayer
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -46,13 +48,16 @@ class GrammarPointViewModel(
         loadGrammarPoint(id)
     }
 
+    fun onStop() {
+        releaseAudio()
+    }
+
     private fun loadGrammarPoint(id: Long) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val furiganaShown = settingsRepo.getFurigana().asBoolean()
                 val exampleDetailsShown = settingsRepo.getExampleDetails().asBoolean()
 
-                // TODO Handle the errors
                 // TODO make this a flow, so that we can properly update it from the network
                 val grammarPoint = grammarRepo.getGrammarPoint(id)
                 val splitTitle = grammarPoint.title.split('・')
@@ -62,16 +67,13 @@ class GrammarPointViewModel(
                     titleYomikataShown = false,
                     furiganaShown = furiganaShown,
                     examples = grammarPoint.sentences.map { sentence ->
-                        val audioState = ViewState.AudioState.STOPPED
-                            .takeUnless { sentence.audioLink.isNullOrBlank() }
-
                         ViewState.Example(
                             titles = splitTitle,
                             sentence = sentence,
-                            collapsed = !exampleDetailsShown,
-                            audioState = audioState
+                            collapsed = !exampleDetailsShown
                         )
-                    }
+                    },
+                    currentAudio = null
                 )
             }
         }
@@ -116,41 +118,26 @@ class GrammarPointViewModel(
 
     // region Example actions
 
-    fun onAudioClick(example: ViewState.Example) {
-        val currentState = currentState ?: return
-        val sentenceId = example.sentence.id
-        val newExamples = currentState.examples.map { example ->
-            if (example.sentence.id == sentenceId) {
-                example.copy(audioState = onUpdateAudioState(example.audioState))
-            } else {
-                example
-            }
-        }
-
-        this.currentState = currentState.copy(examples = newExamples)
-    }
-
-    private fun onUpdateAudioState(audioState: ViewState.AudioState?): ViewState.AudioState? {
-        // TODO update the audio player
-        return when (audioState) {
-            null -> null
-            ViewState.AudioState.STOPPED -> ViewState.AudioState.LOADING
-            ViewState.AudioState.LOADING -> ViewState.AudioState.STOPPED
-            ViewState.AudioState.PLAYING -> ViewState.AudioState.STOPPED
-        }
-    }
-
     fun onToggleSentence(example: ViewState.Example) {
         val currentState = currentState ?: return
         val sentenceId = example.sentence.id
-        val newExamples = currentState.examples.map { example ->
-            if (example.sentence.id == sentenceId) {
-                example.copy(collapsed = !example.collapsed)
+        val newExamples = currentState.examples.updateExampleWithId(sentenceId) {
+            it.copy(collapsed = !it.collapsed)
+        }
+        this.currentState = currentState.copy(examples = newExamples)
+    }
+
+    private fun List<ViewState.Example>.updateExampleWithId(
+        exampleId: Long,
+        block: (ViewState.Example) -> ViewState.Example
+    ): List<ViewState.Example> {
+        return map { example ->
+            if (example.sentence.id == exampleId) {
+                block(example)
             } else {
                 example
             }
         }
-        this.currentState = currentState.copy(examples = newExamples)
     }
 
     fun onCopyJapanese(example: ViewState.Example) {
@@ -175,20 +162,87 @@ class GrammarPointViewModel(
 
     // endregion
 
+    // region Audio
+
+    fun onAudioClick(example: ViewState.Example) {
+        val currentState = currentState ?: return
+        val exampleId = example.sentence.id
+
+        val currentAudio = currentState.currentAudio
+        val newAudio = if (currentAudio == null) {
+            // Not playing anything yet
+            audioPlayer.listener = buildAudioListener()
+            audioPlayer.play(example.sentence.audioLink)
+            ViewState.CurrentAudio(exampleId, ViewState.AudioState.LOADING)
+        } else if (currentAudio.exampleId == exampleId){
+            // Updating current audio
+            val newState = when (currentAudio.state) {
+                ViewState.AudioState.LOADING,
+                ViewState.AudioState.PLAYING -> {
+                    audioPlayer.stop()
+                    ViewState.AudioState.STOPPED
+                }
+                ViewState.AudioState.STOPPED -> {
+                    audioPlayer.play(example.sentence.audioLink)
+                    ViewState.AudioState.LOADING
+                }
+            }
+            currentAudio.copy(state = newState)
+        } else {
+            // Switching to another audio
+            audioPlayer.stop()
+            audioPlayer.play(example.sentence.audioLink)
+            ViewState.CurrentAudio(exampleId, ViewState.AudioState.LOADING)
+        }
+
+        this.currentState = currentState.copy(currentAudio = newAudio)
+    }
+
+    private fun buildAudioListener(): IAudioPlayer.Listener {
+        return IAudioPlayer.Listener(onStateChange = ::onAudioStateChange)
+    }
+
+    private fun onAudioStateChange(audioState: IAudioPlayer.State) {
+        val currentState = this.currentState ?: return
+        val currentAudio = currentState.currentAudio ?: return
+
+        val newAudioState = when (audioState) {
+            IAudioPlayer.State.LOADING -> ViewState.AudioState.LOADING
+            IAudioPlayer.State.STOPPED,
+            IAudioPlayer.State.PAUSED -> ViewState.AudioState.STOPPED
+            IAudioPlayer.State.PLAYING -> ViewState.AudioState.PLAYING
+        }
+
+        if (newAudioState != currentAudio.state) {
+            val newAudio = currentAudio.copy(state = newAudioState)
+            this.currentState = currentState.copy(currentAudio = newAudio)
+        }
+    }
+
+    private fun releaseAudio() {
+        val state = currentState ?: return
+        audioPlayer.release()
+        currentState = state.copy(currentAudio = null)
+    }
+
+    // endregion
+
     data class ViewState(
         val grammarPoint: GrammarPoint,
         val titleYomikataShown: Boolean,
         val furiganaShown: Boolean,
-        val examples: List<Example>
+        val examples: List<Example>,
+        val currentAudio: CurrentAudio?
     ) {
         data class Example(
             val titles: List<String>, // Split title used to highlight the sentence
             val sentence: ExampleSentence,
-            val collapsed: Boolean,
-            val audioState: AudioState?
+            val collapsed: Boolean
         )
 
-        enum class AudioState { STOPPED, LOADING, PLAYING }
+        data class CurrentAudio(val exampleId: Long, val state: AudioState)
+
+        enum class AudioState { PLAYING, LOADING, STOPPED }
     }
 
     sealed class SnackBarMessage {

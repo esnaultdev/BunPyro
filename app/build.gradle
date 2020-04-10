@@ -104,6 +104,9 @@ dependencies {
     // Text utils
     implementation "org.jsoup:jsoup:${versions.jsoup}"
 
+    // Media
+    implementation "com.google.android.exoplayer:exoplayer-core:${versions.exoplayer}"
+
     // Test
     testImplementation "junit:junit:${versions.junit}"
     androidTestImplementation "androidx.test:runner:${versions.androidx.test}"
