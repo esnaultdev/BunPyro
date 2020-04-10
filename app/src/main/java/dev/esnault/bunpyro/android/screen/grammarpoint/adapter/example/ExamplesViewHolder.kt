@@ -15,6 +15,7 @@ class ExamplesViewHolder(
 ) : ViewStatePagerAdapter.ViewHolder(binding.root) {
 
     data class Listener(
+        val onGrammarPointClick: (id: Long) -> Unit,
         val onAudioClick: (example: ViewState.Example) -> Unit,
         val onToggleSentence: (example: ViewState.Example) -> Unit,
         val onCopyJapanese: (example: ViewState.Example) -> Unit,

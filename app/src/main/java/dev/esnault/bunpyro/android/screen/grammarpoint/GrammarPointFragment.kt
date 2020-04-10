@@ -54,13 +54,13 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
     }
 
     private fun setupPager() {
-        // TODO properly setup this listener
         val listener = GrammarPointPagerAdapter.Listener(
             meaningListener = MeaningViewHolder.Listener(
                 onStudy = {},
                 onGrammarPointClick = vm::onGrammarPointClick
             ),
             examplesListener = ExamplesViewHolder.Listener(
+                onGrammarPointClick = vm::onGrammarPointClick,
                 onAudioClick = vm::onAudioClick,
                 onToggleSentence = vm::onToggleSentence,
                 onCopyJapanese = vm::onCopyJapanese,

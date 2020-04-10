@@ -216,8 +216,7 @@ class ExampleAdapter(
         // region Text processing
 
         private val bunProTextListener = BunProTextListener(
-            // TODO properly bind this listener
-            onGrammarPointClick = {}
+            onGrammarPointClick = listener.onGrammarPointClick
         )
 
         private fun postProcessJapanese(
