@@ -132,6 +132,7 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
 
         binding.allRecyclerView.isVisible = !searchState.searching
         binding.searchRecyclerView.isVisible = searchState.searching
+        binding.toolbar.menu.findItem(R.id.filter)?.isVisible = !searchState.searching
 
         searchUiHelper?.updateSearchViewExpansion(searchingChanged, searchState.searching)
     }
