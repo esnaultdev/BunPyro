@@ -149,7 +149,7 @@
                 android:layout_height="48dp"
                 android:indeterminate="true"
                 android:indeterminateTint="?colorControlNormal"
-                android:padding="6dp"
+                android:padding="12dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/audio_icon"
                 app:layout_constraintEnd_toEndOf="@id/audio_icon"

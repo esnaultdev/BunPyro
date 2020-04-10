@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
@@ -19,6 +20,7 @@ import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.android.utils.transition.ChangeText
 import dev.esnault.bunpyro.android.utils.transition.NamedAutoTransition
 import dev.esnault.bunpyro.common.Alpha
+import dev.esnault.bunpyro.common.dpToPx
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.common.withAlpha
 import dev.esnault.bunpyro.databinding.ItemExampleSentenceBinding
@@ -194,20 +196,20 @@ class ExampleAdapter(
                 binding.audioLoading.isVisible = false
             } else {
                 binding.audioIcon.isVisible = true
-                when (audioState) {
-                    ViewState.AudioState.STOPPED -> {
-                        binding.audioIcon.setImageResource(R.drawable.ic_play_arrow_24dp)
-                        binding.audioLoading.isVisible = false
-                    }
-                    ViewState.AudioState.LOADING -> {
-                        binding.audioIcon.setImageResource(R.drawable.ic_stop_24dp)
-                        binding.audioLoading.isVisible = true
-                    }
-                    ViewState.AudioState.PLAYING -> {
-                        binding.audioIcon.setImageResource(R.drawable.ic_stop_24dp)
-                        binding.audioLoading.isVisible = false
-                    }
+                val (iconRes, loadingVisible) = when (audioState) {
+                    ViewState.AudioState.STOPPED -> R.drawable.ic_play_arrow_24dp to false
+                    ViewState.AudioState.LOADING -> R.drawable.ic_stop_24dp to true
+                    ViewState.AudioState.PLAYING -> R.drawable.ic_stop_24dp to false
                 }
+                binding.audioIcon.setImageResource(iconRes)
+                binding.audioLoading.isVisible = loadingVisible
+
+                val iconPadding = if (loadingVisible) {
+                    16f
+                } else {
+                    12f
+                }
+                binding.audioIcon.setPadding(iconPadding.dpToPx(context.resources.displayMetrics))
             }
         }
 
