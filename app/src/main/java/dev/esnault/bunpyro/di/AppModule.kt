@@ -1,12 +1,14 @@
 package dev.esnault.bunpyro.di
 
 
+import com.google.android.exoplayer2.source.MediaSourceFactory
 import dev.esnault.bunpyro.android.action.clipboard.Clipboard
 import dev.esnault.bunpyro.android.action.clipboard.IClipboard
 import dev.esnault.bunpyro.android.display.notification.INotificationService
 import dev.esnault.bunpyro.android.display.notification.NotificationService
 import dev.esnault.bunpyro.android.media.AudioPlayer
 import dev.esnault.bunpyro.android.media.IAudioPlayer
+import dev.esnault.bunpyro.android.media.buildMediaSourceFactory
 import dev.esnault.bunpyro.android.screen.allgrammar.AllGrammarViewModel
 import dev.esnault.bunpyro.android.screen.apikey.ApiKeyViewModel
 import dev.esnault.bunpyro.android.screen.firstsync.FirstSyncViewModel
@@ -45,7 +47,9 @@ val appModule = module {
     factory<IAndroidServiceStarter> { AndroidServiceStarter(get()) }
     factory<IClipboard> { Clipboard(androidContext()) }
     single<INotificationService> { NotificationService(androidApplication()) }
-    factory<IAudioPlayer> { AudioPlayer(androidContext()) }
+
+    factory<IAudioPlayer> { AudioPlayer(androidContext(), get()) }
+    single { buildMediaSourceFactory(androidContext()) }
 
     // endregion
 }
