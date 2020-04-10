@@ -5,12 +5,20 @@ import android.net.Uri
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.database.ExoDatabaseProvider
+import com.google.android.exoplayer2.source.MediaSourceFactory
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
+import com.google.android.exoplayer2.upstream.cache.CacheUtil
+import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
+import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import com.google.android.exoplayer2.util.Util
+import java.io.File
 
 
 private const val audioPrefix: String = "https://bunpro.jp/audio/"
+private const val cachePath = "audio"
 
 class AudioPlayer(private val context: Context) : IAudioPlayer {
 
@@ -28,10 +36,17 @@ class AudioPlayer(private val context: Context) : IAudioPlayer {
                 }
         }
 
-    private val mediaSourceFactory: ProgressiveMediaSource.Factory by lazy {
+    private val mediaSourceFactory: MediaSourceFactory by lazy {
         val userAgent = Util.getUserAgent(context, "BunPyro")
-        val dataSourceFactory = DefaultDataSourceFactory(context, userAgent)
-        ProgressiveMediaSource.Factory(dataSourceFactory)
+        val defaultDataSourceFactory = DefaultDataSourceFactory(context, userAgent)
+
+        val cacheFolder = File(context.filesDir, cachePath)
+        val cacheEvictor = LeastRecentlyUsedCacheEvictor(10 * 1024 * 1024)
+        val databaseProvider = ExoDatabaseProvider(context)
+        val cache = SimpleCache(cacheFolder, cacheEvictor, databaseProvider)
+        val cacheDataSourceFactory = CacheDataSourceFactory(cache, defaultDataSourceFactory)
+
+        ProgressiveMediaSource.Factory(cacheDataSourceFactory)
     }
 
     override fun play(url: String?) {
