@@ -14,6 +14,7 @@ import dev.esnault.bunpyro.android.res.textResId
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.databinding.ItemGrammarPointOverviewBinding
 import dev.esnault.bunpyro.databinding.ItemSearchHeaderBinding
+import dev.esnault.bunpyro.domain.DomainConfig
 import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchResult
 
@@ -167,9 +168,24 @@ class SearchAdapter(
                 emphasisMeaningSearchTerm(grammarPoint.processedMeaning, searchTerm)
 
             binding.bottomDivider.isVisible = !isLast
-            binding.studyHanko.isVisible = grammarPoint.studied
-
             binding.jlptTag.setText(grammarPoint.jlpt.textResId)
+
+            // Study
+            val srsLevel = grammarPoint.srsLevel
+            val studied = srsLevel != null
+            binding.studyHanko.isVisible = studied
+            if (studied) {
+                val isBurned = srsLevel == DomainConfig.STUDY_BURNED
+                binding.studyHankoLevel.isVisible = !isBurned
+                binding.studyHankoLevel.text = srsLevel?.toString()
+
+                val iconResId = if (isBurned) {
+                    R.drawable.ic_bunpyro_hanko
+                } else {
+                    R.drawable.ic_bunpyro_hanko_empty
+                }
+                binding.studyHankoIcon.setImageResource(iconResId)
+            }
 
             // Incomplete
             binding.background.isEnabled = !grammarPoint.incomplete

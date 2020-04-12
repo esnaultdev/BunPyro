@@ -14,7 +14,7 @@ class GrammarSearchResultMapper : IMapper<GrammarSearchResultDb, SearchGrammarOv
             title = o.title,
             yomikata = o.yomikata,
             meaning = o.meaning,
-            studied = o.studied,
+            srsLevel = o.srsLevel ?: (if (o.studied) 0 else null),
             incomplete = o.incomplete,
             jlpt = jlptFromLesson(o.lesson)
         )

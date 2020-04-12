@@ -7,5 +7,6 @@ data class GrammarPointOverviewDb(
     val title: String,
     val meaning: String,
     val incomplete: Boolean,
+    val srsLevel: Int?,
     val studied: Boolean
 )

@@ -9,7 +9,7 @@ data class SearchGrammarOverview(
     val title: String,
     val yomikata: String,
     val meaning: String,
-    val studied: Boolean,
+    val srsLevel: Int?, // null if not studied
     val incomplete: Boolean,
     val jlpt: JLPT
 ) {
@@ -21,4 +21,7 @@ data class SearchGrammarOverview(
             meaning
         }
     }
+
+    val studied: Boolean
+        get() = srsLevel != null
 }

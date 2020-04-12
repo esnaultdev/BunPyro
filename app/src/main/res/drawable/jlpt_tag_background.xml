@@ -4,7 +4,7 @@
     android:shape="rectangle"
     >
 
-    <corners android:radius="@dimen/jlptTag_height" />
+    <corners android:radius="@dimen/smallTag_height" />
     <solid android:color="?colorPrimaryDark" />
 
 </shape>

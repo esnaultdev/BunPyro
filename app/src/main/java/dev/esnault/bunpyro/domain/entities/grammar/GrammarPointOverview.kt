@@ -7,7 +7,7 @@ data class GrammarPointOverview(
     val id: Long,
     val title: String,
     val meaning: String,
-    val studied: Boolean,
+    val srsLevel: Int?, // null if not studied
     val incomplete: Boolean
 ) {
 
@@ -18,4 +18,7 @@ data class GrammarPointOverview(
             meaning
         }
     }
+
+    val studied: Boolean
+        get() = srsLevel != null
 }

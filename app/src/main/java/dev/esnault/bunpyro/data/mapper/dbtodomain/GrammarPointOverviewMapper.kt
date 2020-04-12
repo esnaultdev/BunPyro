@@ -12,7 +12,7 @@ class GrammarPointOverviewMapper : IMapper<GrammarPointOverviewDb, GrammarPointO
             id = o.id,
             title = o.title,
             meaning = o.meaning,
-            studied = o.studied,
+            srsLevel = o.srsLevel ?: (if (o.studied) 0 else null),
             incomplete = o.incomplete
         )
     }
