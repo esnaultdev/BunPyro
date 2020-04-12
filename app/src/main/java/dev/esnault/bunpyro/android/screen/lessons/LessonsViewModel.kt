@@ -4,15 +4,18 @@ import androidx.lifecycle.*
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
+import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.JlptLesson
+import dev.esnault.bunpyro.domain.entities.settings.HankoDisplaySetting
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
 class LessonsViewModel(
-    private val lessonsRepo: ILessonRepository
+    private val lessonsRepo: ILessonRepository,
+    private val settingsRepo: ISettingsRepository
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -35,11 +38,12 @@ class LessonsViewModel(
 
     private fun observeLessons() {
         viewModelScope.launch(Dispatchers.IO) {
+            val hankoDisplay = settingsRepo.getHankoDisplay()
             lessonsRepo.getLessons()
                 .collect { lessons ->
                     val currentState = _viewState.value
                     val newState = currentState?.copy(lessons = lessons) ?: run {
-                        ViewState(lessons)
+                        ViewState(lessons, hankoDisplay)
                     }
 
                     this@LessonsViewModel.currentState = newState
@@ -56,7 +60,8 @@ class LessonsViewModel(
     }
 
     data class ViewState(
-        val lessons: List<JlptLesson>
+        val lessons: List<JlptLesson>,
+        val hankoDisplay: HankoDisplaySetting
     )
 
     sealed class SnackBarMessage {

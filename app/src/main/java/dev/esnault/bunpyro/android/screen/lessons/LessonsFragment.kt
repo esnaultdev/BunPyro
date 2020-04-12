@@ -72,7 +72,8 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
     }
 
     private fun bindViewState(viewState: ViewState) {
-        lessonsAdapter?.jlptLessons = viewState.lessons
+        val newViewModel = JlptLessonAdapter.ViewModel(viewState.lessons, viewState.hankoDisplay)
+        lessonsAdapter?.viewModel = newViewModel
     }
 
     private fun showSnackbar(message: SnackBarMessage) {

@@ -11,6 +11,7 @@ import dev.esnault.bunpyro.databinding.ItemGrammarPointOverviewBinding
 import dev.esnault.bunpyro.domain.entities.JLPT
 import dev.esnault.bunpyro.domain.entities.JlptGrammar
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
+import dev.esnault.bunpyro.domain.entities.settings.HankoDisplaySetting
 
 
 class AllGrammarAdapter(
@@ -20,7 +21,7 @@ class AllGrammarAdapter(
 
     private val inflater = LayoutInflater.from(context)
 
-    private var viewModel = ViewModel(emptyList())
+    private var viewModel = ViewModel(emptyList(), HankoDisplaySetting.DEFAULT)
         set(value) {
             val oldValue = field
             field = value
@@ -30,7 +31,7 @@ class AllGrammarAdapter(
             }
         }
 
-    fun set(jlptGrammars: List<JlptGrammar>) {
+    fun set(jlptGrammars: List<JlptGrammar>, hankoDisplay: HankoDisplaySetting) {
         val items = jlptGrammars.flatMap { jlptGrammar ->
             val result = mutableListOf<ViewModel.Item>()
             result.add(ViewModel.Item.JlptHeader(jlptGrammar.level))
@@ -38,7 +39,7 @@ class AllGrammarAdapter(
             result
         }
 
-        viewModel = ViewModel(items)
+        viewModel = ViewModel(items, hankoDisplay)
     }
 
     override fun getItemCount(): Int = viewModel.items.size
@@ -72,12 +73,16 @@ class AllGrammarAdapter(
             is ViewModel.Item.Grammar -> {
                 val nextItem = viewModel.items.getOrNull(position + 1)
                 val isLast = nextItem !is ViewModel.Item.Grammar
-                (holder as? GrammarOverviewViewHolder)?.bind(item.point, isLast)
+                val hankoDisplay = viewModel.hankoDisplay
+                (holder as? GrammarOverviewViewHolder)?.bind(item.point, isLast, hankoDisplay)
             }
         }
     }
 
-    data class ViewModel(val items: List<Item>) {
+    data class ViewModel(
+        val items: List<Item>,
+        val hankoDisplay: HankoDisplaySetting
+    ) {
         sealed class Item {
             data class JlptHeader(val level: JLPT) : Item()
             data class Grammar(val point: GrammarPointOverview) : Item()

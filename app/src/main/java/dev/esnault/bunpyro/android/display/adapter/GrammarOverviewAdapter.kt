@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
 import dev.esnault.bunpyro.databinding.ItemGrammarPointOverviewBinding
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
+import dev.esnault.bunpyro.domain.entities.settings.HankoDisplaySetting
 
 
 class GrammarOverviewAdapter(
@@ -16,7 +17,7 @@ class GrammarOverviewAdapter(
 
     private val inflater = LayoutInflater.from(context)
 
-    var grammarPoints: List<GrammarPointOverview> = mutableListOf()
+    var viewModel: ViewModel = ViewModel(emptyList(), HankoDisplaySetting.DEFAULT)
         set(value) {
             val oldValue = field
             field = value
@@ -32,8 +33,15 @@ class GrammarOverviewAdapter(
     }
 
     override fun onBindViewHolder(holder: GrammarOverviewViewHolder, position: Int) {
-        holder.bind(grammarPoints[position], position == grammarPoints.lastIndex)
+        val grammarPoint = viewModel.grammarPoints[position]
+        val isLast = position == viewModel.grammarPoints.lastIndex
+        holder.bind(grammarPoint, isLast, viewModel.hankoDisplay)
     }
 
-    override fun getItemCount(): Int = grammarPoints.size
+    override fun getItemCount(): Int = viewModel.grammarPoints.size
+
+    data class ViewModel(
+        val grammarPoints: List<GrammarPointOverview>,
+        val hankoDisplay: HankoDisplaySetting
+    )
 }

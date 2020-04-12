@@ -19,7 +19,6 @@ import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.search.SearchUiHelper
 import dev.esnault.bunpyro.android.utils.setupWithNav
 import dev.esnault.bunpyro.databinding.FragmentAllGrammarBinding
-import dev.esnault.bunpyro.domain.entities.JlptGrammar
 import dev.esnault.bunpyro.domain.entities.grammar.AllGrammarFilter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -111,8 +110,8 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
         )
     }
 
-    private fun bindAllGrammar(allGrammar: List<JlptGrammar>) {
-        allAdapter?.set(allGrammar)
+    private fun bindAllGrammar(allGrammarData: AllGrammarViewModel.AllGrammarData) {
+        allAdapter?.set(allGrammarData.allGrammar, allGrammarData.hankoDisplay)
     }
 
     private fun bindSearchState(searchState: AllGrammarViewModel.ViewState.Search) {
@@ -128,7 +127,8 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
             TransitionManager.beginDelayedTransition(binding.coordinatorLayout, transition)
         }
 
-        searchUiHelper?.searchResult = searchState.searchResult
+        searchUiHelper?.viewModel =
+            SearchUiHelper.ViewModel(searchState.searchResult, searchState.hankoDisplay)
 
         binding.allRecyclerView.isVisible = !searchState.searching
         binding.searchRecyclerView.isVisible = searchState.searching

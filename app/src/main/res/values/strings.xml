@@ -108,6 +108,9 @@
     <string name="settings_root_exampleDetails">Example details</string>
     <string name="settings_root_exampleDetails_shown">Shown by default</string>
     <string name="settings_root_exampleDetails_hidden">Hidden by default</string>
+    <string name="settings_root_hankoDisplay">Studied stamp</string>
+    <string name="settings_root_hankoDisplay_normal">Normal</string>
+    <string name="settings_root_hankoDisplay_level">SRS level</string>
     <string name="settings_root_category_about">About</string>
     <string name="settings_root_about">About BunPyro</string>
     <string name="settings_root_licenses">Licenses</string>

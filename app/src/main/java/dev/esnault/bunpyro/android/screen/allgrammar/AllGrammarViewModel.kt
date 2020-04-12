@@ -14,6 +14,7 @@ import dev.esnault.bunpyro.domain.entities.grammar.AllGrammarFilter
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchResult
+import dev.esnault.bunpyro.domain.entities.settings.HankoDisplaySetting
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -32,8 +33,8 @@ class AllGrammarViewModel(
     val searchState: LiveData<ViewState.Search>
         get() = _searchState
 
-    private val _allGrammar = MutableLiveData<List<JlptGrammar>>()
-    val allGrammar: LiveData<List<JlptGrammar>>
+    private val _allGrammar = MutableLiveData<AllGrammarData>()
+    val allGrammar: LiveData<AllGrammarData>
         get() = _allGrammar
 
     /** if null, the filter dialog is not shown */
@@ -52,7 +53,8 @@ class AllGrammarViewModel(
         filtering = false,
         allGrammar = emptyList(),
         searchResult = SearchResult.EMPTY,
-        filter = AllGrammarFilter.DEFAULT
+        filter = AllGrammarFilter.DEFAULT,
+        hankoDisplay = HankoDisplaySetting.DEFAULT
     )
 
     private var searchJob: Job? = null
@@ -65,7 +67,8 @@ class AllGrammarViewModel(
     private fun observeGrammar() {
         viewModelScope.launch(Dispatchers.IO) {
             val filter = settingsRepo.getAllGrammarFilter()
-            currentState = currentState.copy(filter = filter)
+            val hankoDisplay = settingsRepo.getHankoDisplay()
+            currentState = currentState.copy(filter = filter, hankoDisplay = hankoDisplay)
 
             grammarRepo.getAllGrammar()
                 .collect { jlptGrammar ->
@@ -172,13 +175,16 @@ class AllGrammarViewModel(
     // region View state updates
 
     private fun updateShownGrammar() {
-        _allGrammar.postValue(applyFilterTo(currentState.allGrammar, currentState.filter))
+        val allGrammar = applyFilterTo(currentState.allGrammar, currentState.filter)
+        val allGrammarData = AllGrammarData(allGrammar, currentState.hankoDisplay)
+        _allGrammar.postValue(allGrammarData)
     }
 
     private fun updateViewSearch() {
         val searchState = ViewState.Search(
             searching = currentState.searching,
-            searchResult = currentState.searchResult
+            searchResult = currentState.searchResult,
+            hankoDisplay = currentState.hankoDisplay
         )
         _searchState.postValue(searchState)
     }
@@ -220,7 +226,8 @@ class AllGrammarViewModel(
     object ViewState {
         data class Search(
             val searching: Boolean,
-            val searchResult: SearchResult
+            val searchResult: SearchResult,
+            val hankoDisplay: HankoDisplaySetting
         )
     }
 
@@ -229,7 +236,13 @@ class AllGrammarViewModel(
         val filtering: Boolean,
         val allGrammar: List<JlptGrammar>,
         val searchResult: SearchResult,
-        val filter: AllGrammarFilter
+        val filter: AllGrammarFilter,
+        val hankoDisplay: HankoDisplaySetting
+    )
+
+    data class AllGrammarData(
+        val allGrammar: List<JlptGrammar>,
+        val hankoDisplay: HankoDisplaySetting
     )
 
     sealed class SnackBarMessage {

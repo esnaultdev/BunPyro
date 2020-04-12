@@ -10,13 +10,15 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import dev.esnault.bunpyro.R
+import dev.esnault.bunpyro.android.display.viewholder.bindStudy
 import dev.esnault.bunpyro.android.res.textResId
+import dev.esnault.bunpyro.android.screen.search.SearchUiHelper.ViewModel as ViewModel
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.databinding.ItemGrammarPointOverviewBinding
 import dev.esnault.bunpyro.databinding.ItemSearchHeaderBinding
-import dev.esnault.bunpyro.domain.DomainConfig
 import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchResult
+import dev.esnault.bunpyro.domain.entities.settings.HankoDisplaySetting
 
 
 class SearchAdapter(
@@ -35,16 +37,19 @@ class SearchAdapter(
 
     private val inflater = LayoutInflater.from(context)
 
-    var searchResult: SearchResult = SearchResult.EMPTY
+    var viewModel: ViewModel = ViewModel(SearchResult.EMPTY, HankoDisplaySetting.DEFAULT)
         set(value) {
             val oldValue = field
             field = value
 
             if (oldValue != value) {
-                updateComputedValues(value)
+                updateComputedValues(field.searchResult)
                 notifyDataSetChanged()
             }
         }
+
+    private val searchResult: SearchResult
+        get() = viewModel.searchResult
 
     private var hasKana: Boolean = false
     private var _itemCount: Int = 0
@@ -96,18 +101,20 @@ class SearchAdapter(
     }
 
     private fun bindGrammarOverview(holder: GrammarOverviewViewHolder, position: Int) {
-        val isBaseGrammar = !hasKana || (hasKana && position > searchResult.kanaResults.size + 1)
-        if (isBaseGrammar) {
+        val isBaseResult = !hasKana || (hasKana && position > searchResult.kanaResults.size + 1)
+        if (isBaseResult) {
             val basePosition = if (hasKana) {
                 position - searchResult.kanaResults.size - 1
             } else {
                 position
             }
             val isLast = basePosition == searchResult.baseResults.size
-            holder.bind(searchResult.baseResults[basePosition - 1], searchResult.baseQuery, isLast)
+            val result = searchResult.baseResults[basePosition - 1]
+            holder.bind(result, searchResult.baseQuery, isLast, viewModel.hankoDisplay)
         } else { // Kana
             val isLast = position == searchResult.kanaResults.size
-            holder.bind(searchResult.kanaResults[position - 1], searchResult.kanaQuery, isLast)
+            val result = searchResult.kanaResults[position - 1]
+            holder.bind(result, searchResult.kanaQuery, isLast, viewModel.hankoDisplay)
         }
     }
 
@@ -159,7 +166,12 @@ class SearchAdapter(
             binding.jlptTag.isVisible = true
         }
 
-        fun bind(grammarPoint: SearchGrammarOverview, searchTerm: String?, isLast: Boolean) {
+        fun bind(
+            grammarPoint: SearchGrammarOverview,
+            searchTerm: String?,
+            isLast: Boolean,
+            hankoDisplay: HankoDisplaySetting
+        ) {
             this.grammarPoint = grammarPoint
 
             binding.japanese.text =
@@ -169,23 +181,7 @@ class SearchAdapter(
 
             binding.bottomDivider.isVisible = !isLast
             binding.jlptTag.setText(grammarPoint.jlpt.textResId)
-
-            // Study
-            val srsLevel = grammarPoint.srsLevel
-            val studied = srsLevel != null
-            binding.studyHanko.isVisible = studied
-            if (studied) {
-                val isBurned = srsLevel == DomainConfig.STUDY_BURNED
-                binding.studyHankoLevel.isVisible = !isBurned
-                binding.studyHankoLevel.text = srsLevel?.toString()
-
-                val iconResId = if (isBurned) {
-                    R.drawable.ic_bunpyro_hanko
-                } else {
-                    R.drawable.ic_bunpyro_hanko_empty
-                }
-                binding.studyHankoIcon.setImageResource(iconResId)
-            }
+            bindStudy(context, binding, grammarPoint.srsLevel, hankoDisplay)
 
             // Incomplete
             binding.background.isEnabled = !grammarPoint.incomplete

@@ -31,6 +31,14 @@
             app:title="@string/settings_root_exampleDetails"
             />
 
+        <ListPreference
+            app:defaultValue="normal"
+            app:entries="@array/hankoDisplay_entries"
+            app:entryValues="@array/hankoDisplay_values"
+            app:key="hanko_display"
+            app:title="@string/settings_root_hankoDisplay"
+            />
+
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -10,6 +10,7 @@ import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
 import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
 import dev.esnault.bunpyro.data.repository.review.IReviewRepository
+import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.data.sync.ISyncService
 import dev.esnault.bunpyro.data.sync.SyncEvent
@@ -17,6 +18,7 @@ import dev.esnault.bunpyro.domain.entities.JlptProgress
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchResult
+import dev.esnault.bunpyro.domain.entities.settings.HankoDisplaySetting
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -27,6 +29,7 @@ class HomeViewModel(
     private val searchService: ISearchService,
     private val lessonRepo: ILessonRepository,
     private val reviewRepo: IReviewRepository,
+    private val settingsRepo: ISettingsRepository,
     private val serviceStarter: IAndroidServiceStarter,
     private val syncService: ISyncService
 ) : BaseViewModel() {
@@ -48,7 +51,8 @@ class HomeViewModel(
         searchResult = SearchResult.EMPTY,
         jlptProgress = null,
         reviewCount = null,
-        syncInProgress = false
+        syncInProgress = false,
+        hankoDisplay = HankoDisplaySetting.NORMAL
     )
         set(value) {
             field = value
@@ -58,9 +62,17 @@ class HomeViewModel(
     private var searchJob: Job? = null
 
     init {
+        getHankoDisplay()
         observeJlptProgress()
         observeReviewCount()
         observeSyncInProgress()
+    }
+
+    private fun getHankoDisplay() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val hankoDisplay = settingsRepo.getHankoDisplay()
+            currentState = currentState.copy(hankoDisplay = hankoDisplay)
+        }
     }
 
     private fun observeJlptProgress() {
@@ -185,6 +197,7 @@ class HomeViewModel(
     data class ViewState(
         val searching: Boolean,
         val searchResult: SearchResult,
+        val hankoDisplay: HankoDisplaySetting,
         val jlptProgress: JlptProgress?,
         val reviewCount: Int?,
         val syncInProgress: Boolean

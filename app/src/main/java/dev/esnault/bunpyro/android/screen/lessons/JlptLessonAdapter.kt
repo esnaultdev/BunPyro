@@ -19,6 +19,7 @@ import dev.esnault.bunpyro.databinding.ItemJlptLessonBinding
 import dev.esnault.bunpyro.databinding.TabLessonBinding
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.JlptLesson
+import dev.esnault.bunpyro.domain.entities.settings.HankoDisplaySetting
 
 
 class JlptLessonAdapter(
@@ -28,7 +29,7 @@ class JlptLessonAdapter(
 
     private val inflater = LayoutInflater.from(context)
 
-    var jlptLessons: List<JlptLesson> = mutableListOf()
+    var viewModel: ViewModel = ViewModel(emptyList(), HankoDisplaySetting.DEFAULT)
         set(value) {
             val oldValue = field
             field = value
@@ -38,13 +39,16 @@ class JlptLessonAdapter(
             }
         }
 
+    val jlptLessons: List<JlptLesson>
+        get() = viewModel.jlptLessons
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemJlptLessonBinding.inflate(inflater, parent, false)
         return ViewHolder(binding, onGrammarClicked)
     }
 
     override fun onBindPageViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(jlptLessons[position])
+        holder.bind(jlptLessons[position], viewModel.hankoDisplay)
     }
 
     override fun getItemCount(): Int = jlptLessons.size
@@ -101,8 +105,8 @@ class JlptLessonAdapter(
             }.attach()
         }
 
-        fun bind(jlptLesson: JlptLesson) {
-            lessonAdapter.lessons = jlptLesson.lessons
+        fun bind(jlptLesson: JlptLesson, hankoDisplay: HankoDisplaySetting) {
+            lessonAdapter.viewModel = LessonAdapter.ViewModel(jlptLesson.lessons, hankoDisplay)
         }
 
         // region Tabs
@@ -173,4 +177,9 @@ class JlptLessonAdapter(
 
         // endregion
     }
+
+    data class ViewModel(
+        val jlptLessons: List<JlptLesson>,
+        val hankoDisplay: HankoDisplaySetting
+    )
 }

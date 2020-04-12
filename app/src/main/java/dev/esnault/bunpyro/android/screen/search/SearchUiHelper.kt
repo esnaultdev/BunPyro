@@ -14,6 +14,7 @@ import dev.esnault.bunpyro.android.display.adapter.SearchAdapter
 import dev.esnault.bunpyro.common.hideKeyboardFrom
 import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchResult
+import dev.esnault.bunpyro.domain.entities.settings.HankoDisplaySetting
 
 
 /**
@@ -38,10 +39,11 @@ class SearchUiHelper(
     private var searchView: SearchView? = null
     private var searchAdapter: SearchAdapter? = null
 
-    var searchResult: SearchResult?
-        get() = searchAdapter?.searchResult
+    var viewModel: ViewModel?
+        get() = searchAdapter?.viewModel
         set(value) {
-            searchAdapter?.searchResult = value ?: SearchResult.EMPTY
+            searchAdapter?.viewModel =
+                value ?: ViewModel(SearchResult.EMPTY, HankoDisplaySetting.DEFAULT)
         }
 
     init {
@@ -120,4 +122,9 @@ class SearchUiHelper(
     private fun hideSearchIme() {
         searchView?.let { context.hideKeyboardFrom(it) }
     }
+
+    data class ViewModel(
+        val searchResult: SearchResult,
+        val hankoDisplay: HankoDisplaySetting
+    )
 }

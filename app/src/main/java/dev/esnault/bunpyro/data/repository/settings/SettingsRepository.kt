@@ -8,6 +8,7 @@ import dev.esnault.bunpyro.data.mapper.settings.AllGrammarFilterToStringMapper
 import dev.esnault.bunpyro.domain.entities.grammar.AllGrammarFilter
 import dev.esnault.bunpyro.domain.entities.settings.ExampleDetailsSetting
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
+import dev.esnault.bunpyro.domain.entities.settings.HankoDisplaySetting
 import dev.esnault.bunpyro.domain.entities.settings.NightModeSetting
 
 
@@ -46,5 +47,10 @@ class SettingsRepository(context: Context) : ISettingsRepository {
         sharedPreferences.edit {
             putString("all_grammar_filter", value)
         }
+    }
+
+    override suspend fun getHankoDisplay(): HankoDisplaySetting {
+        val value = sharedPreferences.getString("hanko_display", "normal")
+        return HankoDisplaySetting.fromValue(value)
     }
 }

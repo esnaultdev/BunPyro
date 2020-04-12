@@ -125,7 +125,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             TransitionManager.beginDelayedTransition(binding.coordinatorLayout, transition)
         }
 
-        searchUiHelper?.searchResult = viewState.searchResult
+        searchUiHelper?.viewModel =
+            SearchUiHelper.ViewModel(viewState.searchResult, viewState.hankoDisplay)
         binding.jlptProgress.progress = viewState.jlptProgress
 
         binding.contentConstraintLayout.isVisible = !viewState.searching
