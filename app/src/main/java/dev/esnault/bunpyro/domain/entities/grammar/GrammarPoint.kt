@@ -1,5 +1,7 @@
 package dev.esnault.bunpyro.domain.entities.grammar
 
+import dev.esnault.bunpyro.domain.entities.JLPT
+
 
 data class GrammarPoint(
     val id: Long,
@@ -8,10 +10,11 @@ data class GrammarPoint(
     val meaning: String,
     val caution: String?,
     val structure: String?,
-    val level: String?,
     val lesson: Int,
+    val jlpt: JLPT,
     val nuance: String?,
     val incomplete: Boolean,
     val sentences: List<ExampleSentence>,
-    val links: List<SupplementalLink>
+    val links: List<SupplementalLink>,
+    val srsLevel: Int?
 )

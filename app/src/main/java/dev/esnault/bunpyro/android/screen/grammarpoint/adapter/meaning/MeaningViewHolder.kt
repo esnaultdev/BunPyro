@@ -2,14 +2,22 @@ package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.ColorStateList
 import android.text.Spanned
+import androidx.core.view.isVisible
+import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState as ViewState
 import dev.esnault.bunpyro.android.display.adapter.ViewStatePagerAdapter
+import dev.esnault.bunpyro.android.res.longTextResId
+import dev.esnault.bunpyro.android.res.srsString
 import dev.esnault.bunpyro.common.addFocusRemover
+import dev.esnault.bunpyro.common.getColorCompat
 import dev.esnault.bunpyro.common.hide
 import dev.esnault.bunpyro.common.show
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointMeaningBinding
+import dev.esnault.bunpyro.domain.DomainConfig
+import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 
 
 class MeaningViewHolder(
@@ -90,6 +98,27 @@ class MeaningViewHolder(
         } else {
             binding.nuanceGroup.hide()
         }
+
+        bindTags(grammarPoint)
+    }
+
+    private fun bindTags(grammarPoint: GrammarPoint) {
+        // JLPT
+        binding.jlptTag.isVisible = true
+        binding.jlptTag.setText(grammarPoint.jlpt.longTextResId)
+
+        // SRS
+        binding.srsTag.isVisible = true
+        binding.srsTag.text = srsString(context, grammarPoint.srsLevel)
+
+        // SRS color
+        val srsColorResId = if (grammarPoint.srsLevel == DomainConfig.STUDY_BURNED) {
+            R.color.hanko_gold
+        } else {
+            R.color.hanko
+        }
+        val srsColor = context.getColorCompat(srsColorResId)
+        binding.srsTag.backgroundTintList = ColorStateList.valueOf(srsColor)
     }
 
     private fun updateFuriganaShown(furiganaShow: Boolean) {
