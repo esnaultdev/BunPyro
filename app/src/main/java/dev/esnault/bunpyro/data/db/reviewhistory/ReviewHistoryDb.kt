@@ -16,7 +16,10 @@ import java.util.*
             onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["review_id", "review_type"])]
+    indices = [
+        Index(value = ["review_id", "review_type"]),
+        Index(value = ["review_id_type"])
+    ]
 )
 data class ReviewHistoryDb(
     @PrimaryKey
@@ -27,6 +30,16 @@ data class ReviewHistoryDb(
     val attempts: Int,
     val streak: Int
 ) {
+
+    /**
+     * Dummy column used to have a @Relation with a composite key.
+     * Room needs a backing field with both getters and setters, but let's
+     * prevent setting this field since it could be a source of bugs.
+     */
+    @ColumnInfo(name = "review_id_type")
+    @Suppress("SetterBackingFieldAssignment")
+    var reviewIdType: String = "${id.reviewId}_${id.reviewType.value}"
+        set(value) {}
 
     data class ItemId(
         @ColumnInfo(name = "history_index") val index: Int,

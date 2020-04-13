@@ -26,7 +26,7 @@ import dev.esnault.bunpyro.data.db.supplementallink.SupplementalLinkDb
         ReviewDb::class,
         ReviewHistoryDb::class
     ],
-    version = 2
+    version = 3
 )
 @TypeConverters(Converters::class)
 abstract class BunPyroDatabase : RoomDatabase() {

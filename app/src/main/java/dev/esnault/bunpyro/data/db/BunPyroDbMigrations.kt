@@ -52,4 +52,44 @@ val migration_1_2 = object : Migration(1, 2) {
     }
 }
 
-val bunPyroDbMigrations = arrayOf(migration_1_2)
+/**
+ * Migration from 2 to 3.
+ * We can't use @Relation with composite keys, so we need to have a unique column to join
+ * review and review_history.
+ * Let's add a dummy column that is the concatenation of the review id and type.
+ */
+val migration_2_3 = object : Migration(2, 3) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        // Using SQLite, we need to drop a table and recreate it to add a non null column without default value
+
+        // Create `review_tmp` with the added `id_type` column
+        database.execSQL("CREATE TABLE `review_tmp` (`id` INTEGER NOT NULL, `type` INTEGER NOT NULL, `grammar_id` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, `next_review` INTEGER NOT NULL, `last_studied_at` INTEGER, `id_type` TEXT NOT NULL, PRIMARY KEY(`id`, `type`))")
+        // Copy `review` to `review_tmp`
+        database.execSQL("INSERT INTO `review_tmp` SELECT id, type, grammar_id, created_at, updated_at, next_review, last_studied_at, id || '_' || type FROM `review`")
+
+        // Create `review_history_tmp` with the added `review_id_type` column
+        database.execSQL("CREATE TABLE `review_history_tmp` (`question_id` INTEGER NOT NULL, `time` INTEGER NOT NULL, `status` INTEGER NOT NULL, `attempts` INTEGER NOT NULL, `streak` INTEGER NOT NULL, `history_index` INTEGER NOT NULL, `review_id` INTEGER NOT NULL, `review_type` INTEGER NOT NULL, `review_id_type` TEXT NOT NULL, PRIMARY KEY(`history_index`, `review_id`, `review_type`), FOREIGN KEY(`review_id`, `review_type`) REFERENCES `review_tmp`(`id`, `type`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+        // Copy `review_history to `review_history_tmp`
+        database.execSQL("INSERT INTO `review_history_tmp` SELECT question_id, time, status, attempts, streak, history_index, review_id, review_type, review_id || '_' || review_type FROM `review_history`")
+
+        // Drop `review_history`
+        // This also deletes the `index_review_history_review_id_review_type` index
+        database.execSQL("DROP TABLE IF EXISTS `review_history`")
+        // Drop `review`
+        database.execSQL("DROP TABLE IF EXISTS `review`")
+
+        // Rename `review_history_tmp` to `review_history`
+        database.execSQL("ALTER TABLE `review_history_tmp` RENAME TO `review_history`")
+        // Rename `review_tmp` to `review`
+        database.execSQL("ALTER TABLE `review_tmp` RENAME TO `review`")
+
+        // Recreate the deleted index `index_review_history_review_id_review_type`
+        database.execSQL("CREATE INDEX IF NOT EXISTS `index_review_history_review_id_review_type` ON `review_history` (`review_id`, `review_type`)")
+        // Create the index `index_review_review_id_type`
+        database.execSQL("CREATE INDEX IF NOT EXISTS `index_review_id_type` ON `review` (`id_type`)")
+        // Create the index `index_review_history_review_id_type`
+        database.execSQL("CREATE INDEX IF NOT EXISTS `index_review_history_review_id_type` ON `review_history` (`review_id_type`)")
+    }
+}
+
+val bunPyroDbMigrations = arrayOf(migration_1_2, migration_2_3)

@@ -30,11 +30,9 @@ data class FullGrammarPointDb(
 
 data class FullReviewDb(
     @Embedded val review: ReviewDb,
-    // TODO this relation isn't right (it's a composite foreign key, but that's not supported
-    // by room right now :(
     @Relation(
-        parentColumn = "id",
-        entityColumn = "review_id"
+        parentColumn = "id_type",
+        entityColumn = "review_id_type"
     )
     val history: List<ReviewHistoryDb>
 )
