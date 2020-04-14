@@ -4,6 +4,7 @@ package dev.esnault.bunpyro.common
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.content.res.TypedArray
 import android.net.Uri
 import android.util.TypedValue
@@ -40,4 +41,9 @@ fun Context.getThemeColor(@AttrRes colorAttrId: Int): Int {
 fun Context.hideKeyboardFrom(view: View) {
     val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+fun Context.isDarkTheme(): Boolean {
+    return resources.configuration.uiMode and
+            Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 }

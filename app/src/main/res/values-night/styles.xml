@@ -20,4 +20,6 @@
         <item name="android:textColorSecondary">?attr/colorOnSurface</item>
     </style>
 
+    <style name="Widget.App.TabLayout.GrammarPoint" parent="Widget.MaterialComponents.TabLayout"/>
+
 </resources>

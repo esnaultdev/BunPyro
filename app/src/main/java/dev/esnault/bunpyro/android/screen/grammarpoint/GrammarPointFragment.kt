@@ -6,6 +6,7 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.elevation.ElevationOverlayProvider
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.esnault.bunpyro.R
@@ -16,6 +17,7 @@ import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.*
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.example.ExamplesViewHolder
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning.MeaningViewHolder
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.reading.ReadingViewHolder
+import dev.esnault.bunpyro.common.isDarkTheme
 import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.databinding.FragmentGrammarPointBinding
 import dev.esnault.bunpyro.domain.entities.grammar.SupplementalLink
@@ -51,6 +53,17 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
 
     private fun setupToolbar() {
         binding.collapsingToolbarLayout.setupWithNavController(binding.toolbar, findNavController())
+
+        // In dark mode we need to apply the content scrim color manually
+        // See https://github.com/material-components/material-components-android/issues/617
+        val context = requireContext()
+        if (context.isDarkTheme()) {
+            val elevatedSurfaceColor = ElevationOverlayProvider(requireContext())
+                .compositeOverlayWithThemeSurfaceColorIfNeeded(binding.appbarLayout.elevation)
+            binding.collapsingToolbarLayout.setBackgroundColor(elevatedSurfaceColor)
+            binding.collapsingToolbarLayout.setContentScrimColor(elevatedSurfaceColor)
+            binding.appbarLayout.setBackgroundColor(elevatedSurfaceColor)
+        }
     }
 
     private fun setupPager() {
