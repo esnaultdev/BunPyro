@@ -57,6 +57,7 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
                 val tabBinding = TabJlptLessonBinding.inflate(layoutInflater)
                 customView = tabBinding.root
                 tag = tabBinding
+                tabBinding.progress.isSaveEnabled = false // This is messing with our progress bar
 
                 tabBinding.title.text = getString(jlpt.textResId)
                 updateTabColors(tabBinding, false)
