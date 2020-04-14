@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.3.6] - 2020-04-14
+### Added
+- SRS details in lists (available behind a setting)
+- Golden seal for burned items
+- SRS and JLPT info in the grammar point details
+
+### Fixed
+- Fixed some text contrast in dark mode
+- JLPT progress sometimes disappearing
+- Color issues on older devices
+
 ## [0.3.5] - 2020-04-10
 ### Added
 - Audio player for examples
