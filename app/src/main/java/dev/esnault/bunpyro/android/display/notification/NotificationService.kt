@@ -11,7 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.MainActivity
-import dev.esnault.bunpyro.common.getColorCompat
+import dev.esnault.bunpyro.common.getThemeColor
 
 
 class NotificationService(
@@ -73,7 +73,7 @@ class NotificationService(
         return NotificationCompat.Builder(context, ChannelId.SYNC)
             .setContentTitle(context.getText(R.string.notification_sync_inProgress))
             .setSmallIcon(R.drawable.bunpyro_32dp)
-            .setColor(context.getColorCompat(R.color.colorPrimary))
+            .setColor(context.getThemeColor(R.attr.colorPrimary))
             .setProgress(0, 0, true)
             .setContentIntent(pendingIntent)
             .build()

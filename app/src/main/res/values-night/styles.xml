@@ -2,6 +2,9 @@
 <resources>
 
     <style name="AppTheme" parent="DayNight.AppTheme">
+        <item name="colorPrimary">@color/md_blue_400</item>
+        <item name="colorPrimaryDark">@color/md_blue_600</item>
+        <item name="colorAccent">@color/md_lightBlue_A400</item>
         <item name="secondaryColorOnPrimary">@color/white_80</item>
         <item name="secondaryColorOnToolbar">?secondaryColorOnPrimary</item>
         <item name="colorSurfaceSecondary">@color/surfaceColorSecondary_dark</item>

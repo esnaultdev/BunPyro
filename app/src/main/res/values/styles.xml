@@ -5,14 +5,14 @@
     </style>
 
     <style name="DayNight.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
         <item name="chuiColor">@color/chuiTextColor</item>
         <item name="colorOnToolbar">?colorOnSurface</item>
     </style>
 
     <style name="AppTheme" parent="DayNight.AppTheme">
+        <item name="colorPrimary">@color/md_blue_600</item>
+        <item name="colorPrimaryDark">@color/md_blue_800</item>
+        <item name="colorAccent">@color/md_lightBlue_A200</item>
         <item name="colorSurfaceSecondary">@color/surfaceColorSecondary_light</item>
         <item name="secondaryColorOnToolbar">?colorOnToolbar</item>
         <item name="secondaryColorOnPrimary">@color/white_80</item>
