@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.3.7] - 2020-04-15
+### Fixed
+- Grammar filters issues
+- New audio not playing
+
 ## [0.3.6] - 2020-04-14
 ### Added
 - SRS details in lists (available behind a setting)
