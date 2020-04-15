@@ -25,8 +25,8 @@ fun buildFilterDialog(
     // Init JLPT items
     fun DialogItemMultichoiceBinding.initJlptItem(resId: Int, jlpt: JLPT) {
         initItem(resId, result.jlpt.contains(jlpt)) { checkBox ->
-            result = result.toggle(JLPT.N5)
-            checkBox.isChecked = result.jlpt.contains(JLPT.N5)
+            result = result.toggle(jlpt)
+            checkBox.isChecked = result.jlpt.contains(jlpt)
         }
     }
     binding.jlptN5.initJlptItem(R.string.jlpt_n5, JLPT.N5)
