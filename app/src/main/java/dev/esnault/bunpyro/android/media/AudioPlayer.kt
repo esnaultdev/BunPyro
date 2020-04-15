@@ -44,7 +44,8 @@ class AudioPlayer(
             return
         }
 
-        val uri = Uri.parse(audioPrefix + url)
+        val uri = getAudioUri(url)
+
         val source = mediaSourceFactory.createMediaSource(uri)
         exoPlayer.prepare(source)
         exoPlayer.playWhenReady = true
@@ -95,4 +96,13 @@ fun buildMediaSourceFactory(context: Context): MediaSourceFactory {
     val cacheDataSourceFactory = CacheDataSourceFactory(cache, defaultDataSourceFactory)
 
     return ProgressiveMediaSource.Factory(cacheDataSourceFactory)
+}
+
+fun getAudioUri(url: String): Uri {
+    val baseUri = Uri.parse(url)
+    return if (baseUri.isAbsolute) {
+        baseUri
+    } else {
+        Uri.parse(audioPrefix + url)
+    }
 }
