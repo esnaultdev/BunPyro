@@ -2,7 +2,7 @@ package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning
 
 import android.app.Activity
 import android.content.Context
-import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.text.Spanned
 import androidx.core.view.isVisible
 import dev.esnault.bunpyro.R
@@ -11,10 +11,7 @@ import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.Vie
 import dev.esnault.bunpyro.android.display.adapter.ViewStatePagerAdapter
 import dev.esnault.bunpyro.android.res.longTextResId
 import dev.esnault.bunpyro.android.res.srsString
-import dev.esnault.bunpyro.common.addFocusRemover
-import dev.esnault.bunpyro.common.getColorCompat
-import dev.esnault.bunpyro.common.hide
-import dev.esnault.bunpyro.common.show
+import dev.esnault.bunpyro.common.*
 import dev.esnault.bunpyro.databinding.LayoutGrammarPointMeaningBinding
 import dev.esnault.bunpyro.domain.DomainConfig
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
@@ -64,6 +61,8 @@ class MeaningViewHolder(
 
         if (newState.grammarPoint != oldState?.grammarPoint) {
             bindFields(newState)
+            bindTags(newState.grammarPoint)
+            bindReviews(newState.grammarPoint)
         } else if (newState.furiganaShown != oldState.furiganaShown) {
             updateFuriganaShown(newState.furiganaShown)
         }
@@ -99,26 +98,34 @@ class MeaningViewHolder(
             binding.nuanceGroup.hide()
         }
 
-        bindTags(grammarPoint)
+        binding.jlptTag.isVisible = true
+        binding.jlptTag.setText(grammarPoint.jlpt.longTextResId)
     }
 
     private fun bindTags(grammarPoint: GrammarPoint) {
-        // JLPT
         binding.jlptTag.isVisible = true
         binding.jlptTag.setText(grammarPoint.jlpt.longTextResId)
 
-        // SRS
         binding.srsTag.isVisible = true
         binding.srsTag.text = srsString(context, grammarPoint.srsLevel)
+    }
 
-        // SRS color
-        val srsColorResId = if (grammarPoint.srsLevel == DomainConfig.STUDY_BURNED) {
-            R.color.hanko_gold
-        } else {
-            R.color.hanko
+    private fun bindReviews(grammarPoint: GrammarPoint) {
+        binding.reviewTitle.isVisible = true
+
+        val srsLevel = grammarPoint.srsLevel
+        val studied = srsLevel != null
+
+        binding.reviewAdd.isVisible = !studied
+        binding.reviewProgress.isVisible = studied
+        binding.reviewProgressText.isVisible = studied
+
+        if (srsLevel != null) {
+            val burned = srsLevel == DomainConfig.STUDY_BURNED
+            binding.reviewProgress.progressDrawable = buildProgressDrawable(burned)
+            binding.reviewProgress.progress = srsLevel
+            binding.reviewProgressText.text = srsString(context, srsLevel)
         }
-        val srsColor = context.getColorCompat(srsColorResId)
-        binding.srsTag.backgroundTintList = ColorStateList.valueOf(srsColor)
     }
 
     private fun updateFuriganaShown(furiganaShow: Boolean) {
@@ -145,5 +152,16 @@ class MeaningViewHolder(
             showFurigana = furigana,
             furiganize = false
         )
+    }
+
+    // Drawable used for the progress bars
+    // I would prefer using XML to define it, but SDK 21 has some troubles when using theme colors.
+    private fun buildProgressDrawable(burned: Boolean): Drawable {
+        val backgroundColor = context.getThemeColor(R.attr.colorOnSurface).withAlpha(Alpha.p10)
+        val progressColorResId = if (burned) R.color.hanko_gold else R.color.hanko
+        val progressColor = context.getColorCompat(progressColorResId)
+        val cornerRadius = context.resources.getDimension(R.dimen.srs_progressbar_height)
+
+        return buildHorizontalProgressDrawable(backgroundColor, progressColor, cornerRadius)
     }
 }

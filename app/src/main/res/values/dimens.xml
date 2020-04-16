@@ -9,6 +9,7 @@
     <dimen name="app_bar_height_extended_with_tabs_top_icon">200dp</dimen>
 
     <dimen name="jlpt_progressbar_height">10dp</dimen>
+    <dimen name="srs_progressbar_height">10dp</dimen>
     <dimen name="text_max_width">300dp</dimen>
 
     <dimen name="smallTag_height">32dp</dimen>

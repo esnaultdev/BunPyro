@@ -14,6 +14,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.common.Alpha
+import dev.esnault.bunpyro.common.buildHorizontalProgressDrawable
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.common.withAlpha
 import dev.esnault.bunpyro.databinding.WidgetJlptProgressBinding
@@ -101,31 +102,12 @@ class JlptProgressWidget : FrameLayout {
     }
 
     // Drawable used for the progress bars
-    // I would prefer using XML to define it, but SDK 21 has some troubles with colors.
+    // I would prefer using XML to define it, but SDK 21 has some troubles when using theme colors.
     private fun buildProgressDrawable(): Drawable {
         val backgroundColor = context.getThemeColor(R.attr.colorOnSurface).withAlpha(Alpha.p08)
         val progressColor = context.getThemeColor(R.attr.colorAccent)
-        val progressCornerRadius = context.resources.getDimension(R.dimen.jlpt_progressbar_height)
+        val cornerRadius = context.resources.getDimension(R.dimen.jlpt_progressbar_height)
 
-        return LayerDrawable(
-            arrayOf(
-                GradientDrawable().apply {
-                    setColor(backgroundColor)
-                    cornerRadius = progressCornerRadius
-                },
-                ScaleDrawable(
-                    GradientDrawable().apply {
-                        setColor(progressColor)
-                        cornerRadius = progressCornerRadius
-                    },
-                    Gravity.START,
-                    1f,
-                    -1f
-                )
-            )
-        ).apply {
-            setId(0, android.R.id.background)
-            setId(1, android.R.id.progress)
-        }
+        return buildHorizontalProgressDrawable(backgroundColor, progressColor, cornerRadius)
     }
 }
