@@ -3,9 +3,7 @@ package dev.esnault.bunpyro.data.network
 import dev.esnault.bunpyro.data.network.entities.*
 import dev.esnault.bunpyro.data.network.interceptor.Timeout
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Headers
+import retrofit2.http.*
 
 
 /**
@@ -41,4 +39,7 @@ interface BunproVersionedApi {
     suspend fun getAllReviews(
         @Header("If-None-Match") etagHeader: String?
     ): Response<ReviewsData>
+
+    @POST("v4/reviews/create/{grammarPointId}?complete=true")
+    suspend fun addToReviews(@Path("grammarPointId") grammarPointId: Long)
 }

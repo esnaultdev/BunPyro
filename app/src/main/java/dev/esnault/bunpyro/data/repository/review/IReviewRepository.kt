@@ -8,4 +8,6 @@ interface IReviewRepository {
     suspend fun refreshReviewCount()
 
     suspend fun getReviewCount(): Flow<Int?>
+
+    suspend fun addToReviews(grammarPointId: Long)
 }

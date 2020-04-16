@@ -28,4 +28,8 @@ class FakeBunproVersionedApi(
     override suspend fun getAllReviews(etagHeader: String?): Response<ReviewsData> {
         return allReviews.toResponse()
     }
+
+    override suspend fun addToReviews(grammarPointId: Long) {
+        return
+    }
 }

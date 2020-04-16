@@ -46,6 +46,8 @@ class SyncService(
 
     private val syncEventChannel = ConflatedBroadcastChannel<SyncEvent>()
 
+    // region Global sync
+
     override suspend fun getSyncEvent(): Flow<SyncEvent> {
         return syncEventChannel.asFlow()
     }
@@ -120,6 +122,8 @@ class SyncService(
             }
         )
     }
+
+    // endregion
 
     // region Grammar points
 
@@ -242,7 +246,7 @@ class SyncService(
 
     // region Reviews
 
-    private suspend fun syncReviews(): SyncResult {
+    override suspend fun syncReviews(): SyncResult {
         val eTag = syncRepo.getReviewsETag()
 
         return syncApiEndpoint(

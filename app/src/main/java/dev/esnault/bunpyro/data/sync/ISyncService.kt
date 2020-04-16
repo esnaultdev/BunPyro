@@ -8,6 +8,8 @@ interface ISyncService {
 
     suspend fun firstSync(): SyncResult
     suspend fun nextSync(): SyncResult
+
+    suspend fun syncReviews(): SyncResult
 }
 
 sealed class SyncResult {

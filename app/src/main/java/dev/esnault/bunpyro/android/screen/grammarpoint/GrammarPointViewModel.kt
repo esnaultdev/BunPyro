@@ -10,7 +10,9 @@ import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.android.utils.toClipBoardString
 import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
+import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
+import dev.esnault.bunpyro.data.sync.ISyncService
 import dev.esnault.bunpyro.domain.entities.grammar.ExampleSentence
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
@@ -24,6 +26,8 @@ class GrammarPointViewModel(
     id: Long,
     private val grammarRepo: IGrammarPointRepository,
     private val settingsRepo: ISettingsRepository,
+    private val reviewRepo: IReviewRepository,
+    private val syncService: ISyncService,
     private val clipboard: IClipboard,
     private val audioPlayer: IAudioPlayer
 ) : BaseViewModel() {
@@ -223,6 +227,14 @@ class GrammarPointViewModel(
         val state = currentState ?: return
         audioPlayer.release()
         currentState = state.copy(currentAudio = null)
+    }
+
+    // endregion
+
+    // region Reviews
+
+    fun addToReviews() {
+        // TODO addToReviews + syncReviews
     }
 
     // endregion
