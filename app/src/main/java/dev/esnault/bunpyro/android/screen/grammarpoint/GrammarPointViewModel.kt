@@ -13,13 +13,17 @@ import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
 import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.sync.ISyncService
+import dev.esnault.bunpyro.data.sync.SyncResult
+import dev.esnault.bunpyro.data.utils.log.ILogger
 import dev.esnault.bunpyro.domain.entities.grammar.ExampleSentence
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 
 class GrammarPointViewModel(
@@ -29,7 +33,8 @@ class GrammarPointViewModel(
     private val reviewRepo: IReviewRepository,
     private val syncService: ISyncService,
     private val clipboard: IClipboard,
-    private val audioPlayer: IAudioPlayer
+    private val audioPlayer: IAudioPlayer,
+    private val logger: ILogger
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -62,25 +67,77 @@ class GrammarPointViewModel(
                 val furiganaShown = settingsRepo.getFurigana().asBoolean()
                 val exampleDetailsShown = settingsRepo.getExampleDetails().asBoolean()
 
-                // TODO make this a flow, so that we can properly update it from the network
-                val grammarPoint = grammarRepo.getGrammarPoint(id)
-                val splitTitle = grammarPoint.title.split('・')
-
-                currentState = ViewState(
-                    grammarPoint,
-                    titleYomikataShown = false,
-                    furiganaShown = furiganaShown,
-                    examples = grammarPoint.sentences.map { sentence ->
-                        ViewState.Example(
-                            titles = splitTitle,
-                            sentence = sentence,
-                            collapsed = !exampleDetailsShown
-                        )
-                    },
-                    currentAudio = null
-                )
+                grammarRepo.getGrammarPoint(id)
+                    .collect { grammarPoint ->
+                        val state = currentState
+                        currentState = if (state == null) {
+                            firstLoadState(furiganaShown, exampleDetailsShown, grammarPoint)
+                        } else {
+                            nextLoadState(state, exampleDetailsShown, grammarPoint)
+                        }
+                    }
             }
         }
+    }
+
+    private fun firstLoadState(
+        furiganaShown: Boolean,
+        exampleDetailsShown: Boolean,
+        grammarPoint: GrammarPoint
+    ): ViewState {
+        val splitTitle = grammarPoint.title.split('・')
+
+        return ViewState(
+            grammarPoint = grammarPoint,
+            titleYomikataShown = false,
+            furiganaShown = furiganaShown,
+            examples = grammarPoint.sentences.map { sentence ->
+                ViewState.Example(
+                    titles = splitTitle,
+                    sentence = sentence,
+                    collapsed = !exampleDetailsShown
+                )
+            },
+            currentAudio = null,
+            reviewAction = null
+        )
+    }
+
+    private fun nextLoadState(
+        state: ViewState,
+        exampleDetailsShown: Boolean,
+        grammarPoint: GrammarPoint
+    ): ViewState {
+        val titleChanged = state.grammarPoint.title != grammarPoint.title
+        val sentencesChanged = state.grammarPoint.sentences != grammarPoint.sentences
+
+        val newExamples = if (titleChanged || sentencesChanged) {
+            val splitTitle = grammarPoint.title.split('・')
+            val oldExamplesMap = state.examples.associateBy { it.sentence.id }
+
+            grammarPoint.sentences.map { sentence ->
+                val oldExample = oldExamplesMap[sentence.id]
+                if (oldExample != null) {
+                    oldExample.copy(titles = splitTitle, sentence = sentence)
+                } else {
+                    ViewState.Example(
+                        titles = splitTitle,
+                        sentence = sentence,
+                        collapsed = !exampleDetailsShown
+                    )
+                }
+            }
+        } else {
+            state.examples
+        }
+
+        // We could stop the current audio if the related example disappeared, but letting it play
+        // until the end is fine too.
+
+        return state.copy(
+            grammarPoint = grammarPoint,
+            examples = newExamples
+        )
     }
 
     fun onTitleClick() {
@@ -233,8 +290,30 @@ class GrammarPointViewModel(
 
     // region Reviews
 
-    fun addToReviews() {
-        // TODO addToReviews + syncReviews
+    fun onAddToReviews() {
+        val state = currentState ?: return
+        if (state.reviewAction != null) return // Already performing a review action
+
+        currentState = state.copy(reviewAction = ViewState.ReviewAction.ADD)
+        viewModelScope.launch(Dispatchers.IO) {
+            val success = addToReviews(state.grammarPoint.id)
+            currentState = currentState?.copy(reviewAction = null)
+
+            if (!success) {
+                _snackbar.postValue(SnackBarMessage.ReviewActionFailed(ViewState.ReviewAction.ADD))
+            }
+        }
+    }
+
+    private suspend fun addToReviews(grammarId: Long): Boolean {
+        try {
+            reviewRepo.addToReviews(grammarId)
+        } catch (e: Exception) {
+            logger.e("GrammarPointVM", "addToReviews", e)
+            return false
+        }
+        val syncResult = syncService.syncReviews()
+        return syncResult is SyncResult.Success
     }
 
     // endregion
@@ -244,7 +323,8 @@ class GrammarPointViewModel(
         val titleYomikataShown: Boolean,
         val furiganaShown: Boolean,
         val examples: List<Example>,
-        val currentAudio: CurrentAudio?
+        val currentAudio: CurrentAudio?,
+        val reviewAction: ReviewAction?
     ) {
         data class Example(
             val titles: List<String>, // Split title used to highlight the sentence
@@ -255,11 +335,14 @@ class GrammarPointViewModel(
         data class CurrentAudio(val exampleId: Long, val state: AudioState)
 
         enum class AudioState { PLAYING, LOADING, STOPPED }
+
+        enum class ReviewAction { ADD /*, REMOVE, RESET, SKIP */ }
     }
 
     sealed class SnackBarMessage {
         object JapaneseCopied : SnackBarMessage()
         object EnglishCopied : SnackBarMessage()
         object TitleCopied : SnackBarMessage()
+        class ReviewActionFailed(val action: ViewState.ReviewAction) : SnackBarMessage()
     }
 }

@@ -13,11 +13,10 @@ class GrammarPointRepository(
     private val grammarPointDao: GrammarPointDao
 ) : IGrammarPointRepository {
 
-    private val mapper = GrammarPointMapper()
-
-    override suspend fun getGrammarPoint(id: Long): GrammarPoint {
-        val point = grammarPointDao.getById(id)
-        return mapper.map(point)
+    override fun getGrammarPoint(id: Long): Flow<GrammarPoint> {
+        val mapper = GrammarPointMapper()
+        return grammarPointDao.getById(id)
+            .map { mapper.map(it) }
     }
 
     override fun getAllGrammar(): Flow<List<JlptGrammar>> {

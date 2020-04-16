@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface IGrammarPointRepository {
 
-    suspend fun getGrammarPoint(id: Long): GrammarPoint
+    fun getGrammarPoint(id: Long): Flow<GrammarPoint>
 
     fun getAllGrammar(): Flow<List<JlptGrammar>>
 }

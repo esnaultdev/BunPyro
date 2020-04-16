@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.text.Spanned
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState as ViewState
+import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState.ReviewAction
 import dev.esnault.bunpyro.android.display.adapter.ViewStatePagerAdapter
 import dev.esnault.bunpyro.android.res.longTextResId
 import dev.esnault.bunpyro.android.res.srsString
@@ -24,7 +26,7 @@ class MeaningViewHolder(
 ) : ViewStatePagerAdapter.ViewHolder(binding.root) {
 
     data class Listener(
-        val onStudy: () -> Unit,
+        val onAddToReviews: () -> Unit,
         val onGrammarPointClick: (id: Long) -> Unit
     )
 
@@ -47,6 +49,8 @@ class MeaningViewHolder(
         binding.nuanceText.movementMethod = BestLinkMovementMethod()
 
         binding.meaningScrollView.addFocusRemover(activity)
+
+        binding.reviewAddButton.setOnClickListener { listener.onAddToReviews() }
     }
 
     private fun bind(oldState: ViewState?, newState: ViewState?) {
@@ -62,9 +66,11 @@ class MeaningViewHolder(
         if (newState.grammarPoint != oldState?.grammarPoint) {
             bindFields(newState)
             bindTags(newState.grammarPoint)
-            bindReviews(newState.grammarPoint)
+            bindReviews(newState)
         } else if (newState.furiganaShown != oldState.furiganaShown) {
             updateFuriganaShown(newState.furiganaShown)
+        } else if (newState.reviewAction != oldState.reviewAction) {
+            bindReviews(newState)
         }
     }
 
@@ -110,11 +116,12 @@ class MeaningViewHolder(
         binding.srsTag.text = srsString(context, grammarPoint.srsLevel)
     }
 
-    private fun bindReviews(grammarPoint: GrammarPoint) {
-        binding.reviewTitle.isVisible = true
-
+    private fun bindReviews(viewState: ViewState) {
+        val grammarPoint = viewState.grammarPoint
         val srsLevel = grammarPoint.srsLevel
         val studied = srsLevel != null
+
+        binding.reviewTitle.isVisible = true
 
         binding.reviewAdd.isVisible = !studied
         binding.reviewProgress.isVisible = studied
@@ -126,6 +133,10 @@ class MeaningViewHolder(
             binding.reviewProgress.progress = srsLevel
             binding.reviewProgressText.text = srsString(context, srsLevel)
         }
+
+        val addInProgress = viewState.reviewAction == ReviewAction.ADD
+        binding.reviewAddProgress.isVisible = addInProgress
+        binding.reviewAddButton.isInvisible = addInProgress
     }
 
     private fun updateFuriganaShown(furiganaShow: Boolean) {

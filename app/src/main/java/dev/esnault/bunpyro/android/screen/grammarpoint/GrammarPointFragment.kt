@@ -69,7 +69,7 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
     private fun setupPager() {
         val listener = GrammarPointPagerAdapter.Listener(
             meaningListener = MeaningViewHolder.Listener(
-                onStudy = {},
+                onAddToReviews = vm::onAddToReviews,
                 onGrammarPointClick = vm::onGrammarPointClick
             ),
             examplesListener = ExamplesViewHolder.Listener(
@@ -173,6 +173,8 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
             is SnackBarMessage.JapaneseCopied -> R.string.grammarPoint_snackbar_japaneseCopied
             is SnackBarMessage.EnglishCopied -> R.string.grammarPoint_snackbar_englishCopied
             is SnackBarMessage.TitleCopied -> R.string.grammarPoint_snackbar_titleCopied
+            is SnackBarMessage.ReviewActionFailed ->
+                R.string.grammarPoint_snackbar_reviewActionFailed_add
         }
 
         // We're using the coordinator layout as the context view to have the swipe to dismiss

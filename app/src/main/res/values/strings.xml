@@ -79,6 +79,7 @@
     <string name="grammarPoint_snackbar_japaneseCopied">Japanese text copied</string>
     <string name="grammarPoint_snackbar_englishCopied">English text copied</string>
     <string name="grammarPoint_snackbar_titleCopied">Text copied</string>
+    <string name="grammarPoint_snackbar_reviewActionFailed_add">Could not add to reviews</string>
 
     <string name="srs_level">SRS %d</string>
     <string name="srs_notStudied">Not studied</string>

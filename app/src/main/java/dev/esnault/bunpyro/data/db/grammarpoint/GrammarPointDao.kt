@@ -16,7 +16,7 @@ abstract class GrammarPointDao {
 
     @Transaction
     @Query("SELECT * FROM grammar_point WHERE id = :id")
-    abstract suspend fun getById(id: Long): FullGrammarPointDb
+    abstract fun getById(id: Long): Flow<FullGrammarPointDb>
 
     @Query("""
 SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
