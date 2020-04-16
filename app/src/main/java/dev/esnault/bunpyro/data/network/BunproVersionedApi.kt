@@ -40,6 +40,6 @@ interface BunproVersionedApi {
         @Header("If-None-Match") etagHeader: String?
     ): Response<ReviewsData>
 
-    @POST("v4/reviews/create/{grammarPointId}?complete=true")
-    suspend fun addToReviews(@Path("grammarPointId") grammarPointId: Long)
+    @POST("v3/reviews/create/{grammarPointId}?complete=true")
+    suspend fun addToReviews(@Path("grammarPointId") grammarPointId: Long): Response<Unit>
 }

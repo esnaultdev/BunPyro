@@ -6,10 +6,12 @@ import dev.esnault.bunpyro.BuildConfig
 import dev.esnault.bunpyro.data.config.AppConfig
 import dev.esnault.bunpyro.data.config.FakeAppConfig
 import dev.esnault.bunpyro.data.config.IAppConfig
+import dev.esnault.bunpyro.data.service.review.IReviewService
+import dev.esnault.bunpyro.data.service.review.ReviewService
 import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.data.service.search.SearchService
-import dev.esnault.bunpyro.data.sync.ISyncService
-import dev.esnault.bunpyro.data.sync.SyncService
+import dev.esnault.bunpyro.data.service.sync.ISyncService
+import dev.esnault.bunpyro.data.service.sync.SyncService
 import dev.esnault.bunpyro.data.utils.crashreport.CrashlyticsReporter
 import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
 import dev.esnault.bunpyro.data.utils.crashreport.LogCrashReporter
@@ -54,6 +56,10 @@ val serviceModule = module {
 
     factory<ISearchService> {
         SearchService(get())
+    }
+
+    factory<IReviewService> {
+        ReviewService(get(), get(), get())
     }
 
     single<ICrashReporter> {

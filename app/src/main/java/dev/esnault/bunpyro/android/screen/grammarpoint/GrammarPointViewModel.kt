@@ -10,11 +10,8 @@ import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.android.utils.toClipBoardString
 import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
-import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
-import dev.esnault.bunpyro.data.sync.ISyncService
-import dev.esnault.bunpyro.data.sync.SyncResult
-import dev.esnault.bunpyro.data.utils.log.ILogger
+import dev.esnault.bunpyro.data.service.review.IReviewService
 import dev.esnault.bunpyro.domain.entities.grammar.ExampleSentence
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
@@ -23,18 +20,15 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 
 class GrammarPointViewModel(
     id: Long,
     private val grammarRepo: IGrammarPointRepository,
     private val settingsRepo: ISettingsRepository,
-    private val reviewRepo: IReviewRepository,
-    private val syncService: ISyncService,
+    private val reviewService: IReviewService,
     private val clipboard: IClipboard,
-    private val audioPlayer: IAudioPlayer,
-    private val logger: ILogger
+    private val audioPlayer: IAudioPlayer
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -296,24 +290,13 @@ class GrammarPointViewModel(
 
         currentState = state.copy(reviewAction = ViewState.ReviewAction.ADD)
         viewModelScope.launch(Dispatchers.IO) {
-            val success = addToReviews(state.grammarPoint.id)
+            val success = reviewService.addToReviews(state.grammarPoint.id)
             currentState = currentState?.copy(reviewAction = null)
 
             if (!success) {
                 _snackbar.postValue(SnackBarMessage.ReviewActionFailed(ViewState.ReviewAction.ADD))
             }
         }
-    }
-
-    private suspend fun addToReviews(grammarId: Long): Boolean {
-        try {
-            reviewRepo.addToReviews(grammarId)
-        } catch (e: Exception) {
-            logger.e("GrammarPointVM", "addToReviews", e)
-            return false
-        }
-        val syncResult = syncService.syncReviews()
-        return syncResult is SyncResult.Success
     }
 
     // endregion

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
-import dev.esnault.bunpyro.data.sync.SyncResult
-import dev.esnault.bunpyro.data.sync.ISyncService
+import dev.esnault.bunpyro.data.service.sync.SyncResult
+import dev.esnault.bunpyro.data.service.sync.ISyncService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

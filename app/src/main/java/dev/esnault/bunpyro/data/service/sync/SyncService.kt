@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.data.sync
+package dev.esnault.bunpyro.data.service.sync
 
 import android.database.SQLException
 import dev.esnault.bunpyro.data.db.examplesentence.ExampleSentenceDao
@@ -105,7 +105,7 @@ class SyncService(
     ): SyncResult {
         return responseRequest(
             request = apiRequest,
-            onSuccess = onSuccess,
+            onSuccess = { body, response -> onSuccess(body!!, response) },
             onNotModified = { SyncResult.Success },
             onInvalidApiKey = {
                 // TODO disconnect the user, clear the DB and redirect to the api key screen

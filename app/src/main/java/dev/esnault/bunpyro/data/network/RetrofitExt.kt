@@ -52,7 +52,7 @@ suspend fun <T, R> simpleRequest(
  */
 suspend fun <T, R> responseRequest(
     request: suspend () -> Response<T>,
-    onSuccess: suspend (T, Response<T>) -> R,
+    onSuccess: suspend (T?, Response<T>) -> R,
     onNotModified: suspend () -> R,
     onInvalidApiKey: suspend () -> R,
     onServerError: suspend (code: Int, error: Exception) -> R,
@@ -64,7 +64,7 @@ suspend fun <T, R> responseRequest(
         val response = request()
         when {
             response.isNotModified -> onNotModified()
-            response.isSuccessful -> onSuccess(response.body()!!, response)
+            response.isSuccessful -> onSuccess(response.body(), response)
             else -> {
                 when (val code = response.code()) {
                     401 -> onInvalidApiKey()

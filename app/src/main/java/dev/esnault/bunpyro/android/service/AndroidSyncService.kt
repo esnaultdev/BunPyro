@@ -3,7 +3,7 @@ package dev.esnault.bunpyro.android.service
 import android.app.IntentService
 import android.content.Intent
 import dev.esnault.bunpyro.android.display.notification.INotificationService
-import dev.esnault.bunpyro.data.sync.ISyncService
+import dev.esnault.bunpyro.data.service.sync.ISyncService
 import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject

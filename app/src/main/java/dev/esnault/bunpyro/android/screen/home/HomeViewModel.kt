@@ -12,8 +12,8 @@ import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
 import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
-import dev.esnault.bunpyro.data.sync.ISyncService
-import dev.esnault.bunpyro.data.sync.SyncEvent
+import dev.esnault.bunpyro.data.service.sync.ISyncService
+import dev.esnault.bunpyro.data.service.sync.SyncEvent
 import dev.esnault.bunpyro.domain.entities.JlptProgress
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview

@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.data.sync
+package dev.esnault.bunpyro.data.service.sync
 
 import kotlinx.coroutines.flow.Flow
 
