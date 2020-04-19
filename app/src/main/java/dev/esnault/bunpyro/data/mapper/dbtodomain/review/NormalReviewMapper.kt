@@ -15,7 +15,8 @@ class NormalReviewMapper : IMapper<NormalReview, ReviewDb> {
             createdAt = o.createdAt,
             updatedAt = o.updatedAt,
             nextReview = o.nextReview,
-            lastStudiedAt = o.lastStudiedAt
+            lastStudiedAt = o.lastStudiedAt,
+            hidden = !o.complete
         )
     }
 }

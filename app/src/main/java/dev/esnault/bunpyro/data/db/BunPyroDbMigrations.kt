@@ -92,4 +92,14 @@ val migration_2_3 = object : Migration(2, 3) {
     }
 }
 
-val bunPyroDbMigrations = arrayOf(migration_1_2, migration_2_3)
+/**
+ * Migration from 3 to 4.
+ * Add a hidden column for reviews, to handle the removed reviews.
+ */
+val migration_3_4 = object : Migration(3, 4) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE `review` ADD `hidden` INTEGER NOT NULL DEFAULT 0")
+    }
+}
+
+val bunPyroDbMigrations = arrayOf(migration_1_2, migration_2_3, migration_3_4)

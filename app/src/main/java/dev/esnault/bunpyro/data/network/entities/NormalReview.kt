@@ -21,7 +21,6 @@ import java.util.*
  * - self_study
  *
  * These fields are ignored because I have no idea what they do:
- * - complete
  * - review_misses
  */
 data class NormalReview(
@@ -35,5 +34,6 @@ data class NormalReview(
     val readings: List<Long>,
     val history: List<ReviewHistory>,
     @Json(name = "missed_question_ids") val missedQuestionIds: List<Long>,
-    @Json(name = "studied_question_ids") val studiedQuestionIds: List<Long>
+    @Json(name = "studied_question_ids") val studiedQuestionIds: List<Long>,
+    val complete: Boolean
 )

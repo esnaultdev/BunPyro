@@ -20,7 +20,6 @@ import java.util.*
  * - self_study
  *
  * These fields are ignored because I have no idea what they do:
- * - complete
  * - review_misses
  */
 data class GhostReview(
@@ -31,5 +30,6 @@ data class GhostReview(
     @Json(name = "created_at") val createdAt: Date,
     @Json(name = "updated_at") val updatedAt: Date,
     @Json(name = "last_studied_at") val lastStudiedAt: Date?,
-    val history: List<ReviewHistory>
+    val history: List<ReviewHistory>,
+    val complete: Boolean
 )

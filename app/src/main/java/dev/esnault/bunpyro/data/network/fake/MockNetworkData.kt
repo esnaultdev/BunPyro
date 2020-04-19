@@ -83,7 +83,8 @@ object Mock {
                     )
                 ),
                 missedQuestionIds = emptyList(),
-                studiedQuestionIds = listOf(1L)
+                studiedQuestionIds = listOf(1L),
+                complete = true
             )
         ),
         ghostReviews = emptyList()
