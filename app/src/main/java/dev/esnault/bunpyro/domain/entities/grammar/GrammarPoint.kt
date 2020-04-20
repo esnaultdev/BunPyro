@@ -1,6 +1,7 @@
 package dev.esnault.bunpyro.domain.entities.grammar
 
 import dev.esnault.bunpyro.domain.entities.JLPT
+import dev.esnault.bunpyro.domain.entities.review.Review
 
 
 data class GrammarPoint(
@@ -16,5 +17,15 @@ data class GrammarPoint(
     val incomplete: Boolean,
     val sentences: List<ExampleSentence>,
     val links: List<SupplementalLink>,
-    val srsLevel: Int?
-)
+    val review: Review?,
+    val ghostReviews: List<Review>
+) {
+
+    val srsLevel: Int? by lazy(LazyThreadSafetyMode.NONE) {
+        when {
+            review == null -> null
+            review.hidden -> null
+            else -> review.history.map { it.streak }.max() ?: 0
+        }
+    }
+}

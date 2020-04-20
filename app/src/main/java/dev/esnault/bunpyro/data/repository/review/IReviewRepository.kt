@@ -10,8 +10,8 @@ interface IReviewRepository {
     suspend fun getReviewCount(): Flow<Int?>
 
     /** Remove a normal review */
-    suspend fun removeReview(reviewId: Long)
+    suspend fun removeReview(reviewId: Long): Boolean
 
     /** Reset a normal review */
-    suspend fun resetReview(reviewId: Long)
+    suspend fun resetReview(reviewId: Long): Boolean
 }

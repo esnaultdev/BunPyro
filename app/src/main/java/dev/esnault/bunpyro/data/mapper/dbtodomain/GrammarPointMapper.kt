@@ -5,13 +5,16 @@ import dev.esnault.bunpyro.data.db.grammarpoint.FullReviewDb
 import dev.esnault.bunpyro.data.db.review.ReviewType
 import dev.esnault.bunpyro.data.mapper.IMapper
 import dev.esnault.bunpyro.data.mapper.dbtodomain.jlpt.jlptFromLesson
+import dev.esnault.bunpyro.data.mapper.dbtodomain.review.ReviewMapper
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
+import dev.esnault.bunpyro.domain.entities.review.Review
 
 
 class GrammarPointMapper : IMapper<FullGrammarPointDb, GrammarPoint> {
 
     private val sentenceMapper = ExampleSentenceMapper()
     private val linkMapper = SupplementalLinkMapper()
+    private val reviewMapper = ReviewMapper()
 
     override fun map(o: FullGrammarPointDb): GrammarPoint {
         return GrammarPoint(
@@ -29,12 +32,18 @@ class GrammarPointMapper : IMapper<FullGrammarPointDb, GrammarPoint> {
             // using room relationships
             sentences = sentenceMapper.map(o.sentences.sortedBy { it.order }),
             links = linkMapper.map(o.links),
-            srsLevel = mapSrsLevel(o.reviews)
+            review = mapReview(o.reviews),
+            ghostReviews = mapGhostReviews(o.reviews)
         )
     }
 
-    private fun mapSrsLevel(o: List<FullReviewDb>): Int? {
-        val review = o.firstOrNull { it.review.id.type == ReviewType.NORMAL } ?: return null
-        return review.history.map { it.streak }.max() ?: 0
+    private fun mapReview(o: List<FullReviewDb>): Review? {
+        return o.firstOrNull { it.review.id.type == ReviewType.NORMAL }
+            ?.let(reviewMapper::map)
+    }
+
+    private fun mapGhostReviews(o: List<FullReviewDb>): List<Review> {
+        return o.filter { it.review.id.type == ReviewType.GHOST }
+            .let(reviewMapper::map)
     }
 }

@@ -27,6 +27,8 @@ class MeaningViewHolder(
 
     data class Listener(
         val onAddToReviews: () -> Unit,
+        val onResetReview: () -> Unit,
+        val onRemoveReview: () -> Unit,
         val onGrammarPointClick: (id: Long) -> Unit
     )
 
@@ -51,6 +53,8 @@ class MeaningViewHolder(
         binding.meaningScrollView.addFocusRemover(activity)
 
         binding.reviewAdd.setOnClickListener { listener.onAddToReviews() }
+        binding.reviewRemove.setOnClickListener { listener.onRemoveReview() }
+        binding.reviewReset.setOnClickListener { listener.onResetReview() }
     }
 
     private fun bind(oldState: ViewState?, newState: ViewState?) {
@@ -124,6 +128,8 @@ class MeaningViewHolder(
         binding.reviewTitle.isVisible = true
 
         binding.reviewAdd.isVisible = !studied
+        binding.reviewReset.isVisible = studied
+        binding.reviewRemove.isVisible = studied
         binding.reviewProgress.isVisible = studied
         binding.reviewProgressText.isVisible = studied
 
@@ -135,6 +141,10 @@ class MeaningViewHolder(
         }
 
         binding.reviewAdd.progress = viewState.reviewAction == ReviewAction.ADD
+        binding.reviewReset.progress = viewState.reviewAction == ReviewAction.RESET
+        binding.reviewRemove.progress = viewState.reviewAction == ReviewAction.REMOVE
+
+        // TODO disable other buttons
     }
 
     private fun updateFuriganaShown(furiganaShow: Boolean) {

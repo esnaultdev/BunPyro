@@ -1,16 +1,16 @@
-package dev.esnault.bunpyro.data.mapper.dbtodomain.review
+package dev.esnault.bunpyro.data.mapper.apitodb.review
 
 import dev.esnault.bunpyro.data.db.review.ReviewDb
 import dev.esnault.bunpyro.data.db.review.ReviewType
 import dev.esnault.bunpyro.data.mapper.IMapper
-import dev.esnault.bunpyro.data.network.entities.NormalReview
+import dev.esnault.bunpyro.data.network.entities.GhostReview
 
 
-class NormalReviewMapper : IMapper<NormalReview, ReviewDb> {
+class GhostReviewMapper : IMapper<GhostReview, ReviewDb> {
 
-    override fun map(o: NormalReview): ReviewDb {
+    override fun map(o: GhostReview): ReviewDb {
         return ReviewDb(
-            id = ReviewDb.Id(o.id, ReviewType.NORMAL),
+            id = ReviewDb.Id(o.id, ReviewType.GHOST),
             grammarId = o.grammarId,
             createdAt = o.createdAt,
             updatedAt = o.updatedAt,

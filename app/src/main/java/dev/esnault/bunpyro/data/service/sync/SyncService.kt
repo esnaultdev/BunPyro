@@ -14,9 +14,9 @@ import dev.esnault.bunpyro.data.db.supplementallink.SupplementalLinkDb
 import dev.esnault.bunpyro.data.mapper.apitodb.ExampleSentenceMapper
 import dev.esnault.bunpyro.data.mapper.apitodb.GrammarPointMapper
 import dev.esnault.bunpyro.data.mapper.apitodb.SupplementalLinkMapper
-import dev.esnault.bunpyro.data.mapper.dbtodomain.review.GhostReviewMapper
-import dev.esnault.bunpyro.data.mapper.dbtodomain.review.NormalReviewMapper
-import dev.esnault.bunpyro.data.mapper.dbtodomain.review.ReviewHistoryMapper
+import dev.esnault.bunpyro.data.mapper.apitodb.review.GhostReviewMapper
+import dev.esnault.bunpyro.data.mapper.apitodb.review.NormalReviewMapper
+import dev.esnault.bunpyro.data.mapper.apitodb.review.ReviewHistoryMapper
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
 import dev.esnault.bunpyro.data.network.entities.ExampleSentence
 import dev.esnault.bunpyro.data.network.entities.GrammarPoint

@@ -10,6 +10,7 @@ import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.android.utils.toClipBoardString
 import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
+import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.review.IReviewService
 import dev.esnault.bunpyro.domain.entities.grammar.ExampleSentence
@@ -26,6 +27,7 @@ class GrammarPointViewModel(
     id: Long,
     private val grammarRepo: IGrammarPointRepository,
     private val settingsRepo: ISettingsRepository,
+    private val reviewRepo: IReviewRepository,
     private val reviewService: IReviewService,
     private val clipboard: IClipboard,
     private val audioPlayer: IAudioPlayer
@@ -299,6 +301,42 @@ class GrammarPointViewModel(
         }
     }
 
+    fun onRemoveReview() {
+        val state = currentState ?: return
+        if (state.reviewAction != null) return // Already performing a review action
+        val reviewId = state.grammarPoint.review?.id ?: return // No review
+
+        currentState = state.copy(reviewAction = ViewState.ReviewAction.REMOVE)
+        viewModelScope.launch(Dispatchers.IO) {
+            val success = reviewRepo.removeReview(reviewId)
+            currentState = currentState?.copy(reviewAction = null)
+
+            if (!success) {
+                val message = SnackBarMessage.ReviewActionFailed(ViewState.ReviewAction.REMOVE)
+                _snackbar.postValue(message)
+            }
+        }
+    }
+
+    fun onResetReview() {
+        // TODO confirm with a dialog
+
+        val state = currentState ?: return
+        if (state.reviewAction != null) return // Already performing a review action
+        val reviewId = state.grammarPoint.review?.id ?: return // No review
+
+        currentState = state.copy(reviewAction = ViewState.ReviewAction.RESET)
+        viewModelScope.launch(Dispatchers.IO) {
+            val success = reviewRepo.removeReview(reviewId)
+            currentState = currentState?.copy(reviewAction = null)
+
+            if (!success) {
+                val message = SnackBarMessage.ReviewActionFailed(ViewState.ReviewAction.RESET)
+                _snackbar.postValue(message)
+            }
+        }
+    }
+
     // endregion
 
     data class ViewState(
@@ -319,7 +357,7 @@ class GrammarPointViewModel(
 
         enum class AudioState { PLAYING, LOADING, STOPPED }
 
-        enum class ReviewAction { ADD /*, REMOVE, RESET, SKIP */ }
+        enum class ReviewAction { ADD, REMOVE, RESET /*, SKIP */ }
     }
 
     sealed class SnackBarMessage {

@@ -72,6 +72,8 @@
     <string name="grammarPoint_tab_meaning_related">Related</string>
     <string name="grammarPoint_tab_meaning_review">Review</string>
     <string name="grammarPoint_tab_meaning_review_add">Add</string>
+    <string name="grammarPoint_tab_meaning_review_remove">Remove</string>
+    <string name="grammarPoint_tab_meaning_review_reset">Reset</string>
     <string name="grammarPoint_tab_examples_expand">Show more</string>
     <string name="grammarPoint_tab_examples_collapse">Show less</string>
     <string name="grammarPoint_tab_examples_copyJapanese">Copy Japanese</string>

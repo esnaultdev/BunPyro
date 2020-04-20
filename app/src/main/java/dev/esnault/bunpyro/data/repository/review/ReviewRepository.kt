@@ -46,17 +46,29 @@ class ReviewRepository(
         }
     }
 
-    override suspend fun removeReview(reviewId: Long) {
-        bunproVersionedApi.removeReview(reviewId)
+    override suspend fun removeReview(reviewId: Long): Boolean {
+        return try {
+            bunproVersionedApi.removeReview(reviewId)
 
-        val dbId = ReviewDb.Id(reviewId, ReviewType.NORMAL)
-        reviewDao.updateHidden(dbId, true)
+            val dbId = ReviewDb.Id(reviewId, ReviewType.NORMAL)
+            reviewDao.updateHidden(dbId, true)
+            true
+        } catch (e: Exception) {
+            logger.w("ReviewRepo", "Could not remove review $reviewId", e)
+            false
+        }
     }
 
-    override suspend fun resetReview(reviewId: Long) {
-        bunproVersionedApi.resetReview(reviewId)
+    override suspend fun resetReview(reviewId: Long): Boolean {
+        return try {
+            bunproVersionedApi.resetReview(reviewId)
 
-        val dbId = ReviewDb.Id(reviewId, ReviewType.NORMAL)
-        reviewHistoryDao.deleteHistoryForReview(dbId)
+            val dbId = ReviewDb.Id(reviewId, ReviewType.NORMAL)
+            reviewHistoryDao.deleteHistoryForReview(dbId)
+            true
+        } catch (e: Exception) {
+            logger.w("ReviewRepo", "Could not reset review $reviewId", e)
+            false
+        }
     }
 }

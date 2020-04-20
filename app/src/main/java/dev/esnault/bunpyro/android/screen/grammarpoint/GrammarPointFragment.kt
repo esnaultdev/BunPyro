@@ -70,6 +70,8 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
         val listener = GrammarPointPagerAdapter.Listener(
             meaningListener = MeaningViewHolder.Listener(
                 onAddToReviews = vm::onAddToReviews,
+                onRemoveReview = vm::onRemoveReview,
+                onResetReview = vm::onResetReview,
                 onGrammarPointClick = vm::onGrammarPointClick
             ),
             examplesListener = ExamplesViewHolder.Listener(

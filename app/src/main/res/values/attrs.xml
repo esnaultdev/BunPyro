@@ -8,7 +8,7 @@
     <attr name="secondaryColorOnPrimary" format="color" />
 
     <declare-styleable name="OutlineButtonProgress">
-        <attr format="reference" name="con"/>
+        <attr format="reference" name="icon"/>
         <attr format="string" name="android:text"/>
         <attr format="boolean" name="progress"/>
     </declare-styleable>
