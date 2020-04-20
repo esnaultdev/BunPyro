@@ -3,11 +3,7 @@ package dev.esnault.bunpyro.android.display.widget
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.ScaleDrawable
 import android.util.AttributeSet
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ProgressBar

@@ -6,4 +6,10 @@
     <attr name="colorSurfaceSecondary" format="color" />
     <attr name="secondaryColorOnToolbar" format="color" />
     <attr name="secondaryColorOnPrimary" format="color" />
+
+    <declare-styleable name="OutlineButtonProgress">
+        <attr format="reference" name="con"/>
+        <attr format="string" name="android:text"/>
+        <attr format="boolean" name="progress"/>
+    </declare-styleable>
 </resources>

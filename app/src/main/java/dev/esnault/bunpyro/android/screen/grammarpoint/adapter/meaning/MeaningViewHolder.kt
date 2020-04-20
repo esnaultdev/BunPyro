@@ -50,7 +50,7 @@ class MeaningViewHolder(
 
         binding.meaningScrollView.addFocusRemover(activity)
 
-        binding.reviewAddButton.setOnClickListener { listener.onAddToReviews() }
+        binding.reviewAdd.setOnClickListener { listener.onAddToReviews() }
     }
 
     private fun bind(oldState: ViewState?, newState: ViewState?) {
@@ -134,9 +134,7 @@ class MeaningViewHolder(
             binding.reviewProgressText.text = srsString(context, srsLevel)
         }
 
-        val addInProgress = viewState.reviewAction == ReviewAction.ADD
-        binding.reviewAddProgress.isVisible = addInProgress
-        binding.reviewAddButton.isInvisible = addInProgress
+        binding.reviewAdd.progress = viewState.reviewAction == ReviewAction.ADD
     }
 
     private fun updateFuriganaShown(furiganaShow: Boolean) {
