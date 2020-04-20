@@ -10,11 +10,21 @@ abstract class ReviewDao {
     @Query("SELECT id, type FROM review")
     abstract suspend fun getAllIds(): List<ReviewDb.Id>
 
+    @Query("SELECT * FROM review WHERE id = :id AND type = :type")
+    protected abstract suspend fun get(id: Long, type: ReviewType): ReviewDb
+
     @Insert
     abstract suspend fun insertAll(reviews: List<ReviewDb>)
 
     @Update
     abstract suspend fun updateAll(reviews: List<ReviewDb>)
+
+    @Query("UPDATE review SET hidden = :hidden WHERE id = :id AND type = :type ")
+    protected abstract suspend fun updateHidden(id: Long, type: ReviewType, hidden: Boolean)
+
+    suspend fun updateHidden(id: ReviewDb.Id, hidden: Boolean) {
+        updateHidden(id.id, id.type, hidden)
+    }
 
     suspend fun deleteAll(ids: List<ReviewDb.Id>) {
         ids.forEach { delete(it.id, it.type) }

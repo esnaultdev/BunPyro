@@ -42,4 +42,10 @@ interface BunproVersionedApi {
 
     @POST("v3/reviews/create/{grammarPointId}?complete=true")
     suspend fun addToReviews(@Path("grammarPointId") grammarPointId: Long): Response<Unit>
+
+    @POST("v3/reviews/edit/{reviewId}?reset=true")
+    suspend fun resetReview(@Path("reviewId") reviewId: Long): Response<Unit>
+
+    @POST("v3/reviews/edit/{reviewId}?remove_review=true")
+    suspend fun removeReview(@Path("reviewId") reviewId: Long): Response<Unit>
 }

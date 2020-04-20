@@ -10,7 +10,9 @@ class FakeBunproVersionedApi(
     var exampleSentences: FakeResponse<DataRequest<ExampleSentence>> = FakeResponse.Success(Mock.exampleSentences),
     var supplementalLinks: FakeResponse<DataRequest<SupplementalLink>> = FakeResponse.Success(Mock.supplementalLinks),
     var allReviews: FakeResponse<ReviewsData> = FakeResponse.Success(Mock.allReviews),
-    var addToReviews: FakeResponse<Unit> = FakeResponse.Success(Unit)
+    var addToReviews: FakeResponse<Unit> = FakeResponse.Success(Unit),
+    var resetReview: FakeResponse<Unit> = FakeResponse.Success(Unit),
+    var removeRemoview: FakeResponse<Unit> = FakeResponse.Success(Unit)
 ) : BunproVersionedApi {
 
     override suspend fun getGrammarPoints(etagHeader: String?): Response<DataRequest<GrammarPoint>> {
@@ -31,5 +33,13 @@ class FakeBunproVersionedApi(
 
     override suspend fun addToReviews(grammarPointId: Long): Response<Unit> {
         return addToReviews.toResponse()
+    }
+
+    override suspend fun resetReview(reviewId: Long): Response<Unit> {
+        return resetReview.toResponse()
+    }
+
+    override suspend fun removeReview(reviewId: Long): Response<Unit> {
+        return removeRemoview.toResponse()
     }
 }
