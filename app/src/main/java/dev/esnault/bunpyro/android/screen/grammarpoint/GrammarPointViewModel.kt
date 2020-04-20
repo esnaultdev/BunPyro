@@ -327,7 +327,7 @@ class GrammarPointViewModel(
 
         currentState = state.copy(reviewAction = ViewState.ReviewAction.RESET)
         viewModelScope.launch(Dispatchers.IO) {
-            val success = reviewRepo.removeReview(reviewId)
+            val success = reviewRepo.resetReview(reviewId)
             currentState = currentState?.copy(reviewAction = null)
 
             if (!success) {
