@@ -1,6 +1,7 @@
 package dev.esnault.bunpyro.android.display.widget
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
@@ -55,7 +56,17 @@ class OutlineButtonProgress(context: Context, attrs: AttributeSet?, defStyleAttr
     private fun initDefaultAttrs() {
         cardElevation = 0f
         strokeWidth = 1f.dpToPx(context.resources.displayMetrics)
-        strokeColor = context.getThemeColor(R.attr.colorPrimary)
+        val strokeColorStateList = ColorStateList(
+            arrayOf(
+                intArrayOf(-android.R.attr.state_enabled),
+                intArrayOf()
+            ),
+            intArrayOf(
+                context.getThemeColor(R.attr.colorButtonNormal),
+                context.getThemeColor(R.attr.colorPrimary)
+            )
+        )
+        setStrokeColor(strokeColorStateList)
     }
 
     private fun loadFromAttributes(attrs: TypedArray) {
@@ -75,5 +86,10 @@ class OutlineButtonProgress(context: Context, attrs: AttributeSet?, defStyleAttr
     override fun setOnClickListener(l: OnClickListener?) {
         super.setOnClickListener(l)
         binding.button.setOnClickListener(l)
+    }
+
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+        binding.button.isEnabled = enabled
     }
 }

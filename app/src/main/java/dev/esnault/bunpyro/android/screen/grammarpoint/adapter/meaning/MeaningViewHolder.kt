@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.text.Spanned
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.utils.*
@@ -127,12 +126,14 @@ class MeaningViewHolder(
 
         binding.reviewTitle.isVisible = true
 
+        // Visibility
         binding.reviewAdd.isVisible = !studied
         binding.reviewReset.isVisible = studied
         binding.reviewRemove.isVisible = studied
         binding.reviewProgress.isVisible = studied
         binding.reviewProgressText.isVisible = studied
 
+        // SRS progress value
         if (srsLevel != null) {
             val burned = srsLevel == DomainConfig.STUDY_BURNED
             binding.reviewProgress.progressDrawable = buildProgressDrawable(burned)
@@ -140,11 +141,14 @@ class MeaningViewHolder(
             binding.reviewProgressText.text = srsString(context, srsLevel)
         }
 
+        // SRS button Progress
         binding.reviewAdd.progress = viewState.reviewAction == ReviewAction.ADD
         binding.reviewReset.progress = viewState.reviewAction == ReviewAction.RESET
         binding.reviewRemove.progress = viewState.reviewAction == ReviewAction.REMOVE
 
-        // TODO disable other buttons
+        // SRS button enabled
+        binding.reviewReset.isEnabled = viewState.reviewAction != ReviewAction.REMOVE
+        binding.reviewRemove.isEnabled = viewState.reviewAction != ReviewAction.RESET
     }
 
     private fun updateFuriganaShown(furiganaShow: Boolean) {
