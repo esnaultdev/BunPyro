@@ -41,6 +41,10 @@ class GrammarPointViewModel(
     val snackbar: LiveData<SnackBarMessage>
         get() = _snackbar
 
+    private val _dialog = MutableLiveData<DialogMessage?>()
+    val dialog: LiveData<DialogMessage?>
+        get() = _dialog
+
     private var currentState: ViewState? = null
         set(value) {
             field = value
@@ -319,8 +323,14 @@ class GrammarPointViewModel(
     }
 
     fun onResetReview() {
-        // TODO confirm with a dialog
+        val state = currentState ?: return
+        if (state.reviewAction != null) return // Already performing a review action
+        if (state.grammarPoint.review?.id == null) return // No review
 
+        _dialog.postValue(DialogMessage.ResetConfirm)
+    }
+
+    fun onResetReviewConfirm() {
         val state = currentState ?: return
         if (state.reviewAction != null) return // Already performing a review action
         val reviewId = state.grammarPoint.review?.id ?: return // No review
@@ -335,6 +345,17 @@ class GrammarPointViewModel(
                 _snackbar.postValue(message)
             }
         }
+    }
+
+    // endregion
+
+    // region Dialog
+
+    fun onDialogDismiss() {
+        // null the dialog live data value on dismiss so that when rotated (or other change):
+        // - if the dialog was displayed, the dialog is still displayed
+        // - if the dialog was not displayed, the dialog is not displayed again
+        _dialog.postValue(null)
     }
 
     // endregion
@@ -365,5 +386,9 @@ class GrammarPointViewModel(
         object EnglishCopied : SnackBarMessage()
         object TitleCopied : SnackBarMessage()
         class ReviewActionFailed(val action: ViewState.ReviewAction) : SnackBarMessage()
+    }
+
+    sealed class DialogMessage {
+        object ResetConfirm : DialogMessage()
     }
 }

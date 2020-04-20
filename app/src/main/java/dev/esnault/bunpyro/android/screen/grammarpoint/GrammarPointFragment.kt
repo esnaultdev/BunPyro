@@ -5,11 +5,13 @@ import android.view.View
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.elevation.ElevationOverlayProvider
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
+import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.DialogMessage
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.SnackBarMessage
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.*
@@ -32,6 +34,7 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
     override val bindingClass = FragmentGrammarPointBinding::class
 
     private var pagerAdapter: GrammarPointPagerAdapter? = null
+    private var dialog: MaterialDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,6 +45,7 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
 
         vm.viewState.observe(this) { viewState -> bindViewState(viewState) }
         vm.snackbar.observe(this) { message -> showSnackbar(message) }
+        vm.dialog.observe(this) { dialogMessage -> showDialog(dialogMessage) }
 
         bindEvents()
     }
@@ -185,4 +189,44 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
         Snackbar.make(contextView, textResId, Snackbar.LENGTH_SHORT)
             .show()
     }
+
+    // region Dialog
+
+    private fun showDialog(dialogMessage: DialogMessage?) {
+        when (dialogMessage) {
+            is DialogMessage.ResetConfirm -> showResetConfirmDialog()
+            null -> dismissDialog()
+        }
+    }
+
+    private fun dismissDialog() {
+        dialog?.dismiss()
+        dialog = null
+    }
+
+    private fun dismissDialogSilently() {
+        dialog?.apply {
+            setOnDismissListener(null)
+            dismiss()
+        }
+        dialog = null
+    }
+
+    private fun showResetConfirmDialog() {
+        dismissDialogSilently()
+        dialog = MaterialDialog(requireContext())
+            .show {
+                title(R.string.grammarPoint_review_resetWarning_title)
+                message(R.string.grammarPoint_review_resetWarning_message)
+                negativeButton(R.string.common_cancel)
+                positiveButton(R.string.grammarPoint_review_resetWarning_ok) {
+                    vm.onResetReviewConfirm()
+                }
+                setOnDismissListener {
+                    vm.onDialogDismiss()
+                }
+            }
+    }
+
+    // endregion
 }

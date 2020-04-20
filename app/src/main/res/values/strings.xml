@@ -82,6 +82,9 @@
     <string name="grammarPoint_snackbar_englishCopied">English text copied</string>
     <string name="grammarPoint_snackbar_titleCopied">Text copied</string>
     <string name="grammarPoint_snackbar_reviewActionFailed_add">Could not add to reviews</string>
+    <string name="grammarPoint_review_resetWarning_title">Reset reviews</string>
+    <string name="grammarPoint_review_resetWarning_message">All review progress for this grammar point will be deleted.</string>
+    <string name="grammarPoint_review_resetWarning_ok">Reset</string>
 
     <string name="srs_level">SRS %d</string>
     <string name="srs_notStudied">Not studied</string>
