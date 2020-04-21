@@ -21,7 +21,7 @@ abstract class GrammarPointDao {
     @Query("""
 SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
 MAX(rv_h.streak) AS srsLevel, COUNT(rv.id) AS studied FROM grammar_point AS gp
-LEFT JOIN review AS rv ON rv.grammar_id = gp.id AND rv.type = 0
+LEFT JOIN review AS rv ON rv.grammar_id = gp.id AND rv.type = 0 AND rv.hidden = 0
 LEFT JOIN review_history AS rv_h ON rv_h.review_id == rv.id AND rv_h.review_type = 0
 GROUP BY gp.id
 """)
