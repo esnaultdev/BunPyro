@@ -16,6 +16,7 @@ import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointFragmentArgs
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel
 import dev.esnault.bunpyro.android.screen.home.HomeViewModel
 import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel
+import dev.esnault.bunpyro.android.screen.review.ReviewViewModel
 import dev.esnault.bunpyro.android.screen.start.StartViewModel
 import dev.esnault.bunpyro.android.service.AndroidServiceStarter
 import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
@@ -39,6 +40,7 @@ val appModule = module {
         GrammarPointViewModel(args.id, get(), get(), get(), get(), get(), get())
     }
     viewModel { AllGrammarViewModel(get(), get(), get()) }
+    viewModel { ReviewViewModel() }
 
     // endregion
 

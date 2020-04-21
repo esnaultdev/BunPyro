@@ -127,6 +127,13 @@ class HomeViewModel(
         onNavigateToGrammarPoint(grammarPoint.incomplete, grammarPoint.id)
     }
 
+    fun onReviewClick() {
+        val reviewCount = currentState.reviewCount ?: 0
+        if (reviewCount == 0) return // No reviews to do
+
+        navigate(HomeFragmentDirections.actionHomeToReview())
+    }
+
     private fun onNavigateToGrammarPoint(incomplete: Boolean, id: Long) {
         if (incomplete) {
             _snackbar.postValue(SnackBarMessage.IncompleteGrammar)

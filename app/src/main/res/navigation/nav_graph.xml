@@ -92,6 +92,11 @@
             app:destination="@id/settingsScreen"
             />
 
+        <action
+            android:id="@+id/action_home_to_review"
+            app:destination="@id/reviewScreen"
+            />
+
     </fragment>
 
     <fragment
@@ -166,6 +171,12 @@
         android:id="@+id/settingsAboutScreen"
         android:name="dev.esnault.bunpyro.android.screen.settings.about.SettingsAboutFragment"
         tools:layout="@layout/fragment_settings_about"
+        />
+
+    <fragment
+        android:id="@+id/reviewScreen"
+        android:name="dev.esnault.bunpyro.android.screen.review.ReviewFragment"
+        tools:layout="@layout/fragment_review"
         />
 
 </navigation>

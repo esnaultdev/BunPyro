@@ -53,7 +53,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         binding.reviewsCard.setOnClickListener {
-            context?.openUrlInBrowser(ScreenConfig.Url.bunproReviews)
+            vm.onReviewClick()
         }
 
         binding.cramCard.setOnClickListener {
