@@ -2,6 +2,7 @@ package dev.esnault.bunpyro.data.network.fake
 
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
 import dev.esnault.bunpyro.data.network.entities.*
+import dev.esnault.bunpyro.data.network.entities.review.ReviewsData
 import retrofit2.Response
 
 

@@ -1,6 +1,9 @@
 package dev.esnault.bunpyro.data.network.fake
 
 import dev.esnault.bunpyro.data.network.entities.*
+import dev.esnault.bunpyro.data.network.entities.review.NormalReview
+import dev.esnault.bunpyro.data.network.entities.review.ReviewHistory
+import dev.esnault.bunpyro.data.network.entities.review.ReviewsData
 import java.util.*
 
 

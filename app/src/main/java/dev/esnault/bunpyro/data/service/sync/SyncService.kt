@@ -20,7 +20,7 @@ import dev.esnault.bunpyro.data.mapper.apitodb.review.ReviewHistoryMapper
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
 import dev.esnault.bunpyro.data.network.entities.ExampleSentence
 import dev.esnault.bunpyro.data.network.entities.GrammarPoint
-import dev.esnault.bunpyro.data.network.entities.ReviewsData
+import dev.esnault.bunpyro.data.network.entities.review.ReviewsData
 import dev.esnault.bunpyro.data.network.entities.SupplementalLink
 import dev.esnault.bunpyro.data.network.responseRequest
 import dev.esnault.bunpyro.data.repository.sync.ISyncRepository

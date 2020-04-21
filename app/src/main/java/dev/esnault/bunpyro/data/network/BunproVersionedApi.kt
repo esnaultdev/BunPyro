@@ -1,6 +1,7 @@
 package dev.esnault.bunpyro.data.network
 
 import dev.esnault.bunpyro.data.network.entities.*
+import dev.esnault.bunpyro.data.network.entities.review.ReviewsData
 import dev.esnault.bunpyro.data.network.interceptor.Timeout
 import retrofit2.Response
 import retrofit2.http.*

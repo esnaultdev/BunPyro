@@ -2,7 +2,7 @@ package dev.esnault.bunpyro.data.network.fake
 
 import dev.esnault.bunpyro.data.network.BunproApi
 import dev.esnault.bunpyro.data.network.entities.BaseRequest
-import dev.esnault.bunpyro.data.network.entities.StudyQueue
+import dev.esnault.bunpyro.data.network.entities.review.StudyQueue
 import dev.esnault.bunpyro.data.network.entities.UserInfo
 import dev.esnault.bunpyro.data.network.entities.UserInfoWrapper
 import retrofit2.HttpException

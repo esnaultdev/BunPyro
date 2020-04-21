@@ -2,9 +2,9 @@ package dev.esnault.bunpyro.data.mapper.apitodb.review
 
 import dev.esnault.bunpyro.data.db.review.ReviewType
 import dev.esnault.bunpyro.data.db.reviewhistory.ReviewHistoryDb
-import dev.esnault.bunpyro.data.network.entities.GhostReview
-import dev.esnault.bunpyro.data.network.entities.NormalReview
-import dev.esnault.bunpyro.data.network.entities.ReviewHistory
+import dev.esnault.bunpyro.data.network.entities.review.GhostReview
+import dev.esnault.bunpyro.data.network.entities.review.NormalReview
+import dev.esnault.bunpyro.data.network.entities.review.ReviewHistory
 
 
 class ReviewHistoryMapper {

@@ -3,7 +3,7 @@ package dev.esnault.bunpyro.data.mapper.apitodb.review
 import dev.esnault.bunpyro.data.db.review.ReviewDb
 import dev.esnault.bunpyro.data.db.review.ReviewType
 import dev.esnault.bunpyro.data.mapper.IMapper
-import dev.esnault.bunpyro.data.network.entities.GhostReview
+import dev.esnault.bunpyro.data.network.entities.review.GhostReview
 
 
 class GhostReviewMapper : IMapper<GhostReview, ReviewDb> {

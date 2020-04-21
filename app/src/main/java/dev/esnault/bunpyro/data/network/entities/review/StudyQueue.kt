@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.data.network.entities
+package dev.esnault.bunpyro.data.network.entities.review
 
 import com.squareup.moshi.Json
 

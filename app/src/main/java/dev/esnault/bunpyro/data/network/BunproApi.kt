@@ -1,7 +1,7 @@
 package dev.esnault.bunpyro.data.network
 
 import dev.esnault.bunpyro.data.network.entities.BaseRequest
-import dev.esnault.bunpyro.data.network.entities.StudyQueue
+import dev.esnault.bunpyro.data.network.entities.review.StudyQueue
 import dev.esnault.bunpyro.data.network.entities.UserInfoWrapper
 import retrofit2.http.GET
 import retrofit2.http.Path

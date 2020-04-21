@@ -1,6 +1,7 @@
-package dev.esnault.bunpyro.data.network.entities
+package dev.esnault.bunpyro.data.network.entities.review
 
 import com.squareup.moshi.Json
+import dev.esnault.bunpyro.data.network.entities.BunProDate
 
 
 data class ReviewHistory(
