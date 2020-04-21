@@ -30,6 +30,5 @@ data class GhostReview(
     @Json(name = "created_at") val createdAt: Date,
     @Json(name = "updated_at") val updatedAt: Date,
     @Json(name = "last_studied_at") val lastStudiedAt: Date?,
-    val history: List<ReviewHistory>,
-    val complete: Boolean
+    val history: List<ReviewHistory>
 )

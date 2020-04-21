@@ -16,7 +16,7 @@ class GhostReviewMapper : IMapper<GhostReview, ReviewDb> {
             updatedAt = o.updatedAt,
             nextReview = o.nextReview,
             lastStudiedAt = o.lastStudiedAt,
-            hidden = !o.complete
+            hidden = false
         )
     }
 }
