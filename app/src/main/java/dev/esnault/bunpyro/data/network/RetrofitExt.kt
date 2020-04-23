@@ -19,9 +19,9 @@ val <T> Response<T>.isNotModified: Boolean
 suspend fun <T, R> simpleRequest(
     request: suspend () -> T,
     onSuccess: suspend (T) -> R,
-    onInvalidApiKey: suspend () -> R,
+    onInvalidApiKey: suspend (error: Exception) -> R,
     onServerError: suspend (code: Int, error: Exception) -> R,
-    onNetworkError: suspend () -> R,
+    onNetworkError: suspend (error: Exception) -> R,
     onUnknownError: suspend (error: Exception) -> R,
     onOtherHttpError: (suspend (code: Int) -> R)? = null // onUnknownError is called if not provided
 ): R {
@@ -29,7 +29,7 @@ suspend fun <T, R> simpleRequest(
         onSuccess(request())
     } catch (e: HttpException) {
         when (val code = e.code()) {
-            401 -> onInvalidApiKey()
+            401 -> onInvalidApiKey(e)
             in 500..599 -> onServerError(code, e)
             else -> if (onOtherHttpError != null) {
                 onOtherHttpError(code)
@@ -38,9 +38,9 @@ suspend fun <T, R> simpleRequest(
             }
         }
     } catch (e: SocketTimeoutException) {
-        onNetworkError()
+        onNetworkError(e)
     } catch (e: IOException) {
-        onNetworkError()
+        onNetworkError(e)
     } catch (e: Exception) {
         onUnknownError(e)
     }
@@ -54,9 +54,9 @@ suspend fun <T, R> responseRequest(
     request: suspend () -> Response<T>,
     onSuccess: suspend (T?, Response<T>) -> R,
     onNotModified: suspend () -> R,
-    onInvalidApiKey: suspend () -> R,
+    onInvalidApiKey: suspend (error: Exception) -> R,
     onServerError: suspend (code: Int, error: Exception) -> R,
-    onNetworkError: suspend () -> R,
+    onNetworkError: suspend (error: Exception) -> R,
     onUnknownError: suspend (error: Exception) -> R,
     onOtherHttpError: (suspend (code: Int) -> R)? = null // onUnknownError is called if not provided
 ): R {
@@ -67,7 +67,7 @@ suspend fun <T, R> responseRequest(
             response.isSuccessful -> onSuccess(response.body(), response)
             else -> {
                 when (val code = response.code()) {
-                    401 -> onInvalidApiKey()
+                    401 -> onInvalidApiKey(HttpException(response))
                     in 500..599 -> onServerError(code, HttpException(response))
                     else -> if (onOtherHttpError != null) {
                         onOtherHttpError(code)
@@ -78,9 +78,9 @@ suspend fun <T, R> responseRequest(
             }
         }
     } catch (e: SocketTimeoutException) {
-        onNetworkError()
+        onNetworkError(e)
     } catch (e: IOException) {
-        onNetworkError()
+        onNetworkError(e)
     } catch (e: Exception) {
         onUnknownError(e)
     }
