@@ -67,7 +67,7 @@ object Study {
         val japanese: String,
         val english: String,
         val answer: String,
-        @Json(name = "grammar_point_id") val grammarPointId: Long,
+        @Json(name = "grammar_point_id") val grammarId: Long,
         @Json(name = "created_at") val createdAt: Date,
         @Json(name = "updated_at") val updatedAt: Date,
         @Json(name = "alternate_answers") val alternateAnswers: Map<String, String>,
