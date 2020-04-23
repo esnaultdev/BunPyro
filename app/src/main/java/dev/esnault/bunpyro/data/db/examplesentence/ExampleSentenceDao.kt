@@ -10,6 +10,9 @@ abstract class ExampleSentenceDao {
     @Query("SELECT id FROM example_sentence")
     abstract suspend fun getAllIds(): List<Long>
 
+    @Query("SELECT id, grammar_id FROM example_sentence")
+    abstract suspend fun getAllFilterIds(): List<ExampleSentenceDb.FilterId>
+
     @Insert
     abstract suspend fun insertAll(sentences: List<ExampleSentenceDb>)
 
@@ -24,6 +27,16 @@ abstract class ExampleSentenceDao {
         block: (localIds: List<Long>) -> DataUpdate<ExampleSentenceDb, Long>
     ) {
         val dataUpdate = block(getAllIds())
+        insertAll(dataUpdate.toInsert)
+        updateAll(dataUpdate.toUpdate)
+        deleteAll(dataUpdate.toDelete)
+    }
+
+    @Transaction
+    open suspend fun performPartialDataUpdate(
+        block: (localIds: List<ExampleSentenceDb.FilterId>) -> DataUpdate<ExampleSentenceDb, Long>
+    ) {
+        val dataUpdate = block(getAllFilterIds())
         insertAll(dataUpdate.toInsert)
         updateAll(dataUpdate.toUpdate)
         deleteAll(dataUpdate.toDelete)

@@ -59,7 +59,7 @@ val serviceModule = module {
     }
 
     factory<IReviewService> {
-        ReviewService(get(), get(), get())
+        ReviewService(get(), get(), get(), get(), get(), get(), get(), get())
     }
 
     single<ICrashReporter> {

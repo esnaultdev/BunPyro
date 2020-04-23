@@ -24,4 +24,10 @@ data class SupplementalLinkDb(
     val site: String,
     val link: String,
     val description: String
-)
+) {
+
+    data class FilterId(
+        val id: Long,
+        @ColumnInfo(name = "grammar_id") val grammarId: Long
+    )
+}

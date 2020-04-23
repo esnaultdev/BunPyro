@@ -40,7 +40,7 @@ val appModule = module {
         GrammarPointViewModel(args.id, get(), get(), get(), get(), get(), get())
     }
     viewModel { AllGrammarViewModel(get(), get(), get()) }
-    viewModel { ReviewViewModel() }
+    viewModel { ReviewViewModel(get()) }
 
     // endregion
 

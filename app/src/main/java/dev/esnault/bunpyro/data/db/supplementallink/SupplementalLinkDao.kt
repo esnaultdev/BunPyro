@@ -10,6 +10,9 @@ abstract class SupplementalLinkDao {
     @Query("SELECT id FROM supplemental_link")
     abstract suspend fun getAllIds(): List<Long>
 
+    @Query("SELECT id, grammar_id FROM supplemental_link")
+    abstract suspend fun getAllFilterIds(): List<SupplementalLinkDb.FilterId>
+
     @Insert
     abstract suspend fun insertAll(links: List<SupplementalLinkDb>)
 
@@ -24,6 +27,16 @@ abstract class SupplementalLinkDao {
         block: (localIds: List<Long>) -> DataUpdate<SupplementalLinkDb, Long>
     ) {
         val dataUpdate = block(getAllIds())
+        insertAll(dataUpdate.toInsert)
+        updateAll(dataUpdate.toUpdate)
+        deleteAll(dataUpdate.toDelete)
+    }
+
+    @Transaction
+    open suspend fun performPartialDataUpdate(
+        block: (localIds: List<SupplementalLinkDb.FilterId>) -> DataUpdate<SupplementalLinkDb, Long>
+    ) {
+        val dataUpdate = block(getAllFilterIds())
         insertAll(dataUpdate.toInsert)
         updateAll(dataUpdate.toUpdate)
         deleteAll(dataUpdate.toDelete)

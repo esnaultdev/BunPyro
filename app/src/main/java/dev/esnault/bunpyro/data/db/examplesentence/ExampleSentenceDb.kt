@@ -27,4 +27,10 @@ data class ExampleSentenceDb(
     val nuance: String?,
     val audioLink: String?,
     @ColumnInfo(name = "sentence_order") val order: Int
-)
+) {
+
+    data class FilterId(
+        val id: Long,
+        @ColumnInfo(name = "grammar_id") val grammarId: Long
+    )
+}

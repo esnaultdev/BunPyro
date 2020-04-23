@@ -10,6 +10,9 @@ abstract class ReviewDao {
     @Query("SELECT id, type FROM review")
     abstract suspend fun getAllIds(): List<ReviewDb.Id>
 
+    @Query("SELECT id, type, grammar_id FROM review")
+    abstract suspend fun getAllFilterIds(): List<ReviewDb.FilterId>
+
     @Query("SELECT * FROM review WHERE id = :id AND type = :type")
     protected abstract suspend fun get(id: Long, type: ReviewType): ReviewDb
 
@@ -42,6 +45,16 @@ abstract class ReviewDao {
         block: (localIds: List<ReviewDb.Id>) -> DataUpdate<ReviewDb, ReviewDb.Id>
     ) {
         val dataUpdate = block(getAllIds())
+        insertAll(dataUpdate.toInsert)
+        updateAll(dataUpdate.toUpdate)
+        deleteAll(dataUpdate.toDelete)
+    }
+
+    @Transaction
+    open suspend fun performPartialDataUpdate(
+        block: (localIds: List<ReviewDb.FilterId>) -> DataUpdate<ReviewDb, ReviewDb.Id>
+    ) {
+        val dataUpdate = block(getAllFilterIds())
         insertAll(dataUpdate.toInsert)
         updateAll(dataUpdate.toUpdate)
         deleteAll(dataUpdate.toDelete)

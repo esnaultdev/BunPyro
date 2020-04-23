@@ -32,4 +32,10 @@ data class ReviewDb(
         val id: Long,
         val type: ReviewType
     )
+
+    data class FilterId(
+        val id: Long,
+        val type: ReviewType,
+        @ColumnInfo(name = "grammar_id") val grammarId: Long
+    )
 }
