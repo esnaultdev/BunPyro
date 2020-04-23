@@ -119,7 +119,7 @@ object Mock {
                     "フェイク" to "Not Gairaigo."
                 ),
                 answer = "偽物",
-                wrongAnswers = emptyList(),
+                wrongAnswers = emptyMap(),
                 alternateGrammar = listOf("偽"),
                 audioLink = null,
                 createdAt = Date(1L),

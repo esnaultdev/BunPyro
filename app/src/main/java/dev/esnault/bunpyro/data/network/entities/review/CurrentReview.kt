@@ -72,8 +72,8 @@ object Study {
         @Json(name = "updated_at") val updatedAt: Date,
         @Json(name = "alternate_answers") val alternateAnswers: Map<String, String>,
         @Json(name = "alternate_grammar") val alternateGrammar: List<String>,
-        @Json(name = "wrong_answers") val wrongAnswers: List<String>,
-        val audioLink: String?,
+        @Json(name = "wrong_answers") val wrongAnswers: Map<String, String>,
+        @Json(name = "audio") val audioLink: String?,
         val nuance: String?,
         val tense: String?,
         @Json(name = "sentence_order") val sentenceOrder: Int
