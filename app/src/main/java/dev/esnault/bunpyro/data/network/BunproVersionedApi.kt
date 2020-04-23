@@ -1,6 +1,7 @@
 package dev.esnault.bunpyro.data.network
 
 import dev.esnault.bunpyro.data.network.entities.*
+import dev.esnault.bunpyro.data.network.entities.review.CurrentReview
 import dev.esnault.bunpyro.data.network.entities.review.ReviewsData
 import dev.esnault.bunpyro.data.network.interceptor.Timeout
 import retrofit2.Response
@@ -40,6 +41,10 @@ interface BunproVersionedApi {
     suspend fun getAllReviews(
         @Header("If-None-Match") etagHeader: String?
     ): Response<ReviewsData>
+
+    @GET("v4/reviews/current_reviews")
+    @Headers("${Timeout.READ}:20000")
+    suspend fun getCurrentReviews(): Response<List<CurrentReview>>
 
     @POST("v3/reviews/create/{grammarPointId}?complete=true")
     suspend fun addToReviews(@Path("grammarPointId") grammarPointId: Long): Response<Unit>
