@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import androidx.transition.TransitionManager
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel.ViewState
 import dev.esnault.bunpyro.android.utils.setupWithNav
@@ -26,6 +27,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     }
 
     private fun bindViewState(viewState: ViewState) {
+        TransitionManager.beginDelayedTransition(binding.constraintLayout)
+
         binding.loadingGroup.isVisible = viewState is ViewState.Loading
     }
 }
