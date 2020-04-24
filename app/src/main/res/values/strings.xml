@@ -138,6 +138,9 @@
     <string name="about_sources_text">"The source code of BunPyro is available on Github. Feel free to take a look."</string>
     <string name="about_sources_action">Source code</string>
 
+    <string name="reviews_title">Reviews</string>
+    <string name="reviews_loading_title">Loading reviews</string>
+
     <string name="notification_sync_inProgress">Syncing grammar…</string>
     <string name="notificationChannel_sync_name">Sync</string>
     <string name="notificationChannel_sync_description">Synchronization of data with BunPro</string>
