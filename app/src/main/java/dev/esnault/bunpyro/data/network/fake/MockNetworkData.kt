@@ -114,7 +114,7 @@ object Mock {
             studyQuestion = Study.Question(
                 id = 1L,
                 japanese = "<span class='study-area-input'>____</span>にご注意（ちゅうい）。",
-                english = "Beware of <strong>imitations/strong>.",
+                english = "Beware of <strong>imitations</strong>.",
                 alternateAnswers = mapOf(
                     "フェイク" to "Not Gairaigo."
                 ),

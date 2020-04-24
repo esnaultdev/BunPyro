@@ -29,7 +29,7 @@ class ReviewViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val result = reviewService.getCurrentReviews()
             currentState = result.fold(
-                onSuccess = { ViewState.Questions(it) },
+                onSuccess = { ViewState.Questions(it, 0) },
                 onFailure = { ViewState.Error }
             )
         }
@@ -38,8 +38,13 @@ class ReviewViewModel(
     sealed class ViewState {
         object Loading : ViewState()
         object Error : ViewState()
+
         data class Questions(
-            val questions: List<ReviewQuestion>
-        ) : ViewState()
+            val questions: List<ReviewQuestion>,
+            val currentIndex: Int
+        ) : ViewState() {
+            val currentQuestion: ReviewQuestion
+                get() = questions[currentIndex]
+        }
     }
 }
