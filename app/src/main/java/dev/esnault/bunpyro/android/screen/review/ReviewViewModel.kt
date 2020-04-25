@@ -29,19 +29,24 @@ class ReviewViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val result = reviewService.getCurrentReviews()
             currentState = result.fold(
-                onSuccess = { ViewState.Questions(it, 0) },
+                onSuccess = { ViewState.Question(it, 0, true) },
                 onFailure = { ViewState.Error }
             )
         }
+    }
+
+    fun onGrammarPointClick(grammarId: Long) {
+        // TODO Navigate to the grammar point
     }
 
     sealed class ViewState {
         object Loading : ViewState()
         object Error : ViewState()
 
-        data class Questions(
+        data class Question(
             val questions: List<ReviewQuestion>,
-            val currentIndex: Int
+            val currentIndex: Int,
+            val showFurigana: Boolean
         ) : ViewState() {
             val currentQuestion: ReviewQuestion
                 get() = questions[currentIndex]
