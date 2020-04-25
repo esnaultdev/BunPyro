@@ -174,59 +174,33 @@
         tools:visibility="visible"
         />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/question_answer_card"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/question_answer_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:hint="@string/reviews_answer_hint"
         android:visibility="gone"
+        app:endIconContentDescription="@string/contentDescription_review_next"
+        app:endIconDrawable="@drawable/ic_chevron_right_24dp"
+        app:endIconMode="custom"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/question_feedback"
+        app:startIconContentDescription="@string/contentDescription_review_ignore"
+        app:startIconDrawable="@drawable/ic_close_24dp"
         tools:visibility="visible"
         >
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/question_answer_value"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            >
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:maxLines="1"
+            />
 
-            <ImageView
-                android:id="@+id/question_ignore"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:contentDescription="@string/contentDescription_review_ignore"
-                android:padding="12dp"
-                android:src="@drawable/ic_close_24dp"
-                android:visibility="invisible"
-                tools:visibility="visible"
-                />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/question_answer_text"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:hint="@string/reviews_answer_hint"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                android:maxLines="1"
-                />
-
-            <ImageView
-                android:id="@+id/question_next"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:contentDescription="@string/contentDescription_review_next"
-                android:padding="12dp"
-                android:src="@drawable/ic_chevron_right_24dp"
-                />
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

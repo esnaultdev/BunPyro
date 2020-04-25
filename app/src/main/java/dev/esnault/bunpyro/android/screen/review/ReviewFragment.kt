@@ -44,7 +44,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     private fun setQuestionVisible(isVisible: Boolean) {
         binding.questionProgress.isVisible = isVisible
         binding.questionQuestion.isVisible = isVisible
-        binding.questionAnswerCard.isVisible = isVisible
+        binding.questionAnswerLayout.isVisible = isVisible
         binding.questionEnglish.isVisible = isVisible
         binding.questionHint.isVisible = isVisible
 
