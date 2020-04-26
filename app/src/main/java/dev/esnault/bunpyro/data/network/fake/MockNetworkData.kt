@@ -127,7 +127,7 @@ object Mock {
                 grammarId = 1L,
                 nuance = null,
                 sentenceOrder = 0,
-                tense = ""
+                tense = "[present]"
             ),
             grammarPoint = Study.GrammarPoint(
                 id = 1L,

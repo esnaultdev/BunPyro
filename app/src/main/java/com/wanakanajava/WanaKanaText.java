@@ -56,9 +56,9 @@ public class WanaKanaText
             {
                 gInputWindow.setText(sKana);
                 gInputWindow.setSelection(gInputWindow.getText().length());
-                if (listener != null) {
-                    listener.afterChanged(sKana);
-                }
+            }
+            if (listener != null) {
+                listener.afterChanged(sKana);
             }
             bind();
         }

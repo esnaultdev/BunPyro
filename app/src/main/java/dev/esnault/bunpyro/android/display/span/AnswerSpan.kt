@@ -22,6 +22,7 @@ data class AnswerSpan(
     }
 
     var hint: String? = null
+    var answer: String? = null
     private var hintWidth = 0f
     private var spanWidth = 0f
 
@@ -41,9 +42,8 @@ data class AnswerSpan(
             top = pfm.top
         }
 
-        val subText = text?.substring(start, end)
-        spanWidth = if (subText != null && subText != DUMMY_TEXT) {
-            paint.measureText(subText)
+        spanWidth = if (answer != null) {
+            paint.measureText(answer)
         } else if (hint != null) {
             val textSize = paint.textSize
             paint.textSize = textSize * textSizeFactor
@@ -68,16 +68,18 @@ data class AnswerSpan(
         bottom: Int,
         paint: Paint
     ) {
-        val subText = text?.substring(start, end)
+        val answer = answer
         val hint = hint
 
-        if (subText != null && subText != DUMMY_TEXT) {
+        if (answer != null) {
             // Draw the answer
-            canvas.drawText(text, start, end, x, y.toFloat(), paint)
+            canvas.drawText(answer, x, y.toFloat(), paint)
         } else if (hint != null) {
             // Save some attributes that we will need to restore afterwards and update the paint
             val textSize = paint.textSize
+            val textColor = paint.color
             paint.textSize = textSize * textSizeFactor
+            paint.color = hintTextColor
 
             // Draw the hint
             val offsetX = (spanWidth - hintWidth) / 2
@@ -85,6 +87,7 @@ data class AnswerSpan(
 
             // Restore the paint attributes
             paint.textSize = textSize
+            paint.color = textColor
         }
 
         // Draw the answer underline

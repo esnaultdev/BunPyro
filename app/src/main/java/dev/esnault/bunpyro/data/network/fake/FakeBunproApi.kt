@@ -10,7 +10,7 @@ import retrofit2.HttpException
 
 class FakeBunproApi(
     var user: UserInfo? = Mock.userInfo,
-    var studyQueue: StudyQueue = StudyQueue(0)
+    var studyQueue: StudyQueue = StudyQueue(1)
 ) : BunproApi {
 
     override suspend fun getUser(apiKey: String): UserInfoWrapper {

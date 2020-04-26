@@ -112,13 +112,12 @@
 
     <TextView
         android:id="@+id/question_question"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         android:visibility="gone"
-        app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
@@ -197,7 +196,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             />
 
     </com.google.android.material.textfield.TextInputLayout>

@@ -10,6 +10,7 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
 import com.wanakanajava.WanaKanaText
+import dev.esnault.bunpyro.android.display.span.AnswerSpan
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel.ViewState
 import dev.esnault.bunpyro.android.utils.BunProTextListener
@@ -50,6 +51,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         setQuestionVisible(viewState is ViewState.Question)
         if (viewState is ViewState.Question) {
             bindQuestion(viewState)
+            bindAnswer(viewState)
         }
     }
 
@@ -84,8 +86,41 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             binding.questionHint.isVisible = false
         }
 
+        updateAnswerSpans { answerSpan ->
+            if (answerSpan.hint != viewState.currentQuestion.tense) {
+                answerSpan.hint = viewState.currentQuestion.tense
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun updateAnswerSpans(block: (span: AnswerSpan) -> Boolean) {
+        (binding.questionQuestion.text as? Spanned)?.let { spanned ->
+            spanned.getSpans(0, spanned.length, AnswerSpan::class.java)
+                .map(block)
+                .any()
+                .let { shouldLayout ->
+                    if (shouldLayout) {
+                        binding.questionQuestion.requestLayout()
+                    }
+                }
+        }
+    }
+
+    private fun bindAnswer(viewState: ViewState.Question) {
         if (binding.questionAnswerValue.text?.toString() != viewState.userAnswer) {
             binding.questionAnswerValue.setText(viewState.userAnswer)
+        }
+
+        updateAnswerSpans { answerSpan ->
+            if (answerSpan.answer != viewState.userAnswer) {
+                answerSpan.answer = viewState.userAnswer
+                true
+            } else {
+                false
+            }
         }
     }
 

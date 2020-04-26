@@ -42,7 +42,7 @@ val configModule = module {
  */
 @Suppress("RemoveExplicitTypeArguments")
 val fakeConfigModule = module {
-    single<IAppConfig> { FakeAppConfig() }
+    single<IAppConfig> { FakeAppConfig(apiKey = "aaa", firstSyncCompleted = true) }
 }
 
 /**
