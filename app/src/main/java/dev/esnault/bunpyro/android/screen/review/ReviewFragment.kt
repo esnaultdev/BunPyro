@@ -10,13 +10,11 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
 import com.wanakanajava.WanaKanaText
+import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.span.AnswerSpan
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel.ViewState
-import dev.esnault.bunpyro.android.utils.BunProTextListener
-import dev.esnault.bunpyro.android.utils.preProcessBunproFurigana
-import dev.esnault.bunpyro.android.utils.processBunproString
-import dev.esnault.bunpyro.android.utils.setupWithNav
+import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.databinding.FragmentReviewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -26,6 +24,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     override val vm: ReviewViewModel by viewModel()
 
     private var wanakana: WanaKanaText? = null
+    private var oldViewState: ViewState? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,22 +36,31 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         bindListeners()
     }
 
-    private fun bindListeners() {
-        wanakana = WanaKanaText(binding.questionAnswerValue, false).apply {
-            bind()
-            setListener { answer -> vm.onAnswerChanged(answer) }
-        }
-    }
-
     private fun bindViewState(viewState: ViewState) {
         TransitionManager.beginDelayedTransition(binding.constraintLayout)
+        val oldViewState = oldViewState
+        this.oldViewState = viewState
 
         binding.loadingGroup.isVisible = viewState is ViewState.Loading
         setQuestionVisible(viewState is ViewState.Question)
         if (viewState is ViewState.Question) {
-            bindQuestion(viewState)
-            bindAnswer(viewState)
+            val oldQuestionState = oldViewState as? ViewState.Question
+            val questionChanged = oldQuestionState?.currentIndex != viewState.currentIndex
+            val answerChanged = oldQuestionState?.userAnswer != viewState.userAnswer
+            val furiganaChanged = oldQuestionState?.furiganaShown != viewState.furiganaShown
+
+            if (questionChanged) {
+                bindQuestion(viewState)
+            } else if (furiganaChanged) {
+                updateFuriganas(viewState.furiganaShown)
+            }
+
+            if (answerChanged) {
+                bindAnswer(viewState)
+            }
         }
+
+        bindToolbar(viewState)
     }
 
     private fun setQuestionVisible(isVisible: Boolean) {
@@ -75,13 +83,14 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         binding.questionProgress.progress = viewState.currentIndex
 
         val question = viewState.currentQuestion
-        val showFurigana = viewState.showFurigana
-        binding.questionQuestion.text = context.postProcessQuestion(question.japanese, showFurigana)
-        binding.questionEnglish.text = context.postProcessString(question.english, showFurigana)
+        val furiganaShown = viewState.furiganaShown
+        binding.questionQuestion.text =
+            context.postProcessQuestion(question.japanese, furiganaShown)
+        binding.questionEnglish.text = context.postProcessString(question.english, furiganaShown)
 
         if (!question.nuance.isNullOrEmpty()) {
             binding.questionHint.isVisible = true
-            binding.questionHint.text = context.postProcessString(question.nuance, showFurigana)
+            binding.questionHint.text = context.postProcessString(question.nuance, furiganaShown)
         } else {
             binding.questionHint.isVisible = false
         }
@@ -124,6 +133,42 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         }
     }
 
+    private fun updateFuriganas(furiganaShown: Boolean) {
+        val visibility = furiganaShown.toRubyVisibility()
+        updateTextViewFuriganas(binding.questionQuestion, visibility)
+        updateTextViewFuriganas(binding.questionEnglish, visibility)
+        if (binding.questionHint.isVisible) {
+            updateTextViewFuriganas(binding.questionHint, visibility)
+        }
+    }
+
+    private fun bindToolbar(viewState: ViewState) {
+        binding.toolbar.menu.apply {
+            val furiganaItem = findItem(R.id.action_furigana)
+
+            if (viewState !is ViewState.Question) {
+                furiganaItem.isVisible = false
+                return
+            } else {
+                furiganaItem.isVisible = true
+            }
+
+            val iconResId = if (viewState.furiganaShown) {
+                R.drawable.ic_kana_on_24dp
+            } else {
+                R.drawable.ic_kana_off_24dp
+            }
+            furiganaItem.setIcon(iconResId)
+
+            val titleResId = if (viewState.furiganaShown) {
+                R.string.action_furigana_hide
+            } else {
+                R.string.action_furigana_show
+            }
+            furiganaItem.setTitle(titleResId)
+        }
+    }
+
     private val bunProTextListener: BunProTextListener by lazy(LazyThreadSafetyMode.NONE) {
         BunProTextListener(onGrammarPointClick = vm::onGrammarPointClick)
     }
@@ -144,5 +189,22 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             showFurigana = furigana,
             furiganize = false
         )
+    }
+
+    private fun bindListeners() {
+        wanakana = WanaKanaText(binding.questionAnswerValue, false).apply {
+            bind()
+            setListener { answer -> vm.onAnswerChanged(answer) }
+        }
+
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_furigana -> {
+                    vm.onFuriganaClick()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 }

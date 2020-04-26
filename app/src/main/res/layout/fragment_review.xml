@@ -26,6 +26,7 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_collapseMode="pin"
             app:title="@string/reviews_title"
+            app:menu="@menu/review_question"
             />
 
     </com.google.android.material.appbar.AppBarLayout>
