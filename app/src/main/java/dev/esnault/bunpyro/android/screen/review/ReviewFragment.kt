@@ -71,8 +71,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     private fun bindQuestion(viewState: ViewState.Question) {
         val context = requireContext()
 
-        binding.questionProgress.max = viewState.questions.size + 1
-        binding.questionProgress.progress = viewState.currentIndex + 1
+        binding.questionProgress.max = viewState.questions.size
+        binding.questionProgress.progress = viewState.currentIndex
 
         val question = viewState.currentQuestion
         val showFurigana = viewState.showFurigana
