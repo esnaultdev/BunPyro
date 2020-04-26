@@ -8,13 +8,17 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
+import androidx.transition.TransitionSet
 import com.wanakanajava.WanaKanaText
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.span.AnswerSpan
+import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel.ViewState
 import dev.esnault.bunpyro.android.utils.*
+import dev.esnault.bunpyro.android.utils.transition.ChangeText
 import dev.esnault.bunpyro.databinding.FragmentReviewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -37,27 +41,17 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     }
 
     private fun bindViewState(viewState: ViewState) {
-        TransitionManager.beginDelayedTransition(binding.constraintLayout)
         val oldViewState = oldViewState
         this.oldViewState = viewState
+
+        if (oldViewState == null || oldViewState::class != viewState::class) {
+            TransitionManager.beginDelayedTransition(binding.constraintLayout)
+        }
 
         binding.loadingGroup.isVisible = viewState is ViewState.Loading
         setQuestionVisible(viewState is ViewState.Question)
         if (viewState is ViewState.Question) {
-            val oldQuestionState = oldViewState as? ViewState.Question
-            val questionChanged = oldQuestionState?.currentIndex != viewState.currentIndex
-            val answerChanged = oldQuestionState?.userAnswer != viewState.userAnswer
-            val furiganaChanged = oldQuestionState?.furiganaShown != viewState.furiganaShown
-
-            if (questionChanged) {
-                bindQuestion(viewState)
-            } else if (furiganaChanged) {
-                updateFuriganas(viewState.furiganaShown)
-            }
-
-            if (answerChanged) {
-                bindAnswer(viewState)
-            }
+            bindQuestionState(oldViewState, viewState)
         }
 
         bindToolbar(viewState)
@@ -73,6 +67,29 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         // Only hide them when transitioning to a non question state
         if (!isVisible) {
             binding.questionFeedback.isVisible = false
+        }
+    }
+
+    private fun bindQuestionState(oldState: ViewState?, viewState: ViewState.Question) {
+        val oldQuestionState = oldState as? ViewState.Question
+
+        val questionChanged = oldQuestionState?.currentIndex != viewState.currentIndex
+        val answerChanged = oldQuestionState?.userAnswer != viewState.userAnswer
+        val furiganaChanged = oldQuestionState?.furiganaShown != viewState.furiganaShown
+
+        if (questionChanged) {
+            if (oldQuestionState != null) {
+                // Only make a transition when we had a question.
+                // Transitions between non question states have already been taken care of.
+                TransitionManager.beginDelayedTransition(binding.constraintLayout)
+            }
+            bindQuestion(viewState)
+        } else if (furiganaChanged) {
+            updateFuriganas(viewState.furiganaShown)
+        }
+
+        if (answerChanged) {
+            bindAnswer(viewState)
         }
     }
 
@@ -134,6 +151,14 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     }
 
     private fun updateFuriganas(furiganaShown: Boolean) {
+        val transition = TransitionSet().apply {
+            ordering = TransitionSet.ORDERING_TOGETHER
+            duration = ScreenConfig.Transition.reviewChangeDuration
+            addTransition(ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN))
+            addTransition(ChangeBounds())
+        }
+        TransitionManager.beginDelayedTransition(binding.constraintLayout, transition)
+
         val visibility = furiganaShown.toRubyVisibility()
         updateTextViewFuriganas(binding.questionQuestion, visibility)
         updateTextViewFuriganas(binding.questionEnglish, visibility)

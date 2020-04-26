@@ -39,8 +39,8 @@ object Mock {
                 id = 1L,
                 attributes = ExampleSentence.Attributes(
                     grammarId = 1L,
-                    japanese = "偽物にご注意。",
-                    english = "Beware of imitations.",
+                    japanese = "<strong><ruby>偽物<rt>にせもの</rt></ruby></strong>にご<ruby>注意<rt>ちゅうい</rt></ruby>。",
+                    english = "Beware of <strong>imitations</strong>.",
                     nuance = null,
                     order = 1,
                     audioLink = null

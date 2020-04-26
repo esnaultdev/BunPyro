@@ -3,7 +3,8 @@ package dev.esnault.bunpyro.android.display.span
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.text.style.ReplacementSpan
-import kotlin.math.roundToInt
+import androidx.core.graphics.ColorUtils
+import androidx.core.graphics.alpha
 
 
 /**
@@ -36,7 +37,7 @@ data class AnswerSpan(
         val pfm = paint.fontMetricsInt
         fm?.apply {
             leading = pfm.leading
-            bottom = pfm.bottom + (bottomStrokeWidth / 2).roundToInt()
+            bottom = pfm.bottom
             descent = pfm.descent
             ascent = pfm.ascent
             top = pfm.top
@@ -80,7 +81,7 @@ data class AnswerSpan(
             val textColor = paint.color
             val fontTop = paint.fontMetrics.top
             paint.textSize = textSize * textSizeFactor
-            paint.color = hintTextColor
+            paint.color = ColorUtils.setAlphaComponent(hintTextColor, paint.color.alpha)
 
             // Draw the hint
             val offsetX = (spanWidth - hintWidth) / 2
