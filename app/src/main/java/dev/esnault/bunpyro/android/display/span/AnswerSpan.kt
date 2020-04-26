@@ -13,7 +13,7 @@ data class AnswerSpan(
     private val minWidth: Float,
     private val bottomStrokeWidth: Float,
     private val hintTextColor: Int,
-    private val textSizeFactor: Float = 0.6f
+    private val textSizeFactor: Float = 0.7f
 ) : ReplacementSpan() {
 
     companion object {
@@ -42,9 +42,9 @@ data class AnswerSpan(
             top = pfm.top
         }
 
-        spanWidth = if (answer != null) {
+        spanWidth = if (!answer.isNullOrEmpty()) {
             paint.measureText(answer)
-        } else if (hint != null) {
+        } else if (!hint.isNullOrEmpty()) {
             val textSize = paint.textSize
             paint.textSize = textSize * textSizeFactor
             hintWidth = paint.measureText(hint)
@@ -71,19 +71,21 @@ data class AnswerSpan(
         val answer = answer
         val hint = hint
 
-        if (answer != null) {
+        if (!answer.isNullOrEmpty()) {
             // Draw the answer
             canvas.drawText(answer, x, y.toFloat(), paint)
-        } else if (hint != null) {
+        } else if (!hint.isNullOrEmpty()) {
             // Save some attributes that we will need to restore afterwards and update the paint
             val textSize = paint.textSize
             val textColor = paint.color
+            val fontTop = paint.fontMetrics.top
             paint.textSize = textSize * textSizeFactor
             paint.color = hintTextColor
 
             // Draw the hint
             val offsetX = (spanWidth - hintWidth) / 2
-            canvas.drawText(hint, x + offsetX, y.toFloat(), paint)
+            val offsetY = fontTop * (1 - textSizeFactor) / 2
+            canvas.drawText(hint, x + offsetX, y + offsetY, paint)
 
             // Restore the paint attributes
             paint.textSize = textSize
@@ -91,7 +93,7 @@ data class AnswerSpan(
         }
 
         // Draw the answer underline
-        val lineY = bottom.toFloat()
+        val lineY = bottom - bottomStrokeWidth / 2
         val strokeWidth = paint.strokeWidth
         paint.strokeWidth = bottomStrokeWidth
         canvas.drawLine(x, lineY, x + spanWidth, lineY, paint)
