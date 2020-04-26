@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
+import com.wanakanajava.WanaKanaText
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel.ViewState
 import dev.esnault.bunpyro.android.utils.BunProTextListener
@@ -23,12 +24,23 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     override val bindingClass = FragmentReviewBinding::class
     override val vm: ReviewViewModel by viewModel()
 
+    private var wanakana: WanaKanaText? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.toolbar.setupWithNav(findNavController())
 
         vm.viewState.observe(this) { viewState -> bindViewState(viewState) }
+
+        bindListeners()
+    }
+
+    private fun bindListeners() {
+        wanakana = WanaKanaText(binding.questionAnswerValue, false).apply {
+            bind()
+            setListener { answer -> vm.onAnswerChanged(answer) }
+        }
     }
 
     private fun bindViewState(viewState: ViewState) {
@@ -70,6 +82,10 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             binding.questionHint.text = context.postProcessString(question.nuance, showFurigana)
         } else {
             binding.questionHint.isVisible = false
+        }
+
+        if (binding.questionAnswerValue.text?.toString() != viewState.userAnswer) {
+            binding.questionAnswerValue.setText(viewState.userAnswer)
         }
     }
 
