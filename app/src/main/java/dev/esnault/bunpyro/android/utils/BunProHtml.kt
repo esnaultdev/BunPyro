@@ -7,9 +7,11 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.*
 import dev.esnault.bunpyro.R
+import dev.esnault.bunpyro.android.display.span.AnswerSpan
 import dev.esnault.bunpyro.android.display.span.ruby.RubySpan
 import dev.esnault.bunpyro.android.display.span.FontColorSpan
 import dev.esnault.bunpyro.android.display.span.GrammarLinkSpan
+import dev.esnault.bunpyro.common.dpToPxRaw
 import dev.esnault.bunpyro.common.getThemeColor
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
@@ -29,6 +31,14 @@ class BunProHtml(
 
     private val emphasisColor: Int by lazy(LazyThreadSafetyMode.NONE) {
         context.getThemeColor(R.attr.textEmphasisColor)
+    }
+
+    private val answerMinWidth: Float by lazy(LazyThreadSafetyMode.NONE) {
+        context.resources.getDimension(R.dimen.answerSpan_minWidth)
+    }
+
+    private val hintTextColor: Int by lazy(LazyThreadSafetyMode.NONE) {
+        context.getThemeColor(android.R.attr.textColorSecondary)
     }
 
     fun format(source: String): SpannableStringBuilder {
@@ -52,6 +62,12 @@ class BunProHtml(
                     handleRubyElement(node, spanBuilder)
                     return
                 }
+
+                if (tagName == "span" && node.classNames().contains("study-area-input")) {
+                    handleAnswerElement(node, spanBuilder)
+                    return
+                }
+
                 handleNormalElement(node, spanBuilder)
             }
         }
@@ -121,6 +137,18 @@ class BunProHtml(
                 }
             }
         }
+    }
+
+    private fun handleAnswerElement(element: Element, spanBuilder: SpannableStringBuilder) {
+        // We don't support other elements inside an answer element.
+        // The text inside an answer element isn't needed, so we skip it (it's "____").
+        val startIndex = spanBuilder.length
+        spanBuilder.append(AnswerSpan.DUMMY_TEXT)
+        val endIndex = spanBuilder.length
+
+        val bottomStrokeWidth = 1f.dpToPxRaw(context.resources.displayMetrics)
+        val span = AnswerSpan(answerMinWidth, bottomStrokeWidth, hintTextColor)
+        spanBuilder.setSpan(span, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
     /**
