@@ -41,12 +41,24 @@ class ReviewViewModel(
                         questions = it,
                         currentIndex = 0,
                         furiganaShown = furiganaShown,
-                        userAnswer = null
+                        userAnswer = null,
+                        progress = initialProgress(it),
+                        answerState = ViewState.AnswerState.ANSWERING
                     )
                 },
                 onFailure = { ViewState.Error }
             )
         }
+    }
+
+    private fun initialProgress(questions: List<ReviewQuestion>): ViewState.Progress {
+        return ViewState.Progress(
+            max = questions.size,
+            srs = questions.getOrNull(0)?.grammarPoint?.srsLevel ?: 0,
+            correct = 0,
+            incorrect = 0,
+            askAgain = 0
+        )
     }
 
     fun onAnswerChanged(answer: String?) {
@@ -84,10 +96,28 @@ class ReviewViewModel(
             val questions: List<ReviewQuestion>,
             val currentIndex: Int,
             val furiganaShown: Boolean,
-            val userAnswer: String?
+            val userAnswer: String?,
+            val progress: Progress,
+            val answerState: AnswerState
         ) : ViewState() {
             val currentQuestion: ReviewQuestion
                 get() = questions[currentIndex]
         }
+
+        data class Progress(
+            val max: Int,
+            val srs: Int,
+            val correct: Int,
+            val incorrect: Int,
+            val askAgain: Int
+        ) {
+            val progress: Int = correct + incorrect
+            val remaining: Int = max + askAgain - progress
+            /** Ratio of correct answers, between 0 and 1 */
+            val precision: Float
+                get() = if (progress == 0) 1f else correct.toFloat() / progress
+        }
+
+        enum class AnswerState { ANSWERING, CORRECT, INCORRECT }
     }
 }

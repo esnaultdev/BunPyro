@@ -63,10 +63,17 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         binding.questionAnswerLayout.isVisible = isVisible
         binding.questionEnglish.isVisible = isVisible
         binding.questionHint.isVisible = isVisible
+        binding.infoRemaining.isVisible = isVisible
+        binding.infoSrsIcon.isVisible = isVisible
+        binding.infoSrsValue.isVisible = isVisible
+        binding.infoPrecisionIcon.isVisible = isVisible
+        binding.infoPrecisionValue.isVisible = isVisible
 
-        // Only hide them when transitioning to a non question state
+        // These are non visible by default when transitioning to a question state
+        // but we need to hide them when transitioning to an error state
         if (!isVisible) {
             binding.questionFeedback.isVisible = false
+            binding.infoGhost.isVisible = false
         }
     }
 
@@ -76,6 +83,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         val questionChanged = oldQuestionState?.currentIndex != viewState.currentIndex
         val answerChanged = oldQuestionState?.userAnswer != viewState.userAnswer
         val furiganaChanged = oldQuestionState?.furiganaShown != viewState.furiganaShown
+        val progressChanged = oldQuestionState?.progress != viewState.progress
 
         if (questionChanged) {
             if (oldQuestionState != null) {
@@ -91,13 +99,13 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         if (answerChanged) {
             bindAnswer(viewState)
         }
+        if (progressChanged) {
+            bindProgress(viewState.progress)
+        }
     }
 
     private fun bindQuestion(viewState: ViewState.Question) {
         val context = requireContext()
-
-        binding.questionProgress.max = viewState.questions.size
-        binding.questionProgress.progress = viewState.currentIndex
 
         val question = viewState.currentQuestion
         val furiganaShown = viewState.furiganaShown
@@ -165,6 +173,20 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         if (binding.questionHint.isVisible) {
             updateTextViewFuriganas(binding.questionHint, visibility)
         }
+    }
+
+    private fun bindProgress(progress: ViewState.Progress) {
+        val context = requireContext()
+
+        binding.questionProgress.max = progress.max
+        binding.questionProgress.progress = progress.progress
+
+        binding.infoRemaining.text =
+            context.getString(R.string.reviews_info_remaining, progress.remaining)
+        binding.infoSrsValue.text =
+            context.getString(R.string.reviews_info_srs, progress.srs)
+        binding.infoPrecisionValue.text =
+            context.getString(R.string.reviews_info_precision, progress.precision * 100)
     }
 
     private fun bindToolbar(viewState: ViewState) {

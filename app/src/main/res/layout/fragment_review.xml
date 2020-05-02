@@ -25,8 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:layout_collapseMode="pin"
-            app:title="@string/reviews_title"
             app:menu="@menu/review_question"
+            app:title="@string/reviews_title"
             />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -111,17 +111,103 @@
         app:layout_constraintGuide_end="16dp"
         />
 
+    <ImageView
+        android:id="@+id/info_ghost"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="12dp"
+        android:contentDescription="@string/contentDescription_review_ghost"
+        android:src="@drawable/ic_ghost"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/info_remaining"
+        app:layout_constraintEnd_toStartOf="@+id/info_remaining"
+        app:layout_constraintTop_toTopOf="@id/info_remaining"
+        tools:visibility="visible"
+        />
+
+    <TextView
+        android:id="@+id/info_remaining"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/info_srs_icon"
+        app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
+        tools:text="R 10"
+        tools:visibility="visible"
+        />
+
+    <ImageView
+        android:id="@+id/info_srs_icon"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="2dp"
+        android:contentDescription="@string/contentDescription_review_srs"
+        android:src="@drawable/ic_whatshot_24dp"
+        android:tint="?colorControlNormal"
+        android:tintMode="src_in"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/info_remaining"
+        app:layout_constraintEnd_toStartOf="@+id/info_srs_value"
+        app:layout_constraintTop_toTopOf="@id/info_remaining"
+        tools:visibility="visible"
+        />
+
+    <TextView
+        android:id="@+id/info_srs_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/info_remaining"
+        app:layout_constraintEnd_toStartOf="@id/info_precision_icon"
+        tools:text="SRS 1"
+        tools:visibility="visible"
+        />
+
+    <ImageView
+        android:id="@+id/info_precision_icon"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="2dp"
+        android:contentDescription="@string/contentDescription_review_precision"
+        android:src="@drawable/ic_check_circle_24dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/info_remaining"
+        app:layout_constraintEnd_toStartOf="@+id/info_precision_value"
+        app:layout_constraintTop_toTopOf="@id/info_remaining"
+        tools:visibility="visible"
+        />
+
+    <TextView
+        android:id="@+id/info_precision_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/info_remaining"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        tools:text="67%"
+        tools:visibility="visible"
+        />
+
     <TextView
         android:id="@+id/question_question"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
+        app:layout_constraintTop_toBottomOf="@+id/info_remaining"
         tools:text="____にご注意。"
         tools:visibility="visible"
         />
