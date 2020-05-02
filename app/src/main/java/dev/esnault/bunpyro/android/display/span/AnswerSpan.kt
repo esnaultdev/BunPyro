@@ -81,7 +81,8 @@ data class AnswerSpan(
             val textColor = paint.color
             val fontTop = paint.fontMetrics.top
             paint.textSize = textSize * textSizeFactor
-            paint.color = ColorUtils.setAlphaComponent(hintTextColor, paint.color.alpha)
+            val newAlpha = paint.color.alpha * hintTextColor.alpha / 255
+            paint.color = ColorUtils.setAlphaComponent(hintTextColor, newAlpha)
 
             // Draw the hint
             val offsetX = (spanWidth - hintWidth) / 2
