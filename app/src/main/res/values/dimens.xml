@@ -14,6 +14,7 @@
 
     <dimen name="smallTag_height">32dp</dimen>
     <dimen name="reviewBadge_height">32dp</dimen>
+    <dimen name="questionOtherBadge_height">32dp</dimen>
 
     <dimen name="answerSpan_minWidth">60dp</dimen>
 </resources>

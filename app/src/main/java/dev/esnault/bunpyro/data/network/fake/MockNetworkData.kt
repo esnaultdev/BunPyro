@@ -118,9 +118,9 @@ object Mock {
                 alternateAnswers = mapOf(
                     "フェイク" to "Not Gairaigo."
                 ),
-                answer = "偽物",
+                answer = "にせもの",
                 wrongAnswers = emptyMap(),
-                alternateGrammar = listOf("偽"),
+                alternateGrammar = listOf("にせ"),
                 audioLink = null,
                 createdAt = Date(1L),
                 updatedAt = Date(1L),

@@ -289,5 +289,105 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/question_action_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@id/question_action_info"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/question_answer_layout"
+        tools:text="@string/reviews_action_hint_hide"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/question_action_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_info_outline_24dp"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconTint="?colorOnPrimary"
+        app:layout_constraintEnd_toStartOf="@id/question_action_other"
+        app:layout_constraintStart_toEndOf="@+id/question_action_hint"
+        app:layout_constraintTop_toTopOf="@id/question_action_hint"
+        />
+
+    <FrameLayout
+        android:id="@+id/question_action_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/question_action_audio"
+        app:layout_constraintStart_toEndOf="@+id/question_action_info"
+        app:layout_constraintTop_toTopOf="@id/question_action_hint"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/question_action_other_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_loop_24dp"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="?colorOnPrimary"
+            />
+
+        <TextView
+            android:id="@+id/question_action_other_badge"
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/question_other_badge_background"
+            android:gravity="center_horizontal"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="2dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textColor="?colorPrimary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="3"
+            tools:visibility="visible"
+            android:elevation="4dp"
+            />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/question_action_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintStart_toEndOf="@id/question_action_other"
+        app:layout_constraintTop_toTopOf="@id/question_action_hint"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/question_action_audio_button"
+            style="Widget.MaterialComponents.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_play_arrow_24dp"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="?colorOnPrimary"
+            />
+
+        <ProgressBar
+            android:id="@+id/question_action_audio_loading"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:elevation="2dp"
+            android:indeterminate="true"
+            android:indeterminateTint="?colorOnPrimary"
+            android:padding="12dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

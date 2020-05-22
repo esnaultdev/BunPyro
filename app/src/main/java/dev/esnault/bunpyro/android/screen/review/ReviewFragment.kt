@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Spanned
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -68,6 +69,10 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         binding.infoSrsValue.isVisible = isVisible
         binding.infoPrecisionIcon.isVisible = isVisible
         binding.infoPrecisionValue.isVisible = isVisible
+        binding.questionActionHint.isVisible = isVisible
+        binding.questionActionInfo.isVisible = isVisible
+        binding.questionActionOther.isVisible = isVisible
+        binding.questionActionAudio.isVisible = isVisible
 
         // These are non visible by default when transitioning to a question state
         // but we need to hide them when transitioning to an error state
@@ -82,6 +87,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
         val questionChanged = oldQuestionState?.currentIndex != viewState.currentIndex
         val answerChanged = oldQuestionState?.userAnswer != viewState.userAnswer
+        val answerStateChanged = oldQuestionState?.answerState != viewState.answerState
         val furiganaChanged = oldQuestionState?.furiganaShown != viewState.furiganaShown
         val progressChanged = oldQuestionState?.progress != viewState.progress
 
@@ -98,6 +104,9 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
         if (answerChanged) {
             bindAnswer(viewState)
+        }
+        if (answerStateChanged) {
+            bindQuestionActions(viewState)
         }
         if (progressChanged) {
             bindProgress(viewState.progress)
@@ -128,6 +137,46 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
                 false
             }
         }
+    }
+
+    private fun bindQuestionActions(viewState: ViewState.Question) {
+        val answering = viewState.answerState is ViewState.AnswerState.Answering
+
+        // Hint
+        // TODO get the current hint level
+
+        // Info
+        binding.questionActionInfo.isEnabled = !answering
+
+        // Other
+        bindQuestionActionOther(viewState)
+
+        // Audio
+        // TODO bind the audio state
+        val hasAudio = viewState.currentQuestion.audioLink != null
+        val audioEnabled = !answering && hasAudio
+        binding.questionActionAudioButton.isEnabled = audioEnabled
+    }
+
+    private fun bindQuestionActionOther(viewState: ViewState.Question) {
+        val (buttonEnabled, badgeVisible) = when (viewState.answerState) {
+            ViewState.AnswerState.Answering -> false to false
+            is ViewState.AnswerState.Answered -> {
+                if (viewState.answerState.correct) {
+                    val altGrammarCount = viewState.currentQuestion.alternateGrammar.size
+                    val hasAltGrammar = altGrammarCount > 0
+                    if (hasAltGrammar) {
+                        // Also count the default answer
+                        binding.questionActionOtherBadge.text = (altGrammarCount + 1).toString()
+                    }
+                    hasAltGrammar to hasAltGrammar
+                } else {
+                    true to false
+                }
+            }
+        }
+        binding.questionActionOtherButton.isEnabled = buttonEnabled
+        binding.questionActionOtherBadge.isVisible = badgeVisible
     }
 
     private fun updateAnswerSpans(block: (span: AnswerSpan) -> Boolean) {
@@ -182,11 +231,11 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         binding.questionProgress.progress = progress.progress
 
         binding.infoRemaining.text =
-            context.getString(R.string.reviews_info_remaining, progress.remaining)
+            context.getString(R.string.reviews_topInfo_remaining, progress.remaining)
         binding.infoSrsValue.text =
-            context.getString(R.string.reviews_info_srs, progress.srs)
+            context.getString(R.string.reviews_topInfo_srs, progress.srs)
         binding.infoPrecisionValue.text =
-            context.getString(R.string.reviews_info_precision, progress.precision * 100)
+            context.getString(R.string.reviews_topInfo_precision, progress.precision * 100)
     }
 
     private fun bindToolbar(viewState: ViewState) {
@@ -252,6 +301,27 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
                 }
                 else -> false
             }
+        }
+
+        binding.questionAnswerValue.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                vm.onAnswer()
+                true
+            } else {
+                false
+            }
+        }
+
+        binding.questionAnswerLayout.setStartIconOnClickListener {
+            // TODO ignore the wrong answer
+        }
+
+        binding.questionAnswerLayout.setEndIconOnClickListener {
+            vm.onAnswer()
+        }
+
+        binding.questionActionOther.setOnClickListener {
+            // TODO show the right answer or the next alt grammar
         }
     }
 }

@@ -135,6 +135,7 @@
                 android:contentDescription="@string/contentDescription_audioControl"
                 android:padding="12dp"
                 android:src="@drawable/ic_stop_24dp"
+                android:tint="?colorControlNormal"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/expand_button"
                 app:layout_constraintEnd_toStartOf="@+id/more"

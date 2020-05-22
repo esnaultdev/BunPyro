@@ -43,7 +43,7 @@ class ReviewViewModel(
                         furiganaShown = furiganaShown,
                         userAnswer = null,
                         progress = initialProgress(it),
-                        answerState = ViewState.AnswerState.ANSWERING
+                        answerState = ViewState.AnswerState.Answering
                     )
                 },
                 onFailure = { ViewState.Error }
@@ -65,6 +65,48 @@ class ReviewViewModel(
         val currentState = currentState as? ViewState.Question ?: return
         if (currentState.userAnswer == answer) return // Already up-to-date
         this.currentState = currentState.copy(userAnswer = answer)
+    }
+
+    fun onAnswer() {
+        val currentState = currentState as? ViewState.Question ?: return
+        when (currentState.answerState) {
+            is ViewState.AnswerState.Answered -> {
+                goToNextQuestion(currentState)
+            }
+            ViewState.AnswerState.Answering -> {
+                checkAnswer(currentState)
+            }
+        }
+    }
+
+    private fun goToNextQuestion(currentState: ViewState.Question) {
+        if (currentState.currentIndex != currentState.questions.lastIndex) {
+            this.currentState = currentState.copy(
+                answerState = ViewState.AnswerState.Answering,
+                currentIndex = currentState.currentIndex + 1,
+                userAnswer = null
+            )
+        } else {
+            // TODO properly handle the last question
+            // For now, let's just loop to the first question
+            this.currentState = currentState.copy(
+                answerState = ViewState.AnswerState.Answering,
+                currentIndex = 0,
+                userAnswer = null
+            )
+        }
+    }
+
+    private fun checkAnswer(currentState: ViewState.Question) {
+        val userAnswer = currentState.userAnswer ?: return // Wait for the user to input something
+        val currentQuestion = currentState.currentQuestion
+        val isCorrect = currentQuestion.answer == userAnswer ||
+                currentQuestion.alternateGrammar.contains(userAnswer)
+        val newAnswerState = ViewState.AnswerState.Answered(isCorrect)
+
+        this.currentState = currentState.copy(
+            answerState = newAnswerState
+        )
     }
 
     fun onFuriganaClick() {
@@ -113,11 +155,15 @@ class ReviewViewModel(
         ) {
             val progress: Int = correct + incorrect
             val remaining: Int = max + askAgain - progress
+
             /** Ratio of correct answers, between 0 and 1 */
             val precision: Float
                 get() = if (progress == 0) 1f else correct.toFloat() / progress
         }
 
-        enum class AnswerState { ANSWERING, CORRECT, INCORRECT }
+        sealed class AnswerState {
+            object Answering : AnswerState()
+            class Answered(val correct: Boolean) : AnswerState()
+        }
     }
 }
