@@ -154,7 +154,7 @@ class ReviewViewModel(
             val askAgain: Int
         ) {
             val progress: Int = correct + incorrect
-            val remaining: Int = max + askAgain - progress
+            val total: Int = max + askAgain
 
             /** Ratio of correct answers, between 0 and 1 */
             val precision: Float

@@ -146,8 +146,7 @@
     <string name="reviews_title">Reviews</string>
     <string name="reviews_loading_title">Loading reviews</string>
     <string name="reviews_answer_hint">Answer</string>
-    <string name="reviews_topInfo_remaining">R %d</string>
-    <string name="reviews_topInfo_srs">SRS %d</string>
+    <string name="reviews_topInfo_remaining">%d / %d</string>
     <string name="reviews_topInfo_precision">%.0f%%</string>
     <string name="reviews_action_hint_show">Show</string>
     <string name="reviews_action_hint_more">More</string>

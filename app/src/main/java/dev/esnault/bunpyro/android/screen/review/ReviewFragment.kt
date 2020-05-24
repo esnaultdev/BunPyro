@@ -78,8 +78,6 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         binding.questionAnswerLayout.isVisible = isVisible
         binding.questionEnglish.isVisible = isVisible
         binding.infoRemaining.isVisible = isVisible
-        binding.infoSrsIcon.isVisible = isVisible
-        binding.infoSrsValue.isVisible = isVisible
         binding.infoPrecisionIcon.isVisible = isVisible
         binding.infoPrecisionValue.isVisible = isVisible
         binding.questionActionHint.isVisible = isVisible
@@ -281,9 +279,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         binding.questionProgress.progress = progress.progress
 
         binding.infoRemaining.text =
-            context.getString(R.string.reviews_topInfo_remaining, progress.remaining)
-        binding.infoSrsValue.text =
-            context.getString(R.string.reviews_topInfo_srs, progress.srs)
+            context.getString(R.string.reviews_topInfo_remaining, progress.progress, progress.max)
         binding.infoPrecisionValue.text =
             context.getString(R.string.reviews_topInfo_precision, progress.precision * 100)
     }
