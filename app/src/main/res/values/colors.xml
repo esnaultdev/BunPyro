@@ -22,4 +22,8 @@
     <color name="hanko">#aa0000</color>
     <color name="hanko_gold">#c7a800</color>
     <color name="badge_background">#C62828</color>
+
+    <color name="answer_correct">#4CAF50</color>
+    <color name="answer_incorrect">#EF5350</color>
+
 </resources>

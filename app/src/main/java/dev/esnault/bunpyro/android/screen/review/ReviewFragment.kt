@@ -20,6 +20,8 @@ import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel.ViewState
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.android.utils.transition.ChangeText
+import dev.esnault.bunpyro.common.getColorCompat
+import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.databinding.FragmentReviewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -30,6 +32,17 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
     private var wanakana: WanaKanaText? = null
     private var oldViewState: ViewState? = null
+
+    // Resources
+    private val primaryColor: Int by lazy(LazyThreadSafetyMode.NONE) {
+        requireContext().getThemeColor(R.attr.colorPrimary)
+    }
+    private val correctColor: Int by lazy(LazyThreadSafetyMode.NONE) {
+        requireContext().getColorCompat(R.color.answer_correct)
+    }
+    private val incorrectColor: Int by lazy(LazyThreadSafetyMode.NONE) {
+        requireContext().getColorCompat(R.color.answer_incorrect)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -106,6 +119,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             bindAnswer(viewState)
         }
         if (answerStateChanged) {
+            bindAnswerState(viewState)
             bindQuestionActions(viewState)
         }
         if (progressChanged) {
@@ -136,6 +150,43 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             } else {
                 false
             }
+        }
+    }
+
+    private fun bindAnswerState(viewState: ViewState.Question) {
+        val answerState = viewState.answerState
+        val answering = answerState is ViewState.AnswerState.Answering
+
+        // Input layout color
+        val boxColorResId = when (answerState) {
+            ViewState.AnswerState.Answering -> R.color.review_answer_default_background_color
+            is ViewState.AnswerState.Answered -> if (answerState.correct) {
+                R.color.review_answer_correct_background_color
+            } else {
+                R.color.review_answer_incorrect_background_color
+            }
+        }
+        binding.questionAnswerLayout.setBoxBackgroundColorResource(boxColorResId)
+
+        // Input enabled
+        binding.questionAnswerValue.apply {
+            isFocusable = answering
+            isFocusableInTouchMode = answering
+            isEnabled = answering
+        }
+        if (answering) {
+            binding.questionAnswerValue.requestFocus()
+        }
+
+        // Answer color
+        val answerTextColor = when (answerState) {
+            ViewState.AnswerState.Answering -> primaryColor
+            is ViewState.AnswerState.Answered ->
+                if (answerState.correct) correctColor else incorrectColor
+        }
+        updateAnswerSpans { span ->
+            span.textColor = answerTextColor
+            false
         }
     }
 

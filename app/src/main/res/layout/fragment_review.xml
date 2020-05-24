@@ -267,6 +267,7 @@
         android:layout_marginTop="24dp"
         android:hint="@string/reviews_answer_hint"
         android:visibility="gone"
+        app:boxBackgroundMode="filled"
         app:endIconContentDescription="@string/contentDescription_review_next"
         app:endIconDrawable="@drawable/ic_chevron_right_24dp"
         app:endIconMode="custom"
@@ -337,11 +338,12 @@
             android:id="@+id/question_action_other_badge"
             android:layout_width="24dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/question_other_badge_background"
-            android:gravity="center_horizontal"
             android:layout_gravity="end"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="2dp"
+            android:background="@drawable/question_other_badge_background"
+            android:elevation="4dp"
+            android:gravity="center_horizontal"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             android:textColor="?colorPrimary"
             android:textSize="12sp"
@@ -349,7 +351,6 @@
             android:visibility="gone"
             tools:text="3"
             tools:visibility="visible"
-            android:elevation="4dp"
             />
 
     </FrameLayout>

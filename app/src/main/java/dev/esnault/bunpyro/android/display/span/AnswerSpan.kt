@@ -14,6 +14,7 @@ data class AnswerSpan(
     private val minWidth: Float,
     private val bottomStrokeWidth: Float,
     private val hintTextColor: Int,
+    var textColor: Int? = null,
     private val textSizeFactor: Float = 0.7f
 ) : ReplacementSpan() {
 
@@ -74,7 +75,15 @@ data class AnswerSpan(
 
         if (!answer.isNullOrEmpty()) {
             // Draw the answer
-            canvas.drawText(answer, x, y.toFloat(), paint)
+            val textColor = textColor
+            if (textColor != null) {
+                val oldTextColor = paint.color
+                paint.color = textColor
+                canvas.drawText(answer, x, y.toFloat(), paint)
+                paint.color = oldTextColor
+            } else {
+                canvas.drawText(answer, x, y.toFloat(), paint)
+            }
         } else if (!hint.isNullOrEmpty()) {
             // Save some attributes that we will need to restore afterwards and update the paint
             val textSize = paint.textSize
