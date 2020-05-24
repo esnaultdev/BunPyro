@@ -77,7 +77,6 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         binding.questionQuestion.isVisible = isVisible
         binding.questionAnswerLayout.isVisible = isVisible
         binding.questionEnglish.isVisible = isVisible
-        binding.questionHint.isVisible = isVisible
         binding.infoRemaining.isVisible = isVisible
         binding.infoSrsIcon.isVisible = isVisible
         binding.infoSrsValue.isVisible = isVisible
@@ -91,6 +90,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         // These are non visible by default when transitioning to a question state
         // but we need to hide them when transitioning to an error state
         if (!isVisible) {
+            binding.questionHint.isVisible = false
             binding.questionFeedback.isVisible = false
             binding.infoGhost.isVisible = false
         }
@@ -271,9 +271,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         val visibility = furiganaShown.toRubyVisibility()
         updateTextViewFuriganas(binding.questionQuestion, visibility)
         updateTextViewFuriganas(binding.questionEnglish, visibility)
-        if (binding.questionHint.isVisible) {
-            updateTextViewFuriganas(binding.questionHint, visibility)
-        }
+        updateTextViewFuriganas(binding.questionHint, visibility)
     }
 
     private fun bindProgress(progress: ViewState.Progress) {
