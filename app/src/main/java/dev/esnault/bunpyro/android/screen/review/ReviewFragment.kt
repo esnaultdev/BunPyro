@@ -3,6 +3,7 @@ package dev.esnault.bunpyro.android.screen.review
 
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.text.Spanned
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -172,7 +173,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         binding.questionAnswerValue.apply {
             isFocusable = answering
             isFocusableInTouchMode = answering
-            isEnabled = answering
+            inputType = if (answering) InputType.TYPE_CLASS_TEXT else InputType.TYPE_NULL
         }
         if (answering) {
             binding.questionAnswerValue.requestFocus()
