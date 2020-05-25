@@ -6,6 +6,7 @@
     <attr name="colorSurfaceSecondary" format="color" />
     <attr name="secondaryColorOnToolbar" format="color" />
     <attr name="secondaryColorOnPrimary" format="color" />
+    <attr name="colorControlNormalStateless" format="color"/>
 
     <declare-styleable name="OutlineButtonProgress">
         <attr format="reference" name="icon"/>

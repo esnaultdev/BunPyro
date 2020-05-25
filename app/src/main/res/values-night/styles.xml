@@ -9,6 +9,7 @@
         <item name="secondaryColorOnToolbar">?secondaryColorOnPrimary</item>
         <item name="colorSurfaceSecondary">@color/surfaceColorSecondary_dark</item>
         <item name="textEmphasisColor">?colorAccent</item>
+        <item name="colorControlNormalStateless">#B2FFFFFF</item>
     </style>
 
     <style name="AppTheme.AppBarLayout.Colored" parent="">

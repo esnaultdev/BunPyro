@@ -17,6 +17,7 @@
         <item name="secondaryColorOnToolbar">?colorOnToolbar</item>
         <item name="secondaryColorOnPrimary">@color/white_80</item>
         <item name="textEmphasisColor">?colorPrimaryDark</item>
+        <item name="colorControlNormalStateless">#89000000</item>
     </style>
 
     <style name="AppTheme.AppBarLayout" parent="AppTheme">

@@ -28,7 +28,6 @@ import dev.esnault.bunpyro.common.getColorCompat
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.databinding.FragmentReviewBinding
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
-import dev.esnault.bunpyro.domain.entities.settings.next
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
@@ -284,7 +283,24 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     }
 
     private fun bindPostAnswerActions(viewState: ViewState.Question) {
-        val answering = viewState.answerState is ViewState.AnswerState.Answering
+        val answerState = viewState.answerState
+        val answering = answerState is ViewState.AnswerState.Answering
+        val isIncorrect = answerState is ViewState.AnswerState.Incorrect
+
+        // Ignore
+        binding.questionAnswerLayout.apply {
+            if (isIncorrect) {
+                setStartIconDrawable(R.drawable.ic_close_24dp)
+                setStartIconOnClickListener {
+                    vm.onIgnoreIncorrect()
+                }
+            } else {
+                // Empty drawable so that the text is still centered
+                setStartIconDrawable(R.drawable.ic_empty_24dp)
+                // Remove the click listener, otherwise the empty icon is clickable
+                setStartIconOnClickListener(null)
+            }
+        }
 
         // Info
         binding.questionActionInfo.isEnabled = !answering
@@ -487,10 +503,6 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             } else {
                 false
             }
-        }
-
-        binding.questionAnswerLayout.setStartIconOnClickListener {
-            vm.onIgnoreIncorrect()
         }
 
         binding.questionAnswerLayout.setEndIconOnClickListener {

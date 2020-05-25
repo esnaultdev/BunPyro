@@ -229,7 +229,8 @@
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/question_nuance"
         app:startIconContentDescription="@string/contentDescription_review_ignore"
-        app:startIconDrawable="@drawable/ic_close_24dp"
+        app:startIconDrawable="@drawable/ic_empty_24dp"
+        app:startIconTint="?colorControlNormalStateless"
         tools:visibility="visible"
         >
 
