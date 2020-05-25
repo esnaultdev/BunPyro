@@ -265,11 +265,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        tools:icon="@drawable/ic_hint_hide_24dp"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconTint="?colorOnPrimary"
         app:layout_constraintEnd_toStartOf="@id/question_action_info"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/question_feedback"
-        tools:text="@string/reviews_action_hint_hide"
         />
 
     <com.google.android.material.button.MaterialButton

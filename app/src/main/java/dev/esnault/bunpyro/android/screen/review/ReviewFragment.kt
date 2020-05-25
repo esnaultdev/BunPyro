@@ -300,13 +300,13 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     }
 
     private fun bindHintAction(viewState: ViewState.Question) {
-        val hintTextResId = when (viewState.hintLevel.next) {
-            ReviewHintLevelSetting.HIDE -> R.string.reviews_action_hint_hide
-            ReviewHintLevelSetting.HINT -> R.string.reviews_action_hint_hint
-            ReviewHintLevelSetting.MORE -> R.string.reviews_action_hint_more
-            ReviewHintLevelSetting.SHOW -> R.string.reviews_action_hint_show
+        val iconResId = when (viewState.hintLevel) {
+            ReviewHintLevelSetting.HIDE -> R.drawable.ic_hint_hide_24dp
+            ReviewHintLevelSetting.HINT -> R.drawable.ic_hint_hint_24dp
+            ReviewHintLevelSetting.MORE -> R.drawable.ic_hint_more_24dp
+            ReviewHintLevelSetting.SHOW -> R.drawable.ic_hint_show_24dp
         }
-        binding.questionActionHint.text = requireContext().getString(hintTextResId)
+        binding.questionActionHint.setIconResource(iconResId)
     }
 
     private fun bindQuestionActionOther(viewState: ViewState.Question) {

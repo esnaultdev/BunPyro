@@ -153,10 +153,6 @@
     <string name="reviews_answer_hint">Answer</string>
     <string name="reviews_topInfo_remaining">%d / %d</string>
     <string name="reviews_topInfo_precision">%.0f%%</string>
-    <string name="reviews_action_hint_show">Show</string>
-    <string name="reviews_action_hint_more">More</string>
-    <string name="reviews_action_hint_hint">Hint</string>
-    <string name="reviews_action_hint_hide">Hide</string>
     <string name="reviews_action_info">Info</string>
     <string name="reviews_action_alternate">Other</string>
     <string name="reviews_action_audio">Audio</string>
