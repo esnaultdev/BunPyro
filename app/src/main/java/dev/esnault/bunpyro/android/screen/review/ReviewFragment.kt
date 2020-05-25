@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import androidx.transition.AutoTransition
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
@@ -108,13 +109,10 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         val progressChanged = oldQuestionState?.progress != viewState.progress
         val hintLevelChanged = oldQuestionState?.hintLevel != viewState.hintLevel
         val feedbackChanged = oldQuestionState?.feedback != viewState.feedback
+        var transitioning = false
 
         if (questionChanged) {
-            if (oldQuestionState != null) {
-                // Only make a transition when we had a question.
-                // Transitions between non question states have already been taken care of.
-                TransitionManager.beginDelayedTransition(binding.constraintLayout)
-            }
+            transitioning = questionTransition(transitioning, oldQuestionState)
             bindQuestion(viewState)
         } else if (furiganaChanged) {
             updateFuriganas(viewState.furiganaShown)
@@ -131,11 +129,32 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             bindProgress(viewState.progress)
         }
         if (hintLevelChanged) {
+            transitioning = questionTransition(transitioning, oldQuestionState)
             bindHintAction(viewState)
             bindHintText(viewState)
         }
         if (feedbackChanged) {
+            questionTransition(
+                transitioning, oldQuestionState, ScreenConfig.Transition.fastDuration)
             bindFeedback(viewState.feedback)
+        }
+    }
+
+    private fun questionTransition(
+        transitioning: Boolean,
+        oldQuestionState: ViewState.Question?,
+        duration: Long = ScreenConfig.Transition.normalDuration
+    ): Boolean {
+        return if (!transitioning && oldQuestionState != null) {
+            // Only make a transition when we had a question.
+            // Transitions between non question states have already been taken care of.
+            val transition = AutoTransition().apply {
+                this.duration = duration
+            }
+            TransitionManager.beginDelayedTransition(binding.constraintLayout, transition)
+            true
+        } else {
+            transitioning
         }
     }
 

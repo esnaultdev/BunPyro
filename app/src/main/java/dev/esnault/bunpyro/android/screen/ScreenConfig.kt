@@ -13,5 +13,7 @@ object ScreenConfig {
     object Transition {
         const val exampleChangeDuration = 200L
         const val reviewChangeDuration = 200L
+        const val fastDuration = 100L
+        const val normalDuration = 300L
     }
 }
