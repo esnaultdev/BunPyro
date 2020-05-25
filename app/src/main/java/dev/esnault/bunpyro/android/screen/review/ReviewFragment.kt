@@ -114,7 +114,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             updateFuriganas(viewState.furiganaShown)
         }
 
-        if (answerChanged) {
+        if (answerChanged || answerStateChanged) {
             bindAnswer(viewState)
         }
         if (answerStateChanged) {
@@ -159,11 +159,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         // Input layout color
         val boxColorResId = when (answerState) {
             ViewState.AnswerState.Answering -> R.color.review_answer_default_background_color
-            is ViewState.AnswerState.Answered -> if (answerState.correct) {
-                R.color.review_answer_correct_background_color
-            } else {
-                R.color.review_answer_incorrect_background_color
-            }
+            is ViewState.AnswerState.Correct -> R.color.review_answer_correct_background_color
+            is ViewState.AnswerState.Incorrect -> R.color.review_answer_incorrect_background_color
         }
         binding.questionAnswerLayout.setBoxBackgroundColorResource(boxColorResId)
 
@@ -180,8 +177,10 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         // Answer color
         val answerTextColor = when (answerState) {
             ViewState.AnswerState.Answering -> primaryColor
-            is ViewState.AnswerState.Answered ->
-                if (answerState.correct) correctColor else incorrectColor
+            is ViewState.AnswerState.Correct -> correctColor
+            is ViewState.AnswerState.Incorrect -> {
+                if (answerState.showCorrect) correctColor else incorrectColor
+            }
         }
         updateAnswerSpans { span ->
             span.textColor = answerTextColor
@@ -211,19 +210,16 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     private fun bindQuestionActionOther(viewState: ViewState.Question) {
         val (buttonEnabled, badgeVisible) = when (viewState.answerState) {
             ViewState.AnswerState.Answering -> false to false
-            is ViewState.AnswerState.Answered -> {
-                if (viewState.answerState.correct) {
-                    val altGrammarCount = viewState.currentQuestion.alternateGrammar.size
-                    val hasAltGrammar = altGrammarCount > 0
-                    if (hasAltGrammar) {
-                        // Also count the default answer
-                        binding.questionActionOtherBadge.text = (altGrammarCount + 1).toString()
-                    }
-                    hasAltGrammar to hasAltGrammar
-                } else {
-                    true to false
+            is ViewState.AnswerState.Correct -> {
+                val altGrammarCount = viewState.currentQuestion.alternateGrammar.size
+                val hasAltGrammar = altGrammarCount > 0
+                if (hasAltGrammar) {
+                    // Also count the default answer
+                    binding.questionActionOtherBadge.text = (altGrammarCount + 1).toString()
                 }
+                hasAltGrammar to hasAltGrammar
             }
+            is ViewState.AnswerState.Incorrect -> true to false
         }
         binding.questionActionOtherButton.isEnabled = buttonEnabled
         binding.questionActionOtherBadge.isVisible = badgeVisible
@@ -247,9 +243,27 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             binding.questionAnswerValue.setText(viewState.userAnswer)
         }
 
+        val showAnswer = when (val answerState = viewState.answerState) {
+            ViewState.AnswerState.Answering -> viewState.userAnswer
+            is ViewState.AnswerState.Correct -> {
+                if (answerState.showIndex == 0) {
+                    viewState.currentQuestion.answer
+                } else {
+                    viewState.currentQuestion.alternateGrammar[answerState.showIndex - 1]
+                }
+            }
+            is ViewState.AnswerState.Incorrect -> {
+                if (answerState.showCorrect) {
+                    viewState.currentQuestion.answer
+                } else {
+                    viewState.userAnswer
+                }
+            }
+        }
+
         updateAnswerSpans { answerSpan ->
-            if (answerSpan.answer != viewState.userAnswer) {
-                answerSpan.answer = viewState.userAnswer
+            if (answerSpan.answer != showAnswer) {
+                answerSpan.answer = showAnswer
                 true
             } else {
                 false
@@ -366,8 +380,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             vm.onAnswer()
         }
 
-        binding.questionActionOther.setOnClickListener {
-            // TODO show the right answer or the next alt grammar
+        binding.questionActionOtherButton.setOnClickListener {
+            vm.onAltAnswerClick()
         }
     }
 }

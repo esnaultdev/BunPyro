@@ -70,7 +70,8 @@ class ReviewViewModel(
     fun onAnswer() {
         val currentState = currentState as? ViewState.Question ?: return
         when (currentState.answerState) {
-            is ViewState.AnswerState.Answered -> {
+            is ViewState.AnswerState.Correct,
+            is ViewState.AnswerState.Incorrect -> {
                 goToNextQuestion(currentState)
             }
             ViewState.AnswerState.Answering -> {
@@ -100,13 +101,80 @@ class ReviewViewModel(
     private fun checkAnswer(currentState: ViewState.Question) {
         val userAnswer = currentState.userAnswer ?: return // Wait for the user to input something
         val currentQuestion = currentState.currentQuestion
-        val isCorrect = currentQuestion.answer == userAnswer ||
-                currentQuestion.alternateGrammar.contains(userAnswer)
-        val newAnswerState = ViewState.AnswerState.Answered(isCorrect)
+
+        // Find the index of the correct answer (or -1)
+        // This index will be user to cycle through alternate answers
+        val userIndex = if (currentQuestion.answer == userAnswer) {
+            0
+        } else {
+            val altIndex = currentQuestion.alternateGrammar.indexOf(userAnswer)
+            if (altIndex != -1) altIndex + 1 else -1
+        }
+
+        val newAnswerState = if (userIndex == -1) {
+            ViewState.AnswerState.Incorrect(showCorrect = false)
+        } else {
+            ViewState.AnswerState.Correct(userIndex = userIndex, showIndex = userIndex)
+        }
 
         this.currentState = currentState.copy(
             answerState = newAnswerState
         )
+    }
+
+    fun onAltAnswerClick() {
+        val currentState = currentState as? ViewState.Question ?: return
+        val answerState = currentState.answerState
+
+        when (answerState) {
+            is ViewState.AnswerState.Answering -> return
+            is ViewState.AnswerState.Incorrect -> {
+                val newAnswerState = ViewState.AnswerState.Incorrect(showCorrect = true)
+                this.currentState = currentState.copy(answerState = newAnswerState)
+            }
+            is ViewState.AnswerState.Correct -> cycleAltAnswer(currentState, answerState)
+        }
+    }
+
+    private fun cycleAltAnswer(
+        currentState: ViewState.Question,
+        answerState: ViewState.AnswerState.Correct) {
+        val answerCount = currentState.currentQuestion.alternateGrammar.size + 1
+        if (answerCount == 1) return // We don't need to cycle when we only have one answer
+
+        val newIndex =
+            cycleAltAnswerIndex(answerState.showIndex, answerState.userIndex, answerCount)
+
+        val newAnswerState = answerState.copy(showIndex = newIndex)
+        this.currentState = currentState.copy(answerState = newAnswerState)
+    }
+
+    private fun cycleAltAnswerIndex(currentIndex: Int, userIndex: Int, answerCount: Int): Int {
+        // Cycle in this order: userIndex, 0, 1, 2, 3, ...
+        return if (currentIndex == userIndex) {
+            // We're at the userIndex, we need to go to 0 unless we were at 0 already
+            if (userIndex != 0) {
+                0
+            } else {
+                // We already checked that at least one alt answer exists, so this is always valid
+                1
+            }
+        } else {
+            // We're at an alt answer index, we want to increase the index and skip the user answer
+            if (currentIndex + 1 == userIndex) {
+                if (currentIndex + 2 >= answerCount) {
+                    userIndex
+                } else {
+                    currentIndex + 2
+                }
+            } else {
+                if (currentIndex + 1 >= answerCount) {
+                    userIndex
+                } else {
+                    currentIndex + 1
+                }
+            }
+        }
     }
 
     fun onFuriganaClick() {
@@ -163,7 +231,17 @@ class ReviewViewModel(
 
         sealed class AnswerState {
             object Answering : AnswerState()
-            class Answered(val correct: Boolean) : AnswerState()
+
+            data class Correct(
+                /** The index of the user answer in the [answer, *altGrammar] list */
+                val userIndex: Int,
+                /** The index of the user to show in the [answer, *altGrammar] list */
+                val showIndex: Int
+            ) : AnswerState()
+
+            data class Incorrect(
+                val showCorrect: Boolean
+            ) : AnswerState()
         }
     }
 }
