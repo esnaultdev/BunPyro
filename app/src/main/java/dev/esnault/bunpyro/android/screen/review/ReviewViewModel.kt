@@ -154,6 +154,15 @@ class ReviewViewModel(
         )
     }
 
+    fun onIgnoreIncorrect() {
+        val currentState = currentState as? ViewState.Question ?: return
+        if (currentState.answerState !is ViewState.AnswerState.Incorrect) return
+        this.currentState = currentState.copy(
+            answerState = ViewState.AnswerState.Answering,
+            userAnswer = null
+        )
+    }
+
     fun onAltAnswerClick() {
         val currentState = currentState as? ViewState.Question ?: return
         val answerState = currentState.answerState

@@ -190,7 +190,6 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         when (hintLevel) {
             ReviewHintLevelSetting.HIDE -> Unit
             ReviewHintLevelSetting.HINT -> {
-                // TODO only keep the strong
                 binding.questionEnglish.text =
                     context.postProcessString(question.english, furiganaShown)
                         .let(::simplifyEnglishText)
@@ -491,7 +490,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         }
 
         binding.questionAnswerLayout.setStartIconOnClickListener {
-            // TODO ignore the wrong answer
+            vm.onIgnoreIncorrect()
         }
 
         binding.questionAnswerLayout.setEndIconOnClickListener {
