@@ -200,7 +200,7 @@
         />
 
     <TextView
-        android:id="@+id/question_hint"
+        android:id="@+id/question_nuance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="?android:textColorSecondary"
@@ -225,7 +225,7 @@
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@+id/question_hint"
+        app:layout_constraintTop_toBottomOf="@+id/question_nuance"
         tools:text="Not Gairaigo."
         tools:visibility="visible"
         />

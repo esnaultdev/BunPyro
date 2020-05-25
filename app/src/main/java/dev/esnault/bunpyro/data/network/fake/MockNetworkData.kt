@@ -125,7 +125,7 @@ object Mock {
                 createdAt = Date(1L),
                 updatedAt = Date(1L),
                 grammarId = 1L,
-                nuance = null,
+                nuance = "[this is just the vocabulary word for imitations]",
                 sentenceOrder = 0,
                 tense = "[present]"
             ),

@@ -4,6 +4,7 @@ package dev.esnault.bunpyro.android.screen.review
 import android.content.Context
 import android.os.Bundle
 import android.text.InputType
+import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -16,6 +17,7 @@ import androidx.transition.TransitionSet
 import com.wanakanajava.WanaKanaText
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.span.AnswerSpan
+import dev.esnault.bunpyro.android.display.span.TagSpan
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel.ViewState
@@ -78,7 +80,6 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         binding.questionProgress.isVisible = isVisible
         binding.questionQuestion.isVisible = isVisible
         binding.questionAnswerLayout.isVisible = isVisible
-        binding.questionEnglish.isVisible = isVisible
         binding.infoRemaining.isVisible = isVisible
         binding.infoPrecisionIcon.isVisible = isVisible
         binding.infoPrecisionValue.isVisible = isVisible
@@ -90,7 +91,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         // These are non visible by default when transitioning to a question state
         // but we need to hide them when transitioning to an error state
         if (!isVisible) {
-            binding.questionHint.isVisible = false
+            binding.questionEnglish.isVisible = isVisible
+            binding.questionNuance.isVisible = false
             binding.questionFeedback.isVisible = false
             binding.infoGhost.isVisible = false
         }
@@ -158,15 +160,69 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
         val question = viewState.currentQuestion
         val furiganaShown = viewState.furiganaShown
+        val hintLevel = viewState.hintLevel
 
-        binding.questionEnglish.text = context.postProcessString(question.english, furiganaShown)
-
-        if (!question.nuance.isNullOrEmpty()) {
-            binding.questionHint.isVisible = true
-            binding.questionHint.text = context.postProcessString(question.nuance, furiganaShown)
-        } else {
-            binding.questionHint.isVisible = false
+        // English
+        binding.questionEnglish.isVisible = hintLevel != ReviewHintLevelSetting.HIDE
+        when (hintLevel) {
+            ReviewHintLevelSetting.HIDE -> Unit
+            ReviewHintLevelSetting.HINT -> {
+                // TODO only keep the strong
+                binding.questionEnglish.text =
+                    context.postProcessString(question.english, furiganaShown)
+                        .let(::simplifyEnglishText)
+            }
+            ReviewHintLevelSetting.MORE,
+            ReviewHintLevelSetting.SHOW -> {
+                binding.questionEnglish.text =
+                    context.postProcessString(question.english, furiganaShown)
+            }
         }
+
+        // Nuance
+        val hasNuance = !question.nuance.isNullOrEmpty()
+        val showNuance = hasNuance && hintLevel == ReviewHintLevelSetting.MORE
+        binding.questionNuance.isVisible = showNuance
+        if (showNuance) {
+            binding.questionNuance.text =
+                context.postProcessString(question.nuance!!, furiganaShown)
+        }
+    }
+
+    /**
+     * Transform an english text to a simplified version with only the strong tags.
+     * For example:
+     *     "This is an <strong>example</strong> of <strong>behavior</strong>"
+     * should become
+     *     "<strong>example</strong>～<strong>behavior</strong>"
+     */
+    private fun simplifyEnglishText(englishText: SpannableStringBuilder): Spanned {
+        val strongRanges = englishText.getSpans(0, englishText.length, TagSpan::class.java)
+            .filter { it.tag == BunProHtml.Tag.Strong }
+            .map { strongSpan ->
+                val start = englishText.getSpanStart(strongSpan)
+                val end = englishText.getSpanEnd(strongSpan)
+                start..end
+            }
+            .sortedBy { it.first }
+
+        if (strongRanges.isEmpty()) return SpannableStringBuilder()
+
+        // Remove everything after the last strong
+        englishText.delete(strongRanges.last().last, englishText.length)
+
+        // Replace every text between strongs with "～"
+        strongRanges.zipWithNext()
+            // Start from the end to keep our indexes coherent
+            .reversed()
+            .forEach { (previousStrong, nextStrong) ->
+                englishText.replace(previousStrong.last, nextStrong.first, "～")
+            }
+
+        // Remove everything before the first strong
+        englishText.delete(0, strongRanges.first().first)
+
+        return englishText
     }
 
     private fun bindAnswerState(viewState: ViewState.Question) {
@@ -306,8 +362,12 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
         val visibility = furiganaShown.toRubyVisibility()
         updateTextViewFuriganas(binding.questionQuestion, visibility)
-        updateTextViewFuriganas(binding.questionEnglish, visibility)
-        updateTextViewFuriganas(binding.questionHint, visibility)
+        if (binding.questionEnglish.isVisible) {
+            updateTextViewFuriganas(binding.questionEnglish, visibility)
+        }
+        if (binding.questionNuance.isVisible) {
+            updateTextViewFuriganas(binding.questionNuance, visibility)
+        }
     }
 
     private fun bindProgress(progress: ViewState.Progress) {
@@ -361,7 +421,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     private fun Context.postProcessString(
         source: String,
         furigana: Boolean
-    ): Spanned {
+    ): SpannableStringBuilder {
         return processBunproString(
             source = source,
             listener = bunProTextListener,

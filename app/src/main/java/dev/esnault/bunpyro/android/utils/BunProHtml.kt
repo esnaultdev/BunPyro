@@ -11,6 +11,7 @@ import dev.esnault.bunpyro.android.display.span.AnswerSpan
 import dev.esnault.bunpyro.android.display.span.ruby.RubySpan
 import dev.esnault.bunpyro.android.display.span.FontColorSpan
 import dev.esnault.bunpyro.android.display.span.GrammarLinkSpan
+import dev.esnault.bunpyro.android.display.span.TagSpan
 import dev.esnault.bunpyro.common.dpToPxRaw
 import dev.esnault.bunpyro.common.getThemeColor
 import org.jsoup.Jsoup
@@ -24,6 +25,10 @@ class BunProHtml(
     private val furiganaVisibility: RubySpan.Visibility,
     private val onGrammarPointClick: (id: Long) -> Unit
 ) {
+
+    object Tag {
+        object Strong
+    }
 
     private val chuiColor: Int by lazy(LazyThreadSafetyMode.NONE) {
         context.getThemeColor(R.attr.chuiColor)
@@ -94,6 +99,7 @@ class BunProHtml(
                 handleLink(href, ::setSpan)
             }
             "b", "strong" -> {
+                setSpan(TagSpan(Tag.Strong))
                 setSpan(FontColorSpan(emphasisColor))
                 setSpan(StyleSpan(Typeface.BOLD))
             }
