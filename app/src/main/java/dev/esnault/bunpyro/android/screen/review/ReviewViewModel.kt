@@ -10,6 +10,8 @@ import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.review.IReviewService
 import dev.esnault.bunpyro.domain.entities.review.ReviewQuestion
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
+import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
+import dev.esnault.bunpyro.domain.entities.settings.next
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -34,6 +36,8 @@ class ReviewViewModel(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             val furiganaShown = settingsRepo.getFurigana().asBoolean()
+            val hintLevel = settingsRepo.getReviewHintLevel()
+
             val result = reviewService.getCurrentReviews()
             currentState = result.fold(
                 onSuccess = {
@@ -43,7 +47,8 @@ class ReviewViewModel(
                         furiganaShown = furiganaShown,
                         userAnswer = null,
                         progress = initialProgress(it),
-                        answerState = ViewState.AnswerState.Answering
+                        answerState = ViewState.AnswerState.Answering,
+                        hintLevel = hintLevel
                     )
                 },
                 onFailure = { ViewState.Error }
@@ -177,6 +182,11 @@ class ReviewViewModel(
         }
     }
 
+    fun onHintLevelClick() {
+        val currentState = currentState as? ViewState.Question ?: return
+        this.currentState = currentState.copy(hintLevel = currentState.hintLevel.next)
+    }
+
     fun onFuriganaClick() {
         val currentState = currentState as? ViewState.Question ?: return
 
@@ -208,7 +218,8 @@ class ReviewViewModel(
             val furiganaShown: Boolean,
             val userAnswer: String?,
             val progress: Progress,
-            val answerState: AnswerState
+            val answerState: AnswerState,
+            val hintLevel: ReviewHintLevelSetting
         ) : ViewState() {
             val currentQuestion: ReviewQuestion
                 get() = questions[currentIndex]

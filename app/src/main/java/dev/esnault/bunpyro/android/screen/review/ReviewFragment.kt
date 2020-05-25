@@ -24,6 +24,8 @@ import dev.esnault.bunpyro.android.utils.transition.ChangeText
 import dev.esnault.bunpyro.common.getColorCompat
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.databinding.FragmentReviewBinding
+import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
+import dev.esnault.bunpyro.domain.entities.settings.next
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
@@ -102,6 +104,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         val answerStateChanged = oldQuestionState?.answerState != viewState.answerState
         val furiganaChanged = oldQuestionState?.furiganaShown != viewState.furiganaShown
         val progressChanged = oldQuestionState?.progress != viewState.progress
+        val hintLevelChanged = oldQuestionState?.hintLevel != viewState.hintLevel
 
         if (questionChanged) {
             if (oldQuestionState != null) {
@@ -119,10 +122,14 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         }
         if (answerStateChanged) {
             bindAnswerState(viewState)
-            bindQuestionActions(viewState)
+            bindPostAnswerActions(viewState)
         }
         if (progressChanged) {
             bindProgress(viewState.progress)
+        }
+        if (hintLevelChanged) {
+            bindHintAction(viewState)
+            bindHintText(viewState)
         }
     }
 
@@ -133,14 +140,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         val furiganaShown = viewState.furiganaShown
         binding.questionQuestion.text =
             context.postProcessQuestion(question.japanese, furiganaShown)
-        binding.questionEnglish.text = context.postProcessString(question.english, furiganaShown)
 
-        if (!question.nuance.isNullOrEmpty()) {
-            binding.questionHint.isVisible = true
-            binding.questionHint.text = context.postProcessString(question.nuance, furiganaShown)
-        } else {
-            binding.questionHint.isVisible = false
-        }
+        bindHintText(viewState)
 
         updateAnswerSpans { answerSpan ->
             if (answerSpan.hint != viewState.currentQuestion.tense) {
@@ -149,6 +150,22 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             } else {
                 false
             }
+        }
+    }
+
+    private fun bindHintText(viewState: ViewState.Question) {
+        val context = requireContext()
+
+        val question = viewState.currentQuestion
+        val furiganaShown = viewState.furiganaShown
+
+        binding.questionEnglish.text = context.postProcessString(question.english, furiganaShown)
+
+        if (!question.nuance.isNullOrEmpty()) {
+            binding.questionHint.isVisible = true
+            binding.questionHint.text = context.postProcessString(question.nuance, furiganaShown)
+        } else {
+            binding.questionHint.isVisible = false
         }
     }
 
@@ -188,11 +205,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         }
     }
 
-    private fun bindQuestionActions(viewState: ViewState.Question) {
+    private fun bindPostAnswerActions(viewState: ViewState.Question) {
         val answering = viewState.answerState is ViewState.AnswerState.Answering
-
-        // Hint
-        // TODO get the current hint level
 
         // Info
         binding.questionActionInfo.isEnabled = !answering
@@ -205,6 +219,16 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         val hasAudio = viewState.currentQuestion.audioLink != null
         val audioEnabled = !answering && hasAudio
         binding.questionActionAudioButton.isEnabled = audioEnabled
+    }
+
+    private fun bindHintAction(viewState: ViewState.Question) {
+        val hintTextResId = when (viewState.hintLevel.next) {
+            ReviewHintLevelSetting.HIDE -> R.string.reviews_action_hint_hide
+            ReviewHintLevelSetting.HINT -> R.string.reviews_action_hint_hint
+            ReviewHintLevelSetting.MORE -> R.string.reviews_action_hint_more
+            ReviewHintLevelSetting.SHOW -> R.string.reviews_action_hint_show
+        }
+        binding.questionActionHint.text = requireContext().getString(hintTextResId)
     }
 
     private fun bindQuestionActionOther(viewState: ViewState.Question) {
@@ -378,6 +402,10 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
         binding.questionAnswerLayout.setEndIconOnClickListener {
             vm.onAnswer()
+        }
+
+        binding.questionActionHint.setOnClickListener {
+            vm.onHintLevelClick()
         }
 
         binding.questionActionOtherButton.setOnClickListener {
