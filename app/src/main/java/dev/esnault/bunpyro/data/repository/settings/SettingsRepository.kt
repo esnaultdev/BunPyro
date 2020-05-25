@@ -6,10 +6,7 @@ import androidx.preference.PreferenceManager
 import dev.esnault.bunpyro.data.mapper.settings.AllGrammarFilterFromStringMapper
 import dev.esnault.bunpyro.data.mapper.settings.AllGrammarFilterToStringMapper
 import dev.esnault.bunpyro.domain.entities.grammar.AllGrammarFilter
-import dev.esnault.bunpyro.domain.entities.settings.ExampleDetailsSetting
-import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
-import dev.esnault.bunpyro.domain.entities.settings.HankoDisplaySetting
-import dev.esnault.bunpyro.domain.entities.settings.NightModeSetting
+import dev.esnault.bunpyro.domain.entities.settings.*
 
 
 class SettingsRepository(context: Context) : ISettingsRepository {
@@ -29,6 +26,17 @@ class SettingsRepository(context: Context) : ISettingsRepository {
     override suspend fun setFurigana(setting: FuriganaSetting) {
         sharedPreferences.edit {
             putString("furigana_default", setting.value)
+        }
+    }
+
+    override suspend fun getReviewHintLevel(): ReviewHintLevelSetting {
+        val value = sharedPreferences.getString("review_hint_level", "shown")
+        return ReviewHintLevelSetting.fromValue(value)
+    }
+
+    override suspend fun setReviewHintLevel(setting: ReviewHintLevelSetting) {
+        sharedPreferences.edit {
+            putString("review_hint_level", setting.value)
         }
     }
 

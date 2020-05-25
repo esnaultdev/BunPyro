@@ -128,6 +128,11 @@
     <string name="settings_root_hankoDisplay">Studied stamp</string>
     <string name="settings_root_hankoDisplay_normal">Normal</string>
     <string name="settings_root_hankoDisplay_level">SRS level</string>
+    <string name="settings_root_reviewHintLevel">Review hint level</string>
+    <string name="settings_root_reviewHintLevel_hide">Hide</string>
+    <string name="settings_root_reviewHintLevel_hint">Hint</string>
+    <string name="settings_root_reviewHintLevel_more">More</string>
+    <string name="settings_root_reviewHintLevel_show">Show</string>
     <string name="settings_root_category_about">About</string>
     <string name="settings_root_about">About BunPyro</string>
     <string name="settings_root_licenses">Licenses</string>

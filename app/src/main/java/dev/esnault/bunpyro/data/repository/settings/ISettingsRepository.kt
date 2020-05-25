@@ -1,10 +1,7 @@
 package dev.esnault.bunpyro.data.repository.settings
 
 import dev.esnault.bunpyro.domain.entities.grammar.AllGrammarFilter
-import dev.esnault.bunpyro.domain.entities.settings.ExampleDetailsSetting
-import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
-import dev.esnault.bunpyro.domain.entities.settings.HankoDisplaySetting
-import dev.esnault.bunpyro.domain.entities.settings.NightModeSetting
+import dev.esnault.bunpyro.domain.entities.settings.*
 
 
 interface ISettingsRepository {
@@ -12,6 +9,9 @@ interface ISettingsRepository {
 
     suspend fun getFurigana(): FuriganaSetting
     suspend fun setFurigana(setting: FuriganaSetting)
+
+    suspend fun getReviewHintLevel(): ReviewHintLevelSetting
+    suspend fun setReviewHintLevel(setting: ReviewHintLevelSetting)
 
     suspend fun getExampleDetails(): ExampleDetailsSetting
 
