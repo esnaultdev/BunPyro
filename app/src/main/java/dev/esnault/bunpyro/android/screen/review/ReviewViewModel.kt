@@ -32,6 +32,7 @@ class ReviewViewModel(
         }
 
     private var furiganaSettingJob: Job? = null
+    private var hintLevelSettingJob: Job? = null
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -184,7 +185,17 @@ class ReviewViewModel(
 
     fun onHintLevelClick() {
         val currentState = currentState as? ViewState.Question ?: return
-        this.currentState = currentState.copy(hintLevel = currentState.hintLevel.next)
+
+        val newHintLevel = currentState.hintLevel.next
+        this.currentState = currentState.copy(hintLevel = newHintLevel)
+        updateHintLevelSetting(newHintLevel)
+    }
+
+    private fun updateHintLevelSetting(hintLevel: ReviewHintLevelSetting) {
+        hintLevelSettingJob?.cancel()
+        hintLevelSettingJob = viewModelScope.launch(Dispatchers.IO) {
+            settingsRepo.setReviewHintLevel(hintLevel)
+        }
     }
 
     fun onFuriganaClick() {
