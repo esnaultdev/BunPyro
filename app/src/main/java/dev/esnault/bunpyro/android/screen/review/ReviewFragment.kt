@@ -107,6 +107,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         val furiganaChanged = oldQuestionState?.furiganaShown != viewState.furiganaShown
         val progressChanged = oldQuestionState?.progress != viewState.progress
         val hintLevelChanged = oldQuestionState?.hintLevel != viewState.hintLevel
+        val feedbackChanged = oldQuestionState?.feedback != viewState.feedback
 
         if (questionChanged) {
             if (oldQuestionState != null) {
@@ -132,6 +133,9 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         if (hintLevelChanged) {
             bindHintAction(viewState)
             bindHintText(viewState)
+        }
+        if (feedbackChanged) {
+            bindFeedback(viewState.feedback)
         }
     }
 
@@ -380,6 +384,17 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             context.getString(R.string.reviews_topInfo_remaining, progress.progress, progress.max)
         binding.infoPrecisionValue.text =
             context.getString(R.string.reviews_topInfo_precision, progress.precision * 100)
+    }
+
+    private fun bindFeedback(feedback: ViewState.Feedback?) {
+        binding.questionFeedback.isVisible = feedback != null
+        if (feedback != null) {
+            binding.questionFeedback.text = when (feedback) {
+                ViewState.Feedback.Empty -> getString(R.string.reviews_feedback_empty)
+                ViewState.Feedback.NotKana -> getString(R.string.reviews_feedback_notKana)
+                is ViewState.Feedback.AltAnswer -> feedback.text
+            }
+        }
     }
 
     private fun bindToolbar(viewState: ViewState) {

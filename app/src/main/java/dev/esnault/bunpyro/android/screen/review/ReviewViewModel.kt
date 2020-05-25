@@ -31,6 +31,8 @@ class ReviewViewModel(
             _viewState.postValue(value)
         }
 
+    private val isKanaRegex = Regex("""(\p{Hiragana}+|\p{Katakana}+)""")
+
     private var furiganaSettingJob: Job? = null
     private var hintLevelSettingJob: Job? = null
 
@@ -49,7 +51,8 @@ class ReviewViewModel(
                         userAnswer = null,
                         progress = initialProgress(it),
                         answerState = ViewState.AnswerState.Answering,
-                        hintLevel = hintLevel
+                        hintLevel = hintLevel,
+                        feedback = null
                     )
                 },
                 onFailure = { ViewState.Error }
@@ -91,7 +94,8 @@ class ReviewViewModel(
             this.currentState = currentState.copy(
                 answerState = ViewState.AnswerState.Answering,
                 currentIndex = currentState.currentIndex + 1,
-                userAnswer = null
+                userAnswer = null,
+                feedback = null
             )
         } else {
             // TODO properly handle the last question
@@ -99,13 +103,24 @@ class ReviewViewModel(
             this.currentState = currentState.copy(
                 answerState = ViewState.AnswerState.Answering,
                 currentIndex = 0,
-                userAnswer = null
+                userAnswer = null,
+                feedback = null
             )
         }
     }
 
     private fun checkAnswer(currentState: ViewState.Question) {
-        val userAnswer = currentState.userAnswer ?: return // Wait for the user to input something
+        val userAnswer = currentState.userAnswer
+        if (userAnswer == null) {
+            this.currentState = currentState.copy(feedback = ViewState.Feedback.Empty)
+            return
+        }
+
+        if (!isKanaRegex.matches(userAnswer)) {
+            this.currentState = currentState.copy(feedback = ViewState.Feedback.NotKana)
+            return
+        }
+
         val currentQuestion = currentState.currentQuestion
 
         // Find the index of the correct answer (or -1)
@@ -117,6 +132,17 @@ class ReviewViewModel(
             if (altIndex != -1) altIndex + 1 else -1
         }
 
+        // Check if it's an alternate answer
+        // This is done after the check for right answers in case we have bad answer data
+        if (userIndex == -1) {
+            val altAnswer = currentQuestion.alternateAnswers[userAnswer]
+            if (altAnswer != null) {
+                val feedback = ViewState.Feedback.AltAnswer(altAnswer)
+                this.currentState = currentState.copy(feedback = feedback)
+                return
+            }
+        }
+
         val newAnswerState = if (userIndex == -1) {
             ViewState.AnswerState.Incorrect(showCorrect = false)
         } else {
@@ -124,7 +150,8 @@ class ReviewViewModel(
         }
 
         this.currentState = currentState.copy(
-            answerState = newAnswerState
+            answerState = newAnswerState,
+            feedback = null
         )
     }
 
@@ -230,7 +257,8 @@ class ReviewViewModel(
             val userAnswer: String?,
             val progress: Progress,
             val answerState: AnswerState,
-            val hintLevel: ReviewHintLevelSetting
+            val hintLevel: ReviewHintLevelSetting,
+            val feedback: Feedback?
         ) : ViewState() {
             val currentQuestion: ReviewQuestion
                 get() = questions[currentIndex]
@@ -249,6 +277,14 @@ class ReviewViewModel(
             /** Ratio of correct answers, between 0 and 1 */
             val precision: Float
                 get() = if (progress == 0) 1f else correct.toFloat() / progress
+        }
+
+        sealed class Feedback {
+            object Empty : Feedback()
+            object NotKana : Feedback()
+            data class AltAnswer(
+                val text: String
+            ) : Feedback()
         }
 
         sealed class AnswerState {
