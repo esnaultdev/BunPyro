@@ -4,6 +4,8 @@ import com.wanakanajava.WanaKanaJava
 import dev.esnault.bunpyro.data.db.search.GrammarSearchDao
 import dev.esnault.bunpyro.data.mapper.dbtodomain.search.GrammarSearchResultMapper
 import dev.esnault.bunpyro.domain.entities.search.SearchResult
+import dev.esnault.bunpyro.domain.utils.canBecomeKanaRegex
+import dev.esnault.bunpyro.domain.utils.isHiraganaRegex
 import java.util.*
 
 
@@ -12,8 +14,6 @@ class SearchService(
 ) : ISearchService {
 
     private val wanakana = WanaKanaJava(false)
-    private val canBecomeKanaRegex = Regex("""[a-zA-Z]+""")
-    private val isHiraganaRegex = Regex("""\p{Hiragana}+""")
 
     override suspend fun search(term: String): SearchResult {
         val canBecomeKana = canBecomeKanaRegex.matches(term)

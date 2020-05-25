@@ -12,6 +12,7 @@ import dev.esnault.bunpyro.domain.entities.review.ReviewQuestion
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
 import dev.esnault.bunpyro.domain.entities.settings.next
+import dev.esnault.bunpyro.domain.utils.isKanaRegex
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -30,8 +31,6 @@ class ReviewViewModel(
             field = value
             _viewState.postValue(value)
         }
-
-    private val isKanaRegex = Regex("""(\p{Hiragana}+|\p{Katakana}+)""")
 
     private var furiganaSettingJob: Job? = null
     private var hintLevelSettingJob: Job? = null
