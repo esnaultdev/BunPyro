@@ -22,7 +22,7 @@ enum class ReviewHintLevelSetting(val value: String) {
 val ReviewHintLevelSetting.next: ReviewHintLevelSetting
     get() = when (this) {
         ReviewHintLevelSetting.HIDE -> ReviewHintLevelSetting.HINT
-        ReviewHintLevelSetting.HINT -> ReviewHintLevelSetting.MORE
-        ReviewHintLevelSetting.MORE -> ReviewHintLevelSetting.SHOW
-        ReviewHintLevelSetting.SHOW -> ReviewHintLevelSetting.HIDE
+        ReviewHintLevelSetting.HINT -> ReviewHintLevelSetting.SHOW
+        ReviewHintLevelSetting.SHOW -> ReviewHintLevelSetting.MORE
+        ReviewHintLevelSetting.MORE -> ReviewHintLevelSetting.HIDE
     }

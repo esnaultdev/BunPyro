@@ -46,15 +46,15 @@
     <string-array name="reviewHintLevel_entries">
         <item>@string/settings_root_reviewHintLevel_hide</item>
         <item>@string/settings_root_reviewHintLevel_hint</item>
-        <item>@string/settings_root_reviewHintLevel_more</item>
         <item>@string/settings_root_reviewHintLevel_show</item>
+        <item>@string/settings_root_reviewHintLevel_more</item>
     </string-array>
 
     <string-array name="reviewHintLevel_values">
         <item>hide</item>
         <item>hint</item>
-        <item>more</item>
         <item>show</item>
+        <item>more</item>
     </string-array>
 
 </resources>
