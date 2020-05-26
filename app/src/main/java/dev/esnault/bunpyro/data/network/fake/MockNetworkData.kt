@@ -121,7 +121,7 @@ object Mock {
                 answer = "にせもの",
                 wrongAnswers = emptyMap(),
                 alternateGrammar = listOf("にせ"),
-                audioLink = null,
+                audioLink = "夏休みでもいいですから、します。.mp3",
                 createdAt = Date(1L),
                 updatedAt = Date(1L),
                 grammarId = 1L,
@@ -149,7 +149,7 @@ object Mock {
                         english = "Beware of imitations.",
                         nuance = null,
                         order = 1,
-                        audioLink = null
+                        audioLink = "夏休みでもいいですから、します。.mp3"
                     )
                 ),
                 links = listOf(

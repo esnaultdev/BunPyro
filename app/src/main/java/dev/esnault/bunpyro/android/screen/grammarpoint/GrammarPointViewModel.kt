@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.action.clipboard.IClipboard
+import dev.esnault.bunpyro.android.media.AudioState
 import dev.esnault.bunpyro.android.media.IAudioPlayer
+import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.android.utils.toClipBoardString
@@ -234,18 +236,18 @@ class GrammarPointViewModel(
             // Not playing anything yet
             audioPlayer.listener = buildAudioListener()
             audioPlayer.play(example.sentence.audioLink)
-            ViewState.CurrentAudio(exampleId, ViewState.AudioState.LOADING)
+            ViewState.CurrentAudio(exampleId, SimpleAudioState.LOADING)
         } else if (currentAudio.exampleId == exampleId){
             // Updating current audio
             val newState = when (currentAudio.state) {
-                ViewState.AudioState.LOADING,
-                ViewState.AudioState.PLAYING -> {
+                SimpleAudioState.LOADING,
+                SimpleAudioState.PLAYING -> {
                     audioPlayer.stop()
-                    ViewState.AudioState.STOPPED
+                    SimpleAudioState.STOPPED
                 }
-                ViewState.AudioState.STOPPED -> {
+                SimpleAudioState.STOPPED -> {
                     audioPlayer.play(example.sentence.audioLink)
-                    ViewState.AudioState.LOADING
+                    SimpleAudioState.LOADING
                 }
             }
             currentAudio.copy(state = newState)
@@ -253,7 +255,7 @@ class GrammarPointViewModel(
             // Switching to another audio
             audioPlayer.stop()
             audioPlayer.play(example.sentence.audioLink)
-            ViewState.CurrentAudio(exampleId, ViewState.AudioState.LOADING)
+            ViewState.CurrentAudio(exampleId, SimpleAudioState.LOADING)
         }
 
         this.currentState = currentState.copy(currentAudio = newAudio)
@@ -263,16 +265,10 @@ class GrammarPointViewModel(
         return IAudioPlayer.Listener(onStateChange = ::onAudioStateChange)
     }
 
-    private fun onAudioStateChange(audioState: IAudioPlayer.State) {
+    private fun onAudioStateChange(audioState: AudioState) {
         val currentState = this.currentState ?: return
         val currentAudio = currentState.currentAudio ?: return
-
-        val newAudioState = when (audioState) {
-            IAudioPlayer.State.LOADING -> ViewState.AudioState.LOADING
-            IAudioPlayer.State.STOPPED,
-            IAudioPlayer.State.PAUSED -> ViewState.AudioState.STOPPED
-            IAudioPlayer.State.PLAYING -> ViewState.AudioState.PLAYING
-        }
+        val newAudioState = audioState.toSimpleState()
 
         if (newAudioState != currentAudio.state) {
             val newAudio = currentAudio.copy(state = newAudioState)
@@ -281,8 +277,9 @@ class GrammarPointViewModel(
     }
 
     private fun releaseAudio() {
-        val state = currentState ?: return
         audioPlayer.release()
+
+        val state = currentState ?: return
         currentState = state.copy(currentAudio = null)
     }
 
@@ -374,9 +371,7 @@ class GrammarPointViewModel(
             val collapsed: Boolean
         )
 
-        data class CurrentAudio(val exampleId: Long, val state: AudioState)
-
-        enum class AudioState { PLAYING, LOADING, STOPPED }
+        data class CurrentAudio(val exampleId: Long, val state: SimpleAudioState)
 
         enum class ReviewAction { ADD, REMOVE, RESET /*, SKIP */ }
     }

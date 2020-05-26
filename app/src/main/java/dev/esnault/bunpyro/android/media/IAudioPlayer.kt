@@ -4,7 +4,7 @@ package dev.esnault.bunpyro.android.media
 interface IAudioPlayer {
 
     class Listener(
-        val onStateChange: (state: State) -> Unit
+        val onStateChange: (state: AudioState) -> Unit
     )
 
     var listener: Listener?
@@ -12,11 +12,4 @@ interface IAudioPlayer {
     fun play(url: String?)
     fun stop()
     fun release()
-
-    enum class State {
-        LOADING,
-        PLAYING,
-        PAUSED,
-        STOPPED
-    }
 }

@@ -14,6 +14,7 @@ import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
 import dev.esnault.bunpyro.R
+import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState
 import dev.esnault.bunpyro.android.utils.*
@@ -57,7 +58,7 @@ class ExampleAdapter(
         val audioState = if (viewState.currentAudio?.exampleId == example.sentence.id) {
             viewState.currentAudio.state
         } else {
-            ViewState.AudioState.STOPPED.takeUnless { example.sentence.audioLink.isNullOrBlank() }
+            SimpleAudioState.STOPPED.takeUnless { example.sentence.audioLink.isNullOrBlank() }
         }
         holder.bind(example, audioState, viewState.furiganaShown)
     }
@@ -102,7 +103,7 @@ class ExampleAdapter(
 
         fun bind(
             example: ViewState.Example,
-            audioState: ViewState.AudioState?,
+            audioState: SimpleAudioState?,
             furiganaShown: Boolean
         ) {
             val sentenceChanged = example.sentence != this.example?.sentence
@@ -190,16 +191,16 @@ class ExampleAdapter(
             binding.expandButton.setText(buttonResId)
         }
 
-        private fun bindAudioState(audioState: ViewState.AudioState?) {
+        private fun bindAudioState(audioState: SimpleAudioState?) {
             if (audioState == null) {
                 binding.audioIcon.isVisible = false
                 binding.audioLoading.isVisible = false
             } else {
                 binding.audioIcon.isVisible = true
                 val (iconRes, loadingVisible) = when (audioState) {
-                    ViewState.AudioState.STOPPED -> R.drawable.ic_play_arrow_24dp to false
-                    ViewState.AudioState.LOADING -> R.drawable.ic_stop_24dp to true
-                    ViewState.AudioState.PLAYING -> R.drawable.ic_stop_24dp to false
+                    SimpleAudioState.STOPPED -> R.drawable.ic_play_arrow_24dp to false
+                    SimpleAudioState.LOADING -> R.drawable.ic_stop_24dp to true
+                    SimpleAudioState.PLAYING -> R.drawable.ic_stop_24dp to false
                 }
                 binding.audioIcon.setImageResource(iconRes)
                 binding.audioLoading.isVisible = loadingVisible

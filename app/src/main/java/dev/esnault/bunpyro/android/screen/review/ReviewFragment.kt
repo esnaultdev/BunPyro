@@ -19,11 +19,13 @@ import com.wanakanajava.WanaKanaText
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.span.AnswerSpan
 import dev.esnault.bunpyro.android.display.span.TagSpan
+import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel.ViewState
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.android.utils.transition.ChangeText
+import dev.esnault.bunpyro.common.dpToPx
 import dev.esnault.bunpyro.common.getColorCompat
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.databinding.FragmentReviewBinding
@@ -57,6 +59,11 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         vm.viewState.observe(this) { viewState -> bindViewState(viewState) }
 
         bindListeners()
+    }
+
+    override fun onStop() {
+        vm.onStop()
+        super.onStop()
     }
 
     private fun bindViewState(viewState: ViewState) {
@@ -108,6 +115,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         val progressChanged = oldQuestionState?.progress != viewState.progress
         val hintLevelChanged = oldQuestionState?.hintLevel != viewState.hintLevel
         val feedbackChanged = oldQuestionState?.feedback != viewState.feedback
+        val audioChanged = oldQuestionState?.currentAudio != viewState.currentAudio
         var transitioning = false
 
         if (questionChanged) {
@@ -136,6 +144,9 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             questionTransition(
                 transitioning, oldQuestionState, ScreenConfig.Transition.fastDuration)
             bindFeedback(viewState.feedback)
+        }
+        if (answerStateChanged || audioChanged) {
+            bindAudioState(viewState)
         }
     }
 
@@ -307,12 +318,35 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
         // Other
         bindQuestionActionOther(viewState)
+    }
 
-        // Audio
-        // TODO bind the audio state
-        val hasAudio = viewState.currentQuestion.audioLink != null
-        val audioEnabled = !answering && hasAudio
-        binding.questionActionAudioButton.isEnabled = audioEnabled
+    private fun bindAudioState(viewState: ViewState.Question) {
+        val currentAudio = viewState.currentAudio
+        val hasAudioLink = viewState.currentQuestion.audioLink != null
+        val answering = viewState.answerState is ViewState.AnswerState.Answering
+
+        val canPlayAudio = !answering && hasAudioLink
+        val playingAnswerAudio = currentAudio != null
+                && currentAudio.type == ViewState.AudioType.Answer
+                && currentAudio.state.playWhenReady
+        binding.questionActionAudioButton.isEnabled = canPlayAudio || playingAnswerAudio
+
+        val (iconRes, loadingVisible) = when (currentAudio?.state) {
+            null,
+            SimpleAudioState.STOPPED -> R.drawable.ic_play_arrow_24dp to false
+            SimpleAudioState.LOADING -> R.drawable.ic_stop_24dp to true
+            SimpleAudioState.PLAYING -> R.drawable.ic_stop_24dp to false
+        }
+        binding.questionActionAudioButton.setIconResource(iconRes)
+        binding.questionActionAudioLoading.isVisible = loadingVisible
+
+        val iconSizeDp = if (loadingVisible) {
+            16f
+        } else {
+            24f
+        }
+        val iconSize = iconSizeDp.dpToPx(requireContext().resources.displayMetrics)
+        binding.questionActionAudioButton.iconSize = iconSize
     }
 
     private fun bindHintAction(viewState: ViewState.Question) {
@@ -515,6 +549,10 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
         binding.questionActionOtherButton.setOnClickListener {
             vm.onAltAnswerClick()
+        }
+
+        binding.questionActionAudioButton.setOnClickListener {
+            vm.onAnswerAudio()
         }
     }
 }

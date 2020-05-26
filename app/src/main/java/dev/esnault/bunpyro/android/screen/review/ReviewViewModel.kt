@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
+import dev.esnault.bunpyro.android.media.AudioState
+import dev.esnault.bunpyro.android.media.IAudioPlayer
+import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.review.IReviewService
@@ -19,7 +22,8 @@ import kotlinx.coroutines.launch
 
 class ReviewViewModel(
     private val reviewService: IReviewService,
-    private val settingsRepo: ISettingsRepository
+    private val settingsRepo: ISettingsRepository,
+    private val audioPlayer: IAudioPlayer
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>(ViewState.Loading)
@@ -51,13 +55,20 @@ class ReviewViewModel(
                         progress = initialProgress(it),
                         answerState = ViewState.AnswerState.Answering,
                         hintLevel = hintLevel,
-                        feedback = null
+                        feedback = null,
+                        currentAudio = null
                     )
                 },
                 onFailure = { ViewState.Error }
             )
         }
     }
+
+    fun onStop() {
+        releaseAudio()
+    }
+
+    // region Progress
 
     private fun initialProgress(questions: List<ReviewQuestion>): ViewState.Progress {
         return ViewState.Progress(
@@ -68,6 +79,10 @@ class ReviewViewModel(
             askAgain = 0
         )
     }
+
+    // endregion
+
+    // region Answer
 
     fun onAnswerChanged(answer: String?) {
         val currentState = currentState as? ViewState.Question ?: return
@@ -154,6 +169,10 @@ class ReviewViewModel(
         )
     }
 
+    // endregion
+
+    // region Ignore incorrect
+
     fun onIgnoreIncorrect() {
         val currentState = currentState as? ViewState.Question ?: return
         if (currentState.answerState !is ViewState.AnswerState.Incorrect) return
@@ -163,11 +182,13 @@ class ReviewViewModel(
         )
     }
 
+    // endregion
+
+    // region Alt answer
+
     fun onAltAnswerClick() {
         val currentState = currentState as? ViewState.Question ?: return
-        val answerState = currentState.answerState
-
-        when (answerState) {
+        when (val answerState = currentState.answerState) {
             is ViewState.AnswerState.Answering -> return
             is ViewState.AnswerState.Incorrect -> {
                 val newAnswerState = ViewState.AnswerState.Incorrect(showCorrect = true)
@@ -218,6 +239,10 @@ class ReviewViewModel(
         }
     }
 
+    // endregion
+
+    // region Hint level
+
     fun onHintLevelClick() {
         val currentState = currentState as? ViewState.Question ?: return
 
@@ -232,6 +257,10 @@ class ReviewViewModel(
             settingsRepo.setReviewHintLevel(hintLevel)
         }
     }
+
+    // endregion
+
+    // region Furigana
 
     fun onFuriganaClick() {
         val currentState = currentState as? ViewState.Question ?: return
@@ -250,6 +279,88 @@ class ReviewViewModel(
         }
     }
 
+    // endregion
+
+    // region Audio
+
+    fun onAnswerAudio() {
+        onAudio(ViewState.AudioType.Answer)
+    }
+
+    fun onExampleAudio(id: Long) {
+        onAudio(ViewState.AudioType.Example(id))
+    }
+
+    private fun onAudio(type: ViewState.AudioType) {
+        val currentState = currentState as? ViewState.Question ?: return
+
+        val currentAudio = currentState.currentAudio
+        val newAudio = if (currentAudio == null) {
+            // Not playing anything yet
+            audioPlayer.listener = buildAudioListener()
+            audioPlayer.play(getAudioLink(type, currentState))
+            ViewState.CurrentAudio(type, SimpleAudioState.LOADING)
+        } else if (currentAudio.type == type){
+            // Updating current audio
+            val newState = when (currentAudio.state) {
+                SimpleAudioState.LOADING,
+                SimpleAudioState.PLAYING -> {
+                    audioPlayer.stop()
+                    SimpleAudioState.STOPPED
+                }
+                SimpleAudioState.STOPPED -> {
+                    audioPlayer.play(getAudioLink(type, currentState))
+                    SimpleAudioState.LOADING
+                }
+            }
+            currentAudio.copy(state = newState)
+        } else {
+            // Switching to another audio
+            audioPlayer.stop()
+            audioPlayer.play(getAudioLink(type, currentState))
+            ViewState.CurrentAudio(type, SimpleAudioState.LOADING)
+        }
+
+        this.currentState = currentState.copy(currentAudio = newAudio)
+    }
+
+    private fun getAudioLink(type: ViewState.AudioType, state: ViewState.Question): String? {
+        return when (type) {
+            ViewState.AudioType.Answer -> state.currentQuestion.audioLink
+            is ViewState.AudioType.Example -> {
+                state.currentQuestion
+                    .grammarPoint
+                    .sentences
+                    .firstOrNull { it.id == type.exampleId }
+                    ?.audioLink
+            }
+        }
+    }
+
+    private fun buildAudioListener(): IAudioPlayer.Listener {
+        return IAudioPlayer.Listener(onStateChange = ::onAudioStateChange)
+    }
+
+    private fun onAudioStateChange(audioState: AudioState) {
+        val currentState = this.currentState as? ViewState.Question ?: return
+        val currentAudio = currentState.currentAudio ?: return
+        val newAudioState = audioState.toSimpleState()
+
+        if (newAudioState != currentAudio.state) {
+            val newAudio = currentAudio.copy(state = newAudioState)
+            this.currentState = currentState.copy(currentAudio = newAudio)
+        }
+    }
+
+    private fun releaseAudio() {
+        audioPlayer.release()
+
+        val state = currentState as? ViewState.Question ?: return
+        currentState = state.copy(currentAudio = null)
+    }
+
+    // endregion
+
     fun onGrammarPointClick(grammarId: Long) {
         // TODO Navigate to the grammar point
     }
@@ -266,7 +377,8 @@ class ReviewViewModel(
             val progress: Progress,
             val answerState: AnswerState,
             val hintLevel: ReviewHintLevelSetting,
-            val feedback: Feedback?
+            val feedback: Feedback?,
+            val currentAudio: CurrentAudio?
         ) : ViewState() {
             val currentQuestion: ReviewQuestion
                 get() = questions[currentIndex]
@@ -308,6 +420,13 @@ class ReviewViewModel(
             data class Incorrect(
                 val showCorrect: Boolean
             ) : AnswerState()
+        }
+
+        data class CurrentAudio(val type: AudioType, val state: SimpleAudioState)
+
+        sealed class AudioType {
+            object Answer : AudioType()
+            data class Example(val exampleId: Long) : AudioType()
         }
     }
 }

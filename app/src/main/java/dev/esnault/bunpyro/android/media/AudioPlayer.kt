@@ -67,17 +67,17 @@ class AudioPlayer(
                 playbackState: Int
             ) {
                 val newState = when (playbackState) {
-                    Player.STATE_IDLE -> IAudioPlayer.State.STOPPED
-                    Player.STATE_BUFFERING -> IAudioPlayer.State.LOADING
-                    Player.STATE_ENDED -> IAudioPlayer.State.STOPPED
+                    Player.STATE_IDLE -> AudioState.STOPPED
+                    Player.STATE_BUFFERING -> AudioState.LOADING
+                    Player.STATE_ENDED -> AudioState.STOPPED
                     Player.STATE_READY -> {
                         if (playWhenReady) {
-                            IAudioPlayer.State.PLAYING
+                            AudioState.PLAYING
                         } else {
-                            IAudioPlayer.State.PAUSED
+                            AudioState.PAUSED
                         }
                     }
-                    else -> IAudioPlayer.State.STOPPED
+                    else -> AudioState.STOPPED
                 }
                 listener?.onStateChange?.invoke(newState)
             }
