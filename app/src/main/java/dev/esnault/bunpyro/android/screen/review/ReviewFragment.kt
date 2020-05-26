@@ -579,5 +579,11 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             val ignoreTooltipText = context.getString(R.string.reviews_tooltip_ignore)
             TooltipCompat.setTooltipText(ignoreIncorrectView, ignoreTooltipText)
         }
+
+        val nextView = binding.questionAnswerLayout.endIconView
+        if (nextView != null) {
+            val nextTooltipText = context.getString(R.string.reviews_tooltip_next)
+            TooltipCompat.setTooltipText(nextView, nextTooltipText)
+        }
     }
 }

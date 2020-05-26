@@ -72,4 +72,5 @@
 # View Reflection
 -keepclassmembers class com.google.android.material.textfield.TextInputLayout {
     private android.view.View startIconView;
+    private android.view.View endIconView;
 }

@@ -163,6 +163,7 @@
     <string name="reviews_tooltip_otherAnswers">Answers</string>
     <string name="reviews_tooltip_audio">Audio</string>
     <string name="reviews_tooltip_ignore">Ignore</string>
+    <string name="reviews_tooltip_next">Next</string>
 
     <string name="notification_sync_inProgress">Syncing grammar…</string>
     <string name="notificationChannel_sync_name">Sync</string>
