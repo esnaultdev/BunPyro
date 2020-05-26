@@ -68,3 +68,8 @@
 -keepnames @kotlin.Metadata class dev.esnault.bunpyro.data.network.entities.**
 -keep class dev.esnault.bunpyro.data.network.entities.** { *; }
 -keepclassmembers class dev.esnault.bunpyro.data.network.entities.** { *; }
+
+# View Reflection
+-keepclassmembers class com.google.android.material.textfield.TextInputLayout {
+    private android.view.View startIconView;
+}

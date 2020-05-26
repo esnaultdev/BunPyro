@@ -8,6 +8,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -15,6 +16,7 @@ import androidx.transition.AutoTransition
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
+import com.google.android.material.textfield.TextInputLayout
 import com.wanakanajava.WanaKanaText
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.span.AnswerSpan
@@ -59,6 +61,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         vm.viewState.observe(this) { viewState -> bindViewState(viewState) }
 
         bindListeners()
+        bindTooltips()
     }
 
     override fun onStop() {
@@ -553,6 +556,28 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
         binding.questionActionAudioButton.setOnClickListener {
             vm.onAnswerAudio()
+        }
+    }
+
+    private fun bindTooltips() {
+        val context = requireContext()
+
+        val hintTooltipText = context.getString(R.string.reviews_tooltip_hint)
+        TooltipCompat.setTooltipText(binding.questionActionHint, hintTooltipText)
+
+        val infoTooltipText = context.getString(R.string.reviews_tooltip_info)
+        TooltipCompat.setTooltipText(binding.questionActionInfo, infoTooltipText)
+
+        val altAnswerTooltipText = context.getString(R.string.reviews_tooltip_otherAnswers)
+        TooltipCompat.setTooltipText(binding.questionActionOtherButton, altAnswerTooltipText)
+
+        val audioTooltipText = context.getString(R.string.reviews_tooltip_audio)
+        TooltipCompat.setTooltipText(binding.questionActionAudioButton, audioTooltipText)
+
+        val ignoreIncorrectView = binding.questionAnswerLayout.startIconView
+        if (ignoreIncorrectView != null) {
+            val ignoreTooltipText = context.getString(R.string.reviews_tooltip_ignore)
+            TooltipCompat.setTooltipText(ignoreIncorrectView, ignoreTooltipText)
         }
     }
 }

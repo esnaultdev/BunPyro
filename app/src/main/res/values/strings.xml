@@ -158,6 +158,11 @@
     <string name="reviews_action_audio">Audio</string>
     <string name="reviews_feedback_empty">@string/reviews_feedback_notKana</string>
     <string name="reviews_feedback_notKana">Please use Hiragana or Katakana</string>
+    <string name="reviews_tooltip_hint">Hint level</string>
+    <string name="reviews_tooltip_info">Info</string>
+    <string name="reviews_tooltip_otherAnswers">Answers</string>
+    <string name="reviews_tooltip_audio">Audio</string>
+    <string name="reviews_tooltip_ignore">Ignore</string>
 
     <string name="notification_sync_inProgress">Syncing grammar…</string>
     <string name="notificationChannel_sync_name">Sync</string>
