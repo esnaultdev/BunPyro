@@ -184,10 +184,10 @@
 
     <TextView
         android:id="@+id/question_english"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:textColor="?android:textColorPrimary"
         android:textSize="16sp"
         android:visibility="gone"
@@ -201,8 +201,9 @@
 
     <TextView
         android:id="@+id/question_nuance"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:textColor="?android:textColorSecondary"
         android:textSize="13sp"
         android:visibility="gone"
@@ -247,9 +248,10 @@
 
     <TextView
         android:id="@+id/question_feedback"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
+        android:gravity="center_horizontal"
         android:textColor="?chuiColor"
         android:textSize="14sp"
         android:visibility="gone"
@@ -266,7 +268,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        tools:icon="@drawable/ic_hint_hide_24dp"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconTint="?colorOnPrimary"
@@ -274,6 +275,7 @@
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintTop_toBottomOf="@+id/question_feedback"
+        tools:icon="@drawable/ic_hint_hide_24dp"
         />
 
     <com.google.android.material.button.MaterialButton
@@ -345,11 +347,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/ic_play_arrow_24dp"
-            tools:icon="@drawable/ic_stop_24dp"
-            tools:iconSize="16dp"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconTint="?colorOnPrimary"
+            tools:icon="@drawable/ic_stop_24dp"
+            tools:iconSize="16dp"
             />
 
         <ProgressBar
