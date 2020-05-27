@@ -324,7 +324,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
     private fun bindAudioState(viewState: ViewState.Question) {
         val currentAudio = viewState.currentAudio
-        val hasAudioLink = viewState.currentQuestion.audioLink != null
+        val hasAudioLink = !viewState.currentQuestion.audioLink.isNullOrBlank()
         val answering = viewState.answerState is ViewState.AnswerState.Answering
 
         val canPlayAudio = !answering && hasAudioLink
