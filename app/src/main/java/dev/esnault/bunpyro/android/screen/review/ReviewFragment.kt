@@ -447,11 +447,11 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     private fun bindProgress(progress: ViewState.Progress) {
         val context = requireContext()
 
-        binding.questionProgress.max = progress.max
+        binding.questionProgress.max = progress.total
         binding.questionProgress.progress = progress.progress
 
         binding.infoRemaining.text =
-            context.getString(R.string.reviews_topInfo_remaining, progress.progress, progress.max)
+            context.getString(R.string.reviews_topInfo_remaining, progress.progress, progress.total)
         binding.infoPrecisionValue.text =
             context.getString(R.string.reviews_topInfo_precision, progress.precision * 100)
     }

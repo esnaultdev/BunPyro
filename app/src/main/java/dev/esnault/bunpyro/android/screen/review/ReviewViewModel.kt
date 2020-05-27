@@ -75,8 +75,7 @@ class ReviewViewModel(
             max = questions.size,
             srs = questions.getOrNull(0)?.grammarPoint?.srsLevel ?: 0,
             correct = 0,
-            incorrect = 0,
-            askAgain = 0
+            incorrect = 0
         )
     }
 
@@ -145,10 +144,11 @@ class ReviewViewModel(
             val altIndex = currentQuestion.alternateGrammar.indexOf(userAnswer)
             if (altIndex != -1) altIndex + 1 else -1
         }
+        val isCorrect = userIndex != -1
 
         // Check if it's an alternate answer
         // This is done after the check for right answers in case we have bad answer data
-        if (userIndex == -1) {
+        if (!isCorrect) {
             val altAnswer = currentQuestion.alternateAnswers[userAnswer]
             if (altAnswer != null) {
                 val feedback = ViewState.Feedback.AltAnswer(altAnswer)
@@ -157,15 +157,22 @@ class ReviewViewModel(
             }
         }
 
-        val newAnswerState = if (userIndex == -1) {
-            ViewState.AnswerState.Incorrect(showCorrect = false)
-        } else {
+        val newAnswerState = if (isCorrect) {
             ViewState.AnswerState.Correct(userIndex = userIndex, showIndex = userIndex)
+        } else {
+            ViewState.AnswerState.Incorrect(showCorrect = false)
+        }
+
+        val newProgress = if (isCorrect) {
+            currentState.progress.copy(correct = currentState.progress.correct + 1)
+        } else {
+            currentState.progress.copy(incorrect = currentState.progress.incorrect + 1)
         }
 
         this.currentState = currentState.copy(
             answerState = newAnswerState,
-            feedback = null
+            feedback = null,
+            progress = newProgress
         )
     }
 
@@ -176,9 +183,15 @@ class ReviewViewModel(
     fun onIgnoreIncorrect() {
         val currentState = currentState as? ViewState.Question ?: return
         if (currentState.answerState !is ViewState.AnswerState.Incorrect) return
+
+        val newProgress = currentState.progress.copy(
+            incorrect = currentState.progress.incorrect - 1
+        )
+
         this.currentState = currentState.copy(
             answerState = ViewState.AnswerState.Answering,
-            userAnswer = null
+            userAnswer = null,
+            progress = newProgress
         )
     }
 
@@ -388,15 +401,17 @@ class ReviewViewModel(
             val max: Int,
             val srs: Int,
             val correct: Int,
-            val incorrect: Int,
-            val askAgain: Int
+            val incorrect: Int
         ) {
-            val progress: Int = correct + incorrect
-            val total: Int = max + askAgain
+            // Indirection used by the UI for the progress
+            val progress: Int = correct
+            val total: Int = max
+
+            private val answers = correct + incorrect
 
             /** Ratio of correct answers, between 0 and 1 */
             val precision: Float
-                get() = if (progress == 0) 1f else correct.toFloat() / progress
+                get() = if (answers == 0) 1f else correct.toFloat() / answers
         }
 
         sealed class Feedback {
