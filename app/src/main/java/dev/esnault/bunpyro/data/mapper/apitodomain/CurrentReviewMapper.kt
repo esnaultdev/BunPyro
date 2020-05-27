@@ -48,7 +48,8 @@ class CurrentReviewMapper : IMapper<CurrentReview, ReviewQuestion> {
             english = o.english,
             answer = o.answer,
             alternateAnswers = o.alternateAnswers,
-            alternateGrammar = o.alternateGrammar,
+            // The API sometimes has the answer in the altGrammar too, make it consistent
+            alternateGrammar = o.alternateGrammar - o.answer,
             wrongAnswers = o.wrongAnswers,
             audioLink = o.audioLink,
             nuance = o.nuance,
