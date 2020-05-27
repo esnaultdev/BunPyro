@@ -16,7 +16,6 @@ import androidx.transition.AutoTransition
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
-import com.google.android.material.textfield.TextInputLayout
 import com.wanakanajava.WanaKanaText
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.span.AnswerSpan
