@@ -242,6 +242,7 @@
             android:gravity="center_horizontal"
             android:imeOptions="actionDone"
             android:singleLine="true"
+            android:inputType="text"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
