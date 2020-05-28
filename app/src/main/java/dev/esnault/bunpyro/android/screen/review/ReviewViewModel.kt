@@ -9,6 +9,7 @@ import dev.esnault.bunpyro.android.media.AudioState
 import dev.esnault.bunpyro.android.media.IAudioPlayer
 import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
+import dev.esnault.bunpyro.android.screen.base.NavigationCommand
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.review.IReviewService
 import dev.esnault.bunpyro.domain.entities.review.ReviewQuestion
@@ -19,6 +20,7 @@ import dev.esnault.bunpyro.domain.utils.isKanaRegex
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class ReviewViewModel(
     private val reviewService: IReviewService,
@@ -50,6 +52,8 @@ class ReviewViewModel(
                     ViewState.Question(
                         questions = it,
                         currentIndex = 0,
+                        askAgainIndexes = emptyList(),
+                        askingAgain = false,
                         furiganaShown = furiganaShown,
                         userAnswer = null,
                         progress = initialProgress(it),
@@ -103,6 +107,14 @@ class ReviewViewModel(
     }
 
     private fun goToNextQuestion(currentState: ViewState.Question) {
+        if (currentState.askingAgain) {
+            goToNextAskAgain(currentState)
+        } else {
+            goToNextNormal(currentState)
+        }
+    }
+
+    private fun goToNextNormal(currentState: ViewState.Question) {
         if (currentState.currentIndex != currentState.questions.lastIndex) {
             this.currentState = currentState.copy(
                 answerState = ViewState.AnswerState.Answering,
@@ -111,14 +123,27 @@ class ReviewViewModel(
                 feedback = null
             )
         } else {
-            // TODO properly handle the last question
-            // For now, let's just loop to the first question
+            goToNextAskAgain(currentState.copy(askingAgain = true))
+        }
+    }
+
+    private fun goToNextAskAgain(currentState: ViewState.Question) {
+        val askAgainIndexes = currentState.askAgainIndexes
+        if (askAgainIndexes.isNotEmpty()) {
+            val newIndexes = askAgainIndexes.toMutableList()
+            val randomIndex = Random.nextInt(askAgainIndexes.size)
+            val askAgainIndex = newIndexes.removeAt(randomIndex)
+
             this.currentState = currentState.copy(
                 answerState = ViewState.AnswerState.Answering,
-                currentIndex = 0,
+                currentIndex = askAgainIndex,
+                askAgainIndexes = newIndexes,
                 userAnswer = null,
                 feedback = null
             )
+        } else {
+            // TODO finish state (wait for http request + navigate to the summary)
+            navigate(NavigationCommand.Back)
         }
     }
 
@@ -157,6 +182,11 @@ class ReviewViewModel(
             }
         }
 
+        updateAnswerState(currentState, userIndex)
+    }
+
+    private fun updateAnswerState(currentState: ViewState.Question, userIndex: Int) {
+        val isCorrect = userIndex != -1
         val newAnswerState = if (isCorrect) {
             ViewState.AnswerState.Correct(userIndex = userIndex, showIndex = userIndex)
         } else {
@@ -169,7 +199,14 @@ class ReviewViewModel(
             currentState.progress.copy(incorrect = currentState.progress.incorrect + 1)
         }
 
+        val newAskAgainIndexes = if (isCorrect) {
+            currentState.askAgainIndexes
+        } else {
+            currentState.askAgainIndexes + currentState.currentIndex
+        }
+
         this.currentState = currentState.copy(
+            askAgainIndexes = newAskAgainIndexes,
             answerState = newAnswerState,
             feedback = null,
             progress = newProgress
@@ -385,6 +422,9 @@ class ReviewViewModel(
         data class Question(
             val questions: List<ReviewQuestion>,
             val currentIndex: Int,
+            val askAgainIndexes: List<Int>,
+            /** True if we're at the end of the review session asking again incorrect answers */
+            val askingAgain: Boolean,
             val furiganaShown: Boolean,
             val userAnswer: String?,
             val progress: Progress,
