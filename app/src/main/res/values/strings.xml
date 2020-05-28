@@ -160,7 +160,8 @@
     <string name="reviews_feedback_notKana">Please use Hiragana or Katakana</string>
     <string name="reviews_tooltip_hint">Hint level</string>
     <string name="reviews_tooltip_info">Info</string>
-    <string name="reviews_tooltip_otherAnswers">Answers</string>
+    <string name="reviews_tooltip_otherAnswers">Other answers</string>
+    <string name="reviews_tooltip_answer">Answer</string>
     <string name="reviews_tooltip_audio">Audio</string>
     <string name="reviews_tooltip_ignore">Ignore</string>
     <string name="reviews_tooltip_next">Next</string>

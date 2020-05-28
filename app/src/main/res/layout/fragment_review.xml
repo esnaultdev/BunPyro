@@ -304,7 +304,7 @@
             android:id="@+id/question_action_other_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:icon="@drawable/ic_loop_24dp"
+            app:icon="@drawable/ic_help_outline_24dp"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconTint="?colorOnPrimary"

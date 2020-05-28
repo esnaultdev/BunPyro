@@ -377,6 +377,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         }
         binding.questionActionOtherButton.isEnabled = buttonEnabled
         binding.questionActionOtherBadge.isVisible = badgeVisible
+
+        bindTooltipAltAnswer(viewState.answerState is ViewState.AnswerState.Incorrect)
     }
 
     private fun updateAnswerSpans(block: (span: AnswerSpan) -> Boolean) {
@@ -567,9 +569,6 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         val infoTooltipText = context.getString(R.string.reviews_tooltip_info)
         TooltipCompat.setTooltipText(binding.questionActionInfo, infoTooltipText)
 
-        val altAnswerTooltipText = context.getString(R.string.reviews_tooltip_otherAnswers)
-        TooltipCompat.setTooltipText(binding.questionActionOtherButton, altAnswerTooltipText)
-
         val audioTooltipText = context.getString(R.string.reviews_tooltip_audio)
         TooltipCompat.setTooltipText(binding.questionActionAudioButton, audioTooltipText)
 
@@ -584,5 +583,15 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             val nextTooltipText = context.getString(R.string.reviews_tooltip_next)
             TooltipCompat.setTooltipText(nextView, nextTooltipText)
         }
+    }
+
+    private fun bindTooltipAltAnswer(incorrect: Boolean) {
+        val textResId = if (incorrect) {
+            R.string.reviews_tooltip_answer
+        } else {
+            R.string.reviews_tooltip_otherAnswers
+        }
+        val altAnswerTooltipText = requireContext().getString(textResId)
+        TooltipCompat.setTooltipText(binding.questionActionOtherButton, altAnswerTooltipText)
     }
 }
