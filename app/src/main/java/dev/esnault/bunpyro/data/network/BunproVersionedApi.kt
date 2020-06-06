@@ -54,4 +54,10 @@ interface BunproVersionedApi {
 
     @POST("v3/reviews/edit/{reviewId}?remove_review=true")
     suspend fun removeReview(@Path("reviewId") reviewId: Long): Response<Unit>
+
+    @POST("v3/reviews/edit/{reviewId}?correct={correct}")
+    suspend fun answerReview(@Path("reviewId") reviewId: Long, correct: Boolean): Response<Unit>
+
+    @POST("v3/reviews/edit/{reviewId}?oops")
+    suspend fun ignoreReviewMiss(@Path("reviewId") reviewId: Long): Response<Unit>
 }

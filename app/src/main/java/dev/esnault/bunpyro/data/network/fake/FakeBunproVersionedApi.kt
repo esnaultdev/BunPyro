@@ -15,7 +15,9 @@ class FakeBunproVersionedApi(
     var currentReviews: FakeResponse<List<CurrentReview>> = FakeResponse.Success(Mock.currentReviews),
     var addToReviews: FakeResponse<Unit> = FakeResponse.Success(Unit),
     var resetReview: FakeResponse<Unit> = FakeResponse.Success(Unit),
-    var removeRemoview: FakeResponse<Unit> = FakeResponse.Success(Unit)
+    var removeReview: FakeResponse<Unit> = FakeResponse.Success(Unit),
+    var answerReview: FakeResponse<Unit> = FakeResponse.Success(Unit),
+    var ignoreReviewMiss: FakeResponse<Unit> = FakeResponse.Success(Unit)
 ) : BunproVersionedApi {
 
     override suspend fun getGrammarPoints(etagHeader: String?): Response<DataRequest<GrammarPoint>> {
@@ -47,6 +49,14 @@ class FakeBunproVersionedApi(
     }
 
     override suspend fun removeReview(reviewId: Long): Response<Unit> {
-        return removeRemoview.toResponse()
+        return removeReview.toResponse()
+    }
+
+    override suspend fun answerReview(reviewId: Long, correct: Boolean): Response<Unit> {
+        return answerReview.toResponse()
+    }
+
+    override suspend fun ignoreReviewMiss(reviewId: Long): Response<Unit> {
+        return ignoreReviewMiss.toResponse()
     }
 }
