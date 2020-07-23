@@ -37,7 +37,7 @@ data class ReviewHistoryDb(
      * prevent setting this field since it could be a source of bugs.
      */
     @ColumnInfo(name = "review_id_type")
-    @Suppress("SetterBackingFieldAssignment")
+    @Suppress("SetterBackingFieldAssignment", "UNUSED_PARAMETER")
     var reviewIdType: String = "${id.reviewId}_${id.reviewType.value}"
         set(value) {}
 

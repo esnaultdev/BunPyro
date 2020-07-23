@@ -24,7 +24,7 @@ data class ReviewDb(
      * prevent setting this field since it could be a source of bugs.
      */
     @ColumnInfo(name = "id_type")
-    @Suppress("SetterBackingFieldAssignment")
+    @Suppress("SetterBackingFieldAssignment", "UNUSED_PARAMETER")
     var idType: String = "${id.id}_${id.type.value}"
         set(value) {}
 

@@ -69,7 +69,7 @@ class BunProHtml(
                 }
 
                 if (tagName == "span" && node.classNames().contains("study-area-input")) {
-                    handleAnswerElement(node, spanBuilder)
+                    handleAnswerElement(spanBuilder)
                     return
                 }
 
@@ -145,7 +145,7 @@ class BunProHtml(
         }
     }
 
-    private fun handleAnswerElement(element: Element, spanBuilder: SpannableStringBuilder) {
+    private fun handleAnswerElement(spanBuilder: SpannableStringBuilder) {
         // We don't support other elements inside an answer element.
         // The text inside an answer element isn't needed, so we skip it (it's "____").
         val startIndex = spanBuilder.length

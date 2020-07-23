@@ -15,7 +15,7 @@ abstract class GrammarSearchDao {
     @Transaction
     @Query("""
 SELECT gp.id, gp.lesson, gp.title, gp.yomikata, gp.meaning, gp.incomplete,
-MAX(rv_h.streak) AS srsLevel, COUNT(rv.id) AS studied, 2 AS rank, gp.grammar_order
+MAX(rv_h.streak) AS srsLevel, COUNT(rv.id) AS studied, 2 AS rank
 FROM grammar_point AS gp
 JOIN grammar_point_fts ON gp.id = grammar_point_fts.docid
 AND grammar_point_fts MATCH :term

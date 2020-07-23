@@ -100,6 +100,7 @@ class HomeViewModel(
                 when (syncEvent) {
                     SyncEvent.ERROR -> _snackbar.postValue(SnackBarMessage.SyncError)
                     SyncEvent.SUCCESS -> _snackbar.postValue(SnackBarMessage.SyncSuccess)
+                    SyncEvent.IN_PROGRESS -> Unit // Already taken care of before the when
                 }
             }
         }
