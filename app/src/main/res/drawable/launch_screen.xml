@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque">
 
-    <!--
-      * We don't know if we're a dark theme or a light theme yet, so
-      * let's use a dark color to protect the eyes of our dark theme users.
-      -->
-    <item android:drawable="@color/launchScreenBackgroundColor"/>
+    <item android:drawable="?launchScreenBackgroundColor"/>
 
     <item android:bottom="72dp">
         <bitmap

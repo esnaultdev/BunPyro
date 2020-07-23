@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="AppTheme.Launcher" parent="DayNight.AppTheme.Launcher">
+        <item name="launchScreenBackgroundColor">?colorSurface</item>
+    </style>
+
     <style name="AppTheme" parent="DayNight.AppTheme">
         <item name="colorPrimary">@color/md_blue_400</item>
         <item name="colorPrimaryDark">@color/md_blue_600</item>

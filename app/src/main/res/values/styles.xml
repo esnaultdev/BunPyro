@@ -1,7 +1,11 @@
 <resources>
 
-    <style name="AppTheme.Launcher">
+    <style name="DayNight.AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
+
+    <style name="AppTheme.Launcher" parent="DayNight.AppTheme.Launcher">
+        <item name="launchScreenBackgroundColor">@color/launchScreenDefaultColor</item>
     </style>
 
     <style name="DayNight.AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">

@@ -11,6 +11,7 @@ import androidx.transition.TransitionManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.snackbar.Snackbar
 import dev.esnault.bunpyro.R
+import dev.esnault.bunpyro.android.MainActivity
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.home.HomeViewModel.DialogMessage

@@ -17,7 +17,11 @@
     <color name="surfaceColorSecondary_dark">#222222</color>
 
     <color name="chuiTextColor">#F57C00</color>
-    <color name="launchScreenBackgroundColor">#424242</color>
+    <!--
+      * We don't know if we're a dark theme or a light theme yet, so
+      * let's use a dark color to protect the eyes of our dark theme users.
+      -->
+    <color name="launchScreenDefaultColor">#424242</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="hanko">#aa0000</color>
     <color name="hanko_gold">#c7a800</color>

@@ -7,6 +7,7 @@
     <attr name="secondaryColorOnToolbar" format="color" />
     <attr name="secondaryColorOnPrimary" format="color" />
     <attr name="colorControlNormalStateless" format="color"/>
+    <attr name="launchScreenBackgroundColor" format="color"/>
 
     <declare-styleable name="OutlineButtonProgress">
         <attr format="reference" name="icon"/>
