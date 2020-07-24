@@ -149,7 +149,8 @@
     <string name="about_sources_action">Source code</string>
 
     <string name="reviews_title">Reviews</string>
-    <string name="reviews_loading_title">Loading reviews</string>
+    <string name="reviews_init_loading_title">Loading reviews</string>
+    <string name="reviews_init_error_title">Failed to load reviews</string>
     <string name="reviews_answer_hint">Answer</string>
     <string name="reviews_topInfo_remaining">%d / %d</string>
     <string name="reviews_topInfo_precision">%.0f%%</string>

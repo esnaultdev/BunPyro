@@ -23,6 +23,7 @@ import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel.ViewState
+import dev.esnault.bunpyro.android.screen.review.subview.ReviewInitView
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.android.utils.transition.ChangeText
 import dev.esnault.bunpyro.common.dpToPx
@@ -36,6 +37,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
     override val bindingClass = FragmentReviewBinding::class
     override val vm: ReviewViewModel by viewModel()
+
+    private lateinit var initSubView: ReviewInitView
 
     private var wanakana: WanaKanaText? = null
     private var oldViewState: ViewState? = null
@@ -56,6 +59,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
         binding.toolbar.setupWithNav(findNavController())
 
+        initSubViews()
         vm.viewState.observe(this) { viewState -> bindViewState(viewState) }
 
         bindListeners()
@@ -67,6 +71,13 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         super.onStop()
     }
 
+    private fun initSubViews() {
+        val initSubViewListener = ReviewInitView.Listener(
+            onRetry = vm::onRetryLoading
+        )
+        initSubView = ReviewInitView(binding.initLayout, initSubViewListener)
+    }
+
     private fun bindViewState(viewState: ViewState) {
         val oldViewState = oldViewState
         this.oldViewState = viewState
@@ -75,7 +86,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             TransitionManager.beginDelayedTransition(binding.constraintLayout)
         }
 
-        binding.loadingGroup.isVisible = viewState is ViewState.Loading
+        initSubView.bindViewState(viewState as? ViewState.Init)
+
         setQuestionVisible(viewState is ViewState.Question)
         if (viewState is ViewState.Question) {
             bindQuestionState(oldViewState, viewState)

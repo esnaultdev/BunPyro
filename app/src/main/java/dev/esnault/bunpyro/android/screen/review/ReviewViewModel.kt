@@ -28,7 +28,7 @@ class ReviewViewModel(
     private val audioPlayer: IAudioPlayer
 ) : BaseViewModel() {
 
-    private val _viewState = MutableLiveData<ViewState>(ViewState.Loading)
+    private val _viewState = MutableLiveData<ViewState>(ViewState.Init.Loading)
     val viewState: LiveData<ViewState>
         get() = Transformations.distinctUntilChanged(_viewState)
 
@@ -42,6 +42,16 @@ class ReviewViewModel(
     private var hintLevelSettingJob: Job? = null
 
     init {
+        loadReviews()
+    }
+
+    fun onStop() {
+        releaseAudio()
+    }
+
+    // region Loading
+
+    private fun loadReviews() {
         viewModelScope.launch(Dispatchers.IO) {
             val furiganaShown = settingsRepo.getFurigana().asBoolean()
             val hintLevel = settingsRepo.getReviewHintLevel()
@@ -63,14 +73,17 @@ class ReviewViewModel(
                         currentAudio = null
                     )
                 },
-                onFailure = { ViewState.Error }
+                onFailure = { ViewState.Init.Error }
             )
         }
     }
 
-    fun onStop() {
-        releaseAudio()
+    fun onRetryLoading() {
+        currentState = ViewState.Init.Loading
+        loadReviews()
     }
+
+    // endregion
 
     // region Progress
 
@@ -416,8 +429,10 @@ class ReviewViewModel(
     }
 
     sealed class ViewState {
-        object Loading : ViewState()
-        object Error : ViewState()
+        sealed class Init : ViewState() {
+            object Loading : Init()
+            object Error : Init()
+        }
 
         data class Question(
             val questions: List<ReviewQuestion>,

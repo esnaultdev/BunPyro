@@ -8,7 +8,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 
-private const val MOCKING = true
+private const val MOCKING = false
 
 class BunPyroApplication : Application() {
 
