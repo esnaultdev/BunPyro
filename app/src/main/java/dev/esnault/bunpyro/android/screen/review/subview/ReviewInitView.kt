@@ -1,7 +1,7 @@
 package dev.esnault.bunpyro.android.screen.review.subview
 
 import androidx.core.view.isVisible
-import dev.esnault.bunpyro.android.screen.review.ReviewViewModel
+import dev.esnault.bunpyro.android.screen.review.ReviewViewState as ViewState
 import dev.esnault.bunpyro.databinding.LayoutReviewInitBinding
 
 
@@ -18,11 +18,11 @@ class ReviewInitView(
         initListeners()
     }
 
-    fun bindViewState(viewState: ReviewViewModel.ViewState.Init?) {
+    fun bindViewState(viewState: ViewState.Init?) {
         when (viewState) {
             null -> bindNonInitViewState()
-            is ReviewViewModel.ViewState.Init.Loading -> bindLoading()
-            is ReviewViewModel.ViewState.Init.Error -> bindError()
+            is ViewState.Init.Loading -> bindLoading()
+            is ViewState.Init.Error -> bindError()
         }
     }
 

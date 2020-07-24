@@ -22,7 +22,7 @@ import dev.esnault.bunpyro.android.display.span.TagSpan
 import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
-import dev.esnault.bunpyro.android.screen.review.ReviewViewModel.ViewState
+import dev.esnault.bunpyro.android.screen.review.ReviewViewState as ViewState
 import dev.esnault.bunpyro.android.screen.review.subview.ReviewInitView
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.android.utils.transition.ChangeText

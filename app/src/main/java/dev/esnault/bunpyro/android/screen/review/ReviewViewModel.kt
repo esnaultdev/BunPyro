@@ -10,6 +10,7 @@ import dev.esnault.bunpyro.android.media.IAudioPlayer
 import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.NavigationCommand
+import dev.esnault.bunpyro.android.screen.review.ReviewViewState as ViewState
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.review.IReviewService
 import dev.esnault.bunpyro.domain.entities.review.ReviewQuestion
@@ -263,7 +264,8 @@ class ReviewViewModel(
 
     private fun cycleAltAnswer(
         currentState: ViewState.Question,
-        answerState: ViewState.AnswerState.Correct) {
+        answerState: ViewState.AnswerState.Correct
+    ) {
         val answerCount = currentState.currentQuestion.alternateGrammar.size + 1
         if (answerCount == 1) return // We don't need to cycle when we only have one answer
 
@@ -363,7 +365,7 @@ class ReviewViewModel(
             audioPlayer.listener = buildAudioListener()
             audioPlayer.play(getAudioLink(type, currentState))
             ViewState.CurrentAudio(type, SimpleAudioState.LOADING)
-        } else if (currentAudio.type == type){
+        } else if (currentAudio.type == type) {
             // Updating current audio
             val newState = when (currentAudio.state) {
                 SimpleAudioState.LOADING,
@@ -426,77 +428,5 @@ class ReviewViewModel(
 
     fun onGrammarPointClick(grammarId: Long) {
         // TODO Navigate to the grammar point
-    }
-
-    sealed class ViewState {
-        sealed class Init : ViewState() {
-            object Loading : Init()
-            object Error : Init()
-        }
-
-        data class Question(
-            val questions: List<ReviewQuestion>,
-            val currentIndex: Int,
-            val askAgainIndexes: List<Int>,
-            /** True if we're at the end of the review session asking again incorrect answers */
-            val askingAgain: Boolean,
-            val furiganaShown: Boolean,
-            val userAnswer: String?,
-            val progress: Progress,
-            val answerState: AnswerState,
-            val hintLevel: ReviewHintLevelSetting,
-            val feedback: Feedback?,
-            val currentAudio: CurrentAudio?
-        ) : ViewState() {
-            val currentQuestion: ReviewQuestion
-                get() = questions[currentIndex]
-        }
-
-        data class Progress(
-            val max: Int,
-            val srs: Int,
-            val correct: Int,
-            val incorrect: Int
-        ) {
-            // Indirection used by the UI for the progress
-            val progress: Int = correct
-            val total: Int = max
-
-            private val answers = correct + incorrect
-
-            /** Ratio of correct answers, between 0 and 1 */
-            val precision: Float
-                get() = if (answers == 0) 1f else correct.toFloat() / answers
-        }
-
-        sealed class Feedback {
-            object Empty : Feedback()
-            object NotKana : Feedback()
-            data class AltAnswer(
-                val text: String
-            ) : Feedback()
-        }
-
-        sealed class AnswerState {
-            object Answering : AnswerState()
-
-            data class Correct(
-                /** The index of the user answer in the [answer, *altGrammar] list */
-                val userIndex: Int,
-                /** The index of the user to show in the [answer, *altGrammar] list */
-                val showIndex: Int
-            ) : AnswerState()
-
-            data class Incorrect(
-                val showCorrect: Boolean
-            ) : AnswerState()
-        }
-
-        data class CurrentAudio(val type: AudioType, val state: SimpleAudioState)
-
-        sealed class AudioType {
-            object Answer : AudioType()
-            data class Example(val exampleId: Long) : AudioType()
-        }
     }
 }
