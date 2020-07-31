@@ -26,7 +26,8 @@ import kotlin.random.Random
 class ReviewViewModel(
     private val reviewService: IReviewService,
     private val settingsRepo: ISettingsRepository,
-    private val audioPlayer: IAudioPlayer
+    private val audioPlayer: IAudioPlayer,
+    private val syncHelper: ReviewSyncHelper
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>(ViewState.Init.Loading)
@@ -197,6 +198,7 @@ class ReviewViewModel(
         }
 
         updateAnswerState(currentState, userIndex)
+        syncQuestionResult(currentQuestion, isCorrect)
     }
 
     private fun updateAnswerState(currentState: ViewState.Question, userIndex: Int) {
@@ -244,6 +246,28 @@ class ReviewViewModel(
             userAnswer = null,
             progress = newProgress
         )
+
+        syncQuestionIgnore(currentState.currentQuestion)
+    }
+
+    // endregion
+
+    // region Server sync
+
+    private fun syncQuestionResult(question: ReviewQuestion, correct: Boolean) {
+        val review = question.grammarPoint.review ?: return
+        val request = ReviewSyncHelper.Request.Answer(
+            reviewId = review.id,
+            questionId = question.id,
+            correct = correct
+        )
+        syncHelper.enqueue(request)
+    }
+
+    private fun syncQuestionIgnore(question: ReviewQuestion) {
+        val review = question.grammarPoint.review ?: return
+        val request = ReviewSyncHelper.Request.Ignore(reviewId = review.id)
+        syncHelper.enqueue(request)
     }
 
     // endregion

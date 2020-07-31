@@ -1,7 +1,6 @@
 package dev.esnault.bunpyro.di
 
 
-import com.google.android.exoplayer2.source.MediaSourceFactory
 import dev.esnault.bunpyro.android.action.clipboard.Clipboard
 import dev.esnault.bunpyro.android.action.clipboard.IClipboard
 import dev.esnault.bunpyro.android.display.notification.INotificationService
@@ -16,6 +15,7 @@ import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointFragmentArgs
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel
 import dev.esnault.bunpyro.android.screen.home.HomeViewModel
 import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel
+import dev.esnault.bunpyro.android.screen.review.ReviewSyncHelper
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel
 import dev.esnault.bunpyro.android.screen.start.StartViewModel
 import dev.esnault.bunpyro.android.service.AndroidServiceStarter
@@ -40,7 +40,10 @@ val appModule = module {
         GrammarPointViewModel(args.id, get(), get(), get(), get(), get(), get())
     }
     viewModel { AllGrammarViewModel(get(), get(), get()) }
-    viewModel { ReviewViewModel(get(), get(), get()) }
+
+    // Review
+    viewModel { ReviewViewModel(get(), get(), get(), get()) }
+    factory { ReviewSyncHelper(get()) }
 
     // endregion
 
