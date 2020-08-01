@@ -8,11 +8,11 @@ import dev.esnault.bunpyro.data.db.reviewhistory.ReviewHistoryDao
 import dev.esnault.bunpyro.data.db.reviewhistory.ReviewHistoryDb
 import dev.esnault.bunpyro.data.network.BunproApi
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
-import dev.esnault.bunpyro.data.utils.log.ILogger
 import dev.esnault.bunpyro.data.utils.time.ITimeProvider
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import timber.log.Timber
 import java.lang.Exception
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -23,8 +23,7 @@ class ReviewRepository(
     private val bunproVersionedApi: BunproVersionedApi,
     private val reviewDao: ReviewDao,
     private val reviewHistoryDao: ReviewHistoryDao,
-    private val timeProvider: ITimeProvider,
-    private val logger: ILogger
+    private val timeProvider: ITimeProvider
 ) : IReviewRepository {
 
     private val reviewCountInit = AtomicBoolean(false)
@@ -45,7 +44,7 @@ class ReviewRepository(
             appConfig.setStudyQueueCount(reviewCount)
             reviewCountChannel.send(reviewCount)
         } catch (e: Exception) {
-            logger.w("ReviewRepo", "Could not refresh review count", e)
+            Timber.w(e, "Could not refresh review count")
         }
     }
 
@@ -57,7 +56,7 @@ class ReviewRepository(
             reviewDao.updateHidden(dbId, true)
             true
         } catch (e: Exception) {
-            logger.w("ReviewRepo", "Could not remove review $reviewId", e)
+            Timber.w(e, "Could not remove review $reviewId")
             false
         }
     }
@@ -70,7 +69,7 @@ class ReviewRepository(
             reviewHistoryDao.deleteHistoryForReview(dbId)
             true
         } catch (e: Exception) {
-            logger.w("ReviewRepo", "Could not reset review $reviewId", e)
+            Timber.w(e, "Could not reset review $reviewId")
             false
         }
     }
@@ -107,7 +106,7 @@ class ReviewRepository(
             reviewHistoryDao.insert(newHistoryItem)
             true
         } catch (e: Exception) {
-            logger.w("ReviewRepo", "Could not answer review $reviewId", e)
+            Timber.w(e, "Could not answer review $reviewId")
             false
         }
     }
@@ -126,7 +125,7 @@ class ReviewRepository(
 
             true
         } catch (e: Exception) {
-            logger.w("ReviewRepo", "Could not ignore miss for review $reviewId", e)
+            Timber.w(e, "Could not ignore miss for review $reviewId")
             false
         }
     }

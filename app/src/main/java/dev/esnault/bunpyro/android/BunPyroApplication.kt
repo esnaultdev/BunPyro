@@ -6,6 +6,8 @@ import dev.esnault.bunpyro.BuildConfig
 import dev.esnault.bunpyro.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import timber.log.Timber
+import timber.log.Timber.DebugTree
 
 
 private const val MOCKING = false
@@ -16,6 +18,7 @@ class BunPyroApplication : Application() {
         super.onCreate()
 
         setupKoin()
+        setupLogging()
         setupCrashlytics()
     }
 
@@ -30,6 +33,12 @@ class BunPyroApplication : Application() {
             } else {
                 modules(listOf(fakeConfigModule, fakeDbModule, fakeNetworkModule))
             }
+        }
+    }
+
+    private fun setupLogging() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(DebugTree())
         }
     }
 

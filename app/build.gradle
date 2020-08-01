@@ -112,6 +112,9 @@ dependencies {
     // Media
     implementation "com.google.android.exoplayer:exoplayer-core:${versions.exoplayer}"
 
+    // Development
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+
     // Test
     testImplementation "junit:junit:${versions.junit}"
     androidTestImplementation "androidx.test:runner:${versions.androidx.test}"

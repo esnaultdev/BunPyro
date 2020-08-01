@@ -31,7 +31,7 @@ val repoModule = module {
     }
 
     single<IReviewRepository> {
-        ReviewRepository(get(), get(), get(), get(), get(), get(), get())
+        ReviewRepository(get(), get(), get(), get(), get(), get())
     }
 
     single<ISyncRepository> {

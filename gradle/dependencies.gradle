@@ -40,6 +40,9 @@ ext.versions = [
         // Media
         exoplayer: '2.11.4',
 
+        // Development
+        timber: '4.7.1',
+
         // Test
         junit: '4.12',
 ]
