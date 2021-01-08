@@ -108,6 +108,7 @@ dependencies {
 
     // Text utils
     implementation "org.jsoup:jsoup:${versions.jsoup}"
+    implementation "dev.esnault.wanakana:wanakana-android:${versions.wanakana}"
 
     // Media
     implementation "com.google.android.exoplayer:exoplayer-core:${versions.exoplayer}"

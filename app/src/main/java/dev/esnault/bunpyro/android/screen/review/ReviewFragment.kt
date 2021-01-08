@@ -15,7 +15,6 @@ import androidx.transition.AutoTransition
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
-import com.wanakanajava.WanaKanaText
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.span.AnswerSpan
 import dev.esnault.bunpyro.android.display.span.TagSpan
@@ -31,6 +30,8 @@ import dev.esnault.bunpyro.common.getColorCompat
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.databinding.FragmentReviewBinding
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
+import dev.esnault.wanakana.android.WanakanaAndroid
+import dev.esnault.wanakana.android.WanakanaAndroid.Binding as WKBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
@@ -40,7 +41,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
     private lateinit var initSubView: ReviewInitView
 
-    private var wanakana: WanaKanaText? = null
+    private var wkBinding: WKBinding? = null
     private var oldViewState: ViewState? = null
 
     // Resources
@@ -531,9 +532,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     }
 
     private fun bindListeners() {
-        wanakana = WanaKanaText(binding.questionAnswerValue, false).apply {
-            bind()
-            setListener { answer -> vm.onAnswerChanged(answer) }
+        wkBinding = WanakanaAndroid.bind(binding.questionAnswerValue).apply {
+            addListener { answer -> vm.onAnswerChanged(answer) }
         }
 
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
