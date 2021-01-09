@@ -109,6 +109,14 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                 navigate(SettingsFragmentDirections.actionSettingsToSettingsLicenses())
                 true
             }
+
+            findPreference<Preference>("about_debug")?.apply {
+                isVisible = BuildConfig.DEBUG
+                setOnPreferenceClickListener {
+                    navigate(SettingsFragmentDirections.actionSettingsToSettingsDebug())
+                    true
+                }
+            }
         }
 
         private fun navigate(navDirections: NavDirections) {

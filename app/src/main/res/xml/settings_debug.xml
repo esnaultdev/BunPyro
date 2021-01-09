@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+        app:key="debug_mock"
+        app:title="@string/settings_debug_mock"
+        app:defaultValue="false"
+        />
+
+</PreferenceScreen>

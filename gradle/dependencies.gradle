@@ -28,6 +28,7 @@ ext.versions = [
 
         // "DI"
         koin: '2.0.1',
+        processPhoenix: '2.0.0',
 
         // Network
         retrofit: '2.7.1',

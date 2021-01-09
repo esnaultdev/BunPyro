@@ -61,4 +61,8 @@ class SettingsRepository(context: Context) : ISettingsRepository {
         val value = sharedPreferences.getString("hanko_display", "normal")
         return HankoDisplaySetting.fromValue(value)
     }
+
+    override fun getDebugMocked(): Boolean {
+        return sharedPreferences.getBoolean("debug_mock", false)
+    }
 }

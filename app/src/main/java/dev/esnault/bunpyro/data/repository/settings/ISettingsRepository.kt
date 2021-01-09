@@ -19,4 +19,6 @@ interface ISettingsRepository {
     suspend fun getAllGrammarFilter(): AllGrammarFilter
 
     suspend fun getHankoDisplay(): HankoDisplaySetting
+
+    fun getDebugMocked(): Boolean
 }

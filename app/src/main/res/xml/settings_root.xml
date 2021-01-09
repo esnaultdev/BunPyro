@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <PreferenceCategory
         app:key="category_display"
@@ -67,6 +69,13 @@
         <Preference
             app:key="about_licenses"
             app:title="@string/settings_root_licenses"
+            />
+
+        <Preference
+            app:isPreferenceVisible="false"
+            app:key="about_debug"
+            app:title="@string/settings_root_debug"
+            tools:isPreferenceVisible="true"
             />
 
         <Preference
