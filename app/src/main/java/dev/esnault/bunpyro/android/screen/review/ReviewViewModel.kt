@@ -241,10 +241,17 @@ class ReviewViewModel(
             incorrect = currentState.progress.incorrect - 1
         )
 
+        val newAskAgainIndexes = if (currentState.askingAgain) {
+            currentState.askAgainIndexes
+        } else {
+            currentState.askAgainIndexes - currentState.currentIndex
+        }
+
         this.currentState = currentState.copy(
             answerState = ViewState.AnswerState.Answering,
             userAnswer = null,
-            progress = newProgress
+            progress = newProgress,
+            askAgainIndexes = newAskAgainIndexes
         )
 
         syncQuestionIgnore(currentState.currentQuestion)
