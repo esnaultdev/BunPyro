@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.TooltipCompat
@@ -549,6 +550,17 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         binding.questionAnswerValue.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 vm.onAnswer()
+                true
+            } else {
+                false
+            }
+        }
+        binding.questionAnswerValue.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                vm.onAnswer()
+
+                // Without this, the focus would go to the startIconView instead.
+                binding.questionAnswerLayout.endIconView?.requestFocus()
                 true
             } else {
                 false
