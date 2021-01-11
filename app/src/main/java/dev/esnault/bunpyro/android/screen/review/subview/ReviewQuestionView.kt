@@ -25,6 +25,7 @@ import dev.esnault.bunpyro.android.utils.transition.ChangeText
 import dev.esnault.bunpyro.common.dpToPx
 import dev.esnault.bunpyro.common.getColorCompat
 import dev.esnault.bunpyro.common.getThemeColor
+import dev.esnault.bunpyro.common.hideKeyboardFrom
 import dev.esnault.bunpyro.databinding.LayoutReviewQuestionBinding
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
 import dev.esnault.wanakana.android.WanakanaAndroid
@@ -74,6 +75,7 @@ class ReviewQuestionView(
 
     private fun bindNonQuestionViewState() {
         binding.root.isVisible = false
+        context.hideKeyboardFrom(binding.questionAnswerValue)
     }
 
     private fun bindQuestionState(oldState: ViewState?, viewState: ViewState) {
