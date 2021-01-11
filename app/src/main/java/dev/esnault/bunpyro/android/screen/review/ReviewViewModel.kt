@@ -478,6 +478,7 @@ class ReviewViewModel(
     // endregion
 
     fun onGrammarPointClick(grammarId: Long) {
-        // TODO Navigate to the grammar point
+        // Only do this in summary?
+        navigate(ReviewFragmentDirections.actionReviewToGrammarPoint(grammarId))
     }
 }

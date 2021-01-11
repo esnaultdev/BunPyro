@@ -188,6 +188,11 @@
         android:id="@+id/reviewScreen"
         android:name="dev.esnault.bunpyro.android.screen.review.ReviewFragment"
         tools:layout="@layout/fragment_review"
-        />
+        >
+        <action
+            android:id="@+id/action_review_to_grammarPoint"
+            app:destination="@id/grammarPointScreen"
+            />
+    </fragment>
 
 </navigation>
