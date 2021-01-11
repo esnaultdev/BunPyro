@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.view.KeyEvent
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.isVisible
@@ -100,7 +101,7 @@ class ReviewQuestionView(
         }
         if (answerStateChanged) {
             bindAnswerState(viewState)
-            bindPostAnswerActions(viewState)
+            bindPostAnswerActions(oldState, viewState)
         }
         if (progressChanged) {
             bindProgress(viewState.progress)
@@ -265,10 +266,11 @@ class ReviewQuestionView(
         }
     }
 
-    private fun bindPostAnswerActions(viewState: ViewState) {
+    private fun bindPostAnswerActions(oldState: ViewState?, viewState: ViewState) {
         val answerState = viewState.answerState
         val answering = answerState is AnswerState.Answering
         val isIncorrect = answerState is AnswerState.Incorrect
+        val oldAnswerState = oldState?.answerState
 
         // Ignore
         binding.questionAnswerLayout.apply {
@@ -290,6 +292,27 @@ class ReviewQuestionView(
 
         // Other
         bindQuestionActionOther(viewState)
+
+        val nextFocus: View? = when {
+            answering -> if (oldAnswerState !is AnswerState.Answering) {
+                binding.questionAnswerValue
+            } else {
+                // Already answering, we should already have the right focus
+                null
+            }
+            answerState is AnswerState.Correct -> {
+                binding.questionAnswerLayout.endIconView
+            }
+            // isIncorrect
+            else -> if (oldAnswerState !is AnswerState.Incorrect) {
+                binding.questionActionOther
+            } else {
+                // The correct answer is already shown, focus the next icon so that we can quickly
+                // go to the next question
+                binding.questionAnswerLayout.endIconView
+            }
+        }
+        nextFocus?.requestFocus()
     }
 
     private fun bindAudioState(viewState: ViewState) {
@@ -480,9 +503,6 @@ class ReviewQuestionView(
         binding.questionAnswerValue.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 listener.onAnswer()
-
-                // Without this, the focus would go to the startIconView instead.
-                binding.questionAnswerLayout.endIconView?.requestFocus()
                 true
             } else {
                 false
