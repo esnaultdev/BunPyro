@@ -231,7 +231,7 @@ class ReviewSummaryAdapter(
                 if (correct) {
                     minOf(srsLevel + 1, DomainConfig.STUDY_BURNED)
                 } else {
-                    maxOf(srsLevel - 1, 0)
+                    maxOf(srsLevel - 1, 1)
                 }
             }
             binding.srsTag.text = srsString(context, srsLevel)
