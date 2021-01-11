@@ -66,10 +66,10 @@ class ReviewViewModel(
                         currentIndex = 0,
                         askAgainIndexes = emptyList(),
                         askingAgain = false,
-                        furiganaShown = furiganaShown,
                         userAnswer = null,
                         progress = initialProgress(it),
                         answerState = ViewState.AnswerState.Answering,
+                        furiganaShown = furiganaShown,
                         hintLevel = hintLevel,
                         feedback = null,
                         currentAudio = null

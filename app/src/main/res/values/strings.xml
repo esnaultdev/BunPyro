@@ -112,6 +112,8 @@
     <string name="contentDescription_review_ghost">Ghost review</string>
     <string name="contentDescription_review_precision">Precision</string>
     <string name="contentDescription_review_srs">SRS level</string>
+    <string name="contentDescription_review_summary_correct">Correct</string>
+    <string name="contentDescription_review_summary_incorrect">Incorrect</string>
 
     <string name="settings_root_title">Settings</string>
     <string name="settings_root_category_display">Display</string>

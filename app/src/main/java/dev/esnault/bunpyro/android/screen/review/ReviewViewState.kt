@@ -17,10 +17,10 @@ sealed class ReviewViewState {
         val askAgainIndexes: List<Int>,
         /** True if we're at the end of the review session asking again incorrect answers */
         val askingAgain: Boolean,
-        val furiganaShown: Boolean,
         val userAnswer: String?,
         val progress: Progress,
         val answerState: AnswerState,
+        val furiganaShown: Boolean,
         val hintLevel: ReviewHintLevelSetting,
         val feedback: Feedback?,
         val currentAudio: CurrentAudio?
@@ -28,6 +28,10 @@ sealed class ReviewViewState {
         val currentQuestion: ReviewQuestion
             get() = questions[currentIndex]
     }
+
+    data class Summary(
+        val questions: List<ReviewQuestion>
+    ) : ReviewViewState()
 
     data class Progress(
         val max: Int,

@@ -11,6 +11,7 @@ import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState as ViewState
 import dev.esnault.bunpyro.android.screen.review.subview.ReviewInitView
 import dev.esnault.bunpyro.android.screen.review.subview.ReviewQuestionView
+import dev.esnault.bunpyro.android.screen.review.subview.ReviewSummaryView
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.databinding.FragmentReviewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,6 +23,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
     private lateinit var initSubView: ReviewInitView
     private lateinit var questionSubView: ReviewQuestionView
+    private lateinit var summarySubView: ReviewSummaryView
 
     private var oldViewState: ViewState? = null
 
@@ -42,12 +44,12 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     }
 
     private fun initSubViews() {
-        val initSubViewListener = ReviewInitView.Listener(
+        val initListener = ReviewInitView.Listener(
             onRetry = vm::onRetryLoading
         )
-        initSubView = ReviewInitView(binding.initLayout, initSubViewListener)
+        initSubView = ReviewInitView(binding.initLayout, initListener)
 
-        val questionSubViewListener = ReviewQuestionView.Listener(
+        val questionListener = ReviewQuestionView.Listener(
             onIgnoreIncorrect = vm::onIgnoreIncorrect,
             onGrammarPointClick = vm::onGrammarPointClick,
             onAnswerChanged = vm::onAnswerChanged,
@@ -58,9 +60,14 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         )
         questionSubView = ReviewQuestionView(
             binding.questionLayout,
-            questionSubViewListener,
+            questionListener,
             this::requireContext
         )
+
+        val summaryListener = ReviewSummaryView.Listener(
+            onGrammarPointClick = vm::onGrammarPointClick
+        )
+        summarySubView = ReviewSummaryView(binding.summaryLayout, summaryListener)
     }
 
     private fun bindViewState(viewState: ViewState) {
@@ -76,6 +83,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             oldViewState = oldViewState as? ViewState.Question,
             viewState = viewState as? ViewState.Question
         )
+        summarySubView.bindViewState(viewState as? ViewState.Summary)
 
         bindToolbar(viewState)
     }
