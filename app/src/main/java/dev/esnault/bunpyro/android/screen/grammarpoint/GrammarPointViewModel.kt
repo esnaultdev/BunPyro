@@ -27,6 +27,7 @@ import kotlinx.coroutines.withContext
 
 class GrammarPointViewModel(
     id: Long,
+    private val readOnly: Boolean,
     private val grammarRepo: IGrammarPointRepository,
     private val settingsRepo: ISettingsRepository,
     private val reviewRepo: IReviewRepository,
@@ -90,6 +91,7 @@ class GrammarPointViewModel(
         val splitTitle = grammarPoint.title.split('・')
 
         return ViewState(
+            readOnly = readOnly,
             grammarPoint = grammarPoint,
             titleYomikataShown = false,
             furiganaShown = furiganaShown,
@@ -358,6 +360,7 @@ class GrammarPointViewModel(
     // endregion
 
     data class ViewState(
+        val readOnly: Boolean,
         val grammarPoint: GrammarPoint,
         val titleYomikataShown: Boolean,
         val furiganaShown: Boolean,

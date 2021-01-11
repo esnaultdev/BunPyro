@@ -466,10 +466,7 @@ class ReviewViewModel(
     fun onInfoClick() {
         val currentState = currentState as? ViewState.Question ?: return
         val grammarId = currentState.currentQuestion.grammarPoint.id
-        navigate(ReviewFragmentDirections.actionReviewToGrammarPoint(grammarId))
-
-        // TODO Introduce a read-only parameter for the grammar point
-        // TODO The display is broken when coming back
+        navigate(ReviewFragmentDirections.actionReviewToGrammarPoint(grammarId, readOnly = true))
     }
 
     fun onGrammarPointClick(grammarId: Long) {

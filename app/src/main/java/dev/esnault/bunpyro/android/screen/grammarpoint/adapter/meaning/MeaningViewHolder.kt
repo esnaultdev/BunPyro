@@ -122,14 +122,15 @@ class MeaningViewHolder(
     private fun bindReviews(viewState: ViewState) {
         val grammarPoint = viewState.grammarPoint
         val srsLevel = grammarPoint.srsLevel
+        val readOnly = viewState.readOnly
         val studied = srsLevel != null
 
-        binding.reviewTitle.isVisible = true
+        binding.reviewTitle.isVisible = !readOnly || studied
 
         // Visibility
-        binding.reviewAdd.isVisible = !studied
-        binding.reviewReset.isVisible = studied
-        binding.reviewRemove.isVisible = studied
+        binding.reviewAdd.isVisible = !readOnly && !studied
+        binding.reviewReset.isVisible = !readOnly && studied
+        binding.reviewRemove.isVisible = !readOnly && studied
         binding.reviewProgress.isVisible = studied
         binding.reviewProgressText.isVisible = studied
 
