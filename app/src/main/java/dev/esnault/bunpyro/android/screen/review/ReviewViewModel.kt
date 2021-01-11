@@ -9,7 +9,7 @@ import dev.esnault.bunpyro.android.media.AudioState
 import dev.esnault.bunpyro.android.media.IAudioPlayer
 import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
-import dev.esnault.bunpyro.android.screen.base.NavigationCommand
+import dev.esnault.bunpyro.android.screen.review.subview.summary.SummaryGrammarOverview
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState as ViewState
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.review.IReviewService
@@ -65,6 +65,7 @@ class ReviewViewModel(
                         questions = it,
                         currentIndex = 0,
                         askAgainIndexes = emptyList(),
+                        answeredGrammar = emptyList(),
                         askingAgain = false,
                         userAnswer = null,
                         progress = initialProgress(it),
@@ -158,7 +159,9 @@ class ReviewViewModel(
             )
         } else {
             // TODO finish state (wait for http request + navigate to the summary)
-            navigate(NavigationCommand.Back)
+            this.currentState = ViewState.Summary(
+                answered = currentState.answeredGrammar
+            )
         }
     }
 
@@ -221,8 +224,18 @@ class ReviewViewModel(
             currentState.askAgainIndexes + currentState.currentIndex
         }
 
+        val newAnsweredGrammar = if (currentState.askingAgain) {
+            currentState.answeredGrammar
+        } else {
+            currentState.answeredGrammar + ViewState.AnsweredGrammar(
+                grammar = SummaryGrammarOverview.from(currentState.currentQuestion.grammarPoint),
+                correct = isCorrect
+            )
+        }
+
         this.currentState = currentState.copy(
             askAgainIndexes = newAskAgainIndexes,
+            answeredGrammar = newAnsweredGrammar,
             answerState = newAnswerState,
             feedback = null,
             progress = newProgress
@@ -247,8 +260,15 @@ class ReviewViewModel(
             currentState.askAgainIndexes - currentState.currentIndex
         }
 
+        val newAnsweredGrammar = if (currentState.askingAgain) {
+            currentState.answeredGrammar
+        } else {
+            currentState.answeredGrammar.dropLast(1)
+        }
+
         this.currentState = currentState.copy(
             answerState = ViewState.AnswerState.Answering,
+            answeredGrammar = newAnsweredGrammar,
             userAnswer = null,
             progress = newProgress,
             askAgainIndexes = newAskAgainIndexes

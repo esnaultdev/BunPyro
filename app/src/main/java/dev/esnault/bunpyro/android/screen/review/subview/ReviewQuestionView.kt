@@ -33,7 +33,7 @@ import dev.esnault.wanakana.android.WanakanaAndroid.Binding as WKBinding
 class ReviewQuestionView(
     private val binding: LayoutReviewQuestionBinding,
     private val listener: Listener,
-    private val requireContext: () -> Context
+    private val context: Context
 ) {
 
     data class Listener(
@@ -48,13 +48,13 @@ class ReviewQuestionView(
 
     // Resources
     private val primaryColor: Int by lazy(LazyThreadSafetyMode.NONE) {
-        requireContext().getThemeColor(R.attr.colorPrimary)
+        context.getThemeColor(R.attr.colorPrimary)
     }
     private val correctColor: Int by lazy(LazyThreadSafetyMode.NONE) {
-        requireContext().getColorCompat(R.color.answer_correct)
+        context.getColorCompat(R.color.answer_correct)
     }
     private val incorrectColor: Int by lazy(LazyThreadSafetyMode.NONE) {
-        requireContext().getColorCompat(R.color.answer_incorrect)
+        context.getColorCompat(R.color.answer_incorrect)
     }
 
     private var wkBinding: WKBinding? = null
@@ -140,7 +140,7 @@ class ReviewQuestionView(
     }
 
     private fun bindQuestion(viewState: ViewState) {
-        val context = requireContext()
+        val context = context
 
         val question = viewState.currentQuestion
         val furiganaShown = viewState.furiganaShown
@@ -160,7 +160,7 @@ class ReviewQuestionView(
     }
 
     private fun bindHintText(viewState: ViewState) {
-        val context = requireContext()
+        val context = context
 
         val question = viewState.currentQuestion
         val furiganaShown = viewState.furiganaShown
@@ -317,7 +317,7 @@ class ReviewQuestionView(
         } else {
             24f
         }
-        val iconSize = iconSizeDp.dpToPx(requireContext().resources.displayMetrics)
+        val iconSize = iconSizeDp.dpToPx(context.resources.displayMetrics)
         binding.questionActionAudioButton.iconSize = iconSize
     }
 
@@ -417,7 +417,7 @@ class ReviewQuestionView(
     }
 
     private fun bindProgress(progress: ReviewViewState.Progress) {
-        val context = requireContext()
+        val context = context
 
         binding.questionProgress.max = progress.total
         binding.questionProgress.progress = progress.progress
@@ -429,7 +429,7 @@ class ReviewQuestionView(
     }
 
     private fun bindFeedback(feedback: ReviewViewState.Feedback?) {
-        val context = requireContext()
+        val context = context
         binding.questionFeedback.isVisible = feedback != null
         if (feedback != null) {
             binding.questionFeedback.text = when (feedback) {
@@ -507,7 +507,7 @@ class ReviewQuestionView(
     }
 
     private fun bindTooltips() {
-        val context = requireContext()
+        val context = context
 
         val hintTooltipText = context.getString(R.string.reviews_tooltip_hint)
         TooltipCompat.setTooltipText(binding.questionActionHint, hintTooltipText)
@@ -537,7 +537,7 @@ class ReviewQuestionView(
         } else {
             R.string.reviews_tooltip_otherAnswers
         }
-        val altAnswerTooltipText = requireContext().getString(textResId)
+        val altAnswerTooltipText = context.getString(textResId)
         TooltipCompat.setTooltipText(binding.questionActionOtherButton, altAnswerTooltipText)
     }
 }

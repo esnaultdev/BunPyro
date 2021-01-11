@@ -1,21 +1,29 @@
-package dev.esnault.bunpyro.android.screen.review.subview
+package dev.esnault.bunpyro.android.screen.review.subview.summary
 
+import android.content.Context
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState
 import dev.esnault.bunpyro.databinding.LayoutReviewSummaryBinding
 
 
 class ReviewSummaryView(
     private val binding: LayoutReviewSummaryBinding,
-    private val listener: Listener
+    listener: Listener,
+    context: Context
 ) {
 
     data class Listener(
         val onGrammarPointClick: (id: Long) -> Unit
     )
 
+    private val adapter = ReviewSummaryAdapter(context, listener)
+
     init {
-        initListeners()
+        binding.root.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = this@ReviewSummaryView.adapter
+        }
     }
 
     fun bindViewState(viewState: ReviewViewState.Summary?) {
@@ -31,11 +39,6 @@ class ReviewSummaryView(
 
     private fun bindSummary(viewState: ReviewViewState.Summary) {
         binding.root.isVisible = true
-
-        // TODO Bind the recycler view
-    }
-
-    private fun initListeners() {
-        // TODO
+        adapter.summary = viewState
     }
 }

@@ -11,7 +11,7 @@ import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState as ViewState
 import dev.esnault.bunpyro.android.screen.review.subview.ReviewInitView
 import dev.esnault.bunpyro.android.screen.review.subview.ReviewQuestionView
-import dev.esnault.bunpyro.android.screen.review.subview.ReviewSummaryView
+import dev.esnault.bunpyro.android.screen.review.subview.summary.ReviewSummaryView
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.databinding.FragmentReviewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,6 +44,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     }
 
     private fun initSubViews() {
+        val context = requireContext()
+
         val initListener = ReviewInitView.Listener(
             onRetry = vm::onRetryLoading
         )
@@ -58,16 +60,12 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             onAltAnswerClick = vm::onAltAnswerClick,
             onAnswerAudio = vm::onAnswerAudio
         )
-        questionSubView = ReviewQuestionView(
-            binding.questionLayout,
-            questionListener,
-            this::requireContext
-        )
+        questionSubView = ReviewQuestionView(binding.questionLayout, questionListener, context)
 
         val summaryListener = ReviewSummaryView.Listener(
             onGrammarPointClick = vm::onGrammarPointClick
         )
-        summarySubView = ReviewSummaryView(binding.summaryLayout, summaryListener)
+        summarySubView = ReviewSummaryView(binding.summaryLayout, summaryListener, context)
     }
 
     private fun bindViewState(viewState: ViewState) {

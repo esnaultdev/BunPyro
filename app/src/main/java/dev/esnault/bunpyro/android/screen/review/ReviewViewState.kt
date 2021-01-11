@@ -1,6 +1,7 @@
 package dev.esnault.bunpyro.android.screen.review
 
 import dev.esnault.bunpyro.android.media.SimpleAudioState
+import dev.esnault.bunpyro.android.screen.review.subview.summary.SummaryGrammarOverview
 import dev.esnault.bunpyro.domain.entities.review.ReviewQuestion
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
 
@@ -15,6 +16,7 @@ sealed class ReviewViewState {
         val questions: List<ReviewQuestion>,
         val currentIndex: Int,
         val askAgainIndexes: List<Int>,
+        val answeredGrammar: List<AnsweredGrammar>,
         /** True if we're at the end of the review session asking again incorrect answers */
         val askingAgain: Boolean,
         val userAnswer: String?,
@@ -29,8 +31,13 @@ sealed class ReviewViewState {
             get() = questions[currentIndex]
     }
 
+    data class AnsweredGrammar(
+        val grammar: SummaryGrammarOverview,
+        val correct: Boolean
+    )
+
     data class Summary(
-        val questions: List<ReviewQuestion>
+        val answered: List<AnsweredGrammar>
     ) : ReviewViewState()
 
     data class Progress(

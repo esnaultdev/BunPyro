@@ -30,7 +30,7 @@ class SearchAdapter(
         val onGrammarClicked: (point: SearchGrammarOverview) -> Unit
     )
 
-    object ViewType {
+    private object ViewType {
         const val HEADER = 0
         const val GRAMMAR = 1
     }

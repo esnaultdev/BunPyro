@@ -33,14 +33,12 @@
         android:textColor="?colorOnPrimary"
         android:textSize="11dp"
         android:textStyle="bold"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/japanese"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/srs_update_icon"
         tools:ignore="SpUsage"
         tools:text="SRS 10"
-        tools:visibility="visible"
         />
 
     <View
@@ -104,12 +102,10 @@
         android:textColor="?colorOnPrimary"
         android:textSize="11sp"
         android:textStyle="bold"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/jlpt_n5"
-        tools:visibility="visible"
         />
 
     <View

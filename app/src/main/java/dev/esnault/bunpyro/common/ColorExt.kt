@@ -5,7 +5,7 @@ import androidx.core.graphics.ColorUtils
 
 
 /**
- * Set the alpha component of [color] to be [alpha].
+ * Set the alpha component of [color] to be [alpha] (between 0 and 255).
  */
 @ColorInt
 fun @receiver:ColorInt Int.withAlpha(alpha: Int): Int {
