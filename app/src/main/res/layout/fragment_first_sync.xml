@@ -56,7 +56,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintWidth_max="300dp"
+        app:layout_constraintWidth_max="@dimen/text_max_width"
         />
 
     <ProgressBar
@@ -85,7 +85,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/downloading_progress"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintWidth_max="300dp"
+        app:layout_constraintWidth_max="@dimen/text_max_width"
         />
 
     <androidx.constraintlayout.widget.Group
@@ -110,7 +110,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appbar_layout"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintWidth_max="300dp"
+        app:layout_constraintWidth_max="@dimen/text_max_width"
         />
 
     <TextView
@@ -127,7 +127,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/error_text"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintWidth_max="300dp"
+        app:layout_constraintWidth_max="@dimen/text_max_width"
         />
 
     <com.google.android.material.button.MaterialButton

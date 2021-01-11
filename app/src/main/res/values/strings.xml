@@ -172,6 +172,11 @@
     <string name="reviews_tooltip_audio">Audio</string>
     <string name="reviews_tooltip_ignore">Ignore</string>
     <string name="reviews_tooltip_next">Next</string>
+    <string name="reviews_summary_precision">%.0f%%</string>
+    <string name="reviews_summary_precision_correct">Answered Correctly</string>
+    <string name="reviews_summary_perfect">Perfect!</string>
+    <string name="reviews_summary_category_correct">Correct</string>
+    <string name="reviews_summary_category_incorrect">Incorrect</string>
 
     <string name="notification_sync_inProgress">Syncing grammar…</string>
     <string name="notificationChannel_sync_name">Sync</string>
