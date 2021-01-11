@@ -400,23 +400,16 @@ class ReviewViewModel(
     // region Audio
 
     fun onAnswerAudio() {
-        onAudio(ViewState.AudioType.Answer)
-    }
-
-    fun onExampleAudio(id: Long) {
-        onAudio(ViewState.AudioType.Example(id))
-    }
-
-    private fun onAudio(type: ViewState.AudioType) {
         val currentState = currentState as? ViewState.Question ?: return
 
+        val audioLink = getAudioLink(currentState)
         val currentAudio = currentState.currentAudio
         val newAudio = if (currentAudio == null) {
             // Not playing anything yet
             audioPlayer.listener = buildAudioListener()
-            audioPlayer.play(getAudioLink(type, currentState))
-            ViewState.CurrentAudio(type, SimpleAudioState.LOADING)
-        } else if (currentAudio.type == type) {
+            audioPlayer.play(audioLink)
+            ViewState.CurrentAudio(SimpleAudioState.LOADING, audioLink)
+        } else if (currentAudio.link == audioLink) {
             // Updating current audio
             val newState = when (currentAudio.state) {
                 SimpleAudioState.LOADING,
@@ -425,7 +418,7 @@ class ReviewViewModel(
                     SimpleAudioState.STOPPED
                 }
                 SimpleAudioState.STOPPED -> {
-                    audioPlayer.play(getAudioLink(type, currentState))
+                    audioPlayer.play(audioLink)
                     SimpleAudioState.LOADING
                 }
             }
@@ -433,24 +426,15 @@ class ReviewViewModel(
         } else {
             // Switching to another audio
             audioPlayer.stop()
-            audioPlayer.play(getAudioLink(type, currentState))
-            ViewState.CurrentAudio(type, SimpleAudioState.LOADING)
+            audioPlayer.play(audioLink)
+            ViewState.CurrentAudio(SimpleAudioState.LOADING, audioLink)
         }
 
         this.currentState = currentState.copy(currentAudio = newAudio)
     }
 
-    private fun getAudioLink(type: ViewState.AudioType, state: ViewState.Question): String? {
-        return when (type) {
-            ViewState.AudioType.Answer -> state.currentQuestion.audioLink
-            is ViewState.AudioType.Example -> {
-                state.currentQuestion
-                    .grammarPoint
-                    .sentences
-                    .firstOrNull { it.id == type.exampleId }
-                    ?.audioLink
-            }
-        }
+    private fun getAudioLink(state: ViewState.Question): String? {
+        return state.currentQuestion.audioLink
     }
 
     private fun buildAudioListener(): IAudioPlayer.Listener {
@@ -477,8 +461,21 @@ class ReviewViewModel(
 
     // endregion
 
+    // region Navigation
+
+    fun onInfoClick() {
+        val currentState = currentState as? ViewState.Question ?: return
+        val grammarId = currentState.currentQuestion.grammarPoint.id
+        navigate(ReviewFragmentDirections.actionReviewToGrammarPoint(grammarId))
+
+        // TODO Introduce a read-only parameter for the grammar point
+        // TODO The display is broken when coming back
+    }
+
     fun onGrammarPointClick(grammarId: Long) {
         // Only do this in summary?
         navigate(ReviewFragmentDirections.actionReviewToGrammarPoint(grammarId))
     }
+
+    // endregion
 }

@@ -80,7 +80,7 @@ sealed class ReviewViewState {
         ) : AnswerState()
     }
 
-    data class CurrentAudio(val type: AudioType, val state: SimpleAudioState)
+    data class CurrentAudio(val state: SimpleAudioState, val link: String?)
 
     sealed class AudioType {
         object Answer : AudioType()

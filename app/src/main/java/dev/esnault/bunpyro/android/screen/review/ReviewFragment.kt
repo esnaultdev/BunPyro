@@ -38,6 +38,11 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         bindListeners()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        oldViewState = null
+    }
+
     override fun onStop() {
         vm.onStop()
         super.onStop()
@@ -57,6 +62,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             onAnswerChanged = vm::onAnswerChanged,
             onAnswer = vm::onAnswer,
             onHintLevelClick = vm::onHintLevelClick,
+            onInfoClick = vm::onInfoClick,
             onAltAnswerClick = vm::onAltAnswerClick,
             onAnswerAudio = vm::onAnswerAudio
         )

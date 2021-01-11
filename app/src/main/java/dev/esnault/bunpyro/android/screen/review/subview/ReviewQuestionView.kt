@@ -44,6 +44,7 @@ class ReviewQuestionView(
         val onAnswerChanged: (answer: String?) -> Unit,
         val onAnswer: () -> Unit,
         val onHintLevelClick: () -> Unit,
+        val onInfoClick: () -> Unit,
         val onAltAnswerClick: () -> Unit,
         val onAnswerAudio: () -> Unit
     )
@@ -324,7 +325,6 @@ class ReviewQuestionView(
 
         val canPlayAudio = !answering && hasAudioLink
         val playingAnswerAudio = currentAudio != null
-                && currentAudio.type == ReviewViewState.AudioType.Answer
                 && currentAudio.state.playWhenReady
         binding.questionActionAudioButton.isEnabled = canPlayAudio || playingAnswerAudio
 
@@ -517,6 +517,10 @@ class ReviewQuestionView(
 
         binding.questionActionHint.setOnClickListener {
             listener.onHintLevelClick()
+        }
+
+        binding.questionActionInfo.setOnClickListener {
+            listener.onInfoClick()
         }
 
         binding.questionActionOtherButton.setOnClickListener {
