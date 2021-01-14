@@ -1,12 +1,16 @@
 package dev.esnault.bunpyro.android.display.viewholder
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import dev.esnault.bunpyro.R
+import dev.esnault.bunpyro.android.res.srsStringOrNull
 import dev.esnault.bunpyro.common.getColorCompat
+import dev.esnault.bunpyro.common.hide
+import dev.esnault.bunpyro.common.show
 import dev.esnault.bunpyro.databinding.ItemGrammarPointOverviewBinding
 import dev.esnault.bunpyro.domain.DomainConfig
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
@@ -61,40 +65,42 @@ fun bindStudy(
     srsLevel: Int?,
     hankoDisplay: HankoDisplaySetting
 ) {
-    binding.studyHanko.isVisible = srsLevel != null
-
-    if (srsLevel != null) {
-        when (hankoDisplay) {
-            HankoDisplaySetting.NORMAL -> bindHankoNormal(context, binding, srsLevel)
-            HankoDisplaySetting.LEVEL -> bindHankoLevel(context, binding, srsLevel)
-        }
+    when (hankoDisplay) {
+        HankoDisplaySetting.NORMAL -> bindStudyNormal(context, binding, srsLevel)
+        HankoDisplaySetting.LEVEL -> bindStudyLevel(context, binding, srsLevel)
     }
 }
 
-fun bindHankoNormal(context: Context, binding: ItemGrammarPointOverviewBinding, srsLevel: Int) {
-    binding.studyHankoIcon.setImageResource(R.drawable.ic_bunpyro_hanko)
+fun bindStudyNormal(context: Context, binding: ItemGrammarPointOverviewBinding, srsLevel: Int?) {
+    binding.srsTag.hide()
+    binding.studyHanko.show()
+
     val isBurned = srsLevel == DomainConfig.STUDY_BURNED
-    binding.studyHankoIcon.colorFilter = if (isBurned) {
+    binding.studyHanko.colorFilter = if (isBurned) {
         val goldColor = context.getColorCompat(R.color.hanko_gold)
         PorterDuffColorFilter(goldColor, PorterDuff.Mode.SRC_IN)
     } else {
         null
     }
-    binding.studyHankoIcon.rotation = -30f
 }
 
-fun bindHankoLevel(context: Context, binding: ItemGrammarPointOverviewBinding, srsLevel: Int) {
-    val isBurned = srsLevel == DomainConfig.STUDY_BURNED
-    binding.studyHankoLevel.isVisible = !isBurned
-    binding.studyHankoLevel.text = srsLevel.toString()
+fun bindStudyLevel(context: Context, binding: ItemGrammarPointOverviewBinding, srsLevel: Int?) {
+    binding.studyHanko.hide()
 
-    val (iconResId, colorFilter) = if (isBurned) {
-        val goldColor = context.getColorCompat(R.color.hanko_gold)
-        R.drawable.ic_bunpyro_hanko to PorterDuffColorFilter(goldColor, PorterDuff.Mode.SRC_IN)
-    } else {
-        R.drawable.ic_bunpyro_hanko_empty to null
+    val srsString = srsStringOrNull(context, srsLevel)
+    if (srsString == null) {
+        binding.srsTag.hide()
+        return
     }
-    binding.studyHankoIcon.setImageResource(iconResId)
-    binding.studyHankoIcon.colorFilter = colorFilter
-    binding.studyHankoIcon.rotation = 0f
+
+    binding.srsTag.show()
+    binding.srsTag.text = srsString
+    val isBurned = srsLevel == DomainConfig.STUDY_BURNED
+    binding.srsTag.backgroundTintList = if (isBurned) {
+        val goldColor = context.getColorCompat(R.color.hanko_gold)
+        ColorStateList.valueOf(goldColor)
+    } else {
+        val normalColor = context.getColorCompat(R.color.hanko)
+        ColorStateList.valueOf(normalColor)
+    }
 }

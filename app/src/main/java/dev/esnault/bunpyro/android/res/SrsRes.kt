@@ -12,3 +12,11 @@ fun srsString(context: Context, srsLevel: Int?): String {
         else -> context.getString(R.string.srs_level, srsLevel)
     }
 }
+
+fun srsStringOrNull(context: Context, srsLevel: Int?): String? {
+    return when (srsLevel) {
+        null -> null
+        DomainConfig.STUDY_BURNED -> context.getString(R.string.srs_burned)
+        else -> context.getString(R.string.srs_level, srsLevel)
+    }
+}

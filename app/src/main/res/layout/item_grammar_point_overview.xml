@@ -70,37 +70,18 @@
         tools:ignore="UseCompoundDrawables"
         >
 
-        <FrameLayout
+        <ImageView
             android:id="@+id/study_hanko"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
+            android:contentDescription="@string/contentDescription_studiedHanko"
+            android:src="@drawable/ic_bunpyro_hanko"
             android:visibility="gone"
             tools:visibility="visible"
-            >
-
-            <ImageView
-                android:id="@+id/study_hanko_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="@string/contentDescription_studiedHanko"
-                android:src="@drawable/ic_bunpyro_hanko_empty"
-                />
-
-            <TextView
-                android:id="@+id/study_hanko_level"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:gravity="center"
-                android:textColor="@color/hanko"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                tools:ignore="RtlSymmetry"
-                tools:text="12"
-                />
-
-        </FrameLayout>
+            android:rotation="-30"
+            />
 
         <TextView
             android:id="@+id/jlpt_tag"
@@ -113,10 +94,28 @@
             android:gravity="center_horizontal"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             android:textColor="?colorOnPrimary"
-            android:textSize="11sp"
+            android:textSize="11dp"
             android:textStyle="bold"
             android:visibility="gone"
             tools:text="@string/jlpt_n5"
+            tools:visibility="visible"
+            />
+
+        <TextView
+            android:id="@+id/srs_tag"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/small_tag_background"
+            android:backgroundTint="@color/hanko"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textColor="?colorOnPrimary"
+            android:textSize="11dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="SRS 12"
             tools:visibility="visible"
             />
 
