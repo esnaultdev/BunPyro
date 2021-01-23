@@ -19,7 +19,7 @@
         tools:text="Text"
         />
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progress"
         android:layout_width="24dp"
         android:layout_height="24dp"

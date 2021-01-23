@@ -59,9 +59,8 @@
         app:layout_constraintWidth_max="@dimen/text_max_width"
         />
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/downloading_progress"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:indeterminate="true"
@@ -69,6 +68,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/downloading_title"
+        tools:progress="50"
+        tools:max="100"
         />
 
     <TextView

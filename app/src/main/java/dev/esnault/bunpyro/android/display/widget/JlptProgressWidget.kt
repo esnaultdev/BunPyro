@@ -2,15 +2,14 @@ package dev.esnault.bunpyro.android.display.widget
 
 import android.animation.ObjectAnimator
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.common.Alpha
-import dev.esnault.bunpyro.common.buildHorizontalProgressDrawable
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.common.withAlpha
 import dev.esnault.bunpyro.databinding.WidgetJlptProgressBinding
@@ -90,20 +89,15 @@ class JlptProgressWidget : FrameLayout {
     }
 
     private fun initProgress() {
-        binding.n5Progress.progressDrawable = buildProgressDrawable()
-        binding.n4Progress.progressDrawable = buildProgressDrawable()
-        binding.n3Progress.progressDrawable = buildProgressDrawable()
-        binding.n2Progress.progressDrawable = buildProgressDrawable()
-        binding.n1Progress.progressDrawable = buildProgressDrawable()
+        binding.n5Progress.initProgress()
+        binding.n4Progress.initProgress()
+        binding.n3Progress.initProgress()
+        binding.n2Progress.initProgress()
+        binding.n1Progress.initProgress()
     }
 
-    // Drawable used for the progress bars
-    // I would prefer using XML to define it, but SDK 21 has some troubles when using theme colors.
-    private fun buildProgressDrawable(): Drawable {
-        val backgroundColor = context.getThemeColor(R.attr.colorOnSurface).withAlpha(Alpha.p08)
-        val progressColor = context.getThemeColor(R.attr.colorAccent)
-        val cornerRadius = context.resources.getDimension(R.dimen.jlpt_progressbar_height)
-
-        return buildHorizontalProgressDrawable(backgroundColor, progressColor, cornerRadius)
+    // It would be better to do this in XML, but SDK 21 has some troubles when using theme colors.
+    private fun LinearProgressIndicator.initProgress() {
+        trackColor = context.getThemeColor(R.attr.colorOnSurface).withAlpha(Alpha.p08)
     }
 }

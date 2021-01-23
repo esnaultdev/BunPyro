@@ -197,18 +197,19 @@
             tools:visibility="visible"
             />
 
-        <ProgressBar
+        <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/review_progress"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="120dp"
-            android:layout_height="@dimen/srs_progressbar_height"
-            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
+            app:trackThickness="@dimen/srs_progressbar_thickness"
+            android:layout_marginTop="12dp"
             android:max="12"
             android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/review_progress_text"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="@+id/guideline_start"
             app:layout_constraintTop_toBottomOf="@+id/review_title"
+            app:trackCornerRadius="@dimen/srs_progressbar_thickness"
             tools:progress="11"
             tools:visibility="visible"
             />

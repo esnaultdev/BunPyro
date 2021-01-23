@@ -173,9 +173,8 @@
         app:layout_constraintVertical_chainStyle="packed"
         />
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/apikey_checking_progress"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:indeterminate="true"

@@ -1,8 +1,5 @@
 package dev.esnault.bunpyro.android.screen.lessons
 
-import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.ScaleDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.observe
@@ -106,35 +103,23 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
     }
 
     // Update the progress bar colors for the selected tab.
-    // Using a colorStateList for the progress and background drawables doesn't work on API 21
-    // so we need to update the drawables colors manually
+    // Using a colorStateList for the progress and background drawables isn't available for
+    // progress indicators, so we need to update the drawables colors manually.
     private fun updateTabColors(tabBinding: TabJlptLessonBinding, selected: Boolean) {
-        (tabBinding.progress.progressDrawable as? LayerDrawable)?.apply {
-            findDrawableByLayerId(android.R.id.progress)
-                ?.let { it as? ScaleDrawable }
-                ?.drawable
-                ?.mutate()
-                ?.let { it as? GradientDrawable }
-                ?.apply {
-                    val color = if (selected) {
-                        tabProgressColorSelected
-                    } else {
-                        tabProgressColorNormal
-                    }
-                    setColor(color)
-                }
+        tabBinding.progress.apply {
+            val indicatorColor = if (selected) {
+                tabProgressIndicatorColorSelected
+            } else {
+                tabProgressIndicatorColorNormal
+            }
+            setIndicatorColor(indicatorColor)
 
-            findDrawableByLayerId(android.R.id.background)
-                ?.mutate()
-                ?.let { it as? GradientDrawable }
-                ?.apply {
-                    val color = if (selected) {
-                        tabBackgroundColorSelected
-                    } else {
-                        tabBackgroundColorNormal
-                    }
-                    setColor(color)
-                }
+            val trackColor = if (selected) {
+                tabProgressTrackColorSelected
+            } else {
+                tabProgressTrackColorNormal
+            }
+            setTrackColor(trackColor)
         }
     }
 
@@ -142,16 +127,16 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
 
     // region Resources
 
-    private val tabProgressColorNormal: Int by lazy(LazyThreadSafetyMode.NONE) {
+    private val tabProgressIndicatorColorNormal: Int by lazy(LazyThreadSafetyMode.NONE) {
         requireContext().getThemeColor(R.attr.colorOnPrimary).withAlpha(Alpha.p40)
     }
-    private val tabProgressColorSelected: Int by lazy(LazyThreadSafetyMode.NONE) {
+    private val tabProgressIndicatorColorSelected: Int by lazy(LazyThreadSafetyMode.NONE) {
         requireContext().getThemeColor(R.attr.colorOnPrimary)
     }
-    private val tabBackgroundColorNormal: Int by lazy(LazyThreadSafetyMode.NONE) {
+    private val tabProgressTrackColorNormal: Int by lazy(LazyThreadSafetyMode.NONE) {
         requireContext().getThemeColor(R.attr.colorOnPrimary).withAlpha(Alpha.p20)
     }
-    private val tabBackgroundColorSelected: Int by lazy(LazyThreadSafetyMode.NONE) {
+    private val tabProgressTrackColorSelected: Int by lazy(LazyThreadSafetyMode.NONE) {
         requireContext().getThemeColor(R.attr.colorOnPrimary).withAlpha(Alpha.p30)
     }
 

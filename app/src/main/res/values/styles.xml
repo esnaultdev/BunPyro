@@ -59,14 +59,17 @@
         <item name="cardElevation">2dp</item>
     </style>
 
-    <style name="Widget.App.TabLayout.GrammarPoint" parent="Widget.MaterialComponents.TabLayout.Colored"/>
+    <style name="Widget.App.TabLayout.GrammarPoint" parent="Widget.MaterialComponents.TabLayout.Colored" />
 
-    <style name="Widget.JlptProgress.ProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">
+    <style name="Widget.JlptProgress.ProgressBar" parent="Widget.MaterialComponents.LinearProgressIndicator">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">@dimen/jlpt_progressbar_height</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:indeterminate">false</item>
-        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginTop">20dp</item>
         <item name="android:max">100</item>
+        <item name="trackCornerRadius">@dimen/jlpt_progressbar_thickness</item>
+        <item name="trackThickness">@dimen/jlpt_progressbar_thickness</item>
+        <item name="indicatorColor">?colorAccent</item>
     </style>
 
     <style name="Widget.JlptProgress.LevelText" parent="@style/TextAppearance.MaterialComponents.Body1">
@@ -85,7 +88,7 @@
         <item name="android:layout_marginStart">8dp</item>
     </style>
 
-    <style name="Dialog.List.Title" parent="" >
+    <style name="Dialog.List.Title" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:layout_marginStart">24dp</item>

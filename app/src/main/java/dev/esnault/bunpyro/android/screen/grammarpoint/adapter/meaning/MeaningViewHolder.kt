@@ -2,9 +2,9 @@ package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.text.Spanned
 import androidx.core.view.isVisible
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState as ViewState
@@ -136,9 +136,7 @@ class MeaningViewHolder(
 
         // SRS progress value
         if (srsLevel != null) {
-            val burned = srsLevel == DomainConfig.STUDY_BURNED
-            binding.reviewProgress.progressDrawable = buildProgressDrawable(burned)
-            binding.reviewProgress.progress = srsLevel
+            binding.reviewProgress.bindProgress(srsLevel)
             binding.reviewProgressText.text = srsString(context, srsLevel)
         }
 
@@ -178,14 +176,12 @@ class MeaningViewHolder(
         )
     }
 
-    // Drawable used for the progress bars
-    // I would prefer using XML to define it, but SDK 21 has some troubles when using theme colors.
-    private fun buildProgressDrawable(burned: Boolean): Drawable {
-        val backgroundColor = context.getThemeColor(R.attr.colorOnSurface).withAlpha(Alpha.p10)
-        val progressColorResId = if (burned) R.color.hanko_gold else R.color.hanko
-        val progressColor = context.getColorCompat(progressColorResId)
-        val cornerRadius = context.resources.getDimension(R.dimen.srs_progressbar_height)
+    private fun LinearProgressIndicator.bindProgress(srsLevel: Int) {
+        val burned = srsLevel == DomainConfig.STUDY_BURNED
 
-        return buildHorizontalProgressDrawable(backgroundColor, progressColor, cornerRadius)
+        progress = srsLevel
+        trackColor = context.getThemeColor(R.attr.colorOnSurface).withAlpha(Alpha.p10)
+        val progressColorResId = if (burned) R.color.hanko_gold else R.color.hanko
+        setIndicatorColor(context.getColorCompat(progressColorResId))
     }
 }

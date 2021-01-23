@@ -43,7 +43,7 @@
         tools:text="123/125"
         />
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/n5_progress"
         style="@style/Widget.JlptProgress.ProgressBar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +74,7 @@
         tools:text="123/125"
         />
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/n4_progress"
         style="@style/Widget.JlptProgress.ProgressBar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -105,7 +105,7 @@
         tools:text="123/125"
         />
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/n3_progress"
         style="@style/Widget.JlptProgress.ProgressBar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -136,7 +136,7 @@
         tools:text="12/125"
         />
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/n2_progress"
         style="@style/Widget.JlptProgress.ProgressBar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -167,7 +167,7 @@
         tools:text="1/125"
         />
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/n1_progress"
         style="@style/Widget.JlptProgress.ProgressBar"
         android:layout_marginBottom="16dp"
