@@ -10,6 +10,7 @@ import dev.esnault.bunpyro.android.media.IAudioPlayer
 import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.review.subview.summary.SummaryGrammarOverview
+import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState as ViewState
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.review.IReviewService
@@ -44,6 +45,7 @@ class ReviewViewModel(
     private var hintLevelSettingJob: Job? = null
 
     init {
+        Analytics.screen(name = "review")
         loadReviews()
     }
 

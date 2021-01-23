@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.NavigationCommand
 import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
+import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
@@ -61,6 +62,7 @@ class AllGrammarViewModel(
     private var updateFilterJob: Job? = null
 
     init {
+        Analytics.screen(name = "allGrammar")
         observeGrammar()
     }
 

@@ -8,6 +8,7 @@ import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.NavigationCommand
 import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
+import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.data.repository.lesson.ILessonRepository
 import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
@@ -62,6 +63,8 @@ class HomeViewModel(
     private var searchJob: Job? = null
 
     init {
+        Analytics.screen(name = "home")
+
         getHankoDisplay()
         observeJlptProgress()
         observeReviewCount()

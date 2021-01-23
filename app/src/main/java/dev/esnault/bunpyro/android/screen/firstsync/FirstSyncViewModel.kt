@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
+import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.data.service.sync.SyncResult
 import dev.esnault.bunpyro.data.service.sync.ISyncService
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +30,7 @@ class FirstSyncViewModel(
     private var downloadJob: Job? = null
 
     init {
+        Analytics.screen(name = "firstSync")
         syncData()
     }
 

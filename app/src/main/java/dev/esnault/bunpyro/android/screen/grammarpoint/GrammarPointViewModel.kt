@@ -11,6 +11,7 @@ import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.android.utils.toClipBoardString
+import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
 import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
@@ -57,6 +58,9 @@ class GrammarPointViewModel(
     private var furiganaSettingJob: Job? = null
 
     init {
+        Analytics.screen(name = "grammarPoint") {
+            param(Analytics.Param.ITEM_ID, id)
+        }
         loadGrammarPoint(id)
     }
 

@@ -17,6 +17,7 @@ import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.utils.setupWithNav
 import dev.esnault.bunpyro.common.openUrlInBrowser
+import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.databinding.FragmentSettingsBinding
 import dev.esnault.bunpyro.domain.entities.settings.NightModeSetting
 
@@ -28,6 +29,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Analytics.screen(name = "settings")
 
         val navController = findNavController()
         binding.toolbar.setupWithNav(navController)

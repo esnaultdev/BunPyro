@@ -9,6 +9,7 @@ import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.utils.setupWithNav
 import dev.esnault.bunpyro.common.openUrlInBrowser
+import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.databinding.FragmentSettingsAboutBinding
 
 class SettingsAboutFragment : BaseFragment<FragmentSettingsAboutBinding>() {
@@ -18,6 +19,8 @@ class SettingsAboutFragment : BaseFragment<FragmentSettingsAboutBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Analytics.screen(name = "settings.about")
 
         binding.toolbar.setupWithNav(findNavController())
 

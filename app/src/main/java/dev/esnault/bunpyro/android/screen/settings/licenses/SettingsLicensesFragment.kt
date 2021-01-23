@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.utils.setupWithNav
+import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.databinding.FragmentSettingsLicensesBinding
 
 class SettingsLicensesFragment : BaseFragment<FragmentSettingsLicensesBinding>() {
@@ -17,6 +18,8 @@ class SettingsLicensesFragment : BaseFragment<FragmentSettingsLicensesBinding>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Analytics.screen(name = "settings.licenses")
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)

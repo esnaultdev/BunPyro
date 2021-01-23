@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.adapter.SearchAdapter
 import dev.esnault.bunpyro.common.hideKeyboardFrom
+import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchResult
 import dev.esnault.bunpyro.domain.entities.settings.HankoDisplaySetting
@@ -75,6 +76,7 @@ class SearchUiHelper(
         searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 listener.onOpenSearch()
+                Analytics.screen(name = "search")
                 return true
             }
 

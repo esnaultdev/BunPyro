@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
+import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.data.repository.apikey.ApiKeyCheckResult
 import dev.esnault.bunpyro.data.repository.apikey.IApiKeyRepository
 import kotlinx.coroutines.Job
@@ -30,6 +31,7 @@ class ApiKeyViewModel(
     private var saveJob: Job? = null
 
     init {
+        Analytics.screen(name = "apiKey")
         _viewState.postValue(ViewState.Default(false))
     }
 
