@@ -23,8 +23,7 @@
             android:id="@+id/collapsing_toolbar_layout"
             style="@style/Widget.App.Toolbar.Colored"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/app_bar_height_extended"
-            android:layout_gravity="top"
+            android:layout_height="match_parent"
             app:collapsedTitleTextAppearance="?attr/textAppearanceHeadline6"
             app:expandedTitleGravity="bottom"
             app:expandedTitleMarginBottom="@dimen/tab_height"
@@ -33,7 +32,7 @@
             app:expandedTitleMarginTop="0dp"
             app:expandedTitleTextAppearance="@style/TextAppearance.App.GrammarPointTitle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:maxLines="2"
+            app:maxLines="3"
             app:toolbarId="@+id/toolbar"
             >
 
@@ -44,7 +43,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:menu="@menu/grammar_point"
-                tools:title="This is a long title that should span multiple lines"
+                tools:title="Thisisalongtitlethatshouldspanmultiplelineswithoutanyissueevenifwithoutspaces"
                 />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
