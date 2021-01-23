@@ -71,7 +71,9 @@ dependencies {
     implementation "androidx.preference:preference-ktx:${versions.androidx.preference}"
 
     // Firebase
-    implementation "com.google.firebase:firebase-crashlytics:${versions.firebase.crashlytics}"
+    implementation platform("com.google.firebase:firebase-bom:${versions.firebase_bom}")
+    implementation "com.google.firebase:firebase-crashlytics-ktx"
+    implementation "com.google.firebase:firebase-analytics-ktx"
 
     // UI
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidx.constraintlayout}"
