@@ -11,6 +11,6 @@ class Clipboard(context: Context) : IClipboard {
 
     override fun copy(label: String, text: String) {
         val clip = ClipData.newPlainText(label, text)
-        clipboard.primaryClip = clip
+        clipboard.setPrimaryClip(clip)
     }
 }
