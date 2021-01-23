@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'com.google.gms.google-services'
@@ -51,8 +50,8 @@ android {
         ]
     }
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding true
     }
 
     sourceSets {
@@ -69,7 +68,7 @@ dependencies {
     // AndroidX
     implementation "androidx.appcompat:appcompat:${versions.androidx.appcompat}"
     implementation "androidx.core:core-ktx:${versions.androidx.core}"
-    implementation "androidx.preference:preference:${versions.androidx.preference}"
+    implementation "androidx.preference:preference-ktx:${versions.androidx.preference}"
 
     // Firebase
     implementation "com.google.firebase:firebase-crashlytics:${versions.firebase.crashlytics}"
