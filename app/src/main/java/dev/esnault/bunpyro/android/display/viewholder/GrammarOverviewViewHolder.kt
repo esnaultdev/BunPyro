@@ -73,7 +73,13 @@ fun bindStudy(
 
 fun bindStudyNormal(context: Context, binding: ItemGrammarPointOverviewBinding, srsLevel: Int?) {
     binding.srsTag.hide()
-    binding.studyHanko.show()
+
+    if (srsLevel == null) {
+        binding.studyHanko.hide()
+        return
+    } else {
+        binding.studyHanko.show()
+    }
 
     val isBurned = srsLevel == DomainConfig.STUDY_BURNED
     binding.studyHanko.colorFilter = if (isBurned) {
