@@ -10,10 +10,10 @@ data class License(
 
 val licenses = listOf(
     License(
-        title = "WanaKanaJava",
-        summary = "Java version of WanaKana, library for transliterating Hiragana, Katakana and Romaji.",
+        title = "wanakana-kt",
+        summary = "Kotlin port of WanaKana, a library for detecting and transliterating Hiragana <--> Katakana <--> Romaji.",
         license = "MIT License",
-        url = "https://github.com/MasterKale/WanaKanaJava"
+        url = "https://github.com/esnaultdev/wanakana-kt"
     ),
     License(
         title = "SQLite_Custom",
@@ -74,12 +74,6 @@ val licenses = listOf(
         summary = "Modular and customizable Material Design UI components for Android.",
         license = "Apache License 2.0",
         url = "https://github.com/material-components/material-components-android"
-    ),
-    License(
-        title = "MaterialProgressBar",
-        summary = "Material Design ProgressBar with consistent appearance",
-        license = "Apache License 2.0",
-        url = "https://github.com/zhanghai/MaterialProgressBar"
     ),
     License(
         title = "BetterLinkMovementMethod",
