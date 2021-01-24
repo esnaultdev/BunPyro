@@ -8,11 +8,11 @@ import com.google.firebase.ktx.Firebase
 
 object Analytics {
 
-    val firebaseAnalytics = Firebase.analytics
+    private val firebaseAnalytics = Firebase.analytics
 
-    inline fun screen(
+    fun screen(
         name: String,
-        crossinline block: (ParametersBuilder.() -> Unit) = {}
+        block: (ParametersBuilder.() -> Unit) = {}
     ) {
         val builder = ParametersBuilder()
         builder.block()
