@@ -283,14 +283,18 @@
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/question_action_audio_loading"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:elevation="8dp"
             android:indeterminate="true"
-            android:indeterminateTint="?colorOnPrimary"
-            android:padding="12dp"
             android:visibility="gone"
+            app:indicatorColor="?colorOnPrimary"
+            app:indicatorSize="20dp"
+            app:trackThickness="2dp"
+            tools:indeterminate="false"
+            tools:max="100"
+            tools:progress="75"
             tools:visibility="visible"
             />
 

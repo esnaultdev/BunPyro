@@ -135,27 +135,30 @@
                 android:contentDescription="@string/contentDescription_audioControl"
                 android:padding="12dp"
                 android:src="@drawable/ic_stop_24dp"
-                app:tint="?colorControlNormal"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/expand_button"
                 app:layout_constraintEnd_toStartOf="@+id/more"
                 app:layout_constraintTop_toTopOf="@+id/expand_button"
+                app:tint="?colorControlNormal"
                 tools:visibility="visible"
                 />
 
-            <ProgressBar
+            <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/audio_loading"
-                style="@style/Widget.AppCompat.ProgressBar"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:indeterminate="true"
-                android:indeterminateTint="?colorControlNormal"
-                android:padding="12dp"
                 android:visibility="gone"
+                app:indicatorColor="?colorControlNormal"
+                app:indicatorSize="20dp"
                 app:layout_constraintBottom_toBottomOf="@id/audio_icon"
                 app:layout_constraintEnd_toEndOf="@id/audio_icon"
                 app:layout_constraintStart_toStartOf="@id/audio_icon"
                 app:layout_constraintTop_toTopOf="@id/audio_icon"
+                app:trackThickness="2dp"
+                tools:indeterminate="false"
+                tools:max="100"
+                tools:progress="75"
                 tools:visibility="visible"
                 />
 
