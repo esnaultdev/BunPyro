@@ -6,12 +6,12 @@
     <attr name="colorSurfaceSecondary" format="color" />
     <attr name="secondaryColorOnToolbar" format="color" />
     <attr name="secondaryColorOnPrimary" format="color" />
-    <attr name="colorControlNormalStateless" format="color"/>
-    <attr name="launchScreenBackgroundColor" format="color"/>
+    <attr name="colorControlNormalStateless" format="color" />
+    <attr name="launchScreenBackgroundColor" format="color" />
 
     <declare-styleable name="OutlineButtonProgress">
-        <attr format="reference" name="icon"/>
-        <attr format="string" name="android:text"/>
-        <attr format="boolean" name="progress"/>
+        <attr name="icon" format="reference" />
+        <attr name="android:text" format="string" />
+        <attr name="progress" format="boolean" />
     </declare-styleable>
 </resources>

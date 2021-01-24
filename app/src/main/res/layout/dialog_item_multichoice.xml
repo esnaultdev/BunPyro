@@ -12,8 +12,8 @@
 
     <com.afollestad.materialdialogs.internal.rtl.RtlTextView
         android:id="@+id/title"
-        tools:text="Item"
         style="@style/MD_ListItemText.Choice"
+        tools:text="Item"
         />
 
 </LinearLayout>

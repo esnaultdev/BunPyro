@@ -68,8 +68,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/downloading_title"
-        tools:progress="50"
         tools:max="100"
+        tools:progress="50"
         />
 
     <TextView

@@ -125,8 +125,8 @@
 
         <argument
             android:name="readOnly"
-            app:argType="boolean"
             android:defaultValue="false"
+            app:argType="boolean"
             />
 
         <action

@@ -77,10 +77,10 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
             android:contentDescription="@string/contentDescription_studiedHanko"
+            android:rotation="-30"
             android:src="@drawable/ic_bunpyro_hanko"
             android:visibility="gone"
             tools:visibility="visible"
-            android:rotation="-30"
             />
 
         <TextView

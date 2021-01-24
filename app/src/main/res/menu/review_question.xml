@@ -8,6 +8,7 @@
         android:id="@+id/action_furigana"
         android:icon="@drawable/ic_kana_on_24dp"
         android:title="@string/action_furigana_show"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        />
 
 </menu>
