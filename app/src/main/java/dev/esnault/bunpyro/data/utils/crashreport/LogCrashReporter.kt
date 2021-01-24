@@ -1,11 +1,11 @@
 package dev.esnault.bunpyro.data.utils.crashreport
 
-import android.util.Log
+import timber.log.Timber
 
 
 class LogCrashReporter : ICrashReporter {
 
     override fun recordNonFatal(e: Exception) {
-        Log.e("LogCrashReporter", "Non fatal error", e)
+        Timber.e(e, "Non fatal error")
     }
 }
