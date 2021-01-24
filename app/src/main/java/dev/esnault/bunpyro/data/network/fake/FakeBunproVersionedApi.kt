@@ -4,6 +4,7 @@ import dev.esnault.bunpyro.data.network.BunproVersionedApi
 import dev.esnault.bunpyro.data.network.entities.*
 import dev.esnault.bunpyro.data.network.entities.review.CurrentReview
 import dev.esnault.bunpyro.data.network.entities.review.ReviewsData
+import kotlinx.coroutines.delay
 import retrofit2.Response
 import timber.log.Timber
 
@@ -48,16 +49,19 @@ class FakeBunproVersionedApi(
 
     override suspend fun addToReviews(grammarPointId: Long): Response<Unit> {
         Timber.d("addToReviews(grammarPointId=$grammarPointId)")
+        delay(2000L)
         return addToReviews.toResponse()
     }
 
     override suspend fun resetReview(reviewId: Long): Response<Unit> {
         Timber.d("resetReviews(reviewId=$reviewId)")
+        delay(2000L)
         return resetReview.toResponse()
     }
 
     override suspend fun removeReview(reviewId: Long): Response<Unit> {
         Timber.d("removeReview(reviewId=$reviewId)")
+        delay(2000L)
         return removeReview.toResponse()
     }
 
