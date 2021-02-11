@@ -1,9 +1,11 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'androidx.navigation.safeargs.kotlin'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+}
 
 android {
     compileSdkVersion 30
@@ -43,6 +45,7 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
+        useIR = true
         freeCompilerArgs += [
                 "-Xallow-result-return-type",
                 "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
@@ -52,11 +55,17 @@ android {
 
     buildFeatures {
         viewBinding true
+        compose true
     }
 
     sourceSets {
         // Adds exported schema location as test app assets.
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion versions.androidx.compose
+        kotlinCompilerVersion versions.kotlin
     }
 }
 
@@ -81,6 +90,15 @@ dependencies {
     implementation "com.afollestad.material-dialogs:core:${versions.materialdialogs}"
     implementation "me.saket:better-link-movement-method:${versions.betterlinkmovementmethod}"
     implementation "com.andkulikov:transitionseverywhere:${versions.transitionseverywhere}"
+
+    // Compose
+    implementation "androidx.compose.ui:ui:${versions.androidx.compose}"
+    implementation "androidx.compose.ui:ui-tooling:${versions.androidx.compose}"
+    implementation "androidx.compose.foundation:foundation:${versions.androidx.compose}"
+    implementation "androidx.compose.material:material:${versions.androidx.compose}"
+    // implementation "androidx.compose.material:material-icons-core:${versions.androidx.compose}"
+    // implementation "androidx.compose.material:material-icons-extended:${versions.androidx.compose}"
+    // implementation "androidx.compose.runtime:runtime-livedata:${versions.androidx.compose}"
 
     // Architecture components
     implementation "androidx.navigation:navigation-fragment-ktx:${versions.androidx.navigation}"

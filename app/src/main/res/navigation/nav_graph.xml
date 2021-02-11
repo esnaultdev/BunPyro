@@ -181,7 +181,6 @@
     <fragment
         android:id="@+id/settingsAboutScreen"
         android:name="dev.esnault.bunpyro.android.screen.settings.about.SettingsAboutFragment"
-        tools:layout="@layout/fragment_settings_about"
         />
 
     <fragment
