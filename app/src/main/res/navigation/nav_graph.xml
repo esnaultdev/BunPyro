@@ -175,7 +175,6 @@
     <fragment
         android:id="@+id/settingsLicensesScreen"
         android:name="dev.esnault.bunpyro.android.screen.settings.licenses.SettingsLicensesFragment"
-        tools:layout="@layout/fragment_settings_licenses"
         />
 
     <fragment
