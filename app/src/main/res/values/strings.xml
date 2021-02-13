@@ -103,6 +103,7 @@
     <string name="search_hint">English, 漢字, かな, romaji</string>
     <string name="search_header_count">%d found</string>
 
+    <string name="contentDescription_navigateBack">Navigate Back</string>
     <string name="contentDescription_studiedHanko">Studied</string>
     <string name="contentDescription_appLogo">App Logo</string>
     <string name="contentDescription_more">More</string>

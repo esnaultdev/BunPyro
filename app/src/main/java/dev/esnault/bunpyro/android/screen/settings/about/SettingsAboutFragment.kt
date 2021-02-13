@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.compose.AppTheme
 import dev.esnault.bunpyro.android.display.compose.NavigateBackIcon
+import dev.esnault.bunpyro.android.display.compose.SimpleScreen
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.ComposeFragment
@@ -34,7 +35,6 @@ class SettingsAboutFragment : ComposeFragment() {
         Analytics.screen(name = "settings.about")
     }
 
-    @Preview
     @Composable
     override fun FragmentContent() {
         AboutContent(
@@ -55,18 +55,11 @@ private fun AboutContent(
     navController: NavController?,
     openUrl: (url: String) -> Unit
 ) {
-    AppTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text(stringResource(R.string.settings_root_about)) },
-                    navigationIcon = { NavigateBackIcon(navController = navController) }
-                )
-            },
-            bodyContent = {
-                BodyContent(openUrl)
-            }
-        )
+    SimpleScreen(
+        navController = navController,
+        title = stringResource(R.string.settings_root_about)
+    ) {
+        BodyContent(openUrl)
     }
 }
 
