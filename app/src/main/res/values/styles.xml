@@ -2,6 +2,8 @@
 
     <style name="DayNight.AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/launch_screen</item>
+        <!-- Setup the right color for the status bar -->
+        <item name="colorPrimaryDark">@color/md_blue_800</item>
     </style>
 
     <style name="AppTheme.Launcher" parent="DayNight.AppTheme.Launcher">
