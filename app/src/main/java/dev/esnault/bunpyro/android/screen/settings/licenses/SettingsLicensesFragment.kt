@@ -6,10 +6,9 @@ import android.view.View
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnForIndexed
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -106,9 +105,11 @@ private fun LicenseItem(
     Column(modifier = rowModifier) {
         Text(text = license.title, style = typography.body1)
         Spacer(modifier = Modifier.preferredHeight(4.dp))
-        Text(text = license.summary, style = typography.body2)
-        Spacer(modifier = Modifier.preferredHeight(4.dp))
-        Text(text = license.license, style = typography.body2)
+        Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+            Text(text = license.summary, style = typography.body2)
+            Spacer(modifier = Modifier.preferredHeight(4.dp))
+            Text(text = license.license, style = typography.body2)
+        }
     }
 }
 
