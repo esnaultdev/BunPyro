@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumnForIndexed
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
@@ -75,10 +76,12 @@ private fun BodyContent(
     onLicenseClick: (license: License) -> Unit
 ) {
     val lastIndex: Int = licenses.lastIndex
-    LazyColumnForIndexed(items = licenses) { index, license ->
-        LicenseItem(license = license, onClick = { onLicenseClick(license) })
-        if (index != lastIndex) {
-            Divider(modifier = Modifier.fillParentMaxWidth())
+    LazyColumn {
+        itemsIndexed(items = licenses) {  index, license ->
+            LicenseItem(license = license, onClick = { onLicenseClick(license) })
+            if (index != lastIndex) {
+                Divider(modifier = Modifier.fillParentMaxWidth())
+            }
         }
     }
 }
@@ -114,4 +117,3 @@ private fun LicenseItem(
         }
     }
 }
-

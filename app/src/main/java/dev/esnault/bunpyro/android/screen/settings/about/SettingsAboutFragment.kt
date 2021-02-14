@@ -3,8 +3,9 @@ package dev.esnault.bunpyro.android.screen.settings.about
 
 import android.os.Bundle
 import android.view.View
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -74,8 +75,9 @@ private fun AboutContent(
 
 @Composable
 private fun BodyContent(listener: ContentListener) {
-    ScrollableColumn(
+    Column(
         modifier = Modifier
+            .verticalScroll(rememberScrollState())
             .padding(16.dp)
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
