@@ -267,7 +267,7 @@ class SyncService(
 
             val reviewsData = ReviewsData(
                 reviews = rawReviewsData.reviews.filter { grammarPointIds.contains(it.grammarId) },
-                ghostReviews =rawReviewsData.ghostReviews.filter { grammarPointIds.contains(it.grammarId) }
+                ghostReviews = rawReviewsData.ghostReviews.filter { grammarPointIds.contains(it.grammarId) }
             )
 
             val normalReviewMapper = NormalReviewMapper()

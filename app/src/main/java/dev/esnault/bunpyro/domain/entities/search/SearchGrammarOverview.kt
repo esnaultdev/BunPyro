@@ -1,6 +1,7 @@
 package dev.esnault.bunpyro.domain.entities.search
 
 import dev.esnault.bunpyro.domain.entities.JLPT
+import dev.esnault.bunpyro.domain.utils.lazyNone
 import org.jsoup.Jsoup
 
 
@@ -14,7 +15,7 @@ data class SearchGrammarOverview(
     val jlpt: JLPT
 ) {
 
-    val processedMeaning: String by lazy(LazyThreadSafetyMode.NONE) {
+    val processedMeaning: String by lazyNone {
         if (meaning.contains('<')) {
             Jsoup.parse(meaning).text()
         } else {

@@ -5,8 +5,9 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.esnault.bunpyro.data.mapper.IMapper
 import dev.esnault.bunpyro.domain.entities.JLPT
 import dev.esnault.bunpyro.domain.entities.grammar.AllGrammarFilter
+import dev.esnault.bunpyro.domain.utils.lazyNone
 
-private val moshi: Moshi by lazy(LazyThreadSafetyMode.NONE) {
+private val moshi: Moshi by lazyNone {
     Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()

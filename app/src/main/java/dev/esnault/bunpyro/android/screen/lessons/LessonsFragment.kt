@@ -17,6 +17,7 @@ import dev.esnault.bunpyro.common.withAlpha
 import dev.esnault.bunpyro.databinding.FragmentLessonsBinding
 import dev.esnault.bunpyro.databinding.TabJlptLessonBinding
 import dev.esnault.bunpyro.domain.entities.JLPT
+import dev.esnault.bunpyro.domain.utils.lazyNone
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -127,16 +128,16 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
 
     // region Resources
 
-    private val tabProgressIndicatorColorNormal: Int by lazy(LazyThreadSafetyMode.NONE) {
+    private val tabProgressIndicatorColorNormal: Int by lazyNone {
         requireContext().getThemeColor(R.attr.colorOnPrimary).withAlpha(Alpha.p40)
     }
-    private val tabProgressIndicatorColorSelected: Int by lazy(LazyThreadSafetyMode.NONE) {
+    private val tabProgressIndicatorColorSelected: Int by lazyNone {
         requireContext().getThemeColor(R.attr.colorOnPrimary)
     }
-    private val tabProgressTrackColorNormal: Int by lazy(LazyThreadSafetyMode.NONE) {
+    private val tabProgressTrackColorNormal: Int by lazyNone {
         requireContext().getThemeColor(R.attr.colorOnPrimary).withAlpha(Alpha.p20)
     }
-    private val tabProgressTrackColorSelected: Int by lazy(LazyThreadSafetyMode.NONE) {
+    private val tabProgressTrackColorSelected: Int by lazyNone {
         requireContext().getThemeColor(R.attr.colorOnPrimary).withAlpha(Alpha.p30)
     }
 

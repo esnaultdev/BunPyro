@@ -28,6 +28,7 @@ import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.common.hideKeyboardFrom
 import dev.esnault.bunpyro.databinding.LayoutReviewQuestionBinding
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
+import dev.esnault.bunpyro.domain.utils.lazyNone
 import dev.esnault.wanakana.android.WanakanaAndroid
 import dev.esnault.wanakana.android.WanakanaAndroid.Binding as WKBinding
 
@@ -50,13 +51,13 @@ class ReviewQuestionView(
     )
 
     // Resources
-    private val primaryColor: Int by lazy(LazyThreadSafetyMode.NONE) {
+    private val primaryColor: Int by lazyNone {
         context.getThemeColor(R.attr.colorPrimary)
     }
-    private val correctColor: Int by lazy(LazyThreadSafetyMode.NONE) {
+    private val correctColor: Int by lazyNone {
         context.getColorCompat(R.color.answer_correct)
     }
-    private val incorrectColor: Int by lazy(LazyThreadSafetyMode.NONE) {
+    private val incorrectColor: Int by lazyNone {
         context.getColorCompat(R.color.answer_incorrect)
     }
 
@@ -467,7 +468,7 @@ class ReviewQuestionView(
         }
     }
 
-    private val bunProTextListener: BunProTextListener by lazy(LazyThreadSafetyMode.NONE) {
+    private val bunProTextListener: BunProTextListener by lazyNone {
         BunProTextListener(onGrammarPointClick = listener.onGrammarPointClick)
     }
 

@@ -17,6 +17,7 @@ import dev.esnault.bunpyro.databinding.TabLessonBinding
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.JlptLesson
 import dev.esnault.bunpyro.domain.entities.settings.HankoDisplaySetting
+import dev.esnault.bunpyro.domain.utils.lazyNone
 
 
 class JlptLessonAdapter(
@@ -147,16 +148,16 @@ class JlptLessonAdapter(
 
         // region Resources
 
-        private val tabProgressIndicatorColorNormal: Int by lazy(LazyThreadSafetyMode.NONE) {
+        private val tabProgressIndicatorColorNormal: Int by lazyNone {
             context.getThemeColor(R.attr.colorOnSurface).withAlpha(Alpha.p25)
         }
-        private val tabProgressIndicatorColorSelected: Int by lazy(LazyThreadSafetyMode.NONE) {
+        private val tabProgressIndicatorColorSelected: Int by lazyNone {
             context.getThemeColor(R.attr.colorControlActivated)
         }
-        private val tabProgressTrackColorNormal: Int by lazy(LazyThreadSafetyMode.NONE) {
+        private val tabProgressTrackColorNormal: Int by lazyNone {
             context.getThemeColor(R.attr.colorOnSurface).withAlpha(Alpha.p10)
         }
-        private val tabProgressTrackColorSelected: Int by lazy(LazyThreadSafetyMode.NONE) {
+        private val tabProgressTrackColorSelected: Int by lazyNone {
             context.getThemeColor(R.attr.colorControlActivated).withAlpha(Alpha.p20)
         }
 

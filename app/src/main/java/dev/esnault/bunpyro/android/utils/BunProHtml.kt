@@ -14,6 +14,7 @@ import dev.esnault.bunpyro.android.display.span.GrammarLinkSpan
 import dev.esnault.bunpyro.android.display.span.TagSpan
 import dev.esnault.bunpyro.common.dpToPxRaw
 import dev.esnault.bunpyro.common.getThemeColor
+import dev.esnault.bunpyro.domain.utils.lazyNone
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.Node
@@ -30,19 +31,19 @@ class BunProHtml(
         object Strong
     }
 
-    private val chuiColor: Int by lazy(LazyThreadSafetyMode.NONE) {
+    private val chuiColor: Int by lazyNone {
         context.getThemeColor(R.attr.chuiColor)
     }
 
-    private val emphasisColor: Int by lazy(LazyThreadSafetyMode.NONE) {
+    private val emphasisColor: Int by lazyNone {
         context.getThemeColor(R.attr.textEmphasisColor)
     }
 
-    private val answerMinWidth: Float by lazy(LazyThreadSafetyMode.NONE) {
+    private val answerMinWidth: Float by lazyNone {
         context.resources.getDimension(R.dimen.answerSpan_minWidth)
     }
 
-    private val hintTextColor: Int by lazy(LazyThreadSafetyMode.NONE) {
+    private val hintTextColor: Int by lazyNone {
         context.getThemeColor(android.R.attr.textColorSecondary)
     }
 

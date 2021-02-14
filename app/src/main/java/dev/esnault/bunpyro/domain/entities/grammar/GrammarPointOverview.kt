@@ -1,5 +1,6 @@
 package dev.esnault.bunpyro.domain.entities.grammar
 
+import dev.esnault.bunpyro.domain.utils.lazyNone
 import org.jsoup.Jsoup
 
 
@@ -11,7 +12,7 @@ data class GrammarPointOverview(
     val incomplete: Boolean
 ) {
 
-    val processedMeaning: String by lazy(LazyThreadSafetyMode.NONE) {
+    val processedMeaning: String by lazyNone {
         if (meaning.contains('<')) {
             Jsoup.parse(meaning).text()
         } else {

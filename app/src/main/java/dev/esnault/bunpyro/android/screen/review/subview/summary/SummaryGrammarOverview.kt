@@ -2,6 +2,7 @@ package dev.esnault.bunpyro.android.screen.review.subview.summary
 
 import dev.esnault.bunpyro.domain.entities.JLPT
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
+import dev.esnault.bunpyro.domain.utils.lazyNone
 import org.jsoup.Jsoup
 
 
@@ -13,7 +14,7 @@ data class SummaryGrammarOverview(
     val jlpt: JLPT
 ) {
 
-    val processedMeaning: String by lazy(LazyThreadSafetyMode.NONE) {
+    val processedMeaning: String by lazyNone {
         if (meaning.contains('<')) {
             Jsoup.parse(meaning).text()
         } else {
