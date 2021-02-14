@@ -37,8 +37,10 @@ class SettingsLicensesFragment : ComposeFragment() {
     override fun FragmentContent() {
         LicensesContent(
             navController = findNavController(),
-            openUrl = { url -> context?.openUrlInBrowser(url) },
-            licenses = licenses
+            licenses = licenses,
+            onLicenseClick = { license ->
+                context?.openUrlInBrowser(license.url)
+            }
         )
     }
 }
@@ -48,33 +50,33 @@ class SettingsLicensesFragment : ComposeFragment() {
 private fun DefaultPreview() {
     LicensesContent(
         navController = null,
-        openUrl = {},
-        licenses = licenses
+        licenses = licenses,
+        onLicenseClick = {}
     )
 }
 
 @Composable
 private fun LicensesContent(
     navController: NavController?,
-    openUrl: (url: String) -> Unit,
-    licenses: List<License>
+    licenses: List<License>,
+    onLicenseClick: (license: License) -> Unit
 ) {
     SimpleScreen(
         navController = navController,
         title = stringResource(R.string.settings_root_licenses)
     ) {
-        BodyContent(openUrl, licenses)
+        BodyContent(licenses, onLicenseClick)
     }
 }
 
 @Composable
 private fun BodyContent(
-    openUrl: (url: String) -> Unit,
-    licenses: List<License>
+    licenses: List<License>,
+    onLicenseClick: (license: License) -> Unit
 ) {
     val lastIndex: Int = licenses.lastIndex
     LazyColumnForIndexed(items = licenses) { index, license ->
-        LicenseItem(openUrl = openUrl, license = license)
+        LicenseItem(license = license, onClick = { onLicenseClick(license) })
         if (index != lastIndex) {
             Divider(modifier = Modifier.fillParentMaxWidth())
         }
@@ -88,19 +90,19 @@ private fun BodyContent(
 @Composable
 private fun LicenseItemPreview() {
     AppTheme {
-        LicenseItem(openUrl = { }, license = licenses.first())
+        LicenseItem(license = licenses.first(), onClick = {})
     }
 }
 
 @Composable
 private fun LicenseItem(
-    openUrl: (url: String) -> Unit,
-    license: License
+    license: License,
+    onClick: () -> Unit
 ) {
     val typography = MaterialTheme.typography
     val rowModifier = Modifier
         .fillMaxWidth()
-        .clickable(onClick = { openUrl(license.url) })
+        .clickable(onClick = onClick)
         .padding(horizontal = 16.dp, vertical = 8.dp)
     Column(modifier = rowModifier) {
         Text(text = license.title, style = typography.body1)

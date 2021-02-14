@@ -16,8 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dev.esnault.bunpyro.R
-import dev.esnault.bunpyro.android.display.compose.AppTheme
-import dev.esnault.bunpyro.android.display.compose.NavigateBackIcon
 import dev.esnault.bunpyro.android.display.compose.SimpleScreen
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
@@ -37,34 +35,45 @@ class SettingsAboutFragment : ComposeFragment() {
 
     @Composable
     override fun FragmentContent() {
+        val openUrl = { url: String -> context?.openUrlInBrowser(url) }
         AboutContent(
             navController = findNavController(),
-            openUrl = { url -> context?.openUrlInBrowser(url) }
+            listener = ContentListener(
+                onBunproClick = { openUrl(ScreenConfig.Url.bunpro) },
+                onDevWebsiteClick = { openUrl(ScreenConfig.Url.devWebsite) },
+                onGithubRepoClick = { openUrl(ScreenConfig.Url.githubRepo) }
+            )
         )
     }
 }
 
+private class ContentListener(
+    val onBunproClick: () -> Unit = {},
+    val onDevWebsiteClick: () -> Unit = {},
+    val onGithubRepoClick: () -> Unit = {}
+)
+
 @Preview
 @Composable
 private fun DefaultPreview() {
-    AboutContent(navController = null, openUrl = {})
+    AboutContent(navController = null, listener = ContentListener())
 }
 
 @Composable
 private fun AboutContent(
     navController: NavController?,
-    openUrl: (url: String) -> Unit
+    listener: ContentListener
 ) {
     SimpleScreen(
         navController = navController,
         title = stringResource(R.string.settings_root_about)
     ) {
-        BodyContent(openUrl)
+        BodyContent(listener)
     }
 }
 
 @Composable
-private fun BodyContent(openUrl: (url: String) -> Unit) {
+private fun BodyContent(listener: ContentListener) {
     ScrollableColumn(
         modifier = Modifier
             .padding(16.dp)
@@ -84,9 +93,7 @@ private fun BodyContent(openUrl: (url: String) -> Unit) {
         )
 
         Spacer(modifier = Modifier.preferredHeight(buttonMargin))
-        TextButton(
-            onClick = { openUrl(ScreenConfig.Url.bunpro) }
-        ) {
+        TextButton(onClick = listener.onBunproClick) {
             Text(stringResource(R.string.about_checkBunpro))
         }
         Spacer(modifier = Modifier.preferredHeight(buttonMargin))
@@ -104,9 +111,7 @@ private fun BodyContent(openUrl: (url: String) -> Unit) {
         )
 
         Spacer(modifier = Modifier.preferredHeight(buttonMargin))
-        TextButton(
-            onClick = { openUrl(ScreenConfig.Url.devWebsite) }
-        ) {
+        TextButton(onClick = listener.onDevWebsiteClick) {
             Text(stringResource(R.string.about_dev_website))
         }
         Spacer(modifier = Modifier.preferredHeight(buttonMargin))
@@ -124,16 +129,14 @@ private fun BodyContent(openUrl: (url: String) -> Unit) {
         )
 
         Spacer(modifier = Modifier.preferredHeight(buttonMargin))
-        TextButton(
-            onClick = { openUrl(ScreenConfig.Url.githubRepo) }
-        ) {
+        TextButton(onClick = listener.onGithubRepoClick) {
             Text(stringResource(R.string.about_sources_action))
         }
     }
 }
 
 @Composable
-fun SpacedDivider() {
+private fun SpacedDivider() {
     val dividerWidth = 144.dp
     val dividerMargin = 16.dp
 
