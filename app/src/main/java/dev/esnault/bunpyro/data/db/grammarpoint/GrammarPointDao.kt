@@ -38,10 +38,10 @@ GROUP BY lesson
     abstract fun getLessonsProgress(): Flow<List<LessonProgressDb>>
 
     @Insert
-    abstract suspend fun insertAll(users: List<GrammarPointDb>)
+    abstract suspend fun insertAll(grammarPoints: List<GrammarPointDb>)
 
     @Update
-    abstract suspend fun updateAll(users: List<GrammarPointDb>)
+    abstract suspend fun updateAll(grammarPoints: List<GrammarPointDb>)
 
     @Query("DELETE FROM grammar_point WHERE id IN (:ids)")
     abstract suspend fun deleteAll(ids: List<Long>)

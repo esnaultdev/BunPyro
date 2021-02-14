@@ -137,6 +137,8 @@ dependencies {
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
     // Test
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}"
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}"
     testImplementation "junit:junit:${versions.junit}"
     androidTestImplementation "androidx.test:runner:${versions.androidx.test}"
     testImplementation "androidx.room:room-testing:${versions.androidx.room}"

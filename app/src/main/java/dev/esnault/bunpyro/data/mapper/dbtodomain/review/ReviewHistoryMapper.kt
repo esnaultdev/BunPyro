@@ -7,6 +7,7 @@ import dev.esnault.bunpyro.domain.entities.review.ReviewHistory
 class ReviewHistoryMapper {
 
     fun map(o: List<ReviewHistoryDb>): List<ReviewHistory> {
+        // The index is used to preserve the order of the list
         return o.sortedBy { it.id.index }.map(this::map)
     }
 

@@ -2,6 +2,7 @@ package dev.esnault.bunpyro.domain.entities.grammar
 
 import dev.esnault.bunpyro.domain.entities.JLPT
 import dev.esnault.bunpyro.domain.entities.review.Review
+import dev.esnault.bunpyro.domain.entities.review.srsLevel
 import dev.esnault.bunpyro.domain.utils.lazyNone
 
 
@@ -21,12 +22,5 @@ data class GrammarPoint(
     val review: Review?,
     val ghostReviews: List<Review>
 ) {
-
-    val srsLevel: Int? by lazyNone {
-        when {
-            review == null -> null
-            review.hidden -> null
-            else -> review.history.map { it.streak }.max() ?: 0
-        }
-    }
+    val srsLevel: Int? by lazyNone { review.srsLevel }
 }
