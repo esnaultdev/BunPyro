@@ -3,7 +3,6 @@ package dev.esnault.bunpyro.android.screen.review
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
 import dev.esnault.bunpyro.R
@@ -33,7 +32,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         binding.toolbar.setupWithNav(findNavController())
 
         initSubViews()
-        vm.viewState.observe(this) { viewState -> bindViewState(viewState) }
+        vm.viewState.safeObserve(this) { viewState -> bindViewState(viewState) }
 
         bindListeners()
     }

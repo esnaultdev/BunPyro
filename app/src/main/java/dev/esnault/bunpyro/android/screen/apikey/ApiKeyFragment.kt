@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.observe
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
+import dev.esnault.bunpyro.android.utils.safeObserve
 import dev.esnault.bunpyro.common.hide
 import dev.esnault.bunpyro.common.hideKeyboard
 import dev.esnault.bunpyro.common.openUrlInBrowser
@@ -30,28 +30,23 @@ class ApiKeyFragment : BaseFragment<FragmentApiKeyBinding>() {
         binding.apikeyInputField.setOnEditorActionListener { _, actionId, _ ->
             onInputFieldEditorAction(actionId)
         }
-
         binding.apikeyInputField.doAfterTextChanged { text ->
             vm.apiKeyUpdated(text?.toString())
         }
-
         binding.apikeySave.setOnClickListener {
             vm.onSaveApiKey()
         }
-
         binding.apikeyBunproWebsite.setOnClickListener {
             context?.openUrlInBrowser(ScreenConfig.Url.bunpro)
         }
-
         binding.apikeyPrivacy.setOnClickListener {
             context?.openUrlInBrowser(ScreenConfig.Url.privacy)
         }
-
         binding.apikeyErrorButton.setOnClickListener {
             vm.onErrorOk()
         }
 
-        vm.viewState.observe(this) { viewState ->
+        vm.viewState.safeObserve(this) { viewState ->
             bindToViewState(viewState)
         }
     }

@@ -3,11 +3,11 @@ package dev.esnault.bunpyro.android.screen.firstsync
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.observe
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
+import dev.esnault.bunpyro.android.utils.safeObserve
 import dev.esnault.bunpyro.common.hide
 import dev.esnault.bunpyro.common.show
 import dev.esnault.bunpyro.databinding.FragmentFirstSyncBinding
@@ -22,7 +22,7 @@ class FirstSyncFragment : BaseFragment<FragmentFirstSyncBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vm.viewState.observe(this) { viewState -> bindViewState(viewState) }
+        vm.viewState.safeObserve(this) { viewState -> bindViewState(viewState) }
 
         binding.errorButton.setOnClickListener {
             vm.onRetry()

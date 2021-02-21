@@ -2,7 +2,6 @@ package dev.esnault.bunpyro.android.screen.grammarpoint
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.afollestad.materialdialogs.MaterialDialog
@@ -18,6 +17,7 @@ import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.*
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.example.ExamplesViewHolder
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning.MeaningViewHolder
 import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.reading.ReadingViewHolder
+import dev.esnault.bunpyro.android.utils.safeObserve
 import dev.esnault.bunpyro.android.utils.setupWithNav
 import dev.esnault.bunpyro.common.isDarkTheme
 import dev.esnault.bunpyro.common.openUrlInBrowser
@@ -43,9 +43,9 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
         setupPager()
         bindPagerToTabs()
 
-        vm.viewState.observe(this) { viewState -> bindViewState(viewState) }
-        vm.snackbar.observe(this) { message -> showSnackbar(message) }
-        vm.dialog.observe(this) { dialogMessage -> showDialog(dialogMessage) }
+        vm.viewState.safeObserve(this) { viewState -> bindViewState(viewState) }
+        vm.snackbar.safeObserve(this) { message -> showSnackbar(message) }
+        vm.dialog.safeObserve(this) { dialogMessage -> showDialog(dialogMessage) }
 
         bindEvents()
     }

@@ -5,18 +5,17 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
-import androidx.lifecycle.observe
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.snackbar.Snackbar
 import dev.esnault.bunpyro.R
-import dev.esnault.bunpyro.android.MainActivity
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.home.HomeViewModel.DialogMessage
 import dev.esnault.bunpyro.android.screen.home.HomeViewModel.SnackBarMessage
 import dev.esnault.bunpyro.android.screen.search.SearchUiHelper
+import dev.esnault.bunpyro.android.utils.safeObserve
 import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.databinding.FragmentHomeBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -61,14 +60,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             context?.openUrlInBrowser(ScreenConfig.Url.bunproCram)
         }
 
-        vm.viewState.observe(this) { viewState ->
+        vm.viewState.safeObserve(this) { viewState ->
             val oldViewState = oldViewState
             this.oldViewState = viewState
             bindViewState(oldViewState, viewState)
         }
 
-        vm.snackbar.observe(this) { snackBarMessage -> showSnackbar(snackBarMessage) }
-        vm.dialog.observe(this) { dialogMessage -> showDialog(dialogMessage) }
+        vm.snackbar.safeObserve(this) { snackBarMessage -> showSnackbar(snackBarMessage) }
+        vm.dialog.safeObserve(this) { dialogMessage -> showDialog(dialogMessage) }
     }
 
     override fun onDestroyView() {

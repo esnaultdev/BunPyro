@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.AutoTransition
@@ -17,6 +16,7 @@ import dev.esnault.bunpyro.android.display.viewholder.GrammarOverviewViewHolder
 import dev.esnault.bunpyro.android.screen.allgrammar.AllGrammarViewModel.SnackBarMessage
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.search.SearchUiHelper
+import dev.esnault.bunpyro.android.utils.safeObserve
 import dev.esnault.bunpyro.android.utils.setupWithNav
 import dev.esnault.bunpyro.databinding.FragmentAllGrammarBinding
 import dev.esnault.bunpyro.domain.entities.grammar.AllGrammarFilter
@@ -48,19 +48,18 @@ class AllGrammarFragment : BaseFragment<FragmentAllGrammarBinding>() {
         setupRecyclerView()
         setupSearchUiHelper()
 
-        vm.allGrammar.observe(this) { allGrammar ->
+        vm.allGrammar.safeObserve(this) { allGrammar ->
             bindAllGrammar(allGrammar)
         }
-
-        vm.searchState.observe(this) { searchState ->
+        vm.searchState.safeObserve(this) { searchState ->
             bindSearchState(searchState)
         }
-
-        vm.filterDialog.observe(this) { filterDialog ->
+        vm.filterDialog.safeObserve(this) { filterDialog ->
             bindFilterDialog(filterDialog)
         }
-
-        vm.snackbar.observe(this) { snackBarMessage -> showSnackbar(snackBarMessage) }
+        vm.snackbar.safeObserve(this) { snackBarMessage ->
+            showSnackbar(snackBarMessage)
+        }
     }
 
     override fun onDestroyView() {

@@ -2,7 +2,6 @@ package dev.esnault.bunpyro.android.screen.lessons
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -11,6 +10,7 @@ import dev.esnault.bunpyro.android.res.textResId
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel.SnackBarMessage
 import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel.ViewState
+import dev.esnault.bunpyro.android.utils.safeObserve
 import dev.esnault.bunpyro.common.Alpha
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.common.withAlpha
@@ -35,8 +35,8 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
         setupTabs()
         bindPagerToTabs()
 
-        vm.viewState.observe(this) { viewState -> bindViewState(viewState) }
-        vm.snackbar.observe(this) { message -> showSnackbar(message) }
+        vm.viewState.safeObserve(this) { viewState -> bindViewState(viewState) }
+        vm.snackbar.safeObserve(this) { message -> showSnackbar(message) }
     }
 
     private fun setupPager() {
