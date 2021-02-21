@@ -76,7 +76,7 @@ class GrammarPointDaoTest {
         updatedAt = Date(1L),
         nextReview = Date(1L),
         lastStudiedAt = Date(1L),
-        hidden = true
+        hidden = false
     )
     private val reviewHistoryDb = ReviewHistoryDb(
         id = ReviewHistoryDb.ItemId(
@@ -100,7 +100,7 @@ class GrammarPointDaoTest {
         // Given
         runBlocking {
             grammarPointDao.insertAll(listOf(grammarPointDb))
-            reviewDao.insertAll(listOf(reviewDb))
+            reviewDao.insertAll(listOf(reviewDb.copy(hidden = true)))
             reviewHistoryDao.insertAll(listOf(reviewHistoryDb))
         }
         // When

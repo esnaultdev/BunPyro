@@ -19,18 +19,23 @@ abstract class GrammarPointDao {
     abstract fun getById(id: Long): Flow<FullGrammarPointDb>
 
     @Query("""
-SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
-MAX(rv_h.streak) AS srsLevel, COUNT(rv.id) AS studied FROM grammar_point AS gp
-LEFT JOIN review AS rv ON rv.grammar_id = gp.id AND rv.type = 0 AND rv.hidden = 0
-LEFT JOIN review_history AS rv_h ON rv_h.review_id == rv.id AND rv_h.review_type = 0
-GROUP BY gp.id
+SELECT
+    id, lesson, title, meaning, incomplete, srsLevel, COUNT(review_id) AS studied
+FROM
+    (SELECT gp.id, gp.lesson, gp.title, gp.meaning, gp.incomplete,
+    rv_h.streak AS srsLevel, rv.id AS review_id
+    FROM grammar_point AS gp
+    LEFT JOIN review AS rv ON rv.grammar_id = gp.id AND rv.type = 0 AND rv.hidden = 0
+    LEFT JOIN review_history AS rv_h ON rv_h.review_id == rv.id AND rv_h.review_type = 0
+    ORDER BY rv_h.history_index DESC) AS sub_query
+GROUP BY id;
 """)
     abstract fun getAllOverviews(): Flow<List<GrammarPointOverviewDb>>
 
     @Query("""
 SELECT lesson, COUNT(NULLIF(gp_studied, 0)) AS studied, COUNT(gp_studied) AS total FROM
 (SELECT gp.lesson, COUNT(review.id) AS gp_studied FROM grammar_point AS gp
-LEFT JOIN review ON review.grammar_id = gp.id AND review.type = 0
+LEFT JOIN review ON review.grammar_id = gp.id AND review.type = 0 AND review.hidden = 0
 WHERE gp.incomplete = 0
 GROUP BY gp.id)
 GROUP BY lesson
