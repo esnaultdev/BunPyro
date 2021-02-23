@@ -5,9 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.action.clipboard.IClipboard
-import dev.esnault.bunpyro.android.media.AudioState
-import dev.esnault.bunpyro.android.media.IAudioPlayer
-import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
 import dev.esnault.bunpyro.android.utils.toClipBoardString
@@ -18,10 +15,16 @@ import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.review.IReviewService
 import dev.esnault.bunpyro.domain.entities.grammar.ExampleSentence
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
+import dev.esnault.bunpyro.domain.entities.media.AudioItem
+import dev.esnault.bunpyro.domain.entities.media.CurrentAudio
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
+import dev.esnault.bunpyro.domain.service.IAudioService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -34,7 +37,7 @@ class GrammarPointViewModel(
     private val reviewRepo: IReviewRepository,
     private val reviewService: IReviewService,
     private val clipboard: IClipboard,
-    private val audioPlayer: IAudioPlayer
+    private val audioService: IAudioService
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -65,7 +68,7 @@ class GrammarPointViewModel(
     }
 
     fun onStop() {
-        releaseAudio()
+        audioService.release()
     }
 
     private fun loadGrammarPoint(id: Long) {
@@ -75,13 +78,20 @@ class GrammarPointViewModel(
                 val exampleDetailsShown = settingsRepo.getExampleDetails().asBoolean()
 
                 grammarRepo.getGrammarPoint(id)
-                    .collect { grammarPoint ->
+                    .flowOn(Dispatchers.Main)
+                    .map { grammarPoint ->
                         val state = currentState
-                        currentState = if (state == null) {
+                        if (state == null) {
                             firstLoadState(furiganaShown, exampleDetailsShown, grammarPoint)
                         } else {
                             nextLoadState(state, exampleDetailsShown, grammarPoint)
                         }
+                    }
+                    .combine(audioService.currentAudio) { state, currentAudio ->
+                        state.copy(currentAudio = currentAudio)
+                    }
+                    .collect { state ->
+                        currentState = state
                     }
             }
         }
@@ -121,7 +131,7 @@ class GrammarPointViewModel(
 
         val newExamples = if (titleChanged || sentencesChanged) {
             val splitTitle = grammarPoint.title.split('・')
-            val oldExamplesMap = state.examples.associateBy { it.sentence.id }
+            val oldExamplesMap = state.examples.associateBy { it.id }
 
             grammarPoint.sentences.map { sentence ->
                 val oldExample = oldExamplesMap[sentence.id]
@@ -201,7 +211,7 @@ class GrammarPointViewModel(
         block: (ViewState.Example) -> ViewState.Example
     ): List<ViewState.Example> {
         return map { example ->
-            if (example.sentence.id == exampleId) {
+            if (example.id == exampleId) {
                 block(example)
             } else {
                 example
@@ -234,59 +244,16 @@ class GrammarPointViewModel(
     // region Audio
 
     fun onAudioClick(example: ViewState.Example) {
-        val currentState = currentState ?: return
-        val exampleId = example.sentence.id
-
-        val currentAudio = currentState.currentAudio
-        val newAudio = if (currentAudio == null) {
-            // Not playing anything yet
-            audioPlayer.listener = buildAudioListener()
-            audioPlayer.play(example.sentence.audioLink)
-            ViewState.CurrentAudio(exampleId, SimpleAudioState.LOADING)
-        } else if (currentAudio.exampleId == exampleId){
-            // Updating current audio
-            val newState = when (currentAudio.state) {
-                SimpleAudioState.LOADING,
-                SimpleAudioState.PLAYING -> {
-                    audioPlayer.stop()
-                    SimpleAudioState.STOPPED
-                }
-                SimpleAudioState.STOPPED -> {
-                    audioPlayer.play(example.sentence.audioLink)
-                    SimpleAudioState.LOADING
-                }
-            }
-            currentAudio.copy(state = newState)
+        val audioLink = example.sentence.audioLink
+        if (audioLink == null) {
+            audioService.stop()
         } else {
-            // Switching to another audio
-            audioPlayer.stop()
-            audioPlayer.play(example.sentence.audioLink)
-            ViewState.CurrentAudio(exampleId, SimpleAudioState.LOADING)
+            val audioItem = AudioItem.Example(
+                exampleId = example.id,
+                audioLink = example.sentence.audioLink
+            )
+            audioService.playOrStop(audioItem)
         }
-
-        this.currentState = currentState.copy(currentAudio = newAudio)
-    }
-
-    private fun buildAudioListener(): IAudioPlayer.Listener {
-        return IAudioPlayer.Listener(onStateChange = ::onAudioStateChange)
-    }
-
-    private fun onAudioStateChange(audioState: AudioState) {
-        val currentState = this.currentState ?: return
-        val currentAudio = currentState.currentAudio ?: return
-        val newAudioState = audioState.toSimpleState()
-
-        if (newAudioState != currentAudio.state) {
-            val newAudio = currentAudio.copy(state = newAudioState)
-            this.currentState = currentState.copy(currentAudio = newAudio)
-        }
-    }
-
-    private fun releaseAudio() {
-        audioPlayer.release()
-
-        val state = currentState ?: return
-        currentState = state.copy(currentAudio = null)
     }
 
     // endregion
@@ -376,9 +343,9 @@ class GrammarPointViewModel(
             val titles: List<String>, // Split title used to highlight the sentence
             val sentence: ExampleSentence,
             val collapsed: Boolean
-        )
-
-        data class CurrentAudio(val exampleId: Long, val state: SimpleAudioState)
+        ) {
+            val id: Long = sentence.id
+        }
 
         enum class ReviewAction { ADD, REMOVE, RESET /*, SKIP */ }
     }

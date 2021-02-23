@@ -20,6 +20,8 @@ import dev.esnault.bunpyro.android.screen.review.ReviewViewModel
 import dev.esnault.bunpyro.android.screen.start.StartViewModel
 import dev.esnault.bunpyro.android.service.AndroidServiceStarter
 import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
+import dev.esnault.bunpyro.domain.service.AudioService
+import dev.esnault.bunpyro.domain.service.IAudioService
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -54,6 +56,7 @@ val appModule = module {
     single<INotificationService> { NotificationService(androidApplication()) }
 
     factory<IAudioPlayer> { AudioPlayer(androidContext(), get()) }
+    single<IAudioService> { AudioService(get()) }
     single { buildMediaSourceFactory(androidContext()) }
 
     // endregion

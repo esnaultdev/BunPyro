@@ -25,6 +25,7 @@ import dev.esnault.bunpyro.common.dpToPx
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.common.withAlpha
 import dev.esnault.bunpyro.databinding.ItemExampleSentenceBinding
+import dev.esnault.bunpyro.domain.entities.media.AudioItem
 
 
 class ExampleAdapter(
@@ -55,10 +56,18 @@ class ExampleAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val viewState = viewState!!
         val example = viewState.examples[position]
-        val audioState = if (viewState.currentAudio?.exampleId == example.sentence.id) {
-            viewState.currentAudio.state
-        } else {
-            SimpleAudioState.STOPPED.takeUnless { example.sentence.audioLink.isNullOrBlank() }
+        val currentAudio = viewState.currentAudio
+        val audioState: SimpleAudioState? = when {
+            example.sentence.audioLink.isNullOrBlank() -> null
+            currentAudio == null -> SimpleAudioState.STOPPED
+            else -> {
+                if (currentAudio.item is AudioItem.Example &&
+                    currentAudio.item.exampleId == example.id) {
+                    currentAudio.state.toSimpleState()
+                } else {
+                    SimpleAudioState.STOPPED
+                }
+            }
         }
         holder.bind(example, audioState, viewState.furiganaShown)
     }
