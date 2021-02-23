@@ -335,8 +335,6 @@ class ReviewQuestionView(
             SimpleAudioState.LOADING -> R.drawable.ic_stop_24dp to true
             SimpleAudioState.PLAYING -> R.drawable.ic_stop_24dp to false
         }
-        binding.questionActionAudioButton.setIconResource(iconRes)
-        binding.questionActionAudioLoading.isVisible = loadingVisible
 
         val iconSizeDp = if (loadingVisible) {
             16f
@@ -344,7 +342,10 @@ class ReviewQuestionView(
             24f
         }
         val iconSize = iconSizeDp.dpToPx(context.resources.displayMetrics)
+
         binding.questionActionAudioButton.iconSize = iconSize
+        binding.questionActionAudioButton.setIconResource(iconRes)
+        binding.questionActionAudioLoading.isVisible = loadingVisible
     }
 
     private fun bindHintAction(viewState: ViewState) {
