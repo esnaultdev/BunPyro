@@ -1,303 +1,327 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:showIn="@layout/fragment_review"
     >
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/question_progress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:indeterminate="false"
-        app:layout_constraintBottom_toTopOf="@+id/question_progress_guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/question_progress_guideline"
-        tools:max="100"
-        tools:progress="50"
-        />
-
-    <View
-        android:id="@+id/question_progress_guideline"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_start"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp"
-        />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_end"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="16dp"
-        />
-
-    <ImageView
-        android:id="@+id/info_ghost"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
-        android:layout_marginTop="1dp"
-        android:contentDescription="@string/contentDescription_review_ghost"
-        android:src="@drawable/ic_ghost"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/info_remaining"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toTopOf="@id/info_remaining"
-        tools:visibility="visible"
-        />
-
-    <TextView
-        android:id="@+id/info_remaining"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="1 / 83"
-        />
-
-    <ImageView
-        android:id="@+id/info_precision_icon"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="2dp"
-        android:contentDescription="@string/contentDescription_review_precision"
-        android:src="@drawable/ic_check_circle_24dp"
-        app:layout_constraintBottom_toBottomOf="@id/info_remaining"
-        app:layout_constraintEnd_toStartOf="@+id/info_precision_value"
-        app:layout_constraintTop_toTopOf="@id/info_remaining"
-        />
-
-    <TextView
-        android:id="@+id/info_precision_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="13sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/info_remaining"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-        tools:text="67%"
-        />
-
-    <TextView
-        android:id="@+id/question_question"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@+id/info_remaining"
-        tools:text="____にご注意。"
-        />
-
-    <TextView
-        android:id="@+id/question_english"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center_horizontal"
-        android:textColor="?android:textColorPrimary"
-        android:textSize="16sp"
-        android:visibility="gone"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@+id/question_question"
-        tools:text="Beware of imitations."
-        tools:visibility="visible"
-        />
-
-    <TextView
-        android:id="@+id/question_nuance"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textColor="?android:textColorSecondary"
-        android:textSize="13sp"
-        android:visibility="gone"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@+id/question_english"
-        tools:text="Fake"
-        tools:visibility="visible"
-        />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/question_answer_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:hint="@string/reviews_answer_hint"
-        app:boxBackgroundMode="filled"
-        app:endIconContentDescription="@string/contentDescription_review_next"
-        app:endIconDrawable="@drawable/ic_chevron_right_24dp"
-        app:endIconMode="custom"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@+id/question_nuance"
-        app:startIconContentDescription="@string/contentDescription_review_ignore"
-        app:startIconDrawable="@drawable/ic_empty_24dp"
-        app:startIconTint="?colorControlNormalStateless"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         >
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/question_answer_value"
-            android:layout_width="match_parent"
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/question_progress"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:singleLine="true"
+            android:indeterminate="false"
+            app:layout_constraintBottom_toTopOf="@+id/question_progress_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/question_progress_guideline"
+            tools:max="100"
+            tools:progress="50"
             />
 
-    </com.google.android.material.textfield.TextInputLayout>
+        <View
+            android:id="@+id/question_progress_guideline"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-    <TextView
-        android:id="@+id/question_feedback"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:gravity="center_horizontal"
-        android:textColor="?chuiColor"
-        android:textSize="14sp"
-        android:visibility="gone"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@+id/question_answer_layout"
-        tools:text="Not Gairaigo."
-        tools:visibility="visible"
-        />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp"
+            />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/question_action_hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:iconGravity="textStart"
-        app:iconPadding="0dp"
-        app:iconTint="?colorOnPrimary"
-        app:layout_constraintEnd_toStartOf="@id/question_action_info"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@+id/question_feedback"
-        tools:icon="@drawable/ic_hint_hide_24dp"
-        />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp"
+            />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/question_action_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:icon="@drawable/ic_info_outline_24dp"
-        app:iconGravity="textStart"
-        app:iconPadding="0dp"
-        app:iconTint="?colorOnPrimary"
-        app:layout_constraintEnd_toStartOf="@id/question_action_other"
-        app:layout_constraintStart_toEndOf="@+id/question_action_hint"
-        app:layout_constraintTop_toTopOf="@id/question_action_hint"
-        />
-
-    <FrameLayout
-        android:id="@+id/question_action_other"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/question_action_audio"
-        app:layout_constraintStart_toEndOf="@+id/question_action_info"
-        app:layout_constraintTop_toTopOf="@id/question_action_hint"
-        >
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/question_action_other_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:icon="@drawable/ic_help_outline_24dp"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:iconTint="?colorOnPrimary"
+        <ImageView
+            android:id="@+id/info_ghost"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginTop="1dp"
+            android:contentDescription="@string/contentDescription_review_ghost"
+            android:src="@drawable/ic_ghost"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/info_remaining"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="@id/info_remaining"
+            tools:visibility="visible"
             />
 
         <TextView
-            android:id="@+id/question_action_other_badge"
-            android:layout_width="24dp"
+            android:id="@+id/info_remaining"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1 / 83"
+            />
+
+        <ImageView
+            android:id="@+id/info_precision_icon"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginTop="1dp"
             android:layout_marginEnd="2dp"
-            android:background="@drawable/question_other_badge_background"
-            android:elevation="8dp"
+            android:contentDescription="@string/contentDescription_review_precision"
+            android:src="@drawable/ic_check_circle_24dp"
+            app:layout_constraintBottom_toBottomOf="@id/info_remaining"
+            app:layout_constraintEnd_toStartOf="@+id/info_precision_value"
+            app:layout_constraintTop_toTopOf="@id/info_remaining"
+            />
+
+        <TextView
+            android:id="@+id/info_precision_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/info_remaining"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+            tools:text="67%"
+            />
+
+        <TextView
+            android:id="@+id/question_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/info_remaining"
+            tools:text="____にご注意。"
+            />
+
+        <TextView
+            android:id="@+id/question_english"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:gravity="center_horizontal"
-            android:outlineProvider="none"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-            android:textColor="?colorPrimary"
-            android:textSize="12sp"
-            android:textStyle="bold"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="16sp"
             android:visibility="gone"
-            tools:text="3"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/question_question"
+            tools:text="Beware of imitations."
             tools:visibility="visible"
             />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/question_nuance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="?android:textColorSecondary"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/question_english"
+            tools:text="Fake"
+            tools:visibility="visible"
+            />
 
-    <FrameLayout
-        android:id="@+id/question_action_audio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintStart_toEndOf="@id/question_action_other"
-        app:layout_constraintTop_toTopOf="@id/question_action_hint"
-        >
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/question_answer_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="@string/reviews_answer_hint"
+            app:boxBackgroundMode="filled"
+            app:endIconContentDescription="@string/contentDescription_review_next"
+            app:endIconDrawable="@drawable/ic_chevron_right_24dp"
+            app:endIconMode="custom"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/question_nuance"
+            app:startIconContentDescription="@string/contentDescription_review_ignore"
+            app:startIconDrawable="@drawable/ic_empty_24dp"
+            app:startIconTint="?colorControlNormalStateless"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/question_answer_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:singleLine="true"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/question_feedback"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:gravity="center_horizontal"
+            android:textColor="?chuiColor"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/question_answer_layout"
+            tools:text="Not Gairaigo."
+            tools:visibility="visible"
+            />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/question_action_audio_button"
-            style="Widget.MaterialComponents.Button.TextButton.Icon"
+            android:id="@+id/question_action_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:icon="@drawable/ic_play_arrow_24dp"
+            android:layout_marginTop="8dp"
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconTint="?colorOnPrimary"
-            tools:icon="@drawable/ic_stop_24dp"
-            tools:iconSize="16dp"
+            app:layout_constraintEnd_toStartOf="@id/question_action_info"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/question_feedback"
+            tools:icon="@drawable/ic_hint_hide_24dp"
             />
 
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/question_action_audio_loading"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/question_action_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:elevation="8dp"
-            android:indeterminate="true"
+            app:icon="@drawable/ic_info_outline_24dp"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="?colorOnPrimary"
+            app:layout_constraintEnd_toStartOf="@id/question_action_other"
+            app:layout_constraintStart_toEndOf="@+id/question_action_hint"
+            app:layout_constraintTop_toTopOf="@id/question_action_hint"
+            />
+
+        <FrameLayout
+            android:id="@+id/question_action_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/question_action_audio"
+            app:layout_constraintStart_toEndOf="@+id/question_action_info"
+            app:layout_constraintTop_toTopOf="@id/question_action_hint"
+            >
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/question_action_other_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_help_outline_24dp"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="?colorOnPrimary"
+                />
+
+            <TextView
+                android:id="@+id/question_action_other_badge"
+                android:layout_width="24dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/question_other_badge_background"
+                android:elevation="8dp"
+                android:gravity="center_horizontal"
+                android:outlineProvider="none"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                android:textColor="?colorPrimary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:text="3"
+                tools:visibility="visible"
+                />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/question_action_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toEndOf="@id/question_action_other"
+            app:layout_constraintTop_toTopOf="@id/question_action_hint"
+            >
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/question_action_audio_button"
+                style="Widget.MaterialComponents.Button.TextButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_play_arrow_24dp"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="?colorOnPrimary"
+                tools:icon="@drawable/ic_stop_24dp"
+                tools:iconSize="16dp"
+                />
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/question_action_audio_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:elevation="8dp"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:indicatorColor="?colorOnPrimary"
+                app:indicatorSize="20dp"
+                app:trackThickness="2dp"
+                tools:indeterminate="false"
+                tools:max="100"
+                tools:progress="75"
+                tools:visibility="visible"
+                />
+
+        </FrameLayout>
+
+        <include
+            android:id="@+id/info_container"
+            layout="@layout/layout_review_question_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:visibility="gone"
-            app:indicatorColor="?colorOnPrimary"
-            app:indicatorSize="20dp"
-            app:trackThickness="2dp"
-            tools:indeterminate="false"
-            tools:max="100"
-            tools:progress="75"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_min="400dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/question_action_hint"
+            app:layout_constraintVertical_bias="0"
             tools:visibility="visible"
             />
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
