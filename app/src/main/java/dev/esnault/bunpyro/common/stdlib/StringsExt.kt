@@ -9,7 +9,7 @@ fun CharSequence.findAllOf(strings: Collection<String>, startIndex: Int, ignoreC
     if (strings.isEmpty()) return emptyList()
 
     // We don't need to search the last indices when the size of our strings won't fit
-    val minLength = strings.map { it.length }.min()!!
+    val minLength = strings.map { it.length }.minOrNull() ?: 0
     val lastSearchIndex = length - (minLength - 1).coerceAtLeast(0)
     val indices = startIndex.coerceAtLeast(0)..lastSearchIndex
 

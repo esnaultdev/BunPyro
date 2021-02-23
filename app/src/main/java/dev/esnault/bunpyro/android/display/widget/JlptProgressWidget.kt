@@ -32,7 +32,7 @@ class JlptProgressWidget : FrameLayout {
         initProgress()
     }
 
-    var progress: JlptProgress? by Delegates.observable<JlptProgress?>(null) { _, oldValue, newValue ->
+    var progress: JlptProgress? by Delegates.observable(null) { _, oldValue, newValue ->
         if (oldValue != newValue) {
             update(oldValue, newValue)
         }

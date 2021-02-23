@@ -10,8 +10,8 @@ import dev.esnault.bunpyro.databinding.LayoutGrammarPointExamplesBinding
 
 
 class ExamplesViewHolder(
-    private val binding: LayoutGrammarPointExamplesBinding,
-    private val listener: Listener
+    binding: LayoutGrammarPointExamplesBinding,
+    listener: Listener
 ) : ViewStatePagerAdapter.ViewHolder(binding.root) {
 
     data class Listener(

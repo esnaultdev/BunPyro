@@ -71,6 +71,7 @@
 
 # View Reflection
 -keepclassmembers class com.google.android.material.textfield.TextInputLayout {
+    #noinspection ShrinkerUnresolvedReference
     private android.view.View startIconView;
     private android.view.View endIconView;
 }

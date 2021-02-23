@@ -83,6 +83,10 @@
             tools:visibility="visible"
             />
 
+        <!--
+         Using dp instead of sp deliberately since the layout is constrained in size.
+         Between the grammar point title and the tags, let's prioritize the title.
+        -->
         <TextView
             android:id="@+id/jlpt_tag"
             android:layout_width="28dp"
@@ -97,10 +101,15 @@
             android:textSize="11dp"
             android:textStyle="bold"
             android:visibility="gone"
+            tools:ignore="SpUsage"
             tools:text="@string/jlpt_n5"
             tools:visibility="visible"
             />
 
+        <!--
+         Using dp instead of sp deliberately since the layout is constrained in size.
+         Between the grammar point title and the tags, let's prioritize the title.
+        -->
         <TextView
             android:id="@+id/srs_tag"
             android:layout_width="48dp"
@@ -115,6 +124,7 @@
             android:textSize="11dp"
             android:textStyle="bold"
             android:visibility="gone"
+            tools:ignore="SpUsage"
             tools:text="SRS 12"
             tools:visibility="visible"
             />

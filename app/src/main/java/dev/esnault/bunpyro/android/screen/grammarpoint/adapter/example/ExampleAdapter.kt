@@ -113,12 +113,10 @@ class ExampleAdapter(
             this.example = example
             this.furiganaShown = furiganaShown
 
-            if (sentenceChanged) {
-                bindExample(example, furiganaShown)
-            } else if (furiganaChanged) {
-                updateFurigana(furiganaShown)
-            } else if (expansionChanged) {
-                updateExpansion(example)
+            when {
+                sentenceChanged -> bindExample(example, furiganaShown)
+                furiganaChanged -> updateFurigana(furiganaShown)
+                expansionChanged -> updateExpansion(example)
             }
             bindAudioState(audioState)
         }

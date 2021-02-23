@@ -9,7 +9,7 @@ import dev.esnault.bunpyro.domain.entities.grammar.SupplementalLink
 
 
 class ReadingViewHolder(
-    private val binding: LayoutGrammarPointReadingBinding,
+    binding: LayoutGrammarPointReadingBinding,
     listener: Listener
 ) : ViewStatePagerAdapter.ViewHolder(binding.root) {
 

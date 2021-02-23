@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-        rootContainer = findViewById(R.id.root_container)
+        rootContainer = findViewById(android.R.id.content)
         rootContainer.setBackgroundColor(splashBackgroundColor)
 
         animateContent()

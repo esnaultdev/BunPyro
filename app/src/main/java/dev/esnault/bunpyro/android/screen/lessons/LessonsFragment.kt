@@ -41,7 +41,7 @@ class LessonsFragment : BaseFragment<FragmentLessonsBinding>() {
 
     private fun setupPager() {
         if (lessonsAdapter == null) {
-            lessonsAdapter = JlptLessonAdapter(context!!) { vm.onGrammarClicked(it) }
+            lessonsAdapter = JlptLessonAdapter(requireContext()) { vm.onGrammarClicked(it) }
         }
         binding.jlptLessonsPager.adapter = lessonsAdapter
         binding.jlptLessonsPager.isUserInputEnabled = false

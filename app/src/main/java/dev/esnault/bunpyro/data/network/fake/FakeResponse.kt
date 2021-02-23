@@ -54,5 +54,5 @@ fun <T> httpErrorResponse(code: Int): Response<T> {
             contentLength = 0
         )
 
-    return Response.error<T>(responseBody, rawResponse)
+    return Response.error(responseBody, rawResponse)
 }

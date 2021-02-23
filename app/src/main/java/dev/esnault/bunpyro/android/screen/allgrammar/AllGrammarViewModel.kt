@@ -95,6 +95,7 @@ class AllGrammarViewModel(
             allGrammar.filter { it.level in filter.jlpt }
         }
 
+        @Suppress("UnnecessaryVariable") // Keeping this as a variable since it's clearer.
         val studiedFilter = if (filter.studied && filter.nonStudied) {
             jlptFiltered
         } else if (!filter.studied && !filter.nonStudied) {

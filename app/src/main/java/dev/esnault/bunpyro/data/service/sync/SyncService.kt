@@ -133,7 +133,7 @@ class SyncService(
         return syncApiEndpoint(
             apiRequest = { versionedApi.getGrammarPoints(eTag) },
             onSuccess = { data, response ->
-                val newEtag = response.headers().get("etag")
+                val newEtag = response.headers()["etag"]
                 saveGrammarPoints(data.data, newEtag)
             }
         )
@@ -168,7 +168,7 @@ class SyncService(
         return syncApiEndpoint(
             apiRequest = { versionedApi.getExampleSentences(eTag) },
             onSuccess = { data, response ->
-                val newEtag = response.headers().get("etag")
+                val newEtag = response.headers()["etag"]
                 saveExampleSentences(data.data, newEtag)
             }
         )
@@ -210,7 +210,7 @@ class SyncService(
         return syncApiEndpoint(
             apiRequest = { versionedApi.getSupplementalLinks(eTag) },
             onSuccess = { data, response ->
-                val newEtag = response.headers().get("etag")
+                val newEtag = response.headers()["etag"]
                 saveSupplementalLinks(data.data, newEtag)
             }
         )
@@ -252,7 +252,7 @@ class SyncService(
         return syncApiEndpoint(
             apiRequest = { versionedApi.getAllReviews(eTag) },
             onSuccess = { data, response ->
-                val newEtag = response.headers().get("etag")
+                val newEtag = response.headers()["etag"]
                 saveReviews(data, newEtag)
             }
         )

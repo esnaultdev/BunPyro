@@ -2,8 +2,8 @@ package dev.esnault.bunpyro.android.screen.base
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import dev.esnault.bunpyro.android.utils.safeObserve
 
 
 class NavigatorListener(fragment: Fragment, navigationCommands: LiveData<NavigationCommand>) {
@@ -14,7 +14,7 @@ class NavigatorListener(fragment: Fragment, navigationCommands: LiveData<Navigat
     }
 
     init {
-        navigationCommands.observe(fragment) { command ->
+        navigationCommands.safeObserve(fragment) { command ->
             when (command) {
                 is NavigationCommand.To ->
                     navController.navigate(command.directions)
