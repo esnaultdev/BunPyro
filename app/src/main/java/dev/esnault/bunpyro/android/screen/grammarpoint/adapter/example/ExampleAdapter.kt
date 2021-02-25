@@ -60,14 +60,10 @@ class ExampleAdapter(
         val audioState: SimpleAudioState? = when {
             example.sentence.audioLink.isNullOrBlank() -> null
             currentAudio == null -> SimpleAudioState.STOPPED
-            else -> {
-                if (currentAudio.item is AudioItem.Example &&
-                    currentAudio.item.exampleId == example.id) {
-                    currentAudio.state.toSimpleState()
-                } else {
-                    SimpleAudioState.STOPPED
-                }
+            currentAudio.item is AudioItem.Example && currentAudio.item.exampleId == example.id -> {
+                currentAudio.state.toSimpleState()
             }
+            else -> SimpleAudioState.STOPPED
         }
         holder.bind(example, audioState, viewState.furiganaShown)
     }
@@ -212,11 +208,7 @@ class ExampleAdapter(
                 binding.audioIcon.setImageResource(iconRes)
                 binding.audioLoading.isVisible = loadingVisible
 
-                val iconPadding = if (loadingVisible) {
-                    16f
-                } else {
-                    12f
-                }
+                val iconPadding = if (loadingVisible) 16f else 12f
                 binding.audioIcon.setPadding(iconPadding.dpToPx(context.resources.displayMetrics))
             }
         }

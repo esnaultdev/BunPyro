@@ -5,29 +5,29 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
-import dev.esnault.bunpyro.android.media.AudioState
-import dev.esnault.bunpyro.android.media.IAudioPlayer
-import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.review.subview.summary.SummaryGrammarOverview
 import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState as ViewState
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.review.IReviewService
+import dev.esnault.bunpyro.domain.entities.media.AudioItem
 import dev.esnault.bunpyro.domain.entities.review.ReviewQuestion
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
 import dev.esnault.bunpyro.domain.entities.settings.next
+import dev.esnault.bunpyro.domain.service.IAudioService
 import dev.esnault.bunpyro.domain.utils.isKanaRegex
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class ReviewViewModel(
     private val reviewService: IReviewService,
     private val settingsRepo: ISettingsRepository,
-    private val audioPlayer: IAudioPlayer,
+    private val audioService: IAudioService,
     private val syncHelper: ReviewSyncHelper
 ) : BaseViewModel() {
 
@@ -47,10 +47,11 @@ class ReviewViewModel(
     init {
         Analytics.screen(name = "review")
         loadReviews()
+        observeAudioState()
     }
 
     fun onStop() {
-        releaseAudio()
+        audioService.release()
     }
 
     // region Loading
@@ -401,65 +402,40 @@ class ReviewViewModel(
 
     // region Audio
 
+    private fun observeAudioState() {
+        viewModelScope.launch {
+            audioService.currentAudio.collect { currentAudio ->
+                val currentState = currentState as? ViewState.Question ?: return@collect
+                this@ReviewViewModel.currentState = currentState.copy(
+                    currentAudio = currentAudio
+                )
+            }
+        }
+    }
+
     fun onAnswerAudio() {
         val currentState = currentState as? ViewState.Question ?: return
-
-        val audioLink = getAudioLink(currentState)
-        val currentAudio = currentState.currentAudio
-        val newAudio = if (currentAudio == null) {
-            // Not playing anything yet
-            audioPlayer.listener = buildAudioListener()
-            audioPlayer.play(audioLink)
-            ViewState.CurrentAudio(SimpleAudioState.LOADING, audioLink)
-        } else if (currentAudio.link == audioLink) {
-            // Updating current audio
-            val newState = when (currentAudio.state) {
-                SimpleAudioState.LOADING,
-                SimpleAudioState.PLAYING -> {
-                    audioPlayer.stop()
-                    SimpleAudioState.STOPPED
-                }
-                SimpleAudioState.STOPPED -> {
-                    audioPlayer.play(audioLink)
-                    SimpleAudioState.LOADING
-                }
-            }
-            currentAudio.copy(state = newState)
+        val currentQuestion = currentState.currentQuestion
+        val audioLink: String? = currentQuestion.audioLink
+        if (audioLink == null) {
+            audioService.stop()
         } else {
-            // Switching to another audio
-            audioPlayer.stop()
-            audioPlayer.play(audioLink)
-            ViewState.CurrentAudio(SimpleAudioState.LOADING, audioLink)
-        }
-
-        this.currentState = currentState.copy(currentAudio = newAudio)
-    }
-
-    private fun getAudioLink(state: ViewState.Question): String? {
-        return state.currentQuestion.audioLink
-    }
-
-    private fun buildAudioListener(): IAudioPlayer.Listener {
-        return IAudioPlayer.Listener(onStateChange = ::onAudioStateChange)
-    }
-
-    private fun onAudioStateChange(audioState: AudioState) {
-        val currentState = this.currentState as? ViewState.Question ?: return
-        val currentAudio = currentState.currentAudio ?: return
-        val newAudioState = audioState.toSimpleState()
-
-        if (newAudioState != currentAudio.state) {
-            val newAudio = currentAudio.copy(state = newAudioState)
-            this.currentState = currentState.copy(currentAudio = newAudio)
+            val audioItem = AudioItem.Question(
+                questionId = currentQuestion.id,
+                audioLink = audioLink
+            )
+            val currentAudioItem = currentState.currentAudio?.item
+            if (currentAudioItem is AudioItem.Question && currentAudioItem != audioItem) {
+                // We can't just play or stop here since we might still be playing the audio of the
+                // previous question.
+                audioService.stop()
+            } else {
+                audioService.playOrStop(audioItem)
+            }
         }
     }
 
-    private fun releaseAudio() {
-        audioPlayer.release()
-
-        val state = currentState as? ViewState.Question ?: return
-        currentState = state.copy(currentAudio = null)
-    }
+    // TODO Example Audio
 
     // endregion
 

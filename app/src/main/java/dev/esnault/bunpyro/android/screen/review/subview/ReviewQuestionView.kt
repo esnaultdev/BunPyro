@@ -27,6 +27,7 @@ import dev.esnault.bunpyro.common.getColorCompat
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.common.hideKeyboardFrom
 import dev.esnault.bunpyro.databinding.LayoutReviewQuestionBinding
+import dev.esnault.bunpyro.domain.entities.media.AudioItem
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
 import dev.esnault.bunpyro.domain.utils.lazyNone
 import dev.esnault.wanakana.android.WanakanaAndroid
@@ -325,22 +326,24 @@ class ReviewQuestionView(
         val answering = viewState.answerState is AnswerState.Answering
 
         val canPlayAudio = !answering && hasAudioLink
-        val playingAnswerAudio = currentAudio != null
-                && currentAudio.state.playWhenReady
-        binding.questionActionAudioButton.isEnabled = canPlayAudio || playingAnswerAudio
+        val audioState: SimpleAudioState = when {
+            currentAudio == null -> SimpleAudioState.STOPPED
+            currentAudio.item is AudioItem.Question -> currentAudio.state.toSimpleState()
+            else -> SimpleAudioState.STOPPED
+        }
 
-        val (iconRes, loadingVisible) = when (currentAudio?.state) {
-            null,
+        // Let the audio be stopped at the user convenience.
+        // It might be the audio of the previous question.
+        binding.questionActionAudioButton.isEnabled =
+            canPlayAudio || audioState != SimpleAudioState.STOPPED
+
+        val (iconRes, loadingVisible) = when (audioState) {
             SimpleAudioState.STOPPED -> R.drawable.ic_play_arrow_24dp to false
             SimpleAudioState.LOADING -> R.drawable.ic_stop_24dp to true
             SimpleAudioState.PLAYING -> R.drawable.ic_stop_24dp to false
         }
 
-        val iconSizeDp = if (loadingVisible) {
-            16f
-        } else {
-            24f
-        }
+        val iconSizeDp = if (loadingVisible) 16f else 24f
         val iconSize = iconSizeDp.dpToPx(context.resources.displayMetrics)
 
         binding.questionActionAudioButton.iconSize = iconSize

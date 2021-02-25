@@ -1,7 +1,7 @@
 package dev.esnault.bunpyro.android.screen.review
 
-import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.review.subview.summary.SummaryGrammarOverview
+import dev.esnault.bunpyro.domain.entities.media.CurrentAudio
 import dev.esnault.bunpyro.domain.entities.review.ReviewQuestion
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
 
@@ -78,12 +78,5 @@ sealed class ReviewViewState {
         data class Incorrect(
             val showCorrect: Boolean
         ) : AnswerState()
-    }
-
-    data class CurrentAudio(val state: SimpleAudioState, val link: String?)
-
-    sealed class AudioType {
-        object Answer : AudioType()
-        data class Example(val exampleId: Long) : AudioType()
     }
 }
