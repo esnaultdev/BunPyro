@@ -178,6 +178,8 @@
     <string name="reviews_summary_perfect">Perfect!</string>
     <string name="reviews_summary_category_correct">Correct</string>
     <string name="reviews_summary_category_incorrect">Incorrect</string>
+    <string name="reviews_toolbar_wrapUp_noAskAgain">Finish</string>
+    <string name="reviews_toolbar_wrapUp_askAgain">Wrap up</string>
 
     <string name="notification_sync_inProgress">Syncing grammar…</string>
     <string name="notificationChannel_sync_name">Sync</string>

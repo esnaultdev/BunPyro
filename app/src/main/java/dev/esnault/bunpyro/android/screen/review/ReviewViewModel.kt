@@ -162,11 +162,15 @@ class ReviewViewModel(
                 feedback = null
             )
         } else {
-            // TODO finish state (wait for http request + navigate to the summary)
-            this.currentState = ViewState.Summary(
-                answered = currentState.answeredGrammar
-            )
+            finishSession(currentState)
         }
+    }
+
+    private fun finishSession(currentState: ViewState.Question) {
+        // TODO finish state (wait for http request + navigate to the summary)
+        this.currentState = ViewState.Summary(
+            answered = currentState.answeredGrammar
+        )
     }
 
     private fun checkAnswer(currentState: ViewState.Question) {
@@ -396,6 +400,20 @@ class ReviewViewModel(
         furiganaSettingJob?.cancel()
         furiganaSettingJob = viewModelScope.launch(Dispatchers.IO) {
             settingsRepo.setFurigana(setting)
+        }
+    }
+
+    // endregion
+
+    // region Wrap up
+
+    fun onWrapUpClick() {
+        val currentState = currentState as? ViewState.Question ?: return
+
+        if (currentState.askingAgain || currentState.askAgainIndexes.isEmpty()) {
+            finishSession(currentState)
+        } else {
+            goToNextAskAgain(currentState)
         }
     }
 

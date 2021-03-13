@@ -11,4 +11,11 @@
         app:showAsAction="ifRoom"
         />
 
+    <item
+        android:id="@+id/action_review_wrapUp"
+        android:icon="@drawable/ic_kana_on_24dp"
+        android:title="@string/reviews_toolbar_wrapUp_noAskAgain"
+        app:showAsAction="never"
+        />
+
 </menu>

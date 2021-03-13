@@ -2,6 +2,7 @@ package dev.esnault.bunpyro.android.screen.review
 
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
@@ -92,30 +93,52 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     }
 
     private fun bindToolbar(viewState: ViewState) {
-        binding.toolbar.menu.apply {
-            val furiganaItem = findItem(R.id.action_furigana)
+        val menu = binding.toolbar.menu
+        bindToolbarMenuFurigana(menu, viewState)
+        bindToolbarMenuWrapUp(menu, viewState)
+    }
 
-            if (viewState !is ViewState.Question) {
-                furiganaItem.isVisible = false
-                return
-            } else {
-                furiganaItem.isVisible = true
-            }
+    private fun bindToolbarMenuFurigana(menu: Menu, viewState: ViewState) {
+        val furiganaItem = menu.findItem(R.id.action_furigana)
 
-            val iconResId = if (viewState.furiganaShown) {
-                R.drawable.ic_kana_on_24dp
-            } else {
-                R.drawable.ic_kana_off_24dp
-            }
-            furiganaItem.setIcon(iconResId)
-
-            val titleResId = if (viewState.furiganaShown) {
-                R.string.action_furigana_hide
-            } else {
-                R.string.action_furigana_show
-            }
-            furiganaItem.setTitle(titleResId)
+        if (viewState !is ViewState.Question) {
+            furiganaItem.isVisible = false
+            return
+        } else {
+            furiganaItem.isVisible = true
         }
+
+        val iconResId = if (viewState.furiganaShown) {
+            R.drawable.ic_kana_on_24dp
+        } else {
+            R.drawable.ic_kana_off_24dp
+        }
+        furiganaItem.setIcon(iconResId)
+
+        val titleResId = if (viewState.furiganaShown) {
+            R.string.action_furigana_hide
+        } else {
+            R.string.action_furigana_show
+        }
+        furiganaItem.setTitle(titleResId)
+    }
+
+    private fun bindToolbarMenuWrapUp(menu: Menu, viewState: ViewState) {
+        val wrapUpItem = menu.findItem(R.id.action_review_wrapUp)
+
+        if (viewState !is ViewState.Question) {
+            wrapUpItem.isVisible = false
+            return
+        } else {
+            wrapUpItem.isVisible = true
+        }
+
+        val titleResId = if (!viewState.askingAgain && viewState.askAgainIndexes.isEmpty()) {
+            R.string.reviews_toolbar_wrapUp_noAskAgain
+        } else {
+            R.string.reviews_toolbar_wrapUp_askAgain
+        }
+        wrapUpItem.setTitle(titleResId)
     }
 
     private fun bindListeners() {
@@ -123,6 +146,10 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             when (menuItem.itemId) {
                 R.id.action_furigana -> {
                     vm.onFuriganaClick()
+                    true
+                }
+                R.id.action_review_wrapUp -> {
+                    vm.onWrapUpClick()
                     true
                 }
                 else -> false
