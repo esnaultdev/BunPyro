@@ -47,7 +47,6 @@ android {
         jvmTarget = "1.8"
         useIR = true
         freeCompilerArgs += [
-                "-Xallow-result-return-type",
                 "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-Xuse-experimental=kotlinx.coroutines.FlowPreview"
         ]

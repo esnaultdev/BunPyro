@@ -22,6 +22,7 @@ import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
 import dev.esnault.bunpyro.data.utils.fromLocalIdsNoDelete
 import dev.esnault.bunpyro.data.utils.fromLocalIdsPartialDelete
 import dev.esnault.bunpyro.domain.entities.review.ReviewQuestion
+import dev.esnault.bunpyro.domain.utils.Result
 
 
 class ReviewService(

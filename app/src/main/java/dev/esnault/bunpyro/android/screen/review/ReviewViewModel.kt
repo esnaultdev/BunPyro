@@ -17,6 +17,7 @@ import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
 import dev.esnault.bunpyro.domain.entities.settings.next
 import dev.esnault.bunpyro.domain.service.IAudioService
+import dev.esnault.bunpyro.domain.utils.fold
 import dev.esnault.bunpyro.domain.utils.isKanaRegex
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -35,7 +36,7 @@ class ReviewViewModel(
     val viewState: LiveData<ViewState>
         get() = Transformations.distinctUntilChanged(_viewState)
 
-    private var currentState: ViewState? = null
+    private var currentState: ViewState = ViewState.Init.Loading
         set(value) {
             field = value
             _viewState.postValue(value)
