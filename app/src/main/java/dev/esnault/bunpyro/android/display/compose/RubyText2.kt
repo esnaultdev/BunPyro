@@ -69,6 +69,16 @@ private fun RubyText2PreviewShortText() {
     )
 }
 
+/**
+ * An experimental Text [Composable] that can display ruby above some parts of the text.
+ * This approach is based on inline contents containing both the ruby and the actual text.
+ *
+ * Note that the current implementation has the following issues:
+ * - the text is not aligned properly with the baseline.
+ * - the approximation of the with of the inline content doesn't work for almost every language.
+ *
+ * See [RubyText] for another approach.
+ */
 @Composable
 fun RubyText2(
     text: String,

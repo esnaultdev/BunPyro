@@ -33,10 +33,10 @@ private const val DefaultRubyRatio: Float = 0.6f
 @Preview(backgroundColor = 0xFFFFFF)
 @Composable
 private fun RubyTextPreview() {
-    val text = "これは私の本棚です。\n好きです。"
+    val text = "これは私の本棚です。\n私のです。"
     val ruby1 = "わたし"
     val ruby2 = "ほんだな"
-    val ruby3 = "す"
+    val ruby3 = "わたし"
 
     val rubySpanRanges = listOf(
         RubySpanRange(RubySpan(ruby1), start = 3, end = 4),
@@ -66,6 +66,17 @@ private fun RubyTextPreviewShortText() {
     )
 }
 
+/**
+ * An experimental Text [Composable] that can display ruby above some parts of the text.
+ * This approach is based on a custom layout that places the ruby texts above the actual text.
+ *
+ * Note that the current implementation has the following issues:
+ * - the spacing between the ruby and the text is inconsistent between the first and next lines.
+ * - the ruby text can be cropped when its too long near the edges of the text.
+ * - multiple ruby texts can overlap when they're close enough.
+ *
+ * See [RubyText2] for another approach.
+ */
 @OptIn(ExperimentalLayout::class)
 @Composable
 fun RubyText(
