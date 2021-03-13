@@ -9,7 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -109,10 +109,10 @@ private fun LicenseItem(
         .padding(horizontal = 16.dp, vertical = 8.dp)
     Column(modifier = rowModifier) {
         Text(text = license.title, style = typography.body1)
-        Spacer(modifier = Modifier.preferredHeight(4.dp))
-        Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+        Spacer(modifier = Modifier.height(4.dp))
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(text = license.summary, style = typography.body2)
-            Spacer(modifier = Modifier.preferredHeight(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(text = license.license, style = typography.body2)
         }
     }

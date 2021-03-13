@@ -1,12 +1,12 @@
 package dev.esnault.bunpyro.android.display.compose
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.AmbientTextStyle
+import androidx.compose.foundation.text.selection.DisableSelection
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.selection.DisableSelection
 import androidx.compose.ui.text.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -77,14 +77,13 @@ private fun RubyTextPreviewShortText() {
  *
  * See [RubyText2] for another approach.
  */
-@OptIn(ExperimentalLayout::class)
 @Composable
 fun RubyText(
     text: String,
     rubySpanRanges: List<RubySpanRange>,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = AmbientTextStyle.current,
-    rubyStyle: TextStyle = AmbientTextStyle.current
+    textStyle: TextStyle = LocalTextStyle.current,
+    rubyStyle: TextStyle = LocalTextStyle.current
 ) {
     // This result will be available as soon as the text has been measured.
     var textLayoutResult: TextLayoutResult? = null
@@ -128,7 +127,7 @@ fun RubyText(
                 textPlaceable.place(x = 0, y = 0)
             }
         } else {
-            val textOffsetY = rubyStyleWithDefault.lineHeight.toIntPx()
+            val textOffsetY = rubyStyleWithDefault.lineHeight.roundToPx()
             val maxWidth = placeables.map { it.width }.maxOrNull() ?: 0
             layout(maxWidth, textPlaceable.height + textOffsetY) {
                 val textOffsetX = if (maxWidth != textPlaceable.width) {

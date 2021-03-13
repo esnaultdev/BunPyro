@@ -23,7 +23,7 @@ fun SimpleScreen(
                     navigationIcon = { NavigateBackIcon(navController = navController) }
                 )
             },
-            bodyContent = {
+            content = {
                 content()
             }
         )

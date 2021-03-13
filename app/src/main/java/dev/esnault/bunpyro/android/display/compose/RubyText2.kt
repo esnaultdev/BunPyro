@@ -4,17 +4,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
-import androidx.compose.material.AmbientTextStyle
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.*
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.max
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.unit.takeOrElse
+import androidx.compose.ui.unit.*
 
 /**
  * The default font size if none is specified.
@@ -84,8 +81,8 @@ fun RubyText2(
     text: String,
     rubySpanRanges: List<RubySpanRange>,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = AmbientTextStyle.current,
-    rubyStyle: TextStyle = AmbientTextStyle.current
+    textStyle: TextStyle = LocalTextStyle.current,
+    rubyStyle: TextStyle = LocalTextStyle.current
 ) {
     val sortedSpans = rubySpanRanges.sortedBy { it.start }
     if (areRangesOverlapping(rubySpanRanges)) {
@@ -186,3 +183,15 @@ private fun areRangesOverlapping(sortedRanges: List<RubySpanRange>): Boolean {
 }
 
 private fun inlineRubyId(text: String) = "dev.esnault.bunpyro.android.display.compose.ruby2:$text"
+
+internal operator fun TextUnit.plus(other: TextUnit): TextUnit {
+    require(type == other.type) {
+        "Cannot add $type and ${other.type}"
+    }
+
+    return when (type) {
+        TextUnitType.Unspecified -> TextUnit.Unspecified
+        TextUnitType.Sp -> (value + other.value).sp
+        TextUnitType.Em -> (value + other.value).em
+    }
+}

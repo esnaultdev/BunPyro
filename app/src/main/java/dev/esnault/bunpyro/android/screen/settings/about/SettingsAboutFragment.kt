@@ -84,7 +84,7 @@ private fun BodyContent(listener: ContentListener) {
     ) {
         val typography = MaterialTheme.typography
         val maxTextWidth = dimensionResource(R.dimen.text_max_width)
-        val textModifier = Modifier.preferredWidthIn(max = maxTextWidth)
+        val textModifier = Modifier.widthIn(max = maxTextWidth)
 
         val buttonMargin = 8.dp
 
@@ -94,11 +94,11 @@ private fun BodyContent(listener: ContentListener) {
             modifier = textModifier
         )
 
-        Spacer(modifier = Modifier.preferredHeight(buttonMargin))
+        Spacer(modifier = Modifier.height(buttonMargin))
         TextButton(onClick = listener.onBunproClick) {
             Text(stringResource(R.string.about_checkBunpro))
         }
-        Spacer(modifier = Modifier.preferredHeight(buttonMargin))
+        Spacer(modifier = Modifier.height(buttonMargin))
 
         Text(
             text = stringResource(R.string.about_affiliation),
@@ -112,11 +112,11 @@ private fun BodyContent(listener: ContentListener) {
             modifier = textModifier
         )
 
-        Spacer(modifier = Modifier.preferredHeight(buttonMargin))
+        Spacer(modifier = Modifier.height(buttonMargin))
         TextButton(onClick = listener.onDevWebsiteClick) {
             Text(stringResource(R.string.about_dev_website))
         }
-        Spacer(modifier = Modifier.preferredHeight(buttonMargin))
+        Spacer(modifier = Modifier.height(buttonMargin))
 
         Text(
             text = stringResource(R.string.about_api),
@@ -130,7 +130,7 @@ private fun BodyContent(listener: ContentListener) {
             modifier = textModifier
         )
 
-        Spacer(modifier = Modifier.preferredHeight(buttonMargin))
+        Spacer(modifier = Modifier.height(buttonMargin))
         TextButton(onClick = listener.onGithubRepoClick) {
             Text(stringResource(R.string.about_sources_action))
         }
@@ -142,7 +142,7 @@ private fun SpacedDivider() {
     val dividerWidth = 144.dp
     val dividerMargin = 16.dp
 
-    Spacer(modifier = Modifier.preferredHeight(dividerMargin))
-    Divider(modifier = Modifier.preferredWidth(dividerWidth))
-    Spacer(modifier = Modifier.preferredHeight(dividerMargin))
+    Spacer(modifier = Modifier.height(dividerMargin))
+    Divider(modifier = Modifier.width(dividerWidth))
+    Spacer(modifier = Modifier.height(dividerMargin))
 }
