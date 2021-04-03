@@ -29,8 +29,10 @@ class LessonsViewModel(
 
     private var currentState: ViewState? = null
         set(value) {
-            field = value
-            _viewState.postValue(value)
+            if (value != null) {
+                field = value
+                _viewState.postValue(value!!)
+            }
         }
 
     init {
