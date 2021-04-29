@@ -10,8 +10,8 @@ class GrammarPointOverviewMapper : IMapper<GrammarPointOverviewDb, GrammarPointO
     override fun map(o: GrammarPointOverviewDb): GrammarPointOverview {
         return GrammarPointOverview(
             id = o.id,
-            title = o.title,
-            meaning = o.meaning,
+            title = o.title.trim(),
+            meaning = o.meaning.trim(),
             srsLevel = o.srsLevel ?: (if (o.studied) 0 else null),
             incomplete = o.incomplete
         )

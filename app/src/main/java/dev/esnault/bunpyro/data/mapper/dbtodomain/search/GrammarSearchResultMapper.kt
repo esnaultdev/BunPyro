@@ -11,9 +11,9 @@ class GrammarSearchResultMapper : IMapper<GrammarSearchResultDb, SearchGrammarOv
     override fun map(o: GrammarSearchResultDb): SearchGrammarOverview {
         return SearchGrammarOverview(
             id = o.id,
-            title = o.title,
-            yomikata = o.yomikata,
-            meaning = o.meaning,
+            title = o.title.trim(),
+            yomikata = o.yomikata.trim(),
+            meaning = o.meaning.trim(),
             srsLevel = o.srsLevel ?: (if (o.studied) 0 else null),
             incomplete = o.incomplete,
             jlpt = jlptFromLesson(o.lesson)

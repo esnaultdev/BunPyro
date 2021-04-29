@@ -16,17 +16,19 @@ class GrammarPointMapper : IMapper<FullGrammarPointDb, GrammarPoint> {
     private val linkMapper = SupplementalLinkMapper()
     private val reviewMapper = ReviewMapper()
 
+    // TODO Don't trim the strings here but when retrieving them from the API.
+    //  This also needs a migration to clean up the existing DB data.
     override fun map(o: FullGrammarPointDb): GrammarPoint {
         return GrammarPoint(
             id = o.point.id,
-            title = o.point.title,
-            yomikata = o.point.yomikata,
-            meaning = o.point.meaning,
-            caution = o.point.caution,
-            structure = o.point.structure,
+            title = o.point.title.trim(),
+            yomikata = o.point.yomikata.trim(),
+            meaning = o.point.meaning.trim(),
+            caution = o.point.caution?.trim(),
+            structure = o.point.structure?.trim(),
             lesson = o.point.lesson,
             jlpt = jlptFromLesson(o.point.lesson),
-            nuance = o.point.nuance,
+            nuance = o.point.nuance?.trim(),
             incomplete = o.point.incomplete,
             // The sentences are sorted here, because there is no clean way to do this
             // using room relationships

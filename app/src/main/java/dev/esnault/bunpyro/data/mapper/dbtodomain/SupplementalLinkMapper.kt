@@ -12,7 +12,7 @@ class SupplementalLinkMapper : IMapper<SupplementalLinkDb, SupplementalLink> {
             id = o.id,
             site = o.site,
             link = o.link,
-            description = o.description
+            description = o.description.trim()
         )
     }
 }

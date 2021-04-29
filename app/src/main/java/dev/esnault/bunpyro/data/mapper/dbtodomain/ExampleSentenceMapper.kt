@@ -10,9 +10,9 @@ class ExampleSentenceMapper : IMapper<ExampleSentenceDb, ExampleSentence> {
     override fun map(o: ExampleSentenceDb): ExampleSentence {
         return ExampleSentence(
             id = o.id,
-            japanese = o.japanese,
-            english = o.english,
-            nuance = o.nuance,
+            japanese = o.japanese.trim(),
+            english = o.english.trim(),
+            nuance = o.nuance?.trim(),
             audioLink = o.audioLink
         )
     }
