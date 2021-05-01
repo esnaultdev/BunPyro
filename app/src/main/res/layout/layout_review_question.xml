@@ -103,7 +103,7 @@
             tools:text="67%"
             />
 
-        <TextView
+        <dev.esnault.bunpyro.android.display.widget.question.QuestionTextView
             android:id="@+id/question_question"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
