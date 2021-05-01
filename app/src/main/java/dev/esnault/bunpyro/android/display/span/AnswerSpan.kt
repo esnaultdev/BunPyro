@@ -1,113 +1,49 @@
 package dev.esnault.bunpyro.android.display.span
 
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.text.style.ReplacementSpan
-import androidx.core.graphics.ColorUtils
-import androidx.core.graphics.alpha
+import android.text.TextPaint
+import android.text.style.MetricAffectingSpan
 
 
 /**
  * A span to display an answer with hint and bottom line.
  */
 data class AnswerSpan(
-    private val minWidth: Float,
-    private val bottomStrokeWidth: Float,
     private val hintTextColor: Int,
     var textColor: Int? = null,
     private val textSizeFactor: Float = 0.7f
-) : ReplacementSpan() {
+) : MetricAffectingSpan() {
 
     companion object {
         /** Dummy text to have a non empty span */
-        const val DUMMY_TEXT = "_____"
+        const val DUMMY_TEXT = "        "
     }
 
     var hint: String? = null
     var answer: String? = null
-    private var hintWidth = 0f
-    private var spanWidth = 0f
-
-    override fun getSize(
-        paint: Paint,
-        text: CharSequence?,
-        start: Int,
-        end: Int,
-        fm: Paint.FontMetricsInt?
-    ): Int {
-        val pfm = paint.fontMetricsInt
-        fm?.apply {
-            leading = pfm.leading
-            bottom = pfm.bottom
-            descent = pfm.descent
-            ascent = pfm.ascent
-            top = pfm.top
+        set(value) {
+            field = value.takeIf { it != "" }
         }
 
-        spanWidth = if (!answer.isNullOrEmpty()) {
-            paint.measureText(answer)
-        } else if (!hint.isNullOrEmpty()) {
-            val textSize = paint.textSize
-            paint.textSize = textSize * textSizeFactor
-            hintWidth = paint.measureText(hint)
-            paint.textSize = textSize
-            maxOf(hintWidth, minWidth)
-        } else {
-            minWidth
-        }
+    val text: String
+        get() = answer ?: hint ?: DUMMY_TEXT
 
-        return spanWidth.toInt()
+    private val showingHint: Boolean
+        get() = answer == null && hint != null
+
+    override fun updateMeasureState(textPaint: TextPaint) {
+        if (showingHint) {
+            textPaint.textSize = textPaint.textSize * textSizeFactor
+        }
     }
 
-    override fun draw(
-        canvas: Canvas,
-        text: CharSequence?,
-        start: Int,
-        end: Int,
-        x: Float,
-        top: Int,
-        y: Int,
-        bottom: Int,
-        paint: Paint
-    ) {
-        val answer = answer
-        val hint = hint
-
-        if (!answer.isNullOrEmpty()) {
-            // Draw the answer
-            val textColor = textColor
-            if (textColor != null) {
-                val oldTextColor = paint.color
-                paint.color = textColor
-                canvas.drawText(answer, x, y.toFloat(), paint)
-                paint.color = oldTextColor
-            } else {
-                canvas.drawText(answer, x, y.toFloat(), paint)
-            }
-        } else if (!hint.isNullOrEmpty()) {
-            // Save some attributes that we will need to restore afterwards and update the paint
-            val textSize = paint.textSize
-            val textColor = paint.color
-            val fontTop = paint.fontMetrics.top
-            paint.textSize = textSize * textSizeFactor
-            val newAlpha = paint.color.alpha * hintTextColor.alpha / 255
-            paint.color = ColorUtils.setAlphaComponent(hintTextColor, newAlpha)
-
-            // Draw the hint
-            val offsetX = (spanWidth - hintWidth) / 2
-            val offsetY = fontTop * (1 - textSizeFactor) / 2
-            canvas.drawText(hint, x + offsetX, y + offsetY, paint)
-
-            // Restore the paint attributes
-            paint.textSize = textSize
-            paint.color = textColor
+    override fun updateDrawState(textPaint: TextPaint) {
+        if (showingHint) {
+            val newTextSize = textPaint.textSize * textSizeFactor
+            textPaint.baselineShift = ((newTextSize - textPaint.textSize) / 2f).toInt()
+            textPaint.textSize = newTextSize
+            textPaint.color = hintTextColor
+        } else {
+            textColor?.let { textPaint.color = it }
         }
-
-        // Draw the answer underline
-        val lineY = bottom - bottomStrokeWidth / 2
-        val strokeWidth = paint.strokeWidth
-        paint.strokeWidth = bottomStrokeWidth
-        canvas.drawLine(x, lineY, x + spanWidth, lineY, paint)
-        paint.strokeWidth = strokeWidth
     }
 }

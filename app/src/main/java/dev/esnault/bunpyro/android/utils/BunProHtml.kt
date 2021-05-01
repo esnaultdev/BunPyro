@@ -153,8 +153,7 @@ class BunProHtml(
         spanBuilder.append(AnswerSpan.DUMMY_TEXT)
         val endIndex = spanBuilder.length
 
-        val bottomStrokeWidth = 1f.dpToPxRaw(context.resources.displayMetrics)
-        val span = AnswerSpan(answerMinWidth, bottomStrokeWidth, hintTextColor)
+        val span = AnswerSpan(hintTextColor)
         spanBuilder.setSpan(span, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 

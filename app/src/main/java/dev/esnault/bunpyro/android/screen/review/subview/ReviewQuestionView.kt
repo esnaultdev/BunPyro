@@ -3,6 +3,7 @@ package dev.esnault.bunpyro.android.screen.review.subview
 import android.content.Context
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.SpannedString
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -156,12 +157,7 @@ class ReviewQuestionView(
         bindHintText(viewState)
 
         updateAnswerSpans { answerSpan ->
-            if (answerSpan.hint != viewState.currentQuestion.tense) {
-                answerSpan.hint = viewState.currentQuestion.tense
-                true
-            } else {
-                false
-            }
+            answerSpan.hint = viewState.currentQuestion.tense
         }
     }
 
@@ -267,7 +263,6 @@ class ReviewQuestionView(
         }
         updateAnswerSpans { span ->
             span.textColor = answerTextColor
-            false
         }
     }
 
@@ -381,16 +376,28 @@ class ReviewQuestionView(
         bindTooltipAltAnswer(viewState.answerState is AnswerState.Incorrect)
     }
 
-    private fun updateAnswerSpans(block: (span: AnswerSpan) -> Boolean) {
-        (binding.questionQuestion.text as? Spanned)?.let { spanned ->
-            spanned.getSpans(0, spanned.length, AnswerSpan::class.java)
-                .map(block)
-                .any()
-                .let { shouldLayout ->
-                    if (shouldLayout) {
-                        binding.questionQuestion.requestLayout()
-                    }
-                }
+    private fun updateAnswerSpans(block: (span: AnswerSpan) -> Unit) {
+        val spanned = binding.questionQuestion.text as? SpannedString ?: return
+        val answerSpans = spanned.getSpans(0, spanned.length, AnswerSpan::class.java)
+        val firstAnswerSpan = answerSpans.firstOrNull() ?: return
+        val oldText = firstAnswerSpan.text
+        block(firstAnswerSpan)
+        val newText = firstAnswerSpan.text
+        if (oldText != newText) {
+            // Also update the text of the other blocks
+            answerSpans.drop(1).forEach(block)
+
+            // Update the spanned text
+            val spannableBuilder = SpannableStringBuilder(spanned)
+            answerSpans.forEach { answerSpan ->
+                val spanStart = spanned.getSpanStart(answerSpan)
+                val spanEnd = spanStart + newText.length
+                spannableBuilder.removeSpan(answerSpan)
+                spannableBuilder.replace(spanStart, spanStart + oldText.length, newText)
+                val spanFlags = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                spannableBuilder.setSpan(answerSpan, spanStart, spanEnd, spanFlags)
+            }
+            binding.questionQuestion.text = spannableBuilder
         }
     }
 
@@ -418,12 +425,7 @@ class ReviewQuestionView(
         }
 
         updateAnswerSpans { answerSpan ->
-            if (answerSpan.answer != showAnswer) {
-                answerSpan.answer = showAnswer
-                true
-            } else {
-                false
-            }
+            answerSpan.answer = showAnswer
         }
     }
 
