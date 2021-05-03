@@ -20,13 +20,17 @@ data class AnswerSpan(
 
     var hint: String? = null
         set(value) {
-            // Add spaces before and after for padding and line break.
-            field = " $value "
+            field = if (value.isNullOrBlank()) {
+                null
+            } else {
+                // Add spaces before and after for padding and line break.
+                " $value "
+            }
         }
 
     var answer: String? = null
         set(value) {
-            field = value.takeIf { it != "" }
+            field = value?.takeIf { it != "" }
         }
 
     val text: String
