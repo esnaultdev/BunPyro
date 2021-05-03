@@ -16,7 +16,7 @@ import dev.esnault.bunpyro.domain.entities.review.ReviewQuestion
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
 import dev.esnault.bunpyro.domain.entities.settings.next
-import dev.esnault.bunpyro.domain.service.IAudioService
+import dev.esnault.bunpyro.domain.service.audio.IAudioService
 import dev.esnault.bunpyro.domain.utils.fold
 import dev.esnault.bunpyro.domain.utils.isKanaRegex
 import kotlinx.coroutines.Dispatchers

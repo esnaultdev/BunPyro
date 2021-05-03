@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.domain.service
+package dev.esnault.bunpyro.domain.service.audio
 
 import dev.esnault.bunpyro.domain.entities.media.AudioItem
 import dev.esnault.bunpyro.domain.entities.media.CurrentAudio

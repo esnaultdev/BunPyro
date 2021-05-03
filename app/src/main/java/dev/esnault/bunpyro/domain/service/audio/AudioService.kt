@@ -1,4 +1,4 @@
-package dev.esnault.bunpyro.domain.service
+package dev.esnault.bunpyro.domain.service.audio
 
 import dev.esnault.bunpyro.android.media.AudioState
 import dev.esnault.bunpyro.android.media.IAudioPlayer

@@ -18,7 +18,7 @@ import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 import dev.esnault.bunpyro.domain.entities.media.AudioItem
 import dev.esnault.bunpyro.domain.entities.media.CurrentAudio
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
-import dev.esnault.bunpyro.domain.service.IAudioService
+import dev.esnault.bunpyro.domain.service.audio.IAudioService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
