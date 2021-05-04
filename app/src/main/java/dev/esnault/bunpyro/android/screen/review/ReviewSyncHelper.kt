@@ -2,6 +2,9 @@ package dev.esnault.bunpyro.android.screen.review
 
 import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.util.*
 
 
@@ -9,30 +12,47 @@ class ReviewSyncHelper(
     private val reviewRepository: IReviewRepository
 ) {
 
-    private var currentRequest: Request? = null
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private var currentJob: Job? = null
+
     private val requests: LinkedList<Request> = LinkedList()
 
-    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private val _stateFlow = MutableStateFlow(State.IDLE)
+    val stateFlow: Flow<State> = _stateFlow.asStateFlow()
 
     fun enqueue(request: Request) {
         requests.add(request)
         startNextRequest()
     }
 
+    fun retry() {
+        if (_stateFlow.value == State.ERROR) {
+            startNextRequest()
+        }
+    }
+
+    fun clear() {
+        currentJob?.cancel()
+        requests.clear()
+        _stateFlow.tryEmit(State.IDLE)
+    }
+
     private fun startNextRequest() {
-        if (currentRequest != null) return
-        if (requests.isEmpty()) return
+        val request = requests.firstOrNull()
+        if (request == null) {
+            _stateFlow.tryEmit(State.IDLE)
+            return
+        }
+        _stateFlow.tryEmit(State.REQUESTING)
 
-        val request = requests.pop()
-        currentRequest = request
-
-        scope.launch {
+        currentJob = scope.launch {
             val success = performRequest(request)
+            if (!isActive) return@launch
             if (success) {
-                currentRequest = null
+                requests.pop()
                 startNextRequest()
             } else {
-                // TODO Handle this!
+                _stateFlow.tryEmit(State.ERROR)
             }
         }
     }
@@ -61,4 +81,6 @@ class ReviewSyncHelper(
             val reviewId: Long
         ) : Request()
     }
+
+    enum class State { REQUESTING, ERROR, IDLE }
 }

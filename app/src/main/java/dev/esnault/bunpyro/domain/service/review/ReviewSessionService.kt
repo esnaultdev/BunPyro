@@ -15,6 +15,7 @@ class ReviewSessionService(
 ) : IReviewSessionService {
 
     override fun startSession(questions: List<ReviewQuestion>): ReviewSession? {
+        syncHelper.clear()
         return if (questions.isEmpty()) {
             null
         } else {
