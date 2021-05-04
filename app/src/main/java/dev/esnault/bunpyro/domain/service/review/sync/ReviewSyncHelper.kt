@@ -23,7 +23,10 @@ class ReviewSyncHelper(
 
     override fun enqueue(request: Request) {
         requests.add(request)
-        startNextRequest()
+        // TODO: Parallelize calls for each grammar id.
+        if (_stateFlow.value == State.IDLE) {
+            startNextRequest()
+        }
     }
 
     override fun retry() {
