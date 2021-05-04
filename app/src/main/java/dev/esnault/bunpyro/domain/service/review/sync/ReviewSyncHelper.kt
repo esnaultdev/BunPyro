@@ -1,6 +1,7 @@
-package dev.esnault.bunpyro.android.screen.review
+package dev.esnault.bunpyro.domain.service.review.sync
 
 import dev.esnault.bunpyro.data.repository.review.IReviewRepository
+import dev.esnault.bunpyro.domain.service.review.sync.IReviewSyncHelper.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +11,7 @@ import java.util.*
 
 class ReviewSyncHelper(
     private val reviewRepository: IReviewRepository
-) {
+) : IReviewSyncHelper {
 
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private var currentJob: Job? = null
@@ -18,20 +19,20 @@ class ReviewSyncHelper(
     private val requests: LinkedList<Request> = LinkedList()
 
     private val _stateFlow = MutableStateFlow(State.IDLE)
-    val stateFlow: Flow<State> = _stateFlow.asStateFlow()
+    override val stateFlow: Flow<State> = _stateFlow.asStateFlow()
 
-    fun enqueue(request: Request) {
+    override fun enqueue(request: Request) {
         requests.add(request)
         startNextRequest()
     }
 
-    fun retry() {
+    override fun retry() {
         if (_stateFlow.value == State.ERROR) {
             startNextRequest()
         }
     }
 
-    fun clear() {
+    override fun clear() {
         currentJob?.cancel()
         requests.clear()
         _stateFlow.tryEmit(State.IDLE)
@@ -69,18 +70,4 @@ class ReviewSyncHelper(
             }
         }
     }
-
-    sealed class Request {
-        data class Answer(
-            val reviewId: Long,
-            val questionId: Long,
-            val correct: Boolean
-        ) : Request()
-
-        data class Ignore(
-            val reviewId: Long
-        ) : Request()
-    }
-
-    enum class State { REQUESTING, ERROR, IDLE }
 }

@@ -15,13 +15,14 @@ import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointFragmentArgs
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel
 import dev.esnault.bunpyro.android.screen.home.HomeViewModel
 import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel
-import dev.esnault.bunpyro.android.screen.review.ReviewSyncHelper
+import dev.esnault.bunpyro.domain.service.review.sync.ReviewSyncHelper
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel
 import dev.esnault.bunpyro.android.screen.start.StartViewModel
 import dev.esnault.bunpyro.android.service.AndroidServiceStarter
 import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
 import dev.esnault.bunpyro.domain.service.audio.AudioService
 import dev.esnault.bunpyro.domain.service.audio.IAudioService
+import dev.esnault.bunpyro.domain.service.review.sync.IReviewSyncHelper
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -42,10 +43,7 @@ val appModule = module {
         GrammarPointViewModel(args.id, args.readOnly, get(), get(), get(), get(), get(), get())
     }
     viewModel { AllGrammarViewModel(get(), get(), get()) }
-
-    // Review
     viewModel { ReviewViewModel(get(), get(), get(), get(), get()) }
-    single { ReviewSyncHelper(get()) }
 
     // endregion
 

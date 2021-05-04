@@ -18,6 +18,7 @@ import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
 import dev.esnault.bunpyro.domain.entities.settings.next
 import dev.esnault.bunpyro.domain.service.audio.IAudioService
 import dev.esnault.bunpyro.domain.service.review.IReviewSessionService
+import dev.esnault.bunpyro.domain.service.review.sync.IReviewSyncHelper
 import dev.esnault.bunpyro.domain.utils.fold
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -29,7 +30,7 @@ class ReviewViewModel(
     private val sessionService: IReviewSessionService,
     private val settingsRepo: ISettingsRepository,
     private val audioService: IAudioService,
-    private val syncHelper: ReviewSyncHelper
+    private val syncHelper: IReviewSyncHelper
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>(ViewState.Init.Loading)

@@ -1,17 +1,17 @@
 package dev.esnault.bunpyro.domain.service.review
 
-import dev.esnault.bunpyro.android.screen.review.ReviewSyncHelper
 import dev.esnault.bunpyro.domain.entities.review.AnsweredGrammar
 import dev.esnault.bunpyro.domain.entities.review.ReviewQuestion
 import dev.esnault.bunpyro.domain.entities.review.ReviewSession
 import dev.esnault.bunpyro.domain.entities.review.ReviewSession.*
 import dev.esnault.bunpyro.domain.entities.review.SummaryGrammarOverview
+import dev.esnault.bunpyro.domain.service.review.sync.IReviewSyncHelper
 import dev.esnault.bunpyro.domain.utils.isKanaRegex
 import kotlin.random.Random
 
 
 class ReviewSessionService(
-    private val syncHelper: ReviewSyncHelper
+    private val syncHelper: IReviewSyncHelper
 ) : IReviewSessionService {
 
     override fun startSession(questions: List<ReviewQuestion>): ReviewSession? {
@@ -293,7 +293,7 @@ class ReviewSessionService(
 
     private fun syncQuestionResult(question: ReviewQuestion, correct: Boolean) {
         val review = question.grammarPoint.review ?: return
-        val request = ReviewSyncHelper.Request.Answer(
+        val request = IReviewSyncHelper.Request.Answer(
             reviewId = review.id,
             questionId = question.id,
             correct = correct
@@ -303,7 +303,7 @@ class ReviewSessionService(
 
     private fun syncQuestionIgnore(question: ReviewQuestion) {
         val review = question.grammarPoint.review ?: return
-        val request = ReviewSyncHelper.Request.Ignore(reviewId = review.id)
+        val request = IReviewSyncHelper.Request.Ignore(reviewId = review.id)
         syncHelper.enqueue(request)
     }
 

@@ -19,6 +19,8 @@ import dev.esnault.bunpyro.data.utils.time.ITimeProvider
 import dev.esnault.bunpyro.data.utils.time.TimeProvider
 import dev.esnault.bunpyro.domain.service.review.IReviewSessionService
 import dev.esnault.bunpyro.domain.service.review.ReviewSessionService
+import dev.esnault.bunpyro.domain.service.review.sync.IReviewSyncHelper
+import dev.esnault.bunpyro.domain.service.review.sync.ReviewSyncHelper
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -64,6 +66,8 @@ val serviceModule = module {
     factory<IReviewSessionService> {
         ReviewSessionService(get())
     }
+
+    single<IReviewSyncHelper> { ReviewSyncHelper(get()) }
 
     single<ICrashReporter> {
         if (BuildConfig.DEBUG) {
