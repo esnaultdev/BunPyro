@@ -23,6 +23,7 @@ import dev.esnault.bunpyro.domain.utils.fold
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class ReviewViewModel(
@@ -49,6 +50,7 @@ class ReviewViewModel(
     init {
         Analytics.screen(name = "review")
         loadReviews()
+        watchSyncStates()
         observeAudioState()
     }
 
@@ -121,9 +123,17 @@ class ReviewViewModel(
         }
     }
 
+    // endregion
+
+    // region Finish
+
     private fun finishSession(session: ReviewSession) {
-        // TODO finish state (wait for http request + navigate to the summary)
-        this.currentState = ViewState.Summary(answered = session.answeredGrammar)
+        if (syncHelper.stateFlow.value == IReviewSyncHelper.State.IDLE) {
+            this.currentState = ViewState.Summary(answered = session.answeredGrammar)
+            // The state switch is handled by [watchSyncStates].
+        } else {
+            this.currentState = ViewState.Sync(answered = session.answeredGrammar)
+        }
     }
 
     // endregion
@@ -251,6 +261,28 @@ class ReviewViewModel(
     fun onGrammarPointClick(grammarId: Long) {
         // Only do this in summary?
         navigate(ReviewFragmentDirections.actionReviewToGrammarPoint(grammarId))
+    }
+
+    // endregion
+
+    // region Sync
+
+    private fun watchSyncStates() {
+        viewModelScope.launch {
+            syncHelper.stateFlow
+                .collect { syncState ->
+                    val currentState = currentState
+                    when (syncState) {
+                        IReviewSyncHelper.State.IDLE -> if (currentState is ViewState.Sync) {
+                            this@ReviewViewModel.currentState = ViewState.Summary(
+                                answered = currentState.answered
+                            )
+                        }
+                        IReviewSyncHelper.State.REQUESTING -> Unit
+                        IReviewSyncHelper.State.ERROR -> Unit // TODO Display dialogs
+                    }
+                }
+        }
     }
 
     // endregion

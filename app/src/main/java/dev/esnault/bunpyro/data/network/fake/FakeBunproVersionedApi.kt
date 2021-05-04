@@ -67,6 +67,7 @@ class FakeBunproVersionedApi(
 
     override suspend fun answerReview(reviewId: Long, correct: Boolean): Response<Unit> {
         Timber.d("answerReview(reviewId=$reviewId, correct=$correct)")
+        delay(2000L)
         return answerReview.toResponse()
     }
 

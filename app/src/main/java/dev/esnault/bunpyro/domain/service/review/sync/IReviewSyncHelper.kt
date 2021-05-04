@@ -1,11 +1,11 @@
 package dev.esnault.bunpyro.domain.service.review.sync
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 
 interface IReviewSyncHelper {
 
-    val stateFlow: Flow<State>
+    val stateFlow: StateFlow<State>
 
     fun enqueue(request: Request)
 

@@ -3,8 +3,8 @@ package dev.esnault.bunpyro.domain.service.review.sync
 import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.domain.service.review.sync.IReviewSyncHelper.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.*
 
@@ -19,7 +19,7 @@ class ReviewSyncHelper(
     private val requests: LinkedList<Request> = LinkedList()
 
     private val _stateFlow = MutableStateFlow(State.IDLE)
-    override val stateFlow: Flow<State> = _stateFlow.asStateFlow()
+    override val stateFlow: StateFlow<State> = _stateFlow.asStateFlow()
 
     override fun enqueue(request: Request) {
         requests.add(request)
