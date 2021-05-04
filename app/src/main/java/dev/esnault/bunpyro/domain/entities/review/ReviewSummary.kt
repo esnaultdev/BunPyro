@@ -1,10 +1,19 @@
-package dev.esnault.bunpyro.android.screen.review.subview.summary
+package dev.esnault.bunpyro.domain.entities.review
 
 import dev.esnault.bunpyro.domain.entities.JLPT
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 import dev.esnault.bunpyro.domain.utils.lazyNone
 import org.jsoup.Jsoup
 
+
+data class ReviewSummary(
+    val answered: List<AnsweredGrammar>
+)
+
+data class AnsweredGrammar(
+    val grammar: SummaryGrammarOverview,
+    val correct: Boolean
+)
 
 data class SummaryGrammarOverview(
     val id: Long,

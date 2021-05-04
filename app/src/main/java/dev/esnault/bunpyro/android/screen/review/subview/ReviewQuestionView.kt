@@ -18,8 +18,6 @@ import dev.esnault.bunpyro.android.display.span.AnswerSpan
 import dev.esnault.bunpyro.android.display.span.TagSpan
 import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.ScreenConfig
-import dev.esnault.bunpyro.android.screen.review.ReviewViewState
-import dev.esnault.bunpyro.android.screen.review.ReviewViewState.AnswerState as AnswerState
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState.Question as ViewState
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.android.utils.transition.ChangeText
@@ -29,6 +27,8 @@ import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.common.hideKeyboardFrom
 import dev.esnault.bunpyro.databinding.LayoutReviewQuestionBinding
 import dev.esnault.bunpyro.domain.entities.media.AudioItem
+import dev.esnault.bunpyro.domain.entities.review.ReviewSession
+import dev.esnault.bunpyro.domain.entities.review.ReviewSession.*
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
 import dev.esnault.bunpyro.domain.utils.lazyNone
 import dev.esnault.wanakana.android.WanakanaAndroid
@@ -85,13 +85,15 @@ class ReviewQuestionView(
     private fun bindQuestionState(oldState: ViewState?, viewState: ViewState) {
         binding.root.isVisible = true
 
-        val questionChanged = oldState?.currentIndex != viewState.currentIndex
-        val answerChanged = oldState?.userAnswer != viewState.userAnswer
-        val answerStateChanged = oldState?.answerState != viewState.answerState
+        val oldSession = oldState?.session
+        val session = viewState.session
+        val questionChanged = oldSession?.currentIndex != session.currentIndex
+        val answerChanged = oldSession?.userAnswer != session.userAnswer
+        val answerStateChanged = oldSession?.answerState != session.answerState
         val furiganaChanged = oldState?.furiganaShown != viewState.furiganaShown
-        val progressChanged = oldState?.progress != viewState.progress
+        val progressChanged = oldSession?.progress != session.progress
         val hintLevelChanged = oldState?.hintLevel != viewState.hintLevel
-        val feedbackChanged = oldState?.feedback != viewState.feedback
+        val feedbackChanged = oldSession?.feedback != session.feedback
         val audioChanged = oldState?.currentAudio != viewState.currentAudio
         var transitioning = false
 
@@ -103,14 +105,14 @@ class ReviewQuestionView(
         }
 
         if (answerChanged || answerStateChanged) {
-            bindAnswer(viewState)
+            bindAnswer(viewState.session)
         }
         if (answerStateChanged) {
             bindAnswerState(viewState)
             bindPostAnswerActions(oldState, viewState)
         }
         if (progressChanged) {
-            bindProgress(viewState.progress)
+            bindProgress(session.progress)
         }
         if (hintLevelChanged) {
             transitioning = questionTransition(transitioning, oldState)
@@ -121,7 +123,7 @@ class ReviewQuestionView(
             questionTransition(
                 transitioning, oldState, ScreenConfig.Transition.fastDuration
             )
-            bindFeedback(viewState.feedback)
+            bindFeedback(session.feedback)
         }
         if (answerStateChanged || audioChanged) {
             bindAudioState(viewState)
@@ -231,7 +233,7 @@ class ReviewQuestionView(
     }
 
     private fun bindAnswerState(viewState: ViewState) {
-        val answerState = viewState.answerState
+        val answerState = viewState.session.answerState
         val answering = answerState is AnswerState.Answering
 
         // Input layout color
@@ -267,10 +269,10 @@ class ReviewQuestionView(
     }
 
     private fun bindPostAnswerActions(oldState: ViewState?, viewState: ViewState) {
-        val answerState = viewState.answerState
+        val answerState = viewState.session.answerState
         val answering = answerState is AnswerState.Answering
         val isIncorrect = answerState is AnswerState.Incorrect
-        val oldAnswerState = oldState?.answerState
+        val oldAnswerState = oldState?.session?.answerState
 
         // Ignore
         binding.questionAnswerLayout.apply {
@@ -291,7 +293,7 @@ class ReviewQuestionView(
         binding.questionActionInfo.isEnabled = !answering
 
         // Other
-        bindQuestionActionOther(viewState)
+        bindQuestionActionOther(viewState.session)
 
         val nextFocus: View? = when {
             answering -> if (oldAnswerState !is AnswerState.Answering) {
@@ -318,7 +320,7 @@ class ReviewQuestionView(
     private fun bindAudioState(viewState: ViewState) {
         val currentAudio = viewState.currentAudio
         val hasAudioLink = !viewState.currentQuestion.audioLink.isNullOrBlank()
-        val answering = viewState.answerState is AnswerState.Answering
+        val answering = viewState.session.answerState is AnswerState.Answering
 
         val canPlayAudio = !answering && hasAudioLink
         val audioState: SimpleAudioState = when {
@@ -356,11 +358,11 @@ class ReviewQuestionView(
         binding.questionActionHint.setIconResource(iconResId)
     }
 
-    private fun bindQuestionActionOther(viewState: ViewState) {
-        val (buttonEnabled, badgeVisible) = when (viewState.answerState) {
+    private fun bindQuestionActionOther(session: ReviewSession) {
+        val (buttonEnabled, badgeVisible) = when (session.answerState) {
             AnswerState.Answering -> false to false
             is AnswerState.Correct -> {
-                val altGrammarCount = viewState.currentQuestion.alternateGrammar.size
+                val altGrammarCount = session.currentQuestion.alternateGrammar.size
                 val hasAltGrammar = altGrammarCount > 0
                 if (hasAltGrammar) {
                     // Also count the default answer
@@ -373,7 +375,7 @@ class ReviewQuestionView(
         binding.questionActionOtherButton.isEnabled = buttonEnabled
         binding.questionActionOtherBadge.isVisible = badgeVisible
 
-        bindTooltipAltAnswer(viewState.answerState is AnswerState.Incorrect)
+        bindTooltipAltAnswer(session.answerState is AnswerState.Incorrect)
     }
 
     private fun updateAnswerSpans(block: (span: AnswerSpan) -> Unit) {
@@ -401,25 +403,25 @@ class ReviewQuestionView(
         }
     }
 
-    private fun bindAnswer(viewState: ViewState) {
-        if (binding.questionAnswerValue.text?.toString() != viewState.userAnswer) {
-            binding.questionAnswerValue.setText(viewState.userAnswer)
+    private fun bindAnswer(session: ReviewSession) {
+        if (binding.questionAnswerValue.text?.toString() != session.userAnswer) {
+            binding.questionAnswerValue.setText(session.userAnswer)
         }
 
-        val showAnswer = when (val answerState = viewState.answerState) {
-            AnswerState.Answering -> viewState.userAnswer
+        val showAnswer = when (val answerState = session.answerState) {
+            AnswerState.Answering -> session.userAnswer
             is AnswerState.Correct -> {
                 if (answerState.showIndex == 0) {
-                    viewState.currentQuestion.answer
+                    session.currentQuestion.answer
                 } else {
-                    viewState.currentQuestion.alternateGrammar[answerState.showIndex - 1]
+                    session.currentQuestion.alternateGrammar[answerState.showIndex - 1]
                 }
             }
             is AnswerState.Incorrect -> {
                 if (answerState.showCorrect) {
-                    viewState.currentQuestion.answer
+                    session.currentQuestion.answer
                 } else {
-                    viewState.userAnswer
+                    session.userAnswer
                 }
             }
         }
@@ -448,7 +450,7 @@ class ReviewQuestionView(
         }
     }
 
-    private fun bindProgress(progress: ReviewViewState.Progress) {
+    private fun bindProgress(progress: Progress) {
         val context = context
 
         binding.questionProgress.max = progress.total
@@ -460,16 +462,14 @@ class ReviewQuestionView(
             context.getString(R.string.reviews_topInfo_precision, progress.precision * 100)
     }
 
-    private fun bindFeedback(feedback: ReviewViewState.Feedback?) {
+    private fun bindFeedback(feedback: Feedback?) {
         val context = context
         binding.questionFeedback.isVisible = feedback != null
         if (feedback != null) {
             binding.questionFeedback.text = when (feedback) {
-                ReviewViewState.Feedback.Empty ->
-                    context.getString(R.string.reviews_feedback_empty)
-                ReviewViewState.Feedback.NotKana ->
-                    context.getString(R.string.reviews_feedback_notKana)
-                is ReviewViewState.Feedback.AltAnswer -> feedback.text
+                Feedback.Empty -> context.getString(R.string.reviews_feedback_empty)
+                Feedback.NotKana -> context.getString(R.string.reviews_feedback_notKana)
+                is Feedback.AltAnswer -> feedback.text
             }
         }
     }

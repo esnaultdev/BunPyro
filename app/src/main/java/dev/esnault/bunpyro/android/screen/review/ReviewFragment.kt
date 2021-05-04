@@ -133,7 +133,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             wrapUpItem.isVisible = true
         }
 
-        val titleResId = if (!viewState.askingAgain && viewState.askAgainIndexes.isEmpty()) {
+        val session = viewState.session
+        val titleResId = if (!session.askingAgain && session.askAgainIndexes.isEmpty()) {
             R.string.reviews_toolbar_wrapUp_noAskAgain
         } else {
             R.string.reviews_toolbar_wrapUp_askAgain

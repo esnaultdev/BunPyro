@@ -10,7 +10,6 @@ import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.res.srsString
 import dev.esnault.bunpyro.android.res.textResId
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState.Summary
-import dev.esnault.bunpyro.android.screen.review.ReviewViewState.AnsweredGrammar
 import dev.esnault.bunpyro.common.Alpha
 import dev.esnault.bunpyro.common.getColorCompat
 import dev.esnault.bunpyro.common.withAlpha
@@ -18,6 +17,7 @@ import dev.esnault.bunpyro.databinding.ItemReviewSummaryCategoryBinding
 import dev.esnault.bunpyro.databinding.ItemReviewSummaryGrammarPointBinding
 import dev.esnault.bunpyro.databinding.LayoutReviewSummaryHeaderBinding
 import dev.esnault.bunpyro.domain.DomainConfig
+import dev.esnault.bunpyro.domain.entities.review.AnsweredGrammar
 
 
 class ReviewSummaryAdapter(

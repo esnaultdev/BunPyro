@@ -44,8 +44,8 @@ val appModule = module {
     viewModel { AllGrammarViewModel(get(), get(), get()) }
 
     // Review
-    viewModel { ReviewViewModel(get(), get(), get(), get()) }
-    factory { ReviewSyncHelper(get()) }
+    viewModel { ReviewViewModel(get(), get(), get(), get(), get()) }
+    single { ReviewSyncHelper(get()) }
 
     // endregion
 
