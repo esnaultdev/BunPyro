@@ -11,6 +11,7 @@ import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState as ViewState
 import dev.esnault.bunpyro.android.screen.review.subview.ReviewInitView
 import dev.esnault.bunpyro.android.screen.review.subview.ReviewQuestionView
+import dev.esnault.bunpyro.android.screen.review.subview.ReviewSyncView
 import dev.esnault.bunpyro.android.screen.review.subview.summary.ReviewSummaryView
 import dev.esnault.bunpyro.android.utils.*
 import dev.esnault.bunpyro.databinding.FragmentReviewBinding
@@ -23,6 +24,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
     private lateinit var initSubView: ReviewInitView
     private lateinit var questionSubView: ReviewQuestionView
+    private lateinit var syncSubView: ReviewSyncView
     private lateinit var summarySubView: ReviewSummaryView
 
     private var oldViewState: ViewState? = null
@@ -67,6 +69,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             onAnswerAudio = vm::onAnswerAudio
         )
         questionSubView = ReviewQuestionView(binding.questionLayout, questionListener, context)
+        syncSubView = ReviewSyncView(binding.syncLayout)
 
         val summaryListener = ReviewSummaryView.Listener(
             onGrammarPointClick = vm::onGrammarPointClick
@@ -87,6 +90,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             oldViewState = oldViewState as? ViewState.Question,
             viewState = viewState as? ViewState.Question
         )
+        syncSubView.bindViewState(viewState as? ViewState.Sync)
         summarySubView.bindViewState(viewState as? ViewState.Summary)
 
         bindToolbar(viewState)

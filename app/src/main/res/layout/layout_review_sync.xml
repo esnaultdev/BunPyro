@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sync_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:visibility="visible"
+    >
+
+    <TextView
+        android:id="@+id/sync_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_horizontal"
+        android:maxWidth="@dimen/text_max_width"
+        android:text="@string/reviews_sync_title"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/sync_progress"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        />
+
+</LinearLayout>

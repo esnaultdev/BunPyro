@@ -23,6 +23,10 @@ sealed class ReviewViewState {
             get() = session.currentQuestion
     }
 
+    data class Sync(
+        val answered: List<AnsweredGrammar>
+    ) : ReviewViewState()
+
     data class Summary(
         val answered: List<AnsweredGrammar>
     ) : ReviewViewState()

@@ -56,6 +56,18 @@
         />
 
     <include
+        android:id="@+id/sync_layout"
+        layout="@layout/layout_review_sync"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar_layout"
+        tools:visibility="visible"
+        />
+
+    <include
         android:id="@+id/summary_layout"
         layout="@layout/layout_review_summary"
         android:layout_width="0dp"
