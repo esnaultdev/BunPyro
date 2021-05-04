@@ -206,12 +206,7 @@ class ReviewSessionService(
                 incorrect = session.progress.incorrect - 1
             )
 
-            val newAskAgainIndexes = if (session.askingAgain) {
-                session.askAgainIndexes
-            } else {
-                session.askAgainIndexes - session.currentIndex
-            }
-
+            val newAskAgainIndexes = session.askAgainIndexes - session.currentIndex
             val newAnsweredGrammar = if (session.askingAgain) {
                 session.answeredGrammar
             } else {
