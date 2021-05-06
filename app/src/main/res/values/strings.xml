@@ -181,6 +181,14 @@
     <string name="reviews_summary_category_incorrect">Incorrect</string>
     <string name="reviews_toolbar_wrapUp_noAskAgain">Finish</string>
     <string name="reviews_toolbar_wrapUp_askAgain">Wrap up</string>
+    <string name="reviews_dialog_quitWarning_title">Leave session?</string>
+    <string name="reviews_dialog_quitWarning_message">Some answers have not been synchronized with the server and will be lost.</string>
+    <string name="reviews_dialog_quitWarning_ok">Leave</string>
+    <string name="reviews_dialog_quitWarning_cancel">Stay</string>
+    <string name="reviews_dialog_syncError_title">Sync error</string>
+    <string name="reviews_dialog_syncError_message">An error occurred while sending your answers to the server.</string>
+    <string name="reviews_dialog_syncError_ok">Retry</string>
+    <string name="reviews_dialog_syncError_cancel">Leave</string>
 
     <string name="notification_sync_inProgress">Syncing grammar…</string>
     <string name="notificationChannel_sync_name">Sync</string>

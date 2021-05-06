@@ -4,6 +4,7 @@ package dev.esnault.bunpyro.android.screen.review
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
+import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
 import dev.esnault.bunpyro.R
@@ -26,6 +27,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     private lateinit var questionSubView: ReviewQuestionView
     private lateinit var syncSubView: ReviewSyncView
     private lateinit var summarySubView: ReviewSummaryView
+    private lateinit var dialogs: ReviewDialogs
 
     private var oldViewState: ViewState? = null
 
@@ -36,6 +38,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
         initSubViews()
         vm.viewState.safeObserve(this) { viewState -> bindViewState(viewState) }
+        vm.dialog.safeObserve(this) { dialogMessage -> dialogs.showDialog(dialogMessage) }
 
         bindListeners()
     }
@@ -75,6 +78,14 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             onGrammarPointClick = vm::onGrammarPointClick
         )
         summarySubView = ReviewSummaryView(binding.summaryLayout, summaryListener, context)
+
+        val dialogsListener = ReviewDialogs.Listener(
+            onDismiss = vm::onDialogDismiss,
+            onQuitConfirm = vm::onQuitConfirm,
+            onSyncQuit = vm::onSyncQuit,
+            onSyncRetry = vm::onSyncRetry
+        )
+        dialogs = ReviewDialogs(dialogsListener, context)
     }
 
     private fun bindViewState(viewState: ViewState) {
@@ -159,6 +170,14 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
                 }
                 else -> false
             }
+        }
+
+        binding.toolbar.setNavigationOnClickListener {
+            vm.onBackPressed()
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            vm.onBackPressed()
         }
     }
 }

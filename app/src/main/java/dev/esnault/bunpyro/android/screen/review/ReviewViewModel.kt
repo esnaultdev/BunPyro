@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
+import dev.esnault.bunpyro.android.screen.base.NavigationCommand
 import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState as ViewState
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
@@ -19,11 +20,11 @@ import dev.esnault.bunpyro.domain.entities.settings.next
 import dev.esnault.bunpyro.domain.service.audio.IAudioService
 import dev.esnault.bunpyro.domain.service.review.IReviewSessionService
 import dev.esnault.bunpyro.domain.service.review.sync.IReviewSyncHelper
+import dev.esnault.bunpyro.domain.service.review.sync.IReviewSyncHelper.State as SyncState
 import dev.esnault.bunpyro.domain.utils.fold
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class ReviewViewModel(
@@ -43,6 +44,10 @@ class ReviewViewModel(
             field = value
             _viewState.postValue(value)
         }
+
+    private val _dialog = MutableLiveData<ViewState.DialogMessage?>()
+    val dialog: LiveData<ViewState.DialogMessage?>
+        get() = Transformations.distinctUntilChanged(_dialog)
 
     private var furiganaSettingJob: Job? = null
     private var hintLevelSettingJob: Job? = null
@@ -128,7 +133,7 @@ class ReviewViewModel(
     // region Finish
 
     private fun finishSession(session: ReviewSession) {
-        if (syncHelper.stateFlow.value == IReviewSyncHelper.State.IDLE) {
+        if (syncHelper.stateFlow.value == SyncState.IDLE) {
             this.currentState = ViewState.Summary(answered = session.answeredGrammar)
             // The state switch is handled by [watchSyncStates].
         } else {
@@ -263,6 +268,55 @@ class ReviewViewModel(
         navigate(ReviewFragmentDirections.actionReviewToGrammarPoint(grammarId))
     }
 
+    fun onBackPressed() {
+        when (currentState) {
+            is ViewState.Init,
+            is ViewState.Summary -> navigate(NavigationCommand.Back)
+            is ViewState.Sync,
+            is ViewState.Question -> when (syncHelper.stateFlow.value) {
+                SyncState.IDLE -> goToSummary()
+                SyncState.REQUESTING -> _dialog.value = ViewState.DialogMessage.QuitConfirm
+                SyncState.ERROR -> _dialog.value = ViewState.DialogMessage.SyncError
+            }
+        }
+    }
+
+    private fun goToSummary() {
+        // TODO Only include synced items
+        if (currentState.answered.isEmpty()) {
+            navigate(NavigationCommand.Back)
+        } else {
+            this.currentState = ViewState.Summary(answered = currentState.answered)
+        }
+    }
+
+    // endregion
+
+    // region Dialog
+
+    fun onDialogDismiss() {
+        if ((currentState is ViewState.Sync || currentState is ViewState.Question)
+                && syncHelper.stateFlow.value == SyncState.ERROR) {
+            _dialog.value = ViewState.DialogMessage.SyncError
+        } else {
+            _dialog.value = null
+        }
+    }
+
+    fun onQuitConfirm() {
+        _dialog.value = null
+        goToSummary()
+    }
+
+    fun onSyncQuit() {
+        if (_dialog.value != ViewState.DialogMessage.SyncError) return
+        _dialog.value = ViewState.DialogMessage.QuitConfirm
+    }
+
+    fun onSyncRetry() {
+        syncHelper.retry()
+    }
+
     // endregion
 
     // region Sync
@@ -273,13 +327,12 @@ class ReviewViewModel(
                 .collect { syncState ->
                     val currentState = currentState
                     when (syncState) {
-                        IReviewSyncHelper.State.IDLE -> if (currentState is ViewState.Sync) {
-                            this@ReviewViewModel.currentState = ViewState.Summary(
-                                answered = currentState.answered
-                            )
+                        SyncState.IDLE -> if (currentState is ViewState.Sync) {
+                            goToSummary()
+                            _dialog.value = null
                         }
-                        IReviewSyncHelper.State.REQUESTING -> Unit
-                        IReviewSyncHelper.State.ERROR -> Unit // TODO Display dialogs
+                        SyncState.REQUESTING -> Unit
+                        SyncState.ERROR -> _dialog.value = ViewState.DialogMessage.SyncError
                     }
                 }
         }
