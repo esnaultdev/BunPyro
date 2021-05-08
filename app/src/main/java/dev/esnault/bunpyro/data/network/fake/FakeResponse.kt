@@ -44,7 +44,11 @@ class NoContentResponseBody(
 }
 
 fun <T> httpErrorResponse(code: Int): Response<T> {
+    val request = okhttp3.Request.Builder()
+        .build()
+
     val rawResponse = okhttp3.Response.Builder()
+        .request(request)
         .code(code)
         .build()
 
