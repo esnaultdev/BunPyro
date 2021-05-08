@@ -12,7 +12,7 @@ import dev.esnault.bunpyro.android.screen.review.ReviewViewState as ViewState
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.review.IReviewService
 import dev.esnault.bunpyro.domain.entities.media.AudioItem
-import dev.esnault.bunpyro.domain.entities.review.ReviewSession
+import dev.esnault.bunpyro.domain.entities.review.AnsweredGrammar
 import dev.esnault.bunpyro.domain.entities.review.ReviewSession.*
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
@@ -25,7 +25,9 @@ import dev.esnault.bunpyro.domain.utils.fold
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class ReviewViewModel(
     private val reviewService: IReviewService,
@@ -45,6 +47,8 @@ class ReviewViewModel(
             _viewState.postValue(value)
         }
 
+    private var syncedAnswers: List<AnsweredGrammar> = emptyList()
+
     private val _dialog = MutableLiveData<ViewState.DialogMessage?>()
     val dialog: LiveData<ViewState.DialogMessage?>
         get() = Transformations.distinctUntilChanged(_dialog)
@@ -56,6 +60,7 @@ class ReviewViewModel(
         Analytics.screen(name = "review")
         loadReviews()
         watchSyncStates()
+        watchSyncedAnswers()
         observeAudioState()
     }
 
@@ -116,7 +121,7 @@ class ReviewViewModel(
             is AnswerState.Incorrect -> {
                 val newSession = sessionService.next(currentState.session)
                 if (newSession.questionType == QuestionType.FINISHED) {
-                    finishSession(newSession)
+                    finishSession()
                 } else {
                     this.currentState = currentState.copy(session = newSession)
                 }
@@ -132,12 +137,12 @@ class ReviewViewModel(
 
     // region Finish
 
-    private fun finishSession(session: ReviewSession) {
+    private fun finishSession() {
         if (syncHelper.stateFlow.value == SyncState.IDLE) {
-            this.currentState = ViewState.Summary(answered = session.answeredGrammar)
-            // The state switch is handled by [watchSyncStates].
+            goToSummary()
         } else {
-            this.currentState = ViewState.Sync(answered = session.answeredGrammar)
+            // The state switch is handled by [watchSyncStates].
+            this.currentState = ViewState.Sync
         }
     }
 
@@ -282,11 +287,12 @@ class ReviewViewModel(
     }
 
     private fun goToSummary() {
-        // TODO Only include synced items
-        if (currentState.answered.isEmpty()) {
+        val syncedAnswers = syncedAnswers
+        if (syncedAnswers.isEmpty()) {
+            // TODO Display an empty summary.
             navigate(NavigationCommand.Back)
         } else {
-            this.currentState = ViewState.Summary(answered = currentState.answered)
+            this.currentState = ViewState.Summary(answered = syncedAnswers)
         }
     }
 
@@ -335,6 +341,33 @@ class ReviewViewModel(
                         SyncState.ERROR -> _dialog.value = ViewState.DialogMessage.SyncError
                     }
                 }
+        }
+    }
+
+    private fun watchSyncedAnswers() {
+        viewModelScope.launch {
+            syncHelper.syncedRequestFlow
+                .scan(emptyList<AnsweredGrammar>()) { answered, request ->
+                    when (request) {
+                        is IReviewSyncHelper.Request.Answer -> {
+                            answered + request.answeredGrammar
+                        }
+                        is IReviewSyncHelper.Request.Ignore -> {
+                            // Remove the previously synced answer, if any
+                            val previousIndex = answered.indexOfLast {
+                                it.grammar.id == request.grammar.id
+                            }
+                            val previousAnswer = answered.getOrNull(previousIndex)
+                            if (previousAnswer == null || !previousAnswer.correct) {
+                                Timber.w("Invalid ignore request: $request.")
+                                answered
+                            } else {
+                                answered.toMutableList().apply { removeAt(previousIndex) }
+                            }
+                        }
+                    }
+                }
+                .collect { answered -> syncedAnswers = answered }
         }
     }
 

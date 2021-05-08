@@ -6,7 +6,6 @@ data class ReviewSession(
     val currentIndex: Int,
     val questionType: QuestionType,
     val askAgainIndexes: List<Int>,
-    val answeredGrammar: List<AnsweredGrammar>,
     val progress: Progress,
     val answerState: AnswerState,
     val feedback: Feedback?,

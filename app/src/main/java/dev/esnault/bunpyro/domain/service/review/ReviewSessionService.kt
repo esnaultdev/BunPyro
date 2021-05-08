@@ -1,10 +1,8 @@
 package dev.esnault.bunpyro.domain.service.review
 
-import dev.esnault.bunpyro.domain.entities.review.AnsweredGrammar
 import dev.esnault.bunpyro.domain.entities.review.ReviewQuestion
 import dev.esnault.bunpyro.domain.entities.review.ReviewSession
 import dev.esnault.bunpyro.domain.entities.review.ReviewSession.*
-import dev.esnault.bunpyro.domain.entities.review.SummaryGrammarOverview
 import dev.esnault.bunpyro.domain.service.review.sync.IReviewSyncHelper
 import dev.esnault.bunpyro.domain.utils.isKanaRegex
 import kotlin.random.Random
@@ -29,7 +27,6 @@ class ReviewSessionService(
                 currentIndex = 0,
                 questionType = QuestionType.NORMAL,
                 askAgainIndexes = emptyList(),
-                answeredGrammar = emptyList(),
                 progress = progress,
                 answerState = AnswerState.Answering,
                 feedback = null,
@@ -175,18 +172,8 @@ class ReviewSessionService(
             session.askAgainIndexes + session.currentIndex
         }
 
-        val newAnsweredGrammar = if (session.askingAgain) {
-            session.answeredGrammar
-        } else {
-            session.answeredGrammar + AnsweredGrammar(
-                grammar = SummaryGrammarOverview.from(session.currentQuestion.grammarPoint),
-                correct = isCorrect
-            )
-        }
-
         return session.copy(
             askAgainIndexes = newAskAgainIndexes,
-            answeredGrammar = newAnsweredGrammar,
             answerState = newAnswerState,
             feedback = null,
             progress = newProgress
@@ -206,15 +193,9 @@ class ReviewSessionService(
             )
 
             val newAskAgainIndexes = session.askAgainIndexes - session.currentIndex
-            val newAnsweredGrammar = if (session.askingAgain) {
-                session.answeredGrammar
-            } else {
-                session.answeredGrammar.dropLast(1)
-            }
 
             session.copy(
                 answerState = AnswerState.Answering,
-                answeredGrammar = newAnsweredGrammar,
                 progress = newProgress,
                 askAgainIndexes = newAskAgainIndexes
             )
@@ -290,14 +271,18 @@ class ReviewSessionService(
         val request = IReviewSyncHelper.Request.Answer(
             reviewId = review.id,
             questionId = question.id,
-            correct = correct
+            correct = correct,
+            grammar = question.grammarPoint
         )
         syncHelper.enqueue(request)
     }
 
     private fun syncQuestionIgnore(question: ReviewQuestion) {
         val review = question.grammarPoint.review ?: return
-        val request = IReviewSyncHelper.Request.Ignore(reviewId = review.id)
+        val request = IReviewSyncHelper.Request.Ignore(
+            reviewId = review.id,
+            grammar = question.grammarPoint
+        )
         syncHelper.enqueue(request)
     }
 

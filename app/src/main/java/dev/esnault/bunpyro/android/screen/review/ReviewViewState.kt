@@ -8,11 +8,8 @@ import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
 
 
 sealed class ReviewViewState {
-    abstract val answered: List<AnsweredGrammar>
 
     sealed class Init : ReviewViewState() {
-        override val answered: List<AnsweredGrammar> = emptyList()
-
         object Loading : Init()
         object Error : Init()
     }
@@ -25,17 +22,12 @@ sealed class ReviewViewState {
     ) : ReviewViewState() {
         val currentQuestion: ReviewQuestion
             get() = session.currentQuestion
-
-        override val answered: List<AnsweredGrammar>
-            get() = session.answeredGrammar
     }
 
-    data class Sync(
-        override val answered: List<AnsweredGrammar>
-    ) : ReviewViewState()
+    object Sync : ReviewViewState()
 
     data class Summary(
-        override val answered: List<AnsweredGrammar>
+        val answered: List<AnsweredGrammar>
     ) : ReviewViewState()
 
     sealed class DialogMessage {
