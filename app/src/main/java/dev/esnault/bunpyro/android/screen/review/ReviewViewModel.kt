@@ -214,9 +214,12 @@ class ReviewViewModel(
 
     fun onWrapUpClick() {
         val currentState = currentState as? ViewState.Question ?: return
-        this.currentState = currentState.copy(
-            session = sessionService.wrapUpOrFinish(currentState.session)
-        )
+        val newSession = sessionService.wrapUpOrFinish(currentState.session)
+        if (newSession.questionType != QuestionType.FINISHED) {
+            this.currentState = currentState.copy(session = newSession)
+        } else {
+            finishSession()
+        }
     }
 
     // endregion
