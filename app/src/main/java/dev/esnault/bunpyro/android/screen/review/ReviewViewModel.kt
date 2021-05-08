@@ -55,6 +55,7 @@ class ReviewViewModel(
     init {
         Analytics.screen(name = "review")
         loadReviews()
+        syncHelper.clear()
         watchSyncStates()
         observeAudioState()
     }
