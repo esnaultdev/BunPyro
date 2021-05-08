@@ -48,6 +48,7 @@ class ReviewViewModel(
         }
 
     private var syncedAnswers: List<AnsweredGrammar> = emptyList()
+    private var quitting: Boolean = false
 
     private val _dialog = MutableLiveData<ViewState.DialogMessage?>()
     val dialog: LiveData<ViewState.DialogMessage?>
@@ -76,6 +77,7 @@ class ReviewViewModel(
             val hintLevel = settingsRepo.getReviewHintLevel()
 
             val result = reviewService.getCurrentReviews()
+            if (currentState != ViewState.Init.Loading) return@launch
             currentState = result.fold(
                 onSuccess = { questions ->
                     val session = sessionService.startSession(questions)
@@ -279,7 +281,10 @@ class ReviewViewModel(
     fun onBackPressed() {
         when (currentState) {
             is ViewState.Init,
-            is ViewState.Summary -> navigate(NavigationCommand.Back)
+            is ViewState.Summary -> {
+                quitting = true
+                navigate(NavigationCommand.Back)
+            }
             is ViewState.Sync,
             is ViewState.Question -> when (syncHelper.stateFlow.value) {
                 SyncState.IDLE -> goToSummary()
@@ -292,7 +297,7 @@ class ReviewViewModel(
     private fun goToSummary() {
         val syncedAnswers = syncedAnswers
         if (syncedAnswers.isEmpty()) {
-            // TODO Display an empty summary.
+            quitting = true
             navigate(NavigationCommand.Back)
         } else {
             this.currentState = ViewState.Summary(answered = syncedAnswers)
@@ -305,7 +310,7 @@ class ReviewViewModel(
 
     fun onDialogDismiss() {
         if ((currentState is ViewState.Sync || currentState is ViewState.Question)
-                && syncHelper.stateFlow.value == SyncState.ERROR) {
+                && syncHelper.stateFlow.value == SyncState.ERROR && !quitting) {
             _dialog.value = ViewState.DialogMessage.SyncError
         } else {
             _dialog.value = null
@@ -313,8 +318,8 @@ class ReviewViewModel(
     }
 
     fun onQuitConfirm() {
-        _dialog.value = null
         goToSummary()
+        _dialog.value = null
     }
 
     fun onSyncQuit() {
