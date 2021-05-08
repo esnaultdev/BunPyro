@@ -22,6 +22,8 @@ import dev.esnault.bunpyro.android.service.AndroidServiceStarter
 import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
 import dev.esnault.bunpyro.domain.service.audio.AudioService
 import dev.esnault.bunpyro.domain.service.audio.IAudioService
+import dev.esnault.bunpyro.domain.service.review.IReviewSessionService
+import dev.esnault.bunpyro.domain.service.review.ReviewSessionService
 import dev.esnault.bunpyro.domain.service.review.sync.IReviewSyncHelper
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -43,7 +45,19 @@ val appModule = module {
         GrammarPointViewModel(args.id, args.readOnly, get(), get(), get(), get(), get(), get())
     }
     viewModel { AllGrammarViewModel(get(), get(), get()) }
-    viewModel { ReviewViewModel(get(), get(), get(), get(), get()) }
+    viewModel {
+        // Injected manually because we want to share a single syncHelper instance scoped for each
+        // view model instance.
+        val syncHelper: IReviewSyncHelper = ReviewSyncHelper(get())
+        val sessionService: IReviewSessionService = ReviewSessionService(syncHelper)
+        ReviewViewModel(
+            reviewService = get(),
+            sessionService = sessionService,
+            settingsRepo = get(),
+            audioService = get(),
+            syncHelper = syncHelper
+        )
+    }
 
     // endregion
 

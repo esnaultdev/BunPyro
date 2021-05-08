@@ -3,6 +3,7 @@ package dev.esnault.bunpyro.di
 import android.content.Context
 import android.content.SharedPreferences
 import dev.esnault.bunpyro.BuildConfig
+import dev.esnault.bunpyro.android.screen.review.ReviewViewModel
 import dev.esnault.bunpyro.data.config.AppConfig
 import dev.esnault.bunpyro.data.config.FakeAppConfig
 import dev.esnault.bunpyro.data.config.IAppConfig
@@ -62,12 +63,6 @@ val serviceModule = module {
     factory<IReviewService> {
         ReviewService(get(), get(), get(), get(), get(), get(), get(), get())
     }
-
-    factory<IReviewSessionService> {
-        ReviewSessionService(get())
-    }
-
-    single<IReviewSyncHelper> { ReviewSyncHelper(get()) }
 
     single<ICrashReporter> {
         if (BuildConfig.DEBUG) {

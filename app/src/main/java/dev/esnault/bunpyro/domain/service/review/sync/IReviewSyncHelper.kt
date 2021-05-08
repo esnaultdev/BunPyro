@@ -11,8 +11,6 @@ interface IReviewSyncHelper {
 
     fun retry()
 
-    fun clear()
-
     sealed class Request {
         data class Answer(
             val reviewId: Long,

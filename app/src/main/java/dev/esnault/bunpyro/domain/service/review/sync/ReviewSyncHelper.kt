@@ -35,12 +35,6 @@ class ReviewSyncHelper(
         }
     }
 
-    override fun clear() {
-        currentJob?.cancel()
-        requests.clear()
-        _stateFlow.tryEmit(State.IDLE)
-    }
-
     private fun startNextRequest() {
         val request = requests.firstOrNull()
         if (request == null) {
