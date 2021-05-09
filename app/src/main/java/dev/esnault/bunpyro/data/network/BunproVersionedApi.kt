@@ -43,7 +43,7 @@ interface BunproVersionedApi {
     ): Response<ReviewsData>
 
     @GET("v4/reviews/current_reviews")
-    @Headers("${Timeout.READ}:20000")
+    @Headers("${Timeout.READ}:30000")
     suspend fun getCurrentReviews(): Response<List<CurrentReview>>
 
     @POST("v3/reviews/create/{grammarPointId}?complete=true")
