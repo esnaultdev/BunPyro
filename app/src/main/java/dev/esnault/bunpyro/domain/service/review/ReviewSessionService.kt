@@ -41,7 +41,17 @@ class ReviewSessionService(
         return when (session.questionType) {
             QuestionType.FINISHED -> session
             QuestionType.ASK_AGAIN -> finish(session)
-            QuestionType.NORMAL -> goToNextAskAgain(session)
+            QuestionType.NORMAL -> {
+                // Update the progress, since we're skipping questions
+                val currentIsAnswered = session.answerState != AnswerState.Answering
+                val newMax = if (currentIsAnswered) {
+                    session.currentIndex + 1
+                } else {
+                    session.currentIndex
+                }
+                val newProgress = session.progress.copy(max = newMax)
+                goToNextAskAgain(session.copy(progress = newProgress))
+            }
         }
     }
 
