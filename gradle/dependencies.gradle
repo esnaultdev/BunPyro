@@ -36,7 +36,7 @@ ext.versions = [
 
         // Text
         jsoup: '1.13.1',
-        wanakana: '1.1.0',
+        wanakana: '1.1.1',
 
         // Media
         exoplayer: '2.11.4',
