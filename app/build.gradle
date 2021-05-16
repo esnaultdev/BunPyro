@@ -106,9 +106,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidx.lifecycle}"
 
     // DI
-    implementation "org.koin:koin-android:${versions.koin}"
-    implementation "org.koin:koin-androidx-viewmodel:${versions.koin}"
-    testImplementation "org.koin:koin-test:${versions.koin}"
+    implementation "io.insert-koin:koin-android:${versions.koin}"
+    testImplementation "io.insert-koin:koin-test:${versions.koin}"
     implementation "com.jakewharton:process-phoenix:${versions.processPhoenix}"
 
     // DB

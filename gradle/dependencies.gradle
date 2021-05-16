@@ -1,32 +1,32 @@
 ext.versions = [
-        kotlin: '1.4.31',
+        kotlin: '1.4.32',
         kotlinx: [
                 coroutines: '1.3.2',
         ],
         androidx: [
-                appcompat: '1.3.0-beta01',
-                compose: '1.0.0-beta02',
+                appcompat: '1.3.0-rc01',
+                compose: '1.0.0-beta06',
                 constraintlayout: '2.0.4',
                 core: '1.3.2',
                 espresso: '3.3.0',
-                lifecycle: '2.3.0',
-                navigation: '2.3.4',
+                lifecycle: '2.3.1',
+                navigation: '2.3.5',
                 preference: '1.1.1',
-                room: '2.2.6',
+                room: '2.3.0',
                 test: '1.2.0',
-                testrules: '1.3.1-alpha03',
+                testrules: '1.4.0-alpha06',
                 junit: '1.1.2',
         ],
         firebase_bom: '26.3.0',
 
         // UI
-        material: '1.4.0-alpha01',
+        material: '1.4.0-beta01',
         materialdialogs: '3.3.0',
         betterlinkmovementmethod: '2.2.0',
         transitionseverywhere: '2.1.0',
 
         // "DI"
-        koin: '2.0.1',
+        koin: '3.0.1',
         processPhoenix: '2.0.0',
 
         // Network
@@ -39,13 +39,13 @@ ext.versions = [
         wanakana: '1.1.1',
 
         // Media
-        exoplayer: '2.11.4',
+        exoplayer: '2.14.0',
 
         // Development
         timber: '4.7.1',
 
         // Test
-        junit: '4.13.1',
+        junit: '4.13.2',
 ]
 
 ext.deps = [
