@@ -86,5 +86,35 @@ val licenses = listOf(
         summary = "Set of extra Transitions on top of AndroidX Transitions Library.",
         license = "Apache License 2.0",
         url = "https://github.com/andkulikov/Transitions-Everywhere"
+    ),
+    License(
+        title = "ExoPlayer",
+        summary = "An extensible media player for Android.",
+        license = "Apache License 2.0",
+        url = "https://github.com/google/ExoPlayer"
+    ),
+    License(
+        title = "Material Dialogs",
+        summary = "A beautiful, fluid, and extensible dialogs API for Kotlin & Android.",
+        license = "Apache License 2.0",
+        url = "https://github.com/afollestad/material-dialogs"
+    ),
+    License(
+        title = "Android Jetpack",
+        summary = "A suite of libraries to help developers follow best practices, reduce boilerplate code, and write code that works consistently across Android versions and devices.",
+        license = "Apache License 2.0",
+        url = "https://developer.android.com/jetpack"
+    ),
+    License(
+        title = "Kotlin",
+        summary = "The Kotlin Programming Language.",
+        license = "Apache License 2.0",
+        url = "https://github.com/JetBrains/kotlin"
+    ),
+    License(
+        title = "Timber",
+        summary = "A logger with a small, extensible API which provides utility on top of Android's normal Log class.",
+        license = "Apache License 2.0",
+        url = "https://github.com/JakeWharton/timber"
     )
 ).sortedBy { it.title }
