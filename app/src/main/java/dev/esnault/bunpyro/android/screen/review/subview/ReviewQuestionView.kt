@@ -9,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.isVisible
+import androidx.core.view.postDelayed
 import androidx.transition.AutoTransition
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
@@ -63,6 +64,7 @@ class ReviewQuestionView(
         context.getColorCompat(R.color.answer_incorrect)
     }
 
+    private var viewState: ViewState? = null
     private var wkBinding: WKBinding? = null
 
     init {
@@ -71,6 +73,7 @@ class ReviewQuestionView(
     }
 
     fun bindViewState(oldViewState: ViewState?, viewState: ViewState?) {
+        this.viewState = viewState
         when (viewState) {
             null -> bindNonQuestionViewState()
             else -> bindQuestionState(oldViewState, viewState)
@@ -282,10 +285,19 @@ class ReviewQuestionView(
                     listener.onIgnoreIncorrect()
                 }
             } else {
-                // Empty drawable so that the text is still centered
+                // Empty drawable so that the text is still centered.
                 setStartIconDrawable(R.drawable.ic_empty_24dp)
-                // Remove the click listener, otherwise the empty icon is clickable
-                setStartIconOnClickListener(null)
+                // Remove the click listener, otherwise the empty icon is clickable.
+                // This called is delayed due to a bug of the TextInputLayout that freezes the
+                // ripple if the listener is removed during its animation.
+                // FIXME: Remove this workaround when the ripple behavior is fixed.
+                postDelayed(150L) {
+                    val currentAnswerState = this@ReviewQuestionView.viewState?.session?.answerState
+                    if (currentAnswerState is AnswerState.Answering ||
+                        currentAnswerState is AnswerState.Correct) {
+                        setStartIconOnClickListener(null)
+                    }
+                }
             }
         }
 
