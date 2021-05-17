@@ -356,7 +356,9 @@ class ReviewViewModel(
         viewModelScope.launch {
             syncHelper.syncedRequestFlow
                 .scan(emptyList<AnsweredGrammar>()) { answered, request ->
-                    when (request) {
+                    if (request.askAgain) {
+                        answered
+                    } else when (request) {
                         is IReviewSyncHelper.Request.Answer -> {
                             answered + request.answeredGrammar
                         }
@@ -366,7 +368,7 @@ class ReviewViewModel(
                                 it.grammar.id == request.grammar.id
                             }
                             val previousAnswer = answered.getOrNull(previousIndex)
-                            if (previousAnswer == null || !previousAnswer.correct) {
+                            if (previousAnswer == null || previousAnswer.correct) {
                                 Timber.w("Invalid ignore request: $request.")
                                 answered
                             } else {

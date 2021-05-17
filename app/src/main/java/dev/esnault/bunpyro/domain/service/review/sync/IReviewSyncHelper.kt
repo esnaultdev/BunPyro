@@ -19,10 +19,13 @@ interface IReviewSyncHelper {
     fun retry()
 
     sealed class Request {
+        abstract val askAgain: Boolean
+
         data class Answer(
             val reviewId: Long,
             val questionId: Long,
             val correct: Boolean,
+            override val askAgain: Boolean,
             val grammar: GrammarPoint
         ) : Request() {
 
@@ -36,6 +39,7 @@ interface IReviewSyncHelper {
 
         data class Ignore(
             val reviewId: Long,
+            override val askAgain: Boolean,
             val grammar: GrammarPoint
         ) : Request()
     }

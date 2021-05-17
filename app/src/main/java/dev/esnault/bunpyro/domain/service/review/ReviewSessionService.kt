@@ -158,7 +158,7 @@ class ReviewSessionService(
             }
         }
 
-        syncQuestionResult(currentQuestion, isCorrect)
+        syncQuestionResult(currentQuestion, isCorrect, session.askingAgain)
         return updateAnswerState(session, userIndex)
     }
 
@@ -196,7 +196,7 @@ class ReviewSessionService(
 
     override fun ignore(session: ReviewSession): ReviewSession {
         return if (session.answerState is AnswerState.Incorrect) {
-            syncQuestionIgnore(session.currentQuestion)
+            syncQuestionIgnore(session.currentQuestion, session.askingAgain)
 
             val newProgress = session.progress.copy(
                 incorrect = session.progress.incorrect - 1
@@ -276,21 +276,23 @@ class ReviewSessionService(
 
     // region Server sync
 
-    private fun syncQuestionResult(question: ReviewQuestion, correct: Boolean) {
+    private fun syncQuestionResult(question: ReviewQuestion, correct: Boolean, askAgain: Boolean) {
         val review = question.grammarPoint.review ?: return
         val request = IReviewSyncHelper.Request.Answer(
             reviewId = review.id,
             questionId = question.id,
             correct = correct,
+            askAgain = askAgain,
             grammar = question.grammarPoint
         )
         syncHelper.enqueue(request)
     }
 
-    private fun syncQuestionIgnore(question: ReviewQuestion) {
+    private fun syncQuestionIgnore(question: ReviewQuestion, askAgain: Boolean) {
         val review = question.grammarPoint.review ?: return
         val request = IReviewSyncHelper.Request.Ignore(
             reviewId = review.id,
+            askAgain = askAgain,
             grammar = question.grammarPoint
         )
         syncHelper.enqueue(request)
