@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.esnault.bunpyro.R
@@ -96,6 +97,10 @@ class JlptLessonAdapter(
 
                                 progress.max = lesson.size
                                 progress.progress = lesson.studied
+                                // Generate a unique view id for each progress bar to properly save
+                                // and restore its state. This is a workaround caused by the
+                                // behavior of ViewStatePagerAdapter.
+                                progress.id = View.generateViewId()
                             }
                         }
                     }
