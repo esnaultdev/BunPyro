@@ -403,14 +403,16 @@ class ReviewQuestionView(
 
             // Update the spanned text
             val spannableBuilder = SpannableStringBuilder(spanned)
-            answerSpans.forEach { answerSpan ->
-                val spanStart = spanned.getSpanStart(answerSpan)
-                val spanEnd = spanStart + newText.length
-                spannableBuilder.removeSpan(answerSpan)
-                spannableBuilder.replace(spanStart, spanStart + oldText.length, newText)
-                val spanFlags = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                spannableBuilder.setSpan(answerSpan, spanStart, spanEnd, spanFlags)
-            }
+            answerSpans.map { it to spanned.getSpanStart(it) }
+                // Iterate from the end to not mess up the indexes when replacing the text.
+                .sortedByDescending { it.second }
+                .forEach { (answerSpan, spanStart) ->
+                    val spanEnd = spanStart + newText.length
+                    spannableBuilder.removeSpan(answerSpan)
+                    spannableBuilder.replace(spanStart, spanStart + oldText.length, newText)
+                    val spanFlags = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    spannableBuilder.setSpan(answerSpan, spanStart, spanEnd, spanFlags)
+                }
             binding.questionQuestion.text = spannableBuilder
         }
     }
