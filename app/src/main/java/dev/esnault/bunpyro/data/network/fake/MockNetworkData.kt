@@ -2,11 +2,12 @@ package dev.esnault.bunpyro.data.network.fake
 
 import dev.esnault.bunpyro.data.network.entities.*
 import dev.esnault.bunpyro.data.network.entities.review.*
+import dev.esnault.bunpyro.data.network.entities.user.LightUserInfo
 import java.util.*
 
 
 object Mock {
-    val userInfo = UserInfo(
+    val userInfo = LightUserInfo(
         userName = "Fake User",
         grammarPointCount = 0,
         ghostReviewCount = 0,

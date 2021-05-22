@@ -2,6 +2,8 @@ package dev.esnault.bunpyro.data.network.entities
 
 import com.squareup.moshi.Moshi
 import dev.esnault.bunpyro.KoinTestRule
+import dev.esnault.bunpyro.data.network.entities.user.LightUserInfo
+import dev.esnault.bunpyro.data.network.entities.user.LightUserInfoWrapper
 import dev.esnault.bunpyro.di.networkModule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -10,7 +12,7 @@ import org.koin.test.KoinTest
 import org.koin.test.inject
 
 
-class UserInfoTest : KoinTest {
+class LightUserInfoTest : KoinTest {
 
     val moshi: Moshi by inject()
 
@@ -23,14 +25,14 @@ class UserInfoTest : KoinTest {
     fun parseUserInfo() {
         // Given
         val input = userInfo
-        val adapter = moshi.adapter(UserInfoWrapper::class.java)
+        val adapter = moshi.adapter(LightUserInfoWrapper::class.java)
 
         // When
         val output = adapter.fromJson(input)
 
         // Then
-        val expected = UserInfoWrapper(
-            UserInfo(
+        val expected = LightUserInfoWrapper(
+            LightUserInfo(
                 userName = "matthieuesnault",
                 grammarPointCount = 219,
                 ghostReviewCount = 25,

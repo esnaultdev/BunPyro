@@ -2,7 +2,7 @@ package dev.esnault.bunpyro.data.network
 
 import dev.esnault.bunpyro.data.network.entities.BaseRequest
 import dev.esnault.bunpyro.data.network.entities.review.StudyQueue
-import dev.esnault.bunpyro.data.network.entities.UserInfoWrapper
+import dev.esnault.bunpyro.data.network.entities.user.LightUserInfoWrapper
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -14,7 +14,7 @@ import retrofit2.http.Path
 interface BunproApi {
 
     @GET("user/{apiKey}")
-    suspend fun getUser(@Path("apiKey") apiKey: String): UserInfoWrapper
+    suspend fun getUser(@Path("apiKey") apiKey: String): LightUserInfoWrapper
 
     @GET("user/{apiKey}/study_queue")
     suspend fun getStudyQueue(@Path("apiKey") apiKey: String): BaseRequest<StudyQueue>

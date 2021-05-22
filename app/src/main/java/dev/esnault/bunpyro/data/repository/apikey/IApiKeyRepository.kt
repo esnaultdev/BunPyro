@@ -1,6 +1,6 @@
 package dev.esnault.bunpyro.data.repository.apikey
 
-import dev.esnault.bunpyro.data.network.entities.UserInfo
+import dev.esnault.bunpyro.data.network.entities.user.LightUserInfo
 
 
 interface IApiKeyRepository {
@@ -11,7 +11,7 @@ interface IApiKeyRepository {
 }
 
 sealed class ApiKeyCheckResult {
-    class Success(val userInfo: UserInfo) : ApiKeyCheckResult()
+    class Success(val userInfo: LightUserInfo) : ApiKeyCheckResult()
     sealed class Error : ApiKeyCheckResult() {
         object Network : Error()
         object Invalid : Error()
