@@ -190,7 +190,11 @@
     <string name="reviews_dialog_syncError_ok">Retry</string>
     <string name="reviews_dialog_syncError_cancel">Leave</string>
 
+    <!-- Notifications -->
     <string name="notification_sync_inProgress">Syncing grammar…</string>
     <string name="notificationChannel_sync_name">Sync</string>
     <string name="notificationChannel_sync_description">Synchronization of data with BunPro</string>
+    <string name="notification_reviews_title">%d reviews available</string>
+    <string name="notificationChannel_reviews_name">Reviews</string>
+    <string name="notificationChannel_reviews_description">New reviews available</string>
 </resources>
