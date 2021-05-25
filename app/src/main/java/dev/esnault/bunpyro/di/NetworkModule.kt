@@ -6,6 +6,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.esnault.bunpyro.data.network.BunproApi
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
 import dev.esnault.bunpyro.data.network.adapter.BunProDateAdapter
+import dev.esnault.bunpyro.data.network.adapter.UnitJsonAdapter
 import dev.esnault.bunpyro.data.network.entities.BunProDate
 import dev.esnault.bunpyro.data.network.fake.FakeBunproApi
 import dev.esnault.bunpyro.data.network.fake.FakeBunproVersionedApi
@@ -33,6 +34,7 @@ val networkModule = module {
             .add(BunProDate::class.java, BunProDateAdapter())
             .add(Date::class.java, Rfc3339DateJsonAdapter())
             .add(KotlinJsonAdapterFactory())
+            .add(Unit::class.java, UnitJsonAdapter())
             .build()
     }
 

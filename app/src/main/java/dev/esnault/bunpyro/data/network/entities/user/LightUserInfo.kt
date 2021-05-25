@@ -9,7 +9,3 @@ data class LightUserInfo(
     @Json(name="ghost_review_count") val ghostReviewCount: Int,
     @Json(name="creation_date") val creationDate: Long
 )
-
-data class LightUserInfoWrapper(
-    @Json(name = "user_information") val userInfo: LightUserInfo
-)
