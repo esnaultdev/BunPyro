@@ -40,8 +40,11 @@ class ReviewRepository(
     override suspend fun refreshReviewCount() {
         val apiKey = appConfig.getApiKey() ?: return
         try {
-            val reviewCount = bunproApi.getStudyQueue(apiKey).requestedInfo.reviewsAvailable
+            val response = bunproApi.getStudyQueue(apiKey)
+            val reviewCount = response.requestedInfo.reviewsAvailable
+            val userInfo = response.userInfo
             appConfig.setStudyQueueCount(reviewCount)
+            appConfig.setUserName(userInfo.userName)
             reviewCountChannel.send(reviewCount)
         } catch (e: Exception) {
             Timber.w(e, "Could not refresh review count")

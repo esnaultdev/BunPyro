@@ -136,6 +136,10 @@
     <string name="settings_root_reviewHintLevel_hint">Hint</string>
     <string name="settings_root_reviewHintLevel_more">More</string>
     <string name="settings_root_reviewHintLevel_show">Show</string>
+    <string name="settings_root_category_user">User</string>
+    <string name="settings_root_user_name">Current user</string>
+    <string name="settings_root_user_name_default">Unknown, tap to refresh</string>
+    <string name="settings_root_user_logout">Sign out</string>
     <string name="settings_root_category_about">About</string>
     <string name="settings_root_about">About BunPyro</string>
     <string name="settings_root_licenses">Licenses</string>

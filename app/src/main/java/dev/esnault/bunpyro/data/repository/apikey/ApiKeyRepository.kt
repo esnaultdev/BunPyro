@@ -32,10 +32,13 @@ class ApiKeyRepository(
         }
     }
 
-    private suspend fun checkApiKey(apiKey: String): ApiKeyCheckResult {
+    override suspend fun checkApiKey(apiKey: String): ApiKeyCheckResult {
         return simpleRequest(
             request = { bunproApi.getUser(apiKey) },
-            onSuccess = { ApiKeyCheckResult.Success(it.userInfo) },
+            onSuccess = {
+                appConfig.setUserName(it.userInfo.userName)
+                ApiKeyCheckResult.Success(it.userInfo)
+            },
             onInvalidApiKey = { ApiKeyCheckResult.Error.Invalid },
             onServerError = { _, error ->
                 crashReporter.recordNonFatal(error)

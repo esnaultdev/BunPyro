@@ -17,6 +17,7 @@ import dev.esnault.bunpyro.android.screen.home.HomeViewModel
 import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel
 import dev.esnault.bunpyro.domain.service.review.sync.ReviewSyncHelper
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel
+import dev.esnault.bunpyro.android.screen.settings.SettingsViewModel
 import dev.esnault.bunpyro.android.screen.start.StartViewModel
 import dev.esnault.bunpyro.android.service.AndroidServiceStarter
 import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
@@ -39,6 +40,7 @@ val appModule = module {
     viewModel { ApiKeyViewModel(get()) }
     viewModel { FirstSyncViewModel(get()) }
     viewModel { HomeViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { SettingsViewModel(get(), get()) }
     viewModel { LessonsViewModel(get(), get()) }
     viewModel { params ->
         val args: GrammarPointFragmentArgs = params[0]

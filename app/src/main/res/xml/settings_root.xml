@@ -52,6 +52,24 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        app:key="category_user"
+        app:title="@string/settings_root_category_user"
+        >
+
+        <Preference
+            app:key="user_name"
+            app:title="@string/settings_root_user_name"
+            tools:summary="username"
+            />
+
+        <Preference
+            app:key="user_logout"
+            app:title="@string/settings_root_user_logout"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:key="category_about"
         app:title="@string/settings_root_category_about"
         >

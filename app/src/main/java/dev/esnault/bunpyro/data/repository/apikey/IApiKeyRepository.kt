@@ -8,6 +8,7 @@ interface IApiKeyRepository {
     suspend fun hasApiKey(): Boolean
     suspend fun getApiKey(): String?
     suspend fun checkAndSaveApiKey(apiKey: String): ApiKeyCheckResult
+    suspend fun checkApiKey(apiKey: String): ApiKeyCheckResult
 }
 
 sealed class ApiKeyCheckResult {
