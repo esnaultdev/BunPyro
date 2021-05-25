@@ -14,6 +14,8 @@ private object Keys {
     const val SYNC_GRAMMAR_POINTS_ETAG = "SyncGrammarPointsEtag"
     const val SYNC_REVIEWS_ETAG = "ReviewsEtag"
     const val SYNC_SUPPLEMENTAL_LINKS_ETAG = "SupplementalLinksEtag"
+    const val STUDY_QUEUE_COUNT = "study_queue_count" // how come I messed this up?
+    const val USER_NAME = "UserName"
 }
 
 
@@ -91,12 +93,26 @@ class AppConfig(private val prefs: SharedPreferences) : IAppConfig {
 
     override suspend fun setStudyQueueCount(count: Int?) {
         prefs.edit {
-            putOrRemoveInt("study_queue_count", count)
+            putOrRemoveInt(Keys.STUDY_QUEUE_COUNT, count)
         }
     }
 
     override suspend fun getStudyQueueCount(): Int? {
-        return prefs.getIntOrNull("study_queue_count")
+        return prefs.getIntOrNull(Keys.STUDY_QUEUE_COUNT)
+    }
+
+    // endregion
+
+    // region User
+
+    override suspend fun getUserName(): String? {
+        return prefs.getString(Keys.USER_NAME, null)
+    }
+
+    override suspend fun setUserName(name: String?) {
+        prefs.edit {
+            putOrRemoveString(Keys.USER_NAME, name)
+        }
     }
 
     // endregion

@@ -23,4 +23,7 @@ interface IAppConfig {
 
     suspend fun getStudyQueueCount(): Int?
     suspend fun setStudyQueueCount(count: Int?)
+
+    suspend fun getUserName(): String?
+    suspend fun setUserName(name: String?)
 }
