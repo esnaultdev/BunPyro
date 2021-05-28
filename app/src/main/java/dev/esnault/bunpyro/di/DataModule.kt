@@ -62,7 +62,7 @@ val serviceModule = module {
     }
 
     factory<IAuthService> {
-        AuthService(get(), get(), get())
+        AuthService(get(), get(), get(), get())
     }
 
     single<ICrashReporter> {

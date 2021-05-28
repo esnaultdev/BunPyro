@@ -20,5 +20,7 @@ interface ISettingsRepository {
 
     suspend fun getHankoDisplay(): HankoDisplaySetting
 
+    suspend fun clearAll()
+
     fun getDebugMocked(): Boolean
 }

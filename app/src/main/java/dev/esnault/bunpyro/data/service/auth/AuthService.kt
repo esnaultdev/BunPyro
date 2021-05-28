@@ -2,17 +2,20 @@ package dev.esnault.bunpyro.data.service.auth
 
 import dev.esnault.bunpyro.data.config.IAppConfig
 import dev.esnault.bunpyro.data.repository.review.IReviewRepository
+import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
 
 
 class AuthService(
     private val reviewRepo: IReviewRepository,
+    private val settingsRepo: ISettingsRepository,
     private val appConfig: IAppConfig,
     private val reporter: ICrashReporter
 ) : IAuthService {
 
     override suspend fun logout(): Boolean {
         return if (clearReviews()) {
+            settingsRepo.clearAll()
             clearUserDataInAppConfig()
             true
         } else {
