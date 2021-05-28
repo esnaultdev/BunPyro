@@ -3,8 +3,7 @@ package dev.esnault.bunpyro.data.config
 
 interface IAppConfig {
 
-    suspend fun getApiKey(): String?
-    suspend fun setApiKey(apiKey: String?)
+    // region Sync
 
     suspend fun getFirstSyncCompleted(): Boolean
     suspend fun saveFirstSyncCompleted(completed: Boolean)
@@ -21,9 +20,18 @@ interface IAppConfig {
     suspend fun saveReviewsEtag(eTag: String?)
     suspend fun getReviewsEtag(): String?
 
+    // endregion
+
+    // region User
+
+    suspend fun getApiKey(): String?
+    suspend fun setApiKey(apiKey: String?)
+
     suspend fun getStudyQueueCount(): Int?
     suspend fun setStudyQueueCount(count: Int?)
 
     suspend fun getUserName(): String?
     suspend fun setUserName(name: String?)
+
+    // endregion
 }

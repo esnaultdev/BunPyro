@@ -8,32 +8,21 @@ import dev.esnault.bunpyro.common.putOrRemoveString
 
 
 private object Keys {
-    const val API_KEY = "ApiKey"
+    // Sync
     const val FIRST_SYNC_COMPLETED = "FirstSyncCompleted"
     const val SYNC_EXAMPLE_SENTENCES_ETAG = "ExampleSentencesEtag"
     const val SYNC_GRAMMAR_POINTS_ETAG = "SyncGrammarPointsEtag"
     const val SYNC_REVIEWS_ETAG = "ReviewsEtag"
     const val SYNC_SUPPLEMENTAL_LINKS_ETAG = "SupplementalLinksEtag"
+
+    // User
+    const val API_KEY = "ApiKey"
     const val STUDY_QUEUE_COUNT = "study_queue_count" // how come I messed this up?
     const val USER_NAME = "UserName"
 }
 
 
 class AppConfig(private val prefs: SharedPreferences) : IAppConfig {
-
-    // region Api key
-
-    override suspend fun getApiKey(): String? {
-        return prefs.getString(Keys.API_KEY, null)
-    }
-
-    override suspend fun setApiKey(apiKey: String?) {
-        prefs.edit {
-            putOrRemoveString(Keys.API_KEY, apiKey)
-        }
-    }
-
-    // endregion
 
     // region Sync
 
@@ -89,7 +78,17 @@ class AppConfig(private val prefs: SharedPreferences) : IAppConfig {
 
     // endregion
 
-    // region Study count
+    // region User
+
+    override suspend fun getApiKey(): String? {
+        return prefs.getString(Keys.API_KEY, null)
+    }
+
+    override suspend fun setApiKey(apiKey: String?) {
+        prefs.edit {
+            putOrRemoveString(Keys.API_KEY, apiKey)
+        }
+    }
 
     override suspend fun setStudyQueueCount(count: Int?) {
         prefs.edit {
@@ -100,10 +99,6 @@ class AppConfig(private val prefs: SharedPreferences) : IAppConfig {
     override suspend fun getStudyQueueCount(): Int? {
         return prefs.getIntOrNull(Keys.STUDY_QUEUE_COUNT)
     }
-
-    // endregion
-
-    // region User
 
     override suspend fun getUserName(): String? {
         return prefs.getString(Keys.USER_NAME, null)
