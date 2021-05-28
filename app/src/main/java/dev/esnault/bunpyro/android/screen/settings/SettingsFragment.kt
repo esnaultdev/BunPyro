@@ -8,11 +8,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.google.android.material.snackbar.Snackbar
 import dev.esnault.bunpyro.BuildConfig
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.res.toNightMode
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
+import dev.esnault.bunpyro.android.screen.settings.SettingsViewModel.SnackBarMessage
+import dev.esnault.bunpyro.android.utils.safeObserve
 import dev.esnault.bunpyro.android.utils.setupWithNav
 import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.data.analytics.Analytics
@@ -59,7 +62,12 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
-            vm?.viewState?.observe(viewLifecycleOwner, this::bindState)
+
+            vm?.apply {
+                viewState.safeObserve(this@PreferenceFragment, ::bindState)
+
+                snackbar.safeObserve(this@PreferenceFragment, ::showSnackBar)
+            }
         }
 
         private fun setupDisplay() {
@@ -103,7 +111,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
         private fun setupUser() {
             findPreference<Preference>("user_name")?.apply {
-                summary = getString(R.string.settings_root_user_name_default)
                 setOnPreferenceClickListener {
                     vm?.onUserNameClick()
                     true
@@ -142,8 +149,25 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
         private fun bindState(viewState: SettingsViewModel.ViewState) {
             findPreference<Preference>("user_name")?.apply {
-                summary = viewState.userName ?: getString(R.string.settings_root_user_name_default)
+                summary = viewState.userName ?: getString(R.string.settings_root_user_name_sync)
             }
+        }
+
+        private fun showSnackBar(message: SnackBarMessage) {
+            val view = view ?: return
+            val textResId = when (message) {
+                is SnackBarMessage.UsernameFetchError -> R.string.settings_root_user_name_sync_error
+                is SnackBarMessage.LogoutError -> R.string.settings_root_user_logout_error
+            }
+
+            Snackbar.make(view, textResId, Snackbar.LENGTH_SHORT)
+                .setAction(R.string.common_retry) {
+                    when (message) {
+                        is SnackBarMessage.UsernameFetchError -> vm?.onUserNameClick()
+                        is SnackBarMessage.LogoutError -> vm?.onLogoutClick()
+                    }
+                }
+                .show()
         }
 
         private fun navigate(navDirections: NavDirections) {

@@ -132,4 +132,9 @@ class ReviewRepository(
             false
         }
     }
+
+    override suspend fun clearAll() {
+        reviewHistoryDao.deleteAll()
+        reviewDao.deleteAll()
+    }
 }

@@ -20,4 +20,7 @@ interface IReviewRepository {
 
     /** Ignore an incorrect review answer (normal review only) */
     suspend fun ignoreReviewMiss(reviewId: Long): Boolean
+
+    /** Clears all synced reviews */
+    suspend fun clearAll()
 }

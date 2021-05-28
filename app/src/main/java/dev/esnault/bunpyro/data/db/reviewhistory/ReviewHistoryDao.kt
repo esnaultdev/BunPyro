@@ -53,4 +53,7 @@ abstract class ReviewHistoryDao {
         updateAll(dataUpdate.toUpdate)
         dataUpdate.toDelete.forEach { toDeleteId -> delete(toDeleteId) }
     }
+
+    @Query("DELETE FROM review_history")
+    abstract suspend fun deleteAll()
 }

@@ -59,4 +59,7 @@ abstract class ReviewDao {
         updateAll(dataUpdate.toUpdate)
         deleteAll(dataUpdate.toDelete)
     }
+
+    @Query("DELETE FROM review")
+    abstract suspend fun deleteAll()
 }

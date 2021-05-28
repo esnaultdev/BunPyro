@@ -170,6 +170,13 @@
             app:destination="@id/settingsDebugScreen"
             />
 
+        <action
+            android:id="@+id/action_settings_to_apiKey"
+            app:destination="@id/apiKeyScreen"
+            app:popUpTo="@+id/homeScreen"
+            app:popUpToInclusive="true"
+            />
+
     </fragment>
 
     <fragment

@@ -3,10 +3,11 @@ package dev.esnault.bunpyro.di
 import android.content.Context
 import android.content.SharedPreferences
 import dev.esnault.bunpyro.BuildConfig
-import dev.esnault.bunpyro.android.screen.review.ReviewViewModel
 import dev.esnault.bunpyro.data.config.AppConfig
 import dev.esnault.bunpyro.data.config.FakeAppConfig
 import dev.esnault.bunpyro.data.config.IAppConfig
+import dev.esnault.bunpyro.data.service.auth.AuthService
+import dev.esnault.bunpyro.data.service.auth.IAuthService
 import dev.esnault.bunpyro.data.service.review.IReviewService
 import dev.esnault.bunpyro.data.service.review.ReviewService
 import dev.esnault.bunpyro.data.service.search.ISearchService
@@ -18,10 +19,6 @@ import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
 import dev.esnault.bunpyro.data.utils.crashreport.LogCrashReporter
 import dev.esnault.bunpyro.data.utils.time.ITimeProvider
 import dev.esnault.bunpyro.data.utils.time.TimeProvider
-import dev.esnault.bunpyro.domain.service.review.IReviewSessionService
-import dev.esnault.bunpyro.domain.service.review.ReviewSessionService
-import dev.esnault.bunpyro.domain.service.review.sync.IReviewSyncHelper
-import dev.esnault.bunpyro.domain.service.review.sync.ReviewSyncHelper
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -62,6 +59,10 @@ val serviceModule = module {
 
     factory<IReviewService> {
         ReviewService(get(), get(), get(), get(), get(), get(), get(), get())
+    }
+
+    factory<IAuthService> {
+        AuthService(get(), get(), get())
     }
 
     single<ICrashReporter> {
