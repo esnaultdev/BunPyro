@@ -5,6 +5,9 @@ import androidx.core.content.edit
 import dev.esnault.bunpyro.common.getIntOrNull
 import dev.esnault.bunpyro.common.putOrRemoveInt
 import dev.esnault.bunpyro.common.putOrRemoveString
+import dev.esnault.bunpyro.data.mapper.settings.UserSubscriptionFromStringMapper
+import dev.esnault.bunpyro.data.mapper.settings.UserSubscriptionToStringMapper
+import dev.esnault.bunpyro.domain.entities.user.UserSubscription
 
 
 private object Keys {
@@ -19,6 +22,7 @@ private object Keys {
     const val API_KEY = "ApiKey"
     const val STUDY_QUEUE_COUNT = "study_queue_count" // how come I messed this up?
     const val USER_NAME = "UserName"
+    const val USER_SUBSCRIPTION = "UserSubscription"
 }
 
 
@@ -108,6 +112,16 @@ class AppConfig(private val prefs: SharedPreferences) : IAppConfig {
         prefs.edit {
             putOrRemoveString(Keys.USER_NAME, name)
         }
+    }
+
+    override suspend fun getSubscription(): UserSubscription {
+        val value = prefs.getString(Keys.USER_SUBSCRIPTION, null)
+        return UserSubscriptionFromStringMapper().map(value)
+    }
+
+    override suspend fun setSubscription(subscription: UserSubscription) {
+        val value = UserSubscriptionToStringMapper().map(subscription)
+        prefs.edit { putString(Keys.USER_SUBSCRIPTION, value) }
     }
 
     // endregion

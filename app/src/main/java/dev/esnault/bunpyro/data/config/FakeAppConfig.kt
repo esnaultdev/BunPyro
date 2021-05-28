@@ -1,5 +1,7 @@
 package dev.esnault.bunpyro.data.config
 
+import dev.esnault.bunpyro.domain.entities.user.UserSubscription
+
 
 class FakeAppConfig(
     var apiKey: String? = null,
@@ -9,7 +11,8 @@ class FakeAppConfig(
     var supplementalLinksEtag: String? = null,
     var reviewsEtag: String? = null,
     var studyQueueCount: Int? = null,
-    var username: String? = null
+    var username: String? = null,
+    var userSubscription: UserSubscription = UserSubscription.DEFAULT
 ) : IAppConfig {
 
     override suspend fun getApiKey(): String? = apiKey
@@ -58,5 +61,11 @@ class FakeAppConfig(
 
     override suspend fun setUserName(name: String?) {
         username = name
+    }
+
+    override suspend fun getSubscription(): UserSubscription = userSubscription
+
+    override suspend fun setSubscription(subscription: UserSubscription) {
+        userSubscription = subscription
     }
 }

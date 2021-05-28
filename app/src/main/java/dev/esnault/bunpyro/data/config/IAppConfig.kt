@@ -1,5 +1,7 @@
 package dev.esnault.bunpyro.data.config
 
+import dev.esnault.bunpyro.domain.entities.user.UserSubscription
+
 
 interface IAppConfig {
 
@@ -32,6 +34,9 @@ interface IAppConfig {
 
     suspend fun getUserName(): String?
     suspend fun setUserName(name: String?)
+
+    suspend fun getSubscription(): UserSubscription
+    suspend fun setSubscription(subscription: UserSubscription)
 
     // endregion
 }

@@ -1,17 +1,13 @@
 package dev.esnault.bunpyro.data.mapper.settings
 
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import androidx.annotation.Keep
 import dev.esnault.bunpyro.data.mapper.IMapper
+import dev.esnault.bunpyro.data.mapper.manualMappingMoshi
 import dev.esnault.bunpyro.domain.entities.JLPT
 import dev.esnault.bunpyro.domain.entities.grammar.AllGrammarFilter
-import dev.esnault.bunpyro.domain.utils.lazyNone
 
-private val moshi: Moshi by lazyNone {
-    Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
-}
+
+private val moshi = manualMappingMoshi
 
 class AllGrammarFilterFromStringMapper : IMapper<String?, AllGrammarFilter> {
 
@@ -40,6 +36,7 @@ class AllGrammarFilterToStringMapper : IMapper<AllGrammarFilter, String> {
 /**
  * Alternate version of [AllGrammarFilter] made for easier JSON parsing.
  */
+@Keep
 private data class AllGrammarFilterJson(
     val jlpt: List<Int>,
     val studied: Boolean?,
