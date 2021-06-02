@@ -9,7 +9,7 @@ import timber.log.Timber
 
 
 class FakeBunproApi(
-    var user: LightUserInfo? = Mock.userInfo,
+    var user: LightUserInfo? = Mock.lightUserInfo,
     var studyQueue: StudyQueue = StudyQueue(Mock.reviewCount)
 ) : BunproApi {
 

@@ -9,6 +9,8 @@ import retrofit2.http.Path
 /**
  * Default API of Bunpro.
  * This API uses the API key in the request url.
+ *
+ * See [the official documentation](https://bunpro.jp/api/)
  */
 interface BunproApi {
 

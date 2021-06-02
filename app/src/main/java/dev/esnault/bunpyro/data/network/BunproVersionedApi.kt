@@ -3,6 +3,7 @@ package dev.esnault.bunpyro.data.network
 import dev.esnault.bunpyro.data.network.entities.*
 import dev.esnault.bunpyro.data.network.entities.review.CurrentReview
 import dev.esnault.bunpyro.data.network.entities.review.ReviewsData
+import dev.esnault.bunpyro.data.network.entities.user.FullUserInfo
 import dev.esnault.bunpyro.data.network.interceptor.Timeout
 import retrofit2.Response
 import retrofit2.http.*
@@ -15,8 +16,12 @@ import retrofit2.http.*
  * Note that since many requests don't support pagination nor incremental updates,
  * and respond with huge amount of data (> 5MiB), we need to set custom timeouts.
  * FIXME Remove these huge timeouts as soon as the API is improved.
+ *
+ * See [the official documentation](https://bunpro.jp/api/v4/docs).
  */
 interface BunproVersionedApi {
+
+    // region Grammar data
 
     @GET("v4/grammar_points")
     @Headers("${Timeout.READ}:20000")
@@ -35,6 +40,10 @@ interface BunproVersionedApi {
     suspend fun getSupplementalLinks(
         @Header("If-None-Match") etagHeader: String?
     ): Response<DataRequest<SupplementalLink>>
+
+    // endregion
+
+    // region Reviews
 
     @GET("v4/reviews/all_reviews_total")
     @Headers("${Timeout.READ}:20000")
@@ -63,4 +72,13 @@ interface BunproVersionedApi {
 
     @POST("v3/reviews/edit/{reviewId}?oops")
     suspend fun ignoreReviewMiss(@Path("reviewId") reviewId: Long): Response<Unit>
+
+    // endregion
+
+    // region User
+
+    @GET("v3/user")
+    suspend fun getUser(): Response<FullUserInfo>
+
+    // endregion
 }

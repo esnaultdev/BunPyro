@@ -4,6 +4,7 @@ import dev.esnault.bunpyro.data.network.BunproVersionedApi
 import dev.esnault.bunpyro.data.network.entities.*
 import dev.esnault.bunpyro.data.network.entities.review.CurrentReview
 import dev.esnault.bunpyro.data.network.entities.review.ReviewsData
+import dev.esnault.bunpyro.data.network.entities.user.FullUserInfo
 import kotlinx.coroutines.delay
 import retrofit2.Response
 import timber.log.Timber
@@ -19,7 +20,8 @@ class FakeBunproVersionedApi(
     var resetReview: FakeResponse<Unit> = FakeResponse.Success(Unit),
     var removeReview: FakeResponse<Unit> = FakeResponse.Success(Unit),
     var answerReview: FakeResponse<Unit> = FakeResponse.Success(Unit),
-    var ignoreReviewMiss: FakeResponse<Unit> = FakeResponse.Success(Unit)
+    var ignoreReviewMiss: FakeResponse<Unit> = FakeResponse.Success(Unit),
+    var fullUserInfo: FakeResponse<FullUserInfo> = FakeResponse.Success(Mock.fullUserInfo)
 ) : BunproVersionedApi {
 
     override suspend fun getGrammarPoints(etagHeader: String?): Response<DataRequest<GrammarPoint>> {
@@ -74,5 +76,10 @@ class FakeBunproVersionedApi(
     override suspend fun ignoreReviewMiss(reviewId: Long): Response<Unit> {
         Timber.d("ignoreReviewMiss(reviewId=$reviewId)")
         return ignoreReviewMiss.toResponse()
+    }
+
+    override suspend fun getUser(): Response<FullUserInfo> {
+        Timber.d("getUser()")
+        return fullUserInfo.toResponse()
     }
 }
