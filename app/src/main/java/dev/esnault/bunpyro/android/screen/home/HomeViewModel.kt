@@ -15,6 +15,7 @@ import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.data.service.sync.ISyncService
 import dev.esnault.bunpyro.data.service.sync.SyncEvent
+import dev.esnault.bunpyro.data.service.user.IUserService
 import dev.esnault.bunpyro.domain.entities.JlptProgress
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
@@ -28,6 +29,7 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val searchService: ISearchService,
+    private val userService: IUserService,
     private val lessonRepo: ILessonRepository,
     private val reviewRepo: IReviewRepository,
     private val settingsRepo: ISettingsRepository,
@@ -69,6 +71,7 @@ class HomeViewModel(
         observeJlptProgress()
         observeReviewCount()
         observeSyncInProgress()
+        userService.refreshSubscription()
     }
 
     private fun getHankoDisplay() {

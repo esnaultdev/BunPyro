@@ -14,6 +14,8 @@ import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.data.service.search.SearchService
 import dev.esnault.bunpyro.data.service.sync.ISyncService
 import dev.esnault.bunpyro.data.service.sync.SyncService
+import dev.esnault.bunpyro.data.service.user.IUserService
+import dev.esnault.bunpyro.data.service.user.UserService
 import dev.esnault.bunpyro.data.utils.crashreport.CrashlyticsReporter
 import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
 import dev.esnault.bunpyro.data.utils.crashreport.LogCrashReporter
@@ -63,6 +65,10 @@ val serviceModule = module {
 
     factory<IAuthService> {
         AuthService(get(), get(), get(), get())
+    }
+
+    single<IUserService> {
+        UserService(get(), get(), get(), get())
     }
 
     single<ICrashReporter> {
