@@ -110,14 +110,16 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         }
 
         private fun setupUser() {
-            findPreference<Preference>("user_name")?.apply {
-                setOnPreferenceClickListener {
-                    vm?.onUserNameClick()
-                    true
-                }
+            findPreference<Preference>("user_name")?.setOnPreferenceClickListener {
+                vm?.onUserNameClick()
+                true
             }
             findPreference<Preference>("user_logout")?.setOnPreferenceClickListener {
                 vm?.onLogoutClick()
+                true
+            }
+            findPreference<Preference>("user_subscription")?.setOnPreferenceClickListener {
+                vm?.onSubscriptionClick()
                 true
             }
         }
@@ -150,6 +152,14 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
         private fun bindState(viewState: SettingsViewModel.ViewState) {
             findPreference<Preference>("user_name")?.apply {
                 summary = viewState.userName ?: getString(R.string.settings_root_user_name_sync)
+            }
+            findPreference<Preference>("user_subscription")?.apply {
+                val resId = if (viewState.subscribed) {
+                    R.string.settings_root_user_subscription_subscribed
+                } else {
+                    R.string.settings_root_user_subscription_notSubscribed
+                }
+                summary = getString(resId)
             }
         }
 

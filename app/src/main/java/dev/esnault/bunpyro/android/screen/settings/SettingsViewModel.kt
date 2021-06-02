@@ -9,15 +9,18 @@ import dev.esnault.bunpyro.data.config.IAppConfig
 import dev.esnault.bunpyro.data.repository.apikey.ApiKeyCheckResult
 import dev.esnault.bunpyro.data.repository.apikey.IApiKeyRepository
 import dev.esnault.bunpyro.data.service.auth.IAuthService
+import dev.esnault.bunpyro.data.service.user.IUserService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
 class SettingsViewModel(
     private val appConfig: IAppConfig,
     private val apiKeyRepo: IApiKeyRepository,
-    private val authService: IAuthService
+    private val authService: IAuthService,
+    private val userService: IUserService
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -34,7 +37,13 @@ class SettingsViewModel(
     init {
         viewModelScope.launch {
             val userName = appConfig.getUserName()
-            _viewState.postValue(ViewState(userName = userName))
+            userService.subscription.collect { subscription ->
+                val newState = ViewState(
+                    userName = userName,
+                    subscribed = subscription.subscribed
+                )
+                _viewState.postValue(newState)
+            }
         }
     }
 
@@ -47,8 +56,9 @@ class SettingsViewModel(
                 if (apiKey != null) { // We can't open this screen without one.
                     val checkResult = apiKeyRepo.checkApiKey(apiKey)
                     val userName = (checkResult as? ApiKeyCheckResult.Success)?.userInfo?.userName
-                    if (userName != null) {
-                        _viewState.postValue(ViewState(userName))
+                    val currentState = _viewState.value
+                    if (userName != null && currentState != null) {
+                        _viewState.postValue(currentState.copy(userName = userName))
                     } else {
                         _snackbar.postValue(SnackBarMessage.UsernameFetchError)
                     }
@@ -71,10 +81,15 @@ class SettingsViewModel(
         }
     }
 
+    fun onSubscriptionClick() {
+        // TODO Display a dialog to either refresh or redirect the user to the BunPro website
+    }
+
     // endregion
 
     data class ViewState(
-        val userName: String?
+        val userName: String?,
+        val subscribed: Boolean
     )
 
     sealed class SnackBarMessage {

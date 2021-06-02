@@ -63,6 +63,12 @@
             />
 
         <Preference
+            app:key="user_subscription"
+            app:title="@string/settings_root_user_subscription"
+            tools:summary="Subscribed"
+            />
+
+        <Preference
             app:key="user_logout"
             app:title="@string/settings_root_user_logout"
             />
