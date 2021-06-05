@@ -21,6 +21,7 @@ import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.databinding.FragmentSettingsBinding
 import dev.esnault.bunpyro.domain.entities.settings.NightModeSetting
+import dev.esnault.bunpyro.domain.entities.user.SubscriptionStatus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -154,10 +155,13 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                 summary = viewState.userName ?: getString(R.string.settings_root_user_name_sync)
             }
             findPreference<Preference>("user_subscription")?.apply {
-                val resId = if (viewState.subscribed) {
-                    R.string.settings_root_user_subscription_subscribed
-                } else {
-                    R.string.settings_root_user_subscription_notSubscribed
+                val resId = when (viewState.subStatus) {
+                    SubscriptionStatus.SUBSCRIBED ->
+                        R.string.settings_root_user_subscription_subscribed
+                    SubscriptionStatus.NOT_SUBSCRIBED ->
+                        R.string.settings_root_user_subscription_notSubscribed
+                    SubscriptionStatus.EXPIRED ->
+                        R.string.settings_root_user_subscription_expired
                 }
                 summary = getString(resId)
             }

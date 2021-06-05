@@ -143,6 +143,7 @@
     <string name="settings_root_user_subscription">Subscription status</string>
     <string name="settings_root_user_subscription_subscribed">Subscribed</string>
     <string name="settings_root_user_subscription_notSubscribed">Not subscribed</string>
+    <string name="settings_root_user_subscription_expired">Subscription check expired</string>
     <string name="settings_root_user_logout">Sign out</string>
     <string name="settings_root_user_logout_error">Failed to logout</string>
     <string name="settings_root_category_about">About</string>

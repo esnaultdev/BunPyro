@@ -10,6 +10,7 @@ import dev.esnault.bunpyro.data.repository.apikey.ApiKeyCheckResult
 import dev.esnault.bunpyro.data.repository.apikey.IApiKeyRepository
 import dev.esnault.bunpyro.data.service.auth.IAuthService
 import dev.esnault.bunpyro.data.service.user.IUserService
+import dev.esnault.bunpyro.domain.entities.user.SubscriptionStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -40,7 +41,7 @@ class SettingsViewModel(
             userService.subscription.collect { subscription ->
                 val newState = ViewState(
                     userName = userName,
-                    subscribed = subscription.subscribed
+                    subStatus = subscription.status
                 )
                 _viewState.postValue(newState)
             }
@@ -89,7 +90,7 @@ class SettingsViewModel(
 
     data class ViewState(
         val userName: String?,
-        val subscribed: Boolean
+        val subStatus: SubscriptionStatus
     )
 
     sealed class SnackBarMessage {

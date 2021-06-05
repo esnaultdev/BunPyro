@@ -4,6 +4,7 @@ import androidx.annotation.Keep
 import dev.esnault.bunpyro.data.mapper.IMapper
 import dev.esnault.bunpyro.data.mapper.manualMappingMoshi
 import dev.esnault.bunpyro.domain.entities.user.UserSubscription
+import dev.esnault.bunpyro.domain.entities.user.SubscriptionStatus as SubStatus
 import java.util.*
 
 
@@ -18,7 +19,7 @@ class UserSubscriptionFromStringMapper : IMapper<String?, UserSubscription> {
         if (jsoned == null) return UserSubscription.DEFAULT
 
         return UserSubscription(
-            subscribed = jsoned.subscribed,
+            status = if (jsoned.subscribed) SubStatus.SUBSCRIBED else SubStatus.NOT_SUBSCRIBED,
             lastCheck = jsoned.lastCheck?.let(::Date)
         )
     }
@@ -27,8 +28,12 @@ class UserSubscriptionFromStringMapper : IMapper<String?, UserSubscription> {
 class UserSubscriptionToStringMapper : IMapper<UserSubscription, String> {
 
     override fun map(o: UserSubscription): String {
+        val subscribed: Boolean = when (o.status) {
+            SubStatus.NOT_SUBSCRIBED -> false
+            SubStatus.SUBSCRIBED, SubStatus.EXPIRED -> true
+        }
         val jsonable = UserSubscriptionJson(
-            subscribed = o.subscribed,
+            subscribed = subscribed,
             lastCheck = o.lastCheck?.time
         )
         return moshi.adapter(UserSubscriptionJson::class.java).toJson(jsonable)

@@ -6,6 +6,7 @@ import dev.esnault.bunpyro.data.network.simpleRequest
 import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
 import dev.esnault.bunpyro.data.utils.time.ITimeProvider
 import dev.esnault.bunpyro.domain.DomainConfig
+import dev.esnault.bunpyro.domain.entities.user.SubscriptionStatus
 import dev.esnault.bunpyro.domain.entities.user.UserSubscription
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -37,7 +38,7 @@ class UserService(
 
     private fun initSubscription() {
         serviceScope.launch(Dispatchers.IO) {
-            val value = appConfig.getSubscription()
+            val value = appConfig.getSubscription().expireIfNeeded(timeProvider.currentDate())
             _subscription.emit(value)
         }
     }
@@ -61,7 +62,7 @@ class UserService(
 
         // Always refresh for non subscribers to not lock them if they have subscribed since the
         // last check.
-        if (!subscribed) return true
+        if (status != SubscriptionStatus.SUBSCRIBED) return true
 
         val currentTimeMs = timeProvider.currentTimeMillis()
         return lastCheck.time + DomainConfig.SUBSCRIPTION_REFRESH_DELAY_MS < currentTimeMs
@@ -77,7 +78,11 @@ class UserService(
                 val subscribed = getSubscriptionFromNetwork()
                 if (subscribed != null) {
                     val newSubscription = UserSubscription(
-                        subscribed = subscribed,
+                        status = if (subscribed) {
+                            SubscriptionStatus.SUBSCRIBED
+                        } else {
+                            SubscriptionStatus.NOT_SUBSCRIBED
+                        },
                         lastCheck = timeProvider.currentDate()
                     )
                     appConfig.setSubscription(newSubscription)
