@@ -13,11 +13,13 @@ import dev.esnault.bunpyro.data.repository.grammarpoint.IGrammarPointRepository
 import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.review.IReviewService
+import dev.esnault.bunpyro.data.service.user.IUserService
 import dev.esnault.bunpyro.domain.entities.grammar.ExampleSentence
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
 import dev.esnault.bunpyro.domain.entities.media.AudioItem
 import dev.esnault.bunpyro.domain.entities.media.CurrentAudio
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
+import dev.esnault.bunpyro.domain.entities.user.SubscriptionStatus
 import dev.esnault.bunpyro.domain.service.audio.IAudioService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -37,7 +39,8 @@ class GrammarPointViewModel(
     private val reviewRepo: IReviewRepository,
     private val reviewService: IReviewService,
     private val clipboard: IClipboard,
-    private val audioService: IAudioService
+    private val audioService: IAudioService,
+    private val userService: IUserService
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -66,6 +69,7 @@ class GrammarPointViewModel(
         Analytics.screen(name = "grammarPoint") {
             param(Analytics.Param.ITEM_ID, id)
         }
+        userService.refreshSubscription()
         loadGrammarPoint(id)
     }
 
@@ -88,6 +92,9 @@ class GrammarPointViewModel(
                         } else {
                             nextLoadState(state, exampleDetailsShown, grammarPoint)
                         }
+                    }
+                    .combine(userService.subscription) { state, subscription ->
+                        state.copy(subStatus = subscription.status)
                     }
                     .combine(audioService.currentAudio) { state, currentAudio ->
                         state.copy(currentAudio = currentAudio)
@@ -119,7 +126,8 @@ class GrammarPointViewModel(
                 )
             },
             currentAudio = null,
-            reviewAction = null
+            reviewAction = null,
+            subStatus = SubscriptionStatus.NOT_SUBSCRIBED // Combined later into the state
         )
     }
 
@@ -339,7 +347,8 @@ class GrammarPointViewModel(
         val furiganaShown: Boolean,
         val examples: List<Example>,
         val currentAudio: CurrentAudio?,
-        val reviewAction: ReviewAction?
+        val reviewAction: ReviewAction?,
+        val subStatus: SubscriptionStatus
     ) {
         data class Example(
             val titles: List<String>, // Split title used to highlight the sentence

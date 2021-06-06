@@ -35,14 +35,19 @@ class ExampleAdapter(
 
     private val inflater = LayoutInflater.from(context)
 
+    private var _itemCount: Int = 0
+
     var viewState: ViewState? = null
         set(value) {
-            val oldValue = field
+            val oldCount = _itemCount
             field = value
+            updateItemCount()
+            val newCount = _itemCount
 
-            if (oldValue?.grammarPoint?.sentences != value?.grammarPoint?.sentences) {
+            if (oldCount != newCount) {
                 notifyDataSetChanged()
             } else {
+                // Change of furigana, etc.
                 // Use an empty payload so that the recycler view keeps the current view holders
                 notifyItemRangeChanged(0, itemCount, Unit)
             }
@@ -73,7 +78,21 @@ class ExampleAdapter(
         holder.unbind()
     }
 
-    override fun getItemCount(): Int = viewState?.grammarPoint?.sentences?.size ?: 0
+    override fun getItemCount(): Int = _itemCount
+
+    private fun updateItemCount() {
+        val viewState = viewState
+        _itemCount = if (viewState == null) {
+            0
+        } else {
+            val sentencesCount = viewState.grammarPoint.sentences.size
+            if (sentencesCount > 1 && !viewState.subStatus.isSubscribed) {
+                1
+            } else {
+                sentencesCount
+            }
+        }
+    }
 
     class ViewHolder(
         private val binding: ItemExampleSentenceBinding,
@@ -133,7 +152,8 @@ class ExampleAdapter(
 
         private fun bindExample(example: ViewState.Example, furiganaShown: Boolean) {
             val sentence = example.sentence
-            binding.japanese.text = postProcessJapanese(sentence.japanese, furiganaShown, example.titles)
+            binding.japanese.text =
+                postProcessJapanese(sentence.japanese, furiganaShown, example.titles)
             binding.english.text = postProcessString(sentence.english, furiganaShown)
 
             val nuanceIsBlank = sentence.nuance.isNullOrBlank()
@@ -164,18 +184,18 @@ class ExampleAdapter(
         private fun updateExpansion(example: ViewState.Example) {
             val transition = NamedAutoTransition()
                 .apply {
-                // The change bounds needs to be in sync with the animations made by the recycler
-                // view moving this view to its new position
-                ordering = TransitionSet.ORDERING_TOGETHER
+                    // The change bounds needs to be in sync with the animations made by the recycler
+                    // view moving this view to its new position
+                    ordering = TransitionSet.ORDERING_TOGETHER
 
-                fadeOut.duration = 50L
-                changeBounds.duration = ScreenConfig.Transition.exampleChangeDuration
-                fadeIn.startDelay = ScreenConfig.Transition.exampleChangeDuration - 50L
-                fadeIn.duration = 50L
+                    fadeOut.duration = 50L
+                    changeBounds.duration = ScreenConfig.Transition.exampleChangeDuration
+                    fadeIn.startDelay = ScreenConfig.Transition.exampleChangeDuration - 50L
+                    fadeIn.duration = 50L
 
-                fadeIn.excludeTarget(binding.frameLayout, true)
-                fadeOut.excludeTarget(binding.frameLayout, true)
-            }
+                    fadeIn.excludeTarget(binding.frameLayout, true)
+                    fadeOut.excludeTarget(binding.frameLayout, true)
+                }
             TransitionManager.beginDelayedTransition(binding.frameLayout, transition)
 
             val nuanceIsBlank = example.sentence.nuance.isNullOrBlank()
