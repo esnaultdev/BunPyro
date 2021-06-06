@@ -87,16 +87,7 @@ class SettingsViewModel(
     }
 
     fun onSubscriptionClick() {
-        val currentState = _viewState.value ?: return
-        when (currentState.subStatus) {
-            SubscriptionStatus.SUBSCRIBED -> userService.refreshSubscription()
-            SubscriptionStatus.EXPIRED -> {
-                _dialog.postValue(DialogMessage.SubscriptionCheck(expired = true))
-            }
-            SubscriptionStatus.NOT_SUBSCRIBED -> {
-                _dialog.postValue(DialogMessage.SubscriptionCheck(expired = false))
-            }
-        }
+        navigate(SettingsFragmentDirections.actionSettingsToSubscription())
     }
 
     fun onSubscriptionRefresh() {

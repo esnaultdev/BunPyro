@@ -18,16 +18,18 @@ abstract class ComposeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm?.let { NavigatorListener(this, it.navigationCommands) }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = ComposeView(requireContext()).apply {
-        setContent {
-            FragmentContent()
+    ): View? {
+        vm?.let { NavigatorListener(this, it.navigationCommands) }
+        return ComposeView(requireContext()).apply {
+            setContent {
+                FragmentContent()
+            }
         }
     }
 

@@ -24,7 +24,7 @@ data class UserSubscription(
 
     companion object {
         val DEFAULT = UserSubscription(
-            status = SubscriptionStatus.NOT_SUBSCRIBED,
+            status = SubscriptionStatus.EXPIRED,
             lastCheck = null
         )
     }

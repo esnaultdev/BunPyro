@@ -19,6 +19,7 @@ import dev.esnault.bunpyro.domain.service.review.sync.ReviewSyncHelper
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel
 import dev.esnault.bunpyro.android.screen.settings.SettingsViewModel
 import dev.esnault.bunpyro.android.screen.settings.debug.SettingsDebugViewModel
+import dev.esnault.bunpyro.android.screen.settings.subscription.SubscriptionViewModel
 import dev.esnault.bunpyro.android.screen.start.StartViewModel
 import dev.esnault.bunpyro.android.service.AndroidServiceStarter
 import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
@@ -73,6 +74,7 @@ val appModule = module {
             syncHelper = syncHelper
         )
     }
+    viewModel { SubscriptionViewModel(get()) }
 
     // endregion
 

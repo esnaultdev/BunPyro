@@ -134,6 +134,11 @@
             app:destination="@id/grammarPointScreen"
             />
 
+        <action
+            android:id="@+id/action_grammarPoint_to_subscription"
+            app:destination="@id/subscriptionScreen"
+            />
+
     </fragment>
 
     <fragment
@@ -171,6 +176,11 @@
             />
 
         <action
+            android:id="@+id/action_settings_to_subscription"
+            app:destination="@id/subscriptionScreen"
+            />
+
+        <action
             android:id="@+id/action_settings_to_apiKey"
             app:destination="@id/apiKeyScreen"
             app:popUpTo="@+id/homeScreen"
@@ -190,6 +200,11 @@
         />
 
     <fragment
+        android:id="@+id/subscriptionScreen"
+        android:name="dev.esnault.bunpyro.android.screen.settings.subscription.SubscriptionFragment"
+        />
+
+    <fragment
         android:id="@+id/settingsDebugScreen"
         android:name="dev.esnault.bunpyro.android.screen.settings.debug.SettingsDebugFragment"
         tools:layout="@layout/fragment_settings_debug"
@@ -203,6 +218,11 @@
         <action
             android:id="@+id/action_review_to_grammarPoint"
             app:destination="@id/grammarPointScreen"
+            />
+
+        <action
+            android:id="@+id/action_review_to_subscription"
+            app:destination="@id/subscriptionScreen"
             />
     </fragment>
 
