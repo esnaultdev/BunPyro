@@ -57,6 +57,10 @@ class UserService(
         }
     }
 
+    override suspend fun cancelRefresh() {
+        refreshSubscriptionJob?.cancelAndJoin()
+    }
+
     private fun UserSubscription.shouldRefresh(): Boolean {
         val lastCheck = lastCheck ?: return true
 
@@ -71,29 +75,33 @@ class UserService(
     private suspend fun refreshAndUpdateSubscription(): UserSubscription? {
         // Reuse an active subscription check if possible
         val currentJob = refreshSubscriptionJob
-        return if (currentJob?.isActive == true) {
-            currentJob.await()
-        } else {
-            val newJob = serviceScope.async {
-                val subscribed = getSubscriptionFromNetwork()
-                if (subscribed != null) {
-                    val newSubscription = UserSubscription(
-                        status = if (subscribed) {
-                            SubscriptionStatus.SUBSCRIBED
-                        } else {
-                            SubscriptionStatus.NOT_SUBSCRIBED
-                        },
-                        lastCheck = timeProvider.currentDate()
-                    )
-                    appConfig.setSubscription(newSubscription)
-                    _subscription.emit(newSubscription)
-                    newSubscription
-                } else {
-                    null
+        return try {
+            if (currentJob?.isActive == true) {
+                currentJob.await()
+            } else {
+                val newJob = serviceScope.async {
+                    val subscribed = getSubscriptionFromNetwork()
+                    if (subscribed != null) {
+                        val newSubscription = UserSubscription(
+                            status = if (subscribed) {
+                                SubscriptionStatus.SUBSCRIBED
+                            } else {
+                                SubscriptionStatus.NOT_SUBSCRIBED
+                            },
+                            lastCheck = timeProvider.currentDate()
+                        )
+                        appConfig.setSubscription(newSubscription)
+                        _subscription.emit(newSubscription)
+                        newSubscription
+                    } else {
+                        null
+                    }
                 }
+                refreshSubscriptionJob = newJob
+                newJob.await()
             }
-            refreshSubscriptionJob = newJob
-            newJob.await()
+        } catch (e: CancellationException) {
+            null
         }
     }
 

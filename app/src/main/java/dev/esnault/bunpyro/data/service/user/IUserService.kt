@@ -27,5 +27,10 @@ interface IUserService {
      */
     fun refreshSubscription(force: Boolean = false)
 
+    /**
+     * Cancels a subscription refresh, if any.
+     */
+    suspend fun cancelRefresh()
+
     // endregion
 }

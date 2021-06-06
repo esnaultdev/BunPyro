@@ -3,12 +3,15 @@ package dev.esnault.bunpyro.data.service.auth
 import dev.esnault.bunpyro.data.config.IAppConfig
 import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
+import dev.esnault.bunpyro.data.service.user.IUserService
 import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
+import dev.esnault.bunpyro.domain.entities.user.UserSubscription
 
 
 class AuthService(
     private val reviewRepo: IReviewRepository,
     private val settingsRepo: ISettingsRepository,
+    private val userService: IUserService,
     private val appConfig: IAppConfig,
     private val reporter: ICrashReporter
 ) : IAuthService {
@@ -16,6 +19,7 @@ class AuthService(
     override suspend fun logout(): Boolean {
         return if (clearReviews()) {
             settingsRepo.clearAll()
+            userService.cancelRefresh()
             clearUserDataInAppConfig()
             true
         } else {
@@ -41,5 +45,6 @@ class AuthService(
         appConfig.setStudyQueueCount(null)
         appConfig.setUserName(null)
         appConfig.setApiKey(null)
+        appConfig.setSubscription(UserSubscription.DEFAULT)
     }
 }
