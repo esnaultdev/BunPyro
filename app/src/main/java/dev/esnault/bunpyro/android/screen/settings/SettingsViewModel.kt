@@ -32,6 +32,10 @@ class SettingsViewModel(
     val snackbar: LiveData<SnackBarMessage>
         get() = _snackbar
 
+    private val _dialog = SingleLiveEvent<DialogMessage?>()
+    val dialog: LiveData<DialogMessage?>
+        get() = _dialog
+
     private var refreshUserNameJob: Job? = null
     private var logoutJob: Job? = null
 
@@ -83,7 +87,28 @@ class SettingsViewModel(
     }
 
     fun onSubscriptionClick() {
-        // TODO Display a dialog to either refresh or redirect the user to the BunPro website
+        val currentState = _viewState.value ?: return
+        when (currentState.subStatus) {
+            SubscriptionStatus.SUBSCRIBED -> userService.refreshSubscription()
+            SubscriptionStatus.EXPIRED -> {
+                _dialog.postValue(DialogMessage.SubscriptionCheck(expired = true))
+            }
+            SubscriptionStatus.NOT_SUBSCRIBED -> {
+                _dialog.postValue(DialogMessage.SubscriptionCheck(expired = false))
+            }
+        }
+    }
+
+    fun onSubscriptionRefresh() {
+        // TODO Display a loading indicator during the refresh
+        userService.refreshSubscription()
+    }
+
+    fun onDialogDismiss() {
+        // null the dialog live data value on dismiss so that when rotated (or other change):
+        // - if the dialog was displayed, the dialog is still displayed
+        // - if the dialog was not displayed, the dialog is not displayed again
+        _dialog.postValue(null)
     }
 
     // endregion
@@ -96,5 +121,9 @@ class SettingsViewModel(
     sealed class SnackBarMessage {
         object UsernameFetchError : SnackBarMessage()
         object LogoutError : SnackBarMessage()
+    }
+
+    sealed class DialogMessage {
+        data class SubscriptionCheck(val expired: Boolean) : DialogMessage()
     }
 }

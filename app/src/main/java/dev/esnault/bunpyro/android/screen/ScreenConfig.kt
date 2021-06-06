@@ -6,6 +6,7 @@ object ScreenConfig {
         const val privacy = "https://www.bunpro.jp/privacy"
         const val bunpro = "https://bunpro.jp/"
         const val bunproCram = "https://bunpro.jp/cram"
+        const val bunproSubscribe = "https://bunpro.jp/settings/subscription"
         const val devWebsite = "https://esnault.dev/"
         const val githubRepo = "https://github.com/esnaultdev/BunPyro"
     }
