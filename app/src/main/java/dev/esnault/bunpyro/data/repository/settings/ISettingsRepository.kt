@@ -2,6 +2,7 @@ package dev.esnault.bunpyro.data.repository.settings
 
 import dev.esnault.bunpyro.domain.entities.grammar.AllGrammarFilter
 import dev.esnault.bunpyro.domain.entities.settings.*
+import kotlinx.coroutines.flow.Flow
 
 
 interface ISettingsRepository {
@@ -22,5 +23,13 @@ interface ISettingsRepository {
 
     suspend fun clearAll()
 
+    // region Debug
+
     fun getDebugMocked(): Boolean
+
+    val mockSubscription: Flow<MockSubscriptionSetting>
+    fun getMockSubscription(): MockSubscriptionSetting
+    fun setMockSubscription(newValue: MockSubscriptionSetting)
+
+    // endregion
 }

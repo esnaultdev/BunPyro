@@ -38,7 +38,7 @@ val repoModule = module {
         SyncRepository(get())
     }
 
-    factory<ISettingsRepository> {
+    single<ISettingsRepository> {
         SettingsRepository(androidContext())
     }
 }

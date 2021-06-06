@@ -3,20 +3,22 @@ package dev.esnault.bunpyro.data.service.user
 import dev.esnault.bunpyro.data.config.IAppConfig
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
 import dev.esnault.bunpyro.data.network.simpleRequest
+import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
 import dev.esnault.bunpyro.data.utils.time.ITimeProvider
 import dev.esnault.bunpyro.domain.DomainConfig
+import dev.esnault.bunpyro.domain.entities.settings.MockSubscriptionSetting
 import dev.esnault.bunpyro.domain.entities.user.SubscriptionStatus
 import dev.esnault.bunpyro.domain.entities.user.UserSubscription
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.*
+import timber.log.Timber
+import java.util.*
 
 
 class UserService(
     private val appConfig: IAppConfig,
+    private val settingsRepo: ISettingsRepository,
     private val timeProvider: ITimeProvider,
     private val versionedApi: BunproVersionedApi,
     private val crashReporter: ICrashReporter
@@ -25,8 +27,10 @@ class UserService(
     private val serviceScope = CoroutineScope(SupervisorJob())
 
     private val _subscription = MutableSharedFlow<UserSubscription>(replay = 1)
-    override val subscription: Flow<UserSubscription>
-        get() = _subscription.asSharedFlow()
+    override val subscription: Flow<UserSubscription> = _subscription.asSharedFlow()
+        .combine(settingsRepo.mockSubscription) { subscription, mockSetting ->
+            mockSubscription(subscription, mockSetting)
+        }
 
     private var refreshSubscriptionJob: Deferred<UserSubscription?>? = null
 
@@ -46,7 +50,8 @@ class UserService(
     override suspend fun checkSubscription(): UserSubscription {
         val current = subscription.first()
         if (!current.shouldRefresh()) return current
-        return refreshAndUpdateSubscription() ?: subscription.first()
+        refreshAndUpdateSubscription()
+        return subscription.first()
     }
 
     override fun refreshSubscription(force: Boolean) {
@@ -72,10 +77,10 @@ class UserService(
         return lastCheck.time + DomainConfig.SUBSCRIPTION_REFRESH_DELAY_MS < currentTimeMs
     }
 
-    private suspend fun refreshAndUpdateSubscription(): UserSubscription? {
+    private suspend fun refreshAndUpdateSubscription() {
         // Reuse an active subscription check if possible
         val currentJob = refreshSubscriptionJob
-        return try {
+        try {
             if (currentJob?.isActive == true) {
                 currentJob.await()
             } else {
@@ -101,7 +106,7 @@ class UserService(
                 newJob.await()
             }
         } catch (e: CancellationException) {
-            null
+            Timber.w("Subscription refresh was cancelled")
         }
     }
 
@@ -123,6 +128,31 @@ class UserService(
                 null
             }
         )
+    }
+
+    private fun mockSubscription(
+        subscription: UserSubscription,
+        mockSetting: MockSubscriptionSetting
+    ): UserSubscription {
+        return when (mockSetting) {
+            MockSubscriptionSetting.ACTUAL -> subscription
+            MockSubscriptionSetting.SUBSCRIBED -> UserSubscription(
+                status = SubscriptionStatus.SUBSCRIBED,
+                lastCheck = timeProvider.currentDate()
+            )
+            MockSubscriptionSetting.NOT_SUBSCRIBED -> UserSubscription(
+                status = SubscriptionStatus.NOT_SUBSCRIBED,
+                lastCheck = timeProvider.currentDate()
+            )
+            MockSubscriptionSetting.EXPIRED -> {
+                val currentMs = timeProvider.currentTimeMillis()
+                val lastCheck = Date(currentMs - DomainConfig.SUBSCRIPTION_EXPIRATION_MS)
+                UserSubscription(
+                    status = SubscriptionStatus.EXPIRED,
+                    lastCheck = lastCheck
+                )
+            }
+        }
     }
 
     // endregion

@@ -88,6 +88,7 @@ class ExampleAdapter(
             val sentencesCount = viewState.grammarPoint.sentences.size
             if (sentencesCount > 1 && !viewState.subStatus.isSubscribed) {
                 1
+                // TODO Show a CTA item for the subscription
             } else {
                 sentencesCount
             }

@@ -8,4 +8,12 @@
         app:title="@string/settings_debug_mock"
         />
 
+    <ListPreference
+        app:defaultValue="actual"
+        app:entries="@array/debug_forceSub_values"
+        app:entryValues="@array/debug_forceSub_values"
+        app:key="debug_forceSub"
+        app:title="@string/settings_debug_forceSub"
+        />
+
 </PreferenceScreen>

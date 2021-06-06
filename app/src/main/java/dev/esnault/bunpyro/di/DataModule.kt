@@ -68,7 +68,7 @@ val serviceModule = module {
     }
 
     single<IUserService> {
-        UserService(get(), get(), get(), get())
+        UserService(get(), get(), get(), get(), get())
     }
 
     single<ICrashReporter> {

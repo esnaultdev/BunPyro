@@ -10,6 +10,9 @@ import dev.esnault.bunpyro.data.mapper.settings.AllGrammarFilterToStringMapper
 import dev.esnault.bunpyro.domain.entities.grammar.AllGrammarFilter
 import dev.esnault.bunpyro.domain.entities.settings.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.withContext
 
 
@@ -30,6 +33,13 @@ class SettingsRepository(context: Context) : ISettingsRepository {
                 NIGHT_MODE, FURIGANA, REVIEW_HINT_LEVEL, EXAMPLE_DETAILS, GRAMMAR_FILTERS,
                 HANKO_DISPLAY
             )
+    }
+
+    private val _mockSubscription = MutableSharedFlow<MockSubscriptionSetting>(replay = 1)
+    override val mockSubscription: Flow<MockSubscriptionSetting> = _mockSubscription.asSharedFlow()
+
+    init {
+        _mockSubscription.tryEmit(getMockSubscription())
     }
 
     override suspend fun getNightMode(): NightModeSetting {
@@ -92,7 +102,21 @@ class SettingsRepository(context: Context) : ISettingsRepository {
         }
     }
 
+    // region Debug
+
     override fun getDebugMocked(): Boolean {
         return sharedPreferences.getBoolean("debug_mock", false)
     }
+
+    override fun getMockSubscription(): MockSubscriptionSetting {
+        return sharedPreferences.getString("debug_forceSub", null)
+            .let { MockSubscriptionSetting.fromValue(it) }
+    }
+
+    override fun setMockSubscription(newValue: MockSubscriptionSetting) {
+        sharedPreferences.edit { putString("debug_forceSub", newValue.value) }
+        _mockSubscription.tryEmit(newValue)
+    }
+
+    // endregion
 }
