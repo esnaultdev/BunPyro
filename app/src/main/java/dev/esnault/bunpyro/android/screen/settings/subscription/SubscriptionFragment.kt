@@ -173,7 +173,6 @@ private fun BodyContent(viewState: ViewState, listener: ContentListener) {
             style = typography.caption,
             modifier = textModifier
         )
-
         Spacer(modifier = Modifier.height(smallMargin))
 
         val statusTextResId = when (subStatus) {
@@ -205,9 +204,15 @@ private fun BodyContent(viewState: ViewState, listener: ContentListener) {
             Spacer(modifier = Modifier.height(normalMargin))
         }
 
-        TextButton(onClick = listener.onRefreshClick) {
+        TextButton(
+            onClick = listener.onRefreshClick,
+            enabled = !viewState.refreshing
+        ) {
             if (viewState.refreshing) {
-                CircularProgressIndicator(modifier = Modifier.size(16.dp))
+                CircularProgressIndicator(
+                    modifier = Modifier.size(16.dp),
+                    strokeWidth = 2.dp
+                )
             } else {
                 Text(stringResource(R.string.subscription_refresh))
             }
