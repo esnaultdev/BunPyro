@@ -167,13 +167,15 @@
     <string name="about_sources_text">"The source code of BunPyro is available on Github. Feel free to take a look."</string>
     <string name="about_sources_action">Source code</string>
 
+    <string name="subscription_status_title">Current status</string>
     <string name="subscription_status_subscribed">Subscribed</string>
-    <string name="subscription_status_expired">Expired!</string>
+    <string name="subscription_status_expired">Expired</string>
     <string name="subscription_status_notSubscribed">Not subscribed</string>
-    <string name="subscription_lastCheck">Last check: %s</string>
+    <string name="subscription_lastCheck_title">Last check</string>
     <string name="subscription_refresh">Refresh</string>
-    <string name="subscription_more">See more</string>
-    <string name="subscription_explanation_subscribed">Enjoy your full access to Bunpro!</string>
+    <string name="subscription_subscribe">Subscribe</string>
+    <string name="subscription_seeMore">See details</string>
+    <string name="subscription_explanation_subscribed">Enjoy your full access to Bunpro! 🎉</string>
     <string name="subscription_explanation_notSubscribed">Get access to reviews, detailed examples and more by subscribing!</string>
     <string name="subscription_explanation_expired">BunPyro needs to check your subscription periodically. Connect to the Internet and refresh your status.</string>
 

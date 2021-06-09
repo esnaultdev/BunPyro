@@ -28,6 +28,8 @@ import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.domain.entities.user.SubscriptionStatus
 import dev.esnault.bunpyro.domain.entities.user.UserSubscription
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SubscriptionFragment : ComposeFragment() {
 
@@ -47,7 +49,7 @@ class SubscriptionFragment : ComposeFragment() {
     @Composable
     override fun FragmentContent() {
         val openBunproSubscription: () -> Unit = {
-            context?.openUrlInBrowser(ScreenConfig.Url.devWebsite)
+            context?.openUrlInBrowser(ScreenConfig.Url.bunproSubscribe)
         }
         val viewState: ViewState? by vm.viewState.observeAsState(null)
         AboutContent(
@@ -70,13 +72,65 @@ private class ContentListener(
 
 @Preview
 @Composable
-private fun DefaultPreview() {
+private fun ExpiredPreview() {
+    Preview(
+        viewState = ViewState(
+            subscription = UserSubscription(
+                status = SubscriptionStatus.EXPIRED,
+                lastCheck = null
+            ),
+            refreshing = false
+        )
+    )
+}
+
+@Preview
+@Composable
+private fun RefreshingPreview() {
+    Preview(
+        viewState = ViewState(
+            subscription = UserSubscription(
+                status = SubscriptionStatus.SUBSCRIBED,
+                lastCheck = null
+            ),
+            refreshing = true
+        )
+    )
+}
+
+@Preview
+@Composable
+private fun SubscribedPreview() {
+    Preview(
+        viewState = ViewState(
+            subscription = UserSubscription(
+                status = SubscriptionStatus.SUBSCRIBED,
+                lastCheck = Date()
+            ),
+            refreshing = false
+        )
+    )
+}
+
+@Preview
+@Composable
+private fun NotSubscribedPreview() {
+    Preview(
+        viewState = ViewState(
+            subscription = UserSubscription(
+                status = SubscriptionStatus.NOT_SUBSCRIBED,
+                lastCheck = Date()
+            ),
+            refreshing = false
+        )
+    )
+}
+
+@Composable
+private fun Preview(viewState: ViewState) {
     AboutContent(
         navController = null,
-        viewState = ViewState(
-            subscription = UserSubscription.DEFAULT,
-            refreshing = false
-        ),
+        viewState = viewState,
         listener = ContentListener()
     )
 }
@@ -89,7 +143,7 @@ private fun AboutContent(
 ) {
     SimpleScreen(
         navController = navController,
-        title = stringResource(R.string.settings_root_about)
+        title = stringResource(R.string.settings_root_user_subscription)
     ) {
         if (viewState != null) {
             BodyContent(viewState, listener)
@@ -106,13 +160,23 @@ private fun BodyContent(viewState: ViewState, listener: ContentListener) {
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val subStatus = viewState.subscription.status
         val typography = MaterialTheme.typography
         val maxTextWidth = dimensionResource(R.dimen.text_max_width)
         val textModifier = Modifier.widthIn(max = maxTextWidth)
 
-        val buttonMargin = 8.dp
+        val normalMargin = 8.dp
+        val smallMargin = 4.dp
 
-        val statusTextResId = when (viewState.subscription.status) {
+        Text(
+            text = stringResource(R.string.subscription_status_title),
+            style = typography.caption,
+            modifier = textModifier
+        )
+
+        Spacer(modifier = Modifier.height(smallMargin))
+
+        val statusTextResId = when (subStatus) {
             SubscriptionStatus.SUBSCRIBED -> R.string.subscription_status_subscribed
             SubscriptionStatus.NOT_SUBSCRIBED -> R.string.subscription_status_notSubscribed
             SubscriptionStatus.EXPIRED -> R.string.subscription_status_expired
@@ -122,11 +186,50 @@ private fun BodyContent(viewState: ViewState, listener: ContentListener) {
             style = typography.body1,
             modifier = textModifier
         )
+        Spacer(modifier = Modifier.height(normalMargin))
 
-        Spacer(modifier = Modifier.height(buttonMargin))
-        TextButton(onClick = listener.onRefreshClick) {
-            Text(stringResource(R.string.subscription_refresh))
+        val lastCheck = viewState.subscription.lastCheck
+        if (lastCheck != null) {
+            Text(
+                text = stringResource(R.string.subscription_lastCheck_title),
+                style = typography.caption,
+                modifier = textModifier
+            )
+            Spacer(modifier = Modifier.height(smallMargin))
+
+            Text(
+                text = SimpleDateFormat.getDateTimeInstance().format(lastCheck),
+                style = typography.body2,
+                modifier = textModifier
+            )
+            Spacer(modifier = Modifier.height(normalMargin))
         }
-        Spacer(modifier = Modifier.height(buttonMargin))
+
+        TextButton(onClick = listener.onRefreshClick) {
+            if (viewState.refreshing) {
+                CircularProgressIndicator(modifier = Modifier.size(16.dp))
+            } else {
+                Text(stringResource(R.string.subscription_refresh))
+            }
+        }
+        Spacer(modifier = Modifier.height(24.dp))
+
+        val descriptionResId = when (subStatus) {
+            SubscriptionStatus.SUBSCRIBED -> R.string.subscription_explanation_subscribed
+            SubscriptionStatus.NOT_SUBSCRIBED -> R.string.subscription_explanation_notSubscribed
+            SubscriptionStatus.EXPIRED -> R.string.subscription_explanation_expired
+        }
+        Text(text = stringResource(descriptionResId))
+
+        Spacer(modifier = Modifier.height(normalMargin))
+        if (subStatus == SubscriptionStatus.NOT_SUBSCRIBED) {
+            Button(onClick = listener.onSubscribeClick) {
+                Text(text = stringResource(R.string.subscription_subscribe))
+            }
+        } else if (subStatus == SubscriptionStatus.SUBSCRIBED) {
+            TextButton(onClick = listener.onDetailsClick) {
+                Text(text = stringResource(R.string.subscription_seeMore))
+            }
+        }
     }
 }

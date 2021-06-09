@@ -32,11 +32,11 @@ class SubscriptionViewModel(
     // region Events
 
     fun onRefresh() {
-
+        userService.refreshSubscription(force = true)
     }
 
     fun onResume() {
-
+        userService.refreshSubscription()
     }
 
     // endregion
