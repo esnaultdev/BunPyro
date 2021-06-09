@@ -15,6 +15,11 @@ interface IUserService {
     val subscription: Flow<UserSubscription>
 
     /**
+     * A flow of the refresh status of the subscription.
+     */
+    val refreshing: Flow<Boolean>
+
+    /**
      * Blocking call that tries to refresh the user subscription and return it.
      * If the refresh fails, the last known subscription status is returned instead.
      */

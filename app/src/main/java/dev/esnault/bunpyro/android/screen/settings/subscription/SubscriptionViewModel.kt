@@ -8,6 +8,7 @@ import dev.esnault.bunpyro.data.service.user.IUserService
 import dev.esnault.bunpyro.domain.entities.user.UserSubscription
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 
@@ -21,11 +22,11 @@ class SubscriptionViewModel(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            userService.subscription.collect { subscription ->
-                // TODO Collect the refresh status
-                val newState = ViewState(subscription, false)
-                _viewState.postValue(newState)
-            }
+            userService.subscription
+                .combine(userService.refreshing) { subscription, refreshing ->
+                    ViewState(subscription, refreshing)
+                }
+                .collect { newState -> _viewState.postValue(newState) }
         }
     }
 

@@ -32,6 +32,9 @@ class UserService(
             mockSubscription(subscription, mockSetting)
         }
 
+    private val _refreshing = MutableSharedFlow<Boolean>(replay = 1)
+    override val refreshing: Flow<Boolean> = _refreshing.asSharedFlow()
+
     private var refreshSubscriptionJob: Deferred<UserSubscription?>? = null
 
     init {
@@ -41,6 +44,7 @@ class UserService(
     // region Subscription
 
     private fun initSubscription() {
+        _refreshing.tryEmit(false)
         serviceScope.launch(Dispatchers.IO) {
             val value = appConfig.getSubscription().expireIfNeeded(timeProvider.currentDate())
             _subscription.emit(value)
@@ -85,6 +89,7 @@ class UserService(
                 currentJob.await()
             } else {
                 val newJob = serviceScope.async {
+                    _refreshing.tryEmit(true)
                     val subscribed = getSubscriptionFromNetwork()
                     if (subscribed != null) {
                         val newSubscription = UserSubscription(
@@ -104,9 +109,11 @@ class UserService(
                 }
                 refreshSubscriptionJob = newJob
                 newJob.await()
+                _refreshing.tryEmit(false)
             }
         } catch (e: CancellationException) {
             Timber.w("Subscription refresh was cancelled")
+            _refreshing.tryEmit(false)
         }
     }
 
