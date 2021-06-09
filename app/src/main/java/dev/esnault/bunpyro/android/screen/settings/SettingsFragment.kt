@@ -16,7 +16,6 @@ import dev.esnault.bunpyro.android.res.toNightMode
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.screen.settings.SettingsViewModel.SnackBarMessage
-import dev.esnault.bunpyro.android.screen.settings.SettingsViewModel.DialogMessage
 import dev.esnault.bunpyro.android.utils.safeObserve
 import dev.esnault.bunpyro.android.utils.setupWithNav
 import dev.esnault.bunpyro.common.openUrlInBrowser
@@ -70,9 +69,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
             vm?.apply {
                 viewState.safeObserve(this@PreferenceFragment, ::bindState)
-
                 snackbar.safeObserve(this@PreferenceFragment, ::showSnackBar)
-                dialog.safeObserve(this@PreferenceFragment, ::showDialog)
             }
         }
 
@@ -189,57 +186,6 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
                     }
                 }
                 .show()
-        }
-
-        // endregion
-
-        // region Dialog
-
-        private fun showDialog(message: DialogMessage?) {
-            when (message) {
-                is DialogMessage.SubscriptionCheck -> showSyncConfirmDialog(message)
-                null -> dismissDialog()
-            }
-        }
-
-        private fun dismissDialog() {
-            dialog?.dismiss()
-            dialog = null
-        }
-
-        private fun dismissDialogSilently() {
-            dialog?.apply {
-                setOnDismissListener(null)
-                dismiss()
-            }
-            dialog = null
-        }
-
-        private fun showSyncConfirmDialog(dialogMessage: DialogMessage.SubscriptionCheck) {
-            dismissDialogSilently()
-            val messageResId = if (dialogMessage.expired) {
-                R.string.settings_root_user_subscriptionCheck_message_expired
-            } else {
-                R.string.settings_root_user_subscriptionCheck_message_normal
-            }
-            dialog = MaterialDialog(requireContext())
-                .show {
-                    title(R.string.settings_root_user_subscriptionCheck_title)
-                    message(messageResId)
-                    if (dialogMessage.expired) {
-                        positiveButton(R.string.settings_root_user_subscriptionCheck_refresh) {
-                            vm?.onSubscriptionRefresh()
-                        }
-                    } else {
-                        positiveButton(R.string.settings_root_user_subscriptionCheck_subscribe) {
-                            context.openUrlInBrowser(ScreenConfig.Url.bunproSubscribe)
-                        }
-                    }
-                    negativeButton(R.string.common_cancel)
-                    setOnDismissListener {
-                        vm?.onDialogDismiss()
-                    }
-                }
         }
 
         // endregion

@@ -32,10 +32,6 @@ class SettingsViewModel(
     val snackbar: LiveData<SnackBarMessage>
         get() = _snackbar
 
-    private val _dialog = SingleLiveEvent<DialogMessage?>()
-    val dialog: LiveData<DialogMessage?>
-        get() = _dialog
-
     private var refreshUserNameJob: Job? = null
     private var logoutJob: Job? = null
 
@@ -90,18 +86,6 @@ class SettingsViewModel(
         navigate(SettingsFragmentDirections.actionSettingsToSubscription())
     }
 
-    fun onSubscriptionRefresh() {
-        // TODO Display a loading indicator during the refresh
-        userService.refreshSubscription()
-    }
-
-    fun onDialogDismiss() {
-        // null the dialog live data value on dismiss so that when rotated (or other change):
-        // - if the dialog was displayed, the dialog is still displayed
-        // - if the dialog was not displayed, the dialog is not displayed again
-        _dialog.postValue(null)
-    }
-
     // endregion
 
     data class ViewState(
@@ -112,9 +96,5 @@ class SettingsViewModel(
     sealed class SnackBarMessage {
         object UsernameFetchError : SnackBarMessage()
         object LogoutError : SnackBarMessage()
-    }
-
-    sealed class DialogMessage {
-        data class SubscriptionCheck(val expired: Boolean) : DialogMessage()
     }
 }
