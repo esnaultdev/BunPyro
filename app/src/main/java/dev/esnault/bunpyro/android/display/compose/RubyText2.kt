@@ -190,8 +190,8 @@ internal operator fun TextUnit.plus(other: TextUnit): TextUnit {
     }
 
     return when (type) {
-        TextUnitType.Unspecified -> TextUnit.Unspecified
         TextUnitType.Sp -> (value + other.value).sp
         TextUnitType.Em -> (value + other.value).em
+        else -> TextUnit.Unspecified
     }
 }

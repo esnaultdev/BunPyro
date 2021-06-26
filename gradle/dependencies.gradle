@@ -1,45 +1,45 @@
 ext.versions = [
-        kotlin: '1.4.32',
+        kotlin: '1.5.10', // Because of compose, we can't use 1.5.20
         kotlinx: [
-                coroutines: '1.3.2',
+                coroutines: '1.5.0',
         ],
         androidx: [
-                appcompat: '1.3.0-rc01',
-                compose: '1.0.0-beta06',
+                appcompat: '1.3.0',
+                compose: '1.0.0-beta09',
                 constraintlayout: '2.0.4',
-                core: '1.3.2',
+                core: '1.5.0',
                 espresso: '3.3.0',
                 lifecycle: '2.3.1',
                 navigation: '2.3.5',
                 preference: '1.1.1',
                 room: '2.3.0',
-                test: '1.2.0',
-                testrules: '1.4.0-alpha06',
+                test: '1.4.0-rc01',
+                testrules: '1.4.0-rc01',
                 junit: '1.1.2',
         ],
-        firebase_bom: '26.3.0',
+        firebase_bom: '28.1.0',
 
         // UI
-        material: '1.4.0-beta01',
+        material: '1.4.0-rc01',
         materialdialogs: '3.3.0',
         betterlinkmovementmethod: '2.2.0',
         transitionseverywhere: '2.1.0',
 
         // "DI"
-        koin: '3.0.1',
+        koin: '3.1.1',
         processPhoenix: '2.0.0',
 
         // Network
-        retrofit: '2.7.1',
-        okhttp: '4.4.0',
-        moshi: '1.9.2',
+        retrofit: '2.8.1',
+        okhttp: '4.9.1',
+        moshi: '1.12.0',
 
         // Text
         jsoup: '1.13.1',
         wanakana: '1.1.1',
 
         // Media
-        exoplayer: '2.14.0',
+        exoplayer: '2.14.1',
 
         // Development
         timber: '4.7.1',
@@ -50,10 +50,10 @@ ext.versions = [
 
 ext.deps = [
         plugins: [
-                android: 'com.android.tools.build:gradle:7.0.0-beta03',
+                android: 'com.android.tools.build:gradle:7.0.0-beta04',
                 kotlin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
                 navigation: "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.androidx.navigation}",
-                googleservices: 'com.google.gms:google-services:4.3.4',
-                crashlytics: 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
+                googleservices: 'com.google.gms:google-services:4.3.8',
+                crashlytics: 'com.google.firebase:firebase-crashlytics-gradle:2.7.0'
         ]
 ]
