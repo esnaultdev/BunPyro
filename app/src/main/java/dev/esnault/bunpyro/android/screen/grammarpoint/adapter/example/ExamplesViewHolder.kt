@@ -19,7 +19,8 @@ class ExamplesViewHolder(
         val onAudioClick: (example: ViewState.Example) -> Unit,
         val onToggleSentence: (example: ViewState.Example) -> Unit,
         val onCopyJapanese: (example: ViewState.Example) -> Unit,
-        val onCopyEnglish: (example: ViewState.Example) -> Unit
+        val onCopyEnglish: (example: ViewState.Example) -> Unit,
+        val onSubscribeClick: () -> Unit
     )
 
     private val context: Context

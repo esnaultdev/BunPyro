@@ -83,7 +83,8 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
                 onAudioClick = vm::onAudioClick,
                 onToggleSentence = vm::onToggleSentence,
                 onCopyJapanese = vm::onCopyJapanese,
-                onCopyEnglish = vm::onCopyEnglish
+                onCopyEnglish = vm::onCopyEnglish,
+                onSubscribeClick = vm::onSubscribeClick
             ),
             readingListener = ReadingViewHolder.Listener(
                 onClick = this::onSupplementalLinkClick

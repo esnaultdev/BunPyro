@@ -173,6 +173,8 @@
     <string name="subscription_explanation_subscribed">Enjoy your full access to Bunpro! 🎉</string>
     <string name="subscription_explanation_notSubscribed">Get access to reviews, detailed examples and more by subscribing!</string>
     <string name="subscription_explanation_expired">BunPyro needs to check your subscription periodically. Connect to the Internet and refresh your status.</string>
+    <string name="subscription_examples_message">Get access to %d more sentences by subscribing!</string>
+    <string name="subscription_examples_cta">Learn more</string>
 
     <string name="settings_debug_title">Debug (╭ರ_•́)</string>
     <string name="settings_debug_mock">Mock</string>

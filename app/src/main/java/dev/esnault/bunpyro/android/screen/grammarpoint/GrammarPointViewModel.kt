@@ -205,6 +205,10 @@ class GrammarPointViewModel(
         navigate(GrammarPointFragmentDirections.actionGrammarPointToGrammarPoint(id))
     }
 
+    fun onSubscribeClick() {
+        navigate(GrammarPointFragmentDirections.actionGrammarPointToSubscription())
+    }
+
     // region Example actions
 
     fun onToggleSentence(example: ViewState.Example) {

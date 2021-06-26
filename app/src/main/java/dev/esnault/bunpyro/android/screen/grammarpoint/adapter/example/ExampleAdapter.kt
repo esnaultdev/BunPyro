@@ -25,16 +25,32 @@ import dev.esnault.bunpyro.common.dpToPx
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.common.withAlpha
 import dev.esnault.bunpyro.databinding.ItemExampleSentenceBinding
+import dev.esnault.bunpyro.databinding.ItemExampleSubscriptionBinding
 import dev.esnault.bunpyro.domain.entities.media.AudioItem
 
 
 class ExampleAdapter(
     context: Context,
     private val listener: ExamplesViewHolder.Listener
-) : RecyclerView.Adapter<ExampleAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private enum class ViewType(val value: Int) {
+        SENTENCE(0), SUBSCRIBE(1);
+
+        companion object {
+            fun fromValue(value: Int): ViewType? {
+                return when (value) {
+                    SENTENCE.value -> SENTENCE
+                    SUBSCRIBE.value -> SUBSCRIBE
+                    else -> null
+                }
+            }
+        }
+    }
 
     private val inflater = LayoutInflater.from(context)
 
+    private var hasSubscriptionCta: Boolean = false
     private var _itemCount: Int = 0
 
     var viewState: ViewState? = null
@@ -53,12 +69,37 @@ class ExampleAdapter(
             }
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemExampleSentenceBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding, listener)
+    override fun getItemViewType(position: Int): Int {
+        return if (hasSubscriptionCta && position == itemCount - 1) {
+            ViewType.SUBSCRIBE.value
+        } else {
+            ViewType.SENTENCE.value
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (ViewType.fromValue(viewType)) {
+            ViewType.SENTENCE -> {
+                val binding = ItemExampleSentenceBinding.inflate(inflater, parent, false)
+                SentenceViewHolder(binding, listener)
+            }
+            ViewType.SUBSCRIBE -> {
+                val binding = ItemExampleSubscriptionBinding.inflate(inflater, parent, false)
+                SubscribeViewHolder(binding, listener)
+            }
+            else -> throw IllegalArgumentException("Unknown viewType: $viewType")
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is SentenceViewHolder -> bindSentenceViewHolder(holder, position)
+            is SubscribeViewHolder -> holder.bind(viewState!!.examples.size)
+            else -> throw IllegalArgumentException("Unknown ViewHolder: $holder")
+        }
+    }
+
+    private fun bindSentenceViewHolder(holder: SentenceViewHolder, position: Int) {
         val viewState = viewState!!
         val example = viewState.examples[position]
         val currentAudio = viewState.currentAudio
@@ -73,29 +114,33 @@ class ExampleAdapter(
         holder.bind(example, audioState, viewState.furiganaShown)
     }
 
-    override fun onViewRecycled(holder: ViewHolder) {
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
-        holder.unbind()
+        if (holder is SentenceViewHolder) {
+            holder.unbind()
+        }
     }
 
     override fun getItemCount(): Int = _itemCount
 
     private fun updateItemCount() {
         val viewState = viewState
-        _itemCount = if (viewState == null) {
-            0
+        if (viewState == null) {
+            _itemCount = 0
+            hasSubscriptionCta = false
         } else {
             val sentencesCount = viewState.grammarPoint.sentences.size
             if (sentencesCount > 1 && !viewState.subStatus.isSubscribed) {
-                1
-                // TODO Show a CTA item for the subscription
+                _itemCount = 2 // 1st example and CTA for the subscription
+                hasSubscriptionCta = true
             } else {
-                sentencesCount
+                _itemCount = sentencesCount
+                hasSubscriptionCta = false
             }
         }
     }
 
-    class ViewHolder(
+    class SentenceViewHolder(
         private val binding: ItemExampleSentenceBinding,
         private val listener: ExamplesViewHolder.Listener
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -291,5 +336,27 @@ class ExampleAdapter(
         }
 
         // endregion
+    }
+
+    class SubscribeViewHolder(
+        private val binding: ItemExampleSubscriptionBinding,
+        private val listener: ExamplesViewHolder.Listener
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        private val context: Context
+            get() = itemView.context
+
+        init {
+            // Defining this color in xml has some issues on SDK 21, so we set it programmatically
+            val cardLineColor = context.getThemeColor(R.attr.colorOnSurface).withAlpha(Alpha.p20)
+            binding.cardView.setStrokeColor(ColorStateList.valueOf(cardLineColor))
+
+            binding.button.setOnClickListener { listener.onSubscribeClick() }
+        }
+
+        fun bind(sentencesCount: Int) {
+            binding.explanation.text =
+                context.getString(R.string.subscription_examples_message, sentencesCount - 1)
+        }
     }
 }
