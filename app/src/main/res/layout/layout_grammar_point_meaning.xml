@@ -256,7 +256,7 @@
             app:layout_constraintTop_toBottomOf="@+id/review_progress"
             app:strokeColor="?colorPrimary"
             app:strokeWidth="1dp"
-            tools:visibility="visible"
+            tools:visibility="gone"
             />
 
         <dev.esnault.bunpyro.android.display.widget.OutlineButtonProgress
@@ -273,8 +273,57 @@
             app:layout_constraintTop_toBottomOf="@+id/review_progress"
             app:strokeColor="?colorPrimary"
             app:strokeWidth="1dp"
-            tools:visibility="visible"
+            tools:visibility="gone"
             />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/review_subscription_card_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="false"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+            app:layout_constraintStart_toEndOf="@+id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/review_progress"
+            app:strokeWidth="1dp"
+            tools:visibility="visible"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/review_subscription_explanation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:maxWidth="@dimen/text_max_width"
+                    android:text="@string/subscription_reviews_message"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/review_subscription_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/subscription_content_cta"
+                    />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

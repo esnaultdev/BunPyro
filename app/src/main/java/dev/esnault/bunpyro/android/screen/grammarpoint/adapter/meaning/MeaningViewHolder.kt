@@ -2,6 +2,7 @@ package dev.esnault.bunpyro.android.screen.grammarpoint.adapter.meaning
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.ColorStateList
 import android.text.Spanned
 import androidx.core.view.isVisible
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -28,7 +29,8 @@ class MeaningViewHolder(
         val onAddToReviews: () -> Unit,
         val onResetReview: () -> Unit,
         val onRemoveReview: () -> Unit,
-        val onGrammarPointClick: (id: Long) -> Unit
+        val onGrammarPointClick: (id: Long) -> Unit,
+        val onSubscribeClick: () -> Unit
     )
 
     private val context: Context
@@ -51,9 +53,14 @@ class MeaningViewHolder(
 
         binding.meaningScrollView.addFocusRemover(activity)
 
+        // Defining this color in xml has some issues on SDK 21, so we set it programmatically
+        val cardLineColor = context.getThemeColor(R.attr.colorOnSurface).withAlpha(Alpha.p20)
+        binding.reviewSubscriptionCardView.setStrokeColor(ColorStateList.valueOf(cardLineColor))
+
         binding.reviewAdd.setOnClickListener { listener.onAddToReviews() }
         binding.reviewRemove.setOnClickListener { listener.onRemoveReview() }
         binding.reviewReset.setOnClickListener { listener.onResetReview() }
+        binding.reviewSubscriptionButton.setOnClickListener { listener.onSubscribeClick() }
     }
 
     private fun bind(oldState: ViewState?, newState: ViewState?) {
@@ -72,7 +79,9 @@ class MeaningViewHolder(
             bindReviews(newState)
         } else if (newState.furiganaShown != oldState.furiganaShown) {
             updateFuriganaShown(newState.furiganaShown)
-        } else if (newState.reviewAction != oldState.reviewAction) {
+        } else if (newState.subStatus != oldState.subStatus ||
+            newState.reviewAction != oldState.reviewAction
+        ) {
             bindReviews(newState)
         }
     }
@@ -124,15 +133,17 @@ class MeaningViewHolder(
         val srsLevel = grammarPoint.srsLevel
         val readOnly = viewState.readOnly
         val studied = srsLevel != null
+        val isSubscribed = viewState.subStatus.isSubscribed
 
         binding.reviewTitle.isVisible = !readOnly || studied
 
         // Visibility
-        binding.reviewAdd.isVisible = !readOnly && !studied
-        binding.reviewReset.isVisible = !readOnly && studied
-        binding.reviewRemove.isVisible = !readOnly && studied
+        binding.reviewAdd.isVisible = !readOnly && !studied && isSubscribed
+        binding.reviewReset.isVisible = !readOnly && studied && isSubscribed
+        binding.reviewRemove.isVisible = !readOnly && studied && isSubscribed
         binding.reviewProgress.isVisible = studied
         binding.reviewProgressText.isVisible = studied
+        binding.reviewSubscriptionCardView.isVisible = !readOnly && !isSubscribed
 
         // SRS progress value
         if (srsLevel != null) {

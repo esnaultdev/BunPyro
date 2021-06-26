@@ -39,8 +39,8 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/subscription_examples_cta"
+            android:layout_marginTop="4dp"
+            android:text="@string/subscription_content_cta"
             />
 
     </LinearLayout>

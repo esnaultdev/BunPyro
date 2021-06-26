@@ -76,7 +76,8 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
                 onAddToReviews = vm::onAddToReviews,
                 onRemoveReview = vm::onRemoveReview,
                 onResetReview = vm::onResetReview,
-                onGrammarPointClick = vm::onGrammarPointClick
+                onGrammarPointClick = vm::onGrammarPointClick,
+                onSubscribeClick = vm::onSubscribeClick
             ),
             examplesListener = ExamplesViewHolder.Listener(
                 onGrammarPointClick = vm::onGrammarPointClick,
