@@ -100,8 +100,8 @@ dependencies {
     implementation "androidx.compose.foundation:foundation:${versions.androidx.compose}"
     implementation "androidx.compose.material:material:${versions.androidx.compose}"
     implementation "androidx.compose.runtime:runtime-livedata:${versions.androidx.compose}"
-    // implementation "androidx.compose.material:material-icons-core:${versions.androidx.compose}"
-    // implementation "androidx.compose.material:material-icons-extended:${versions.androidx.compose}"
+    implementation "androidx.compose.material:material-icons-core:${versions.androidx.compose}"
+    implementation "androidx.compose.material:material-icons-extended:${versions.androidx.compose}"
 
     // Architecture components
     implementation "androidx.navigation:navigation-fragment-ktx:${versions.androidx.navigation}"

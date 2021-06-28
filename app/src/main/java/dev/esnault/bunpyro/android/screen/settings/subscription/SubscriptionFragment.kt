@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -175,49 +179,26 @@ private fun BodyContent(viewState: ViewState, listener: ContentListener) {
         )
         Spacer(modifier = Modifier.height(smallMargin))
 
-        val statusTextResId = when (subStatus) {
-            SubscriptionStatus.SUBSCRIBED -> R.string.subscription_status_subscribed
-            SubscriptionStatus.NOT_SUBSCRIBED -> R.string.subscription_status_notSubscribed
-            SubscriptionStatus.EXPIRED -> R.string.subscription_status_expired
-        }
-        Text(
-            text = stringResource(statusTextResId),
-            style = typography.body1,
-            modifier = textModifier
-        )
-        Spacer(modifier = Modifier.height(normalMargin))
-
-        val lastCheck = viewState.subscription.lastCheck
-        if (lastCheck != null) {
-            Text(
-                text = stringResource(R.string.subscription_lastCheck_title),
-                style = typography.caption,
-                modifier = textModifier
-            )
-            Spacer(modifier = Modifier.height(smallMargin))
-
-            Text(
-                text = SimpleDateFormat.getDateTimeInstance().format(lastCheck),
-                style = typography.body2,
-                modifier = textModifier
-            )
-            Spacer(modifier = Modifier.height(normalMargin))
-        }
-
-        TextButton(
-            onClick = listener.onRefreshClick,
-            enabled = !viewState.refreshing
-        ) {
-            if (viewState.refreshing) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(16.dp),
-                    strokeWidth = 2.dp
-                )
-            } else {
-                Text(stringResource(R.string.subscription_refresh))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            val statusTextResId = when (subStatus) {
+                SubscriptionStatus.SUBSCRIBED -> R.string.subscription_status_subscribed
+                SubscriptionStatus.NOT_SUBSCRIBED -> R.string.subscription_status_notSubscribed
+                SubscriptionStatus.EXPIRED -> R.string.subscription_status_expired
             }
+            Text(
+                text = stringResource(statusTextResId),
+                style = typography.body1,
+                modifier = textModifier
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            val iconVector = when (subStatus) {
+                SubscriptionStatus.SUBSCRIBED -> Icons.Outlined.CheckCircle
+                SubscriptionStatus.NOT_SUBSCRIBED -> Icons.Outlined.Lock
+                SubscriptionStatus.EXPIRED -> Icons.Outlined.Schedule
+            }
+            Icon(imageVector = iconVector, contentDescription = null)
         }
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(normalMargin))
 
         val descriptionResId = when (subStatus) {
             SubscriptionStatus.SUBSCRIBED -> R.string.subscription_explanation_subscribed
@@ -236,5 +217,51 @@ private fun BodyContent(viewState: ViewState, listener: ContentListener) {
                 Text(text = stringResource(R.string.subscription_seeMore))
             }
         }
+
+        SpacedDivider()
+
+        val lastCheck = viewState.subscription.lastCheck
+        Text(
+            text = stringResource(R.string.subscription_lastCheck_title),
+            style = typography.caption,
+            modifier = textModifier
+        )
+        Spacer(modifier = Modifier.height(smallMargin))
+
+        val lastCheckText = if (lastCheck != null) {
+            SimpleDateFormat.getDateTimeInstance().format(lastCheck)
+        } else {
+            stringResource(R.string.subscription_lastCheck_never)
+        }
+        Text(
+            text = lastCheckText,
+            style = typography.body2,
+            modifier = textModifier
+        )
+        Spacer(modifier = Modifier.height(normalMargin))
+
+        TextButton(
+            onClick = listener.onRefreshClick,
+            enabled = !viewState.refreshing
+        ) {
+            if (viewState.refreshing) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(16.dp),
+                    strokeWidth = 2.dp
+                )
+            } else {
+                Text(stringResource(R.string.subscription_refresh))
+            }
+        }
     }
+}
+
+@Composable
+private fun SpacedDivider() {
+    val dividerWidth = 144.dp
+    val dividerMargin = 16.dp
+
+    Spacer(modifier = Modifier.height(dividerMargin))
+    Divider(modifier = Modifier.width(dividerWidth))
+    Spacer(modifier = Modifier.height(dividerMargin))
 }
