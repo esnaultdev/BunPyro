@@ -5,13 +5,20 @@ import dev.esnault.bunpyro.domain.entities.review.AnsweredGrammar
 import dev.esnault.bunpyro.domain.entities.review.ReviewQuestion
 import dev.esnault.bunpyro.domain.entities.review.ReviewSession
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
+import dev.esnault.bunpyro.domain.entities.user.SubscriptionStatus
 
 
 sealed class ReviewViewState {
 
     sealed class Init : ReviewViewState() {
-        object Loading : Init()
-        object Error : Init()
+        sealed class Loading : Init() {
+            object Subscription : Loading()
+            object Reviews : Loading()
+        }
+        sealed class Error : Init() {
+            data class NotSubscribed(val status: SubscriptionStatus) : Error()
+            object FetchFail : Error()
+        }
     }
 
     data class Question(

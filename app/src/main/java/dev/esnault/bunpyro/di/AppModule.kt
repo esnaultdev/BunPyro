@@ -71,7 +71,8 @@ val appModule = module {
             sessionService = sessionService,
             settingsRepo = get(),
             audioService = get(),
-            syncHelper = syncHelper
+            syncHelper = syncHelper,
+            userService = get()
         )
     }
     viewModel { SubscriptionViewModel(get()) }

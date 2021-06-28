@@ -11,6 +11,7 @@ import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState as ViewState
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.review.IReviewService
+import dev.esnault.bunpyro.data.service.user.IUserService
 import dev.esnault.bunpyro.domain.entities.media.AudioItem
 import dev.esnault.bunpyro.domain.entities.review.AnsweredGrammar
 import dev.esnault.bunpyro.domain.entities.review.ReviewSession.*
@@ -34,14 +35,15 @@ class ReviewViewModel(
     private val sessionService: IReviewSessionService,
     private val settingsRepo: ISettingsRepository,
     private val audioService: IAudioService,
-    private val syncHelper: IReviewSyncHelper
+    private val syncHelper: IReviewSyncHelper,
+    private val userService: IUserService
 ) : BaseViewModel() {
 
-    private val _viewState = MutableLiveData<ViewState>(ViewState.Init.Loading)
+    private val _viewState = MutableLiveData<ViewState>(ViewState.Init.Loading.Subscription)
     val viewState: LiveData<ViewState>
         get() = Transformations.distinctUntilChanged(_viewState)
 
-    private var currentState: ViewState = ViewState.Init.Loading
+    private var currentState: ViewState = ViewState.Init.Loading.Subscription
         set(value) {
             field = value
             _viewState.postValue(value)
@@ -59,10 +61,16 @@ class ReviewViewModel(
 
     init {
         Analytics.screen(name = "review")
-        loadReviews()
+        checkSubscriptionAndLoadReviews()
         watchSyncStates()
         watchSyncedAnswers()
         observeAudioState()
+    }
+
+    fun onResume() {
+        if (currentState is ViewState.Init.Error.NotSubscribed) {
+            checkSubscriptionAndLoadReviews()
+        }
     }
 
     fun onStop() {
@@ -71,13 +79,26 @@ class ReviewViewModel(
 
     // region Loading
 
+    private fun checkSubscriptionAndLoadReviews() {
+        this.currentState = ViewState.Init.Loading.Subscription
+        viewModelScope.launch(Dispatchers.IO) {
+            val subStatus = userService.checkSubscription().status
+            if (subStatus.isSubscribed) {
+                loadReviews()
+            } else {
+                currentState = ViewState.Init.Error.NotSubscribed(subStatus)
+            }
+        }
+    }
+
     private fun loadReviews() {
+        currentState = ViewState.Init.Loading.Reviews
         viewModelScope.launch(Dispatchers.IO) {
             val furiganaShown = settingsRepo.getFurigana().asBoolean()
             val hintLevel = settingsRepo.getReviewHintLevel()
 
             val result = reviewService.getCurrentReviews()
-            if (currentState != ViewState.Init.Loading) return@launch
+            if (currentState != ViewState.Init.Loading.Reviews) return@launch
             currentState = result.fold(
                 onSuccess = { questions ->
                     val session = sessionService.startSession(questions)
@@ -92,14 +113,21 @@ class ReviewViewModel(
                         )
                     }
                 },
-                onFailure = { ViewState.Init.Error }
+                onFailure = { ViewState.Init.Error.FetchFail }
             )
         }
     }
 
-    fun onRetryLoading() {
-        currentState = ViewState.Init.Loading
-        loadReviews()
+    fun onRetryInit() {
+        val currentState = currentState as? ViewState.Init.Error ?: return
+        when (currentState) {
+            is ViewState.Init.Error.NotSubscribed -> checkSubscriptionAndLoadReviews()
+            is ViewState.Init.Error.FetchFail -> loadReviews()
+        }
+    }
+
+    fun onSubscriptionClick() {
+        navigate(ReviewFragmentDirections.actionReviewToSubscription())
     }
 
     // endregion
@@ -310,7 +338,8 @@ class ReviewViewModel(
 
     fun onDialogDismiss() {
         if ((currentState is ViewState.Sync || currentState is ViewState.Question)
-                && syncHelper.stateFlow.value == SyncState.ERROR && !quitting) {
+            && syncHelper.stateFlow.value == SyncState.ERROR && !quitting
+        ) {
             _dialog.value = ViewState.DialogMessage.SyncError
         } else {
             _dialog.value = null

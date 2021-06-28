@@ -48,6 +48,11 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         oldViewState = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        vm.onResume()
+    }
+
     override fun onStop() {
         vm.onStop()
         super.onStop()
@@ -57,9 +62,10 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         val context = requireContext()
 
         val initListener = ReviewInitView.Listener(
-            onRetry = vm::onRetryLoading
+            onRetry = vm::onRetryInit,
+            onSubscriptionClick = vm::onSubscriptionClick
         )
-        initSubView = ReviewInitView(binding.initLayout, initListener)
+        initSubView = ReviewInitView(binding.initLayout, initListener, context)
 
         val questionListener = ReviewQuestionView.Listener(
             onIgnoreIncorrect = vm::onIgnoreIncorrect,
