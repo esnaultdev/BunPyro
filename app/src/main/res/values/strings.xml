@@ -210,9 +210,11 @@
     <string name="reviews_toolbar_wrapUp_noAskAgain">Finish</string>
     <string name="reviews_toolbar_wrapUp_askAgain">Wrap up</string>
     <string name="reviews_dialog_quitWarning_title">Leave session?</string>
-    <string name="reviews_dialog_quitWarning_message">Some answers have not been synchronized with the server and will be lost.</string>
+    <string name="reviews_dialog_quitWarning_message_sync">Some answers have not been synchronized with the server and will be lost.</string>
+    <string name="reviews_dialog_quitWarning_message_hasAskAgains">You still need to answer again questions that you got wrong this session.</string>
     <string name="reviews_dialog_quitWarning_ok">Leave</string>
     <string name="reviews_dialog_quitWarning_cancel">Stay</string>
+    <string name="reviews_dialog_quitWarning_wrapUp">Wrap up</string>
     <string name="reviews_dialog_syncError_title">Sync error</string>
     <string name="reviews_dialog_syncError_message">An error occurred while sending your answers to the server.</string>
     <string name="reviews_dialog_syncError_ok">Retry</string>

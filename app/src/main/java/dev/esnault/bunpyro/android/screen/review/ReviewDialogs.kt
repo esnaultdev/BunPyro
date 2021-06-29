@@ -14,14 +14,15 @@ class ReviewDialogs(private val listener: Listener, private val context: Context
         val onDismiss: () -> Unit,
         val onQuitConfirm: () -> Unit,
         val onSyncRetry: () -> Unit,
-        val onSyncQuit: () -> Unit
+        val onSyncQuit: () -> Unit,
+        val onWrapUp: () -> Unit
     )
 
     private var dialog: MaterialDialog? = null
 
     fun showDialog(dialogMessage: DialogMessage?) {
         when (dialogMessage) {
-            is DialogMessage.QuitConfirm -> showQuitConfirmDialog()
+            is DialogMessage.QuitConfirm -> showQuitConfirmDialog(dialogMessage)
             is DialogMessage.SyncError -> showSyncErrorDialog()
             null -> dismissDialog()
         }
@@ -40,13 +41,37 @@ class ReviewDialogs(private val listener: Listener, private val context: Context
         dialog = null
     }
 
-    private fun showQuitConfirmDialog() {
+    private fun showQuitConfirmDialog(dialogMessage: DialogMessage.QuitConfirm) {
         dismissDialogSilently()
+
+        val messageResId: Int
+        val negativeButtonResId: Int
+        val onNegative: () -> Unit
+        when (dialogMessage) {
+            is DialogMessage.QuitConfirm.Sync -> {
+                messageResId = R.string.reviews_dialog_quitWarning_message_sync
+                negativeButtonResId = R.string.reviews_dialog_quitWarning_cancel
+                onNegative = { } // Do nothing, just dismiss the dialog
+            }
+            is DialogMessage.QuitConfirm.HasAskAgains -> {
+                messageResId = R.string.reviews_dialog_quitWarning_message_hasAskAgains
+                if (dialogMessage.askingAgain) {
+                    negativeButtonResId = R.string.reviews_dialog_quitWarning_cancel
+                    onNegative = { } // Do nothing, just dismiss the dialog
+                } else {
+                    negativeButtonResId = R.string.reviews_dialog_quitWarning_wrapUp
+                    onNegative = listener.onWrapUp
+                }
+            }
+        }
+
         dialog = MaterialDialog(context)
             .show {
                 title(R.string.reviews_dialog_quitWarning_title)
-                message(R.string.reviews_dialog_quitWarning_message)
-                negativeButton(R.string.reviews_dialog_quitWarning_cancel)
+                message(messageResId)
+                negativeButton(negativeButtonResId) {
+                    onNegative()
+                }
                 positiveButton(R.string.reviews_dialog_quitWarning_ok) {
                     listener.onQuitConfirm()
                 }

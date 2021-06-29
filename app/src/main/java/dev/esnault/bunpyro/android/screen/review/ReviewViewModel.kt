@@ -306,18 +306,39 @@ class ReviewViewModel(
         navigate(ReviewFragmentDirections.actionReviewToGrammarPoint(grammarId))
     }
 
+    // TODO: Currently, the case where we have ask agains and a sync in progress is not handled well
     fun onBackPressed() {
-        when (currentState) {
+        when (val currentState = currentState) {
             is ViewState.Init,
             is ViewState.Summary -> {
                 quitting = true
                 navigate(NavigationCommand.Back)
             }
-            is ViewState.Sync,
-            is ViewState.Question -> when (syncHelper.stateFlow.value) {
-                SyncState.IDLE -> goToSummary()
-                SyncState.REQUESTING -> _dialog.value = ViewState.DialogMessage.QuitConfirm
-                SyncState.ERROR -> _dialog.value = ViewState.DialogMessage.SyncError
+            is ViewState.Question -> {
+                val session = currentState.session
+                val askingAgain = session.askingAgain
+                val hasAskAgains = session.askAgainIndexes.isNotEmpty()
+                        || (askingAgain && session.answerState is AnswerState.Answering)
+                if (!hasAskAgains) {
+                    checkSyncStateAndBack()
+                } else {
+                    _dialog.value = ViewState.DialogMessage.QuitConfirm.HasAskAgains(
+                        askingAgain = askingAgain
+                    )
+                }
+            }
+            is ViewState.Sync -> checkSyncStateAndBack()
+        }
+    }
+
+    private fun checkSyncStateAndBack() {
+        when (syncHelper.stateFlow.value) {
+            SyncState.IDLE -> goToSummary()
+            SyncState.REQUESTING -> _dialog.value = ViewState.DialogMessage.QuitConfirm.Sync
+            SyncState.ERROR -> {
+                // We should already have an error dialog or have retried in this state.
+                // Go to the summary as a fallback.
+                goToSummary()
             }
         }
     }
@@ -353,7 +374,7 @@ class ReviewViewModel(
 
     fun onSyncQuit() {
         if (_dialog.value != ViewState.DialogMessage.SyncError) return
-        _dialog.value = ViewState.DialogMessage.QuitConfirm
+        _dialog.value = ViewState.DialogMessage.QuitConfirm.Sync
     }
 
     fun onSyncRetry() {

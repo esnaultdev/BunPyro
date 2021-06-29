@@ -38,7 +38,13 @@ sealed class ReviewViewState {
     ) : ReviewViewState()
 
     sealed class DialogMessage {
-        object QuitConfirm : DialogMessage()
+        sealed class QuitConfirm : DialogMessage() {
+            /** The reviews aren't synced yet with the server. */
+            object Sync : QuitConfirm()
+
+            /** The session has ask agains. */
+            data class HasAskAgains(val askingAgain: Boolean) : QuitConfirm()
+        }
         object SyncError : DialogMessage()
     }
 }

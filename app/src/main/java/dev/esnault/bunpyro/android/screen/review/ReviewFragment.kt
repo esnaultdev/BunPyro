@@ -89,7 +89,8 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             onDismiss = vm::onDialogDismiss,
             onQuitConfirm = vm::onQuitConfirm,
             onSyncQuit = vm::onSyncQuit,
-            onSyncRetry = vm::onSyncRetry
+            onSyncRetry = vm::onSyncRetry,
+            onWrapUp = vm::onWrapUpClick
         )
         dialogs = ReviewDialogs(dialogsListener, context)
     }
@@ -184,6 +185,6 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             vm.onBackPressed()
-        }
+        }.also { it.isEnabled = true }
     }
 }
