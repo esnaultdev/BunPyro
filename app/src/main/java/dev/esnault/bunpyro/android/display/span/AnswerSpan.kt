@@ -14,8 +14,12 @@ data class AnswerSpan(
 ) : MetricAffectingSpan() {
 
     companion object {
-        /** Dummy text to have a non empty span */
-        const val DUMMY_TEXT = "        "
+        /**
+         * Dummy text to have a non empty span.
+         * Use normal spaces before and after to have proper line break, but use non breaking spaces
+         * in the middle to maintain a minimal width at a line start or line end.
+         */
+        const val DUMMY_TEXT = "        "
     }
 
     var hint: String? = null
