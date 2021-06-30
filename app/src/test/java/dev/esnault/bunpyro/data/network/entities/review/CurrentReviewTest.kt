@@ -113,7 +113,9 @@ class CurrentReviewTest : KoinTest {
                             description = "Request Lesson : そうに and そうな Listening Practice "
                         )
                     )
-                )
+                ),
+                reviewType = ReviewType.NORMAL,
+                selfStudy = false
             )
         )
         assertEquals(expected, output)

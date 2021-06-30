@@ -168,7 +168,9 @@ object Mock {
                     description = "偽物 #$id"
                 )
             )
-        )
+        ),
+        reviewType = ReviewType.NORMAL,
+        selfStudy = false
     )
     val currentReviews = (1L..3L).map { index -> fakeReview(index) }
     val reviewCount = currentReviews.size

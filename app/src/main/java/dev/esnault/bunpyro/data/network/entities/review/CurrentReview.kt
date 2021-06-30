@@ -16,10 +16,6 @@ import java.util.*
  * - max_streak
  * - was_correct
  *
- * These fields are ignored since the review type is already known by the review array:
- * - review_type
- * - self_study
- *
  * These fields are ignored since we can get them from sub objects:
  * - grammar_point_id
  * - study_question_id
@@ -39,7 +35,9 @@ data class CurrentReview(
     @Json(name = "studied_question_ids") val studiedQuestionIds: List<Long>,
     val complete: Boolean,
     @Json(name = "study_question") val studyQuestion: Study.Question,
-    @Json(name = "grammar_point") val grammarPoint: Study.GrammarPoint
+    @Json(name = "grammar_point") val grammarPoint: Study.GrammarPoint,
+    @Json(name = "review_type") val reviewType: ReviewType,
+    @Json(name = "self_study") val selfStudy: Boolean
 )
 
 /**

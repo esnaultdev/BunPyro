@@ -7,7 +7,9 @@ import dev.esnault.bunpyro.data.network.BunproApi
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
 import dev.esnault.bunpyro.data.network.adapter.BunProDateAdapter
 import dev.esnault.bunpyro.data.network.adapter.UnitJsonAdapter
+import dev.esnault.bunpyro.data.network.adapter.ValueEnumJsonAdapter
 import dev.esnault.bunpyro.data.network.entities.BunProDate
+import dev.esnault.bunpyro.data.network.entities.review.ReviewType
 import dev.esnault.bunpyro.data.network.fake.FakeBunproApi
 import dev.esnault.bunpyro.data.network.fake.FakeBunproVersionedApi
 import dev.esnault.bunpyro.data.network.interceptor.AuthorisationInterceptor
@@ -35,6 +37,7 @@ val networkModule = module {
             .add(Date::class.java, Rfc3339DateJsonAdapter())
             .add(KotlinJsonAdapterFactory())
             .add(Unit::class.java, UnitJsonAdapter())
+            .add(ReviewType::class.java, ValueEnumJsonAdapter(ReviewType.Companion))
             .build()
     }
 
