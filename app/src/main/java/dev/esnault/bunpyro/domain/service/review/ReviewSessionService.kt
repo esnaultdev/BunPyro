@@ -5,6 +5,7 @@ import dev.esnault.bunpyro.domain.entities.review.ReviewSession
 import dev.esnault.bunpyro.domain.entities.review.ReviewSession.*
 import dev.esnault.bunpyro.domain.service.review.sync.IReviewSyncHelper
 import dev.esnault.bunpyro.domain.utils.isKanaRegex
+import dev.esnault.wanakana.core.Wanakana
 import kotlin.random.Random
 
 
@@ -133,7 +134,13 @@ class ReviewSessionService(
         }
 
         if (!isKanaRegex.matches(userAnswer)) {
-            return session.copy(feedback = Feedback.NotKana)
+            // Try to convert the user answer again, in case we have a trailing 'n'
+            val convertedAnswer = Wanakana.toKana(userAnswer)
+            return if (isKanaRegex.matches(convertedAnswer)) {
+                checkAnswer(session.copy(userAnswer = convertedAnswer))
+            } else {
+                session.copy(feedback = Feedback.NotKana)
+            }
         }
 
         val currentQuestion = session.currentQuestion
