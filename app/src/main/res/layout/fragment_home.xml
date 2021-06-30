@@ -32,265 +32,272 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/content_constraint_layout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/sync_progress"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_constraint_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/sync_progress_guideline"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/sync_progress_guideline"
-            tools:visibility="visible"
-            />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/sync_progress_guideline"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="1dp"
-            />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/all_grammar_card"
-            style="@style/Widget.App.HomeCard"
-            android:layout_width="0dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/lessons_card"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:paddingVertical="16dp"
+            android:clipToPadding="false"
             >
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/sync_progress"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/home_allGrammar_japanese"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-                    android:textColor="?attr/colorPrimary"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/home_allGrammar_english"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    android:textColor="?attr/colorPrimary"
-                    />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/lessons_card"
-            style="@style/Widget.App.HomeCard"
-            android:layout_width="0dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/all_grammar_card"
-            app:layout_constraintTop_toTopOf="parent"
-            >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/home_lessons_japanese"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-                    android:textColor="?attr/colorPrimary"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/home_lessons_english"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    android:textColor="?attr/colorPrimary"
-                    />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/jlpt_progress_container"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lessons_card"
-            >
-
-            <dev.esnault.bunpyro.android.display.widget.JlptProgressWidget
-                android:id="@+id/jlpt_progress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="4dp"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/sync_progress_guideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/sync_progress_guideline"
+                tools:visibility="visible"
                 />
 
-        </com.google.android.material.card.MaterialCardView>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/sync_progress_guideline"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="1dp"
+                />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/reviews_card"
-            style="@style/Widget.App.HomeCard"
-            android:layout_width="0dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/cram_card"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/jlpt_progress_container"
-            >
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/all_grammar_card"
+                style="@style/Widget.App.HomeCard"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/lessons_card"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 >
 
-                <TextView
-                    android:id="@+id/reviews_card_japanese"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/home_reviews_japanese"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-                    android:textColor="?attr/colorPrimary"
-                    app:layout_constraintBottom_toTopOf="@+id/reviews_card_english"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_chainStyle="packed"
-                    />
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    >
 
-                <TextView
-                    android:id="@+id/reviews_card_badge"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/home_allGrammar_japanese"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                        android:textColor="?attr/colorPrimary"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/home_allGrammar_english"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                        android:textColor="?attr/colorPrimary"
+                        />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/lessons_card"
+                style="@style/Widget.App.HomeCard"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/all_grammar_card"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/review_badge_background"
-                    android:gravity="center_horizontal"
-                    android:minWidth="24dp"
-                    android:paddingStart="6dp"
-                    android:paddingEnd="6dp"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                    android:textColor="?android:textColorPrimaryInverse"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toTopOf="@+id/reviews_card_japanese"
-                    app:layout_constraintStart_toEndOf="@+id/reviews_card_japanese"
-                    app:layout_constraintTop_toTopOf="@+id/reviews_card_japanese"
-                    tools:text="68"
-                    tools:visibility="visible"
-                    />
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    >
 
-                <TextView
-                    android:id="@+id/reviews_card_english"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/home_reviews_english"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    android:textColor="?attr/colorPrimary"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/reviews_card_japanese"
-                    />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/home_lessons_japanese"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                        android:textColor="?attr/colorPrimary"
+                        />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/home_lessons_english"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                        android:textColor="?attr/colorPrimary"
+                        />
 
-        </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cram_card"
-            style="@style/Widget.App.HomeCard"
-            android:layout_width="0dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/reviews_card"
-            app:layout_constraintTop_toBottomOf="@+id/jlpt_progress_container"
-            >
+            </com.google.android.material.card.MaterialCardView>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/jlpt_progress_container"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lessons_card"
                 >
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <dev.esnault.bunpyro.android.display.widget.JlptProgressWidget
+                    android:id="@+id/jlpt_progress"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
-                    android:text="@string/home_cram_japanese"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="28sp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
                     />
 
-                <TextView
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/reviews_card"
+                style="@style/Widget.App.HomeCard"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/cram_card"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/jlpt_progress_container"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                    <TextView
+                        android:id="@+id/reviews_card_japanese"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/home_reviews_japanese"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                        android:textColor="?attr/colorPrimary"
+                        app:layout_constraintBottom_toTopOf="@+id/reviews_card_english"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed"
+                        />
+
+                    <TextView
+                        android:id="@+id/reviews_card_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/review_badge_background"
+                        android:gravity="center_horizontal"
+                        android:minWidth="24dp"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                        android:textColor="?android:textColorPrimaryInverse"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toTopOf="@+id/reviews_card_japanese"
+                        app:layout_constraintStart_toEndOf="@+id/reviews_card_japanese"
+                        app:layout_constraintTop_toTopOf="@+id/reviews_card_japanese"
+                        tools:text="68"
+                        tools:visibility="visible"
+                        />
+
+                    <TextView
+                        android:id="@+id/reviews_card_english"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_reviews_english"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                        android:textColor="?attr/colorPrimary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/reviews_card_japanese"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cram_card"
+                style="@style/Widget.App.HomeCard"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/reviews_card"
+                app:layout_constraintTop_toBottomOf="@+id/jlpt_progress_container"
+                >
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/home_cram_english"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                    android:textColor="?attr/colorPrimary"
-                    />
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    >
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:text="@string/home_cram_japanese"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="28sp"
+                        />
 
-        </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/home_cram_english"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                        android:textColor="?attr/colorPrimary"
+                        />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_recycler_view"
