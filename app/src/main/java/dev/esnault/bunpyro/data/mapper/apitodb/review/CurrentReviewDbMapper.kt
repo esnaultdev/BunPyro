@@ -3,11 +3,12 @@ package dev.esnault.bunpyro.data.mapper.apitodb.review
 import dev.esnault.bunpyro.data.db.examplesentence.ExampleSentenceDb
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDb
 import dev.esnault.bunpyro.data.db.review.ReviewDb
-import dev.esnault.bunpyro.data.db.review.ReviewType
+import dev.esnault.bunpyro.data.db.review.ReviewType as ReviewTypeDb
 import dev.esnault.bunpyro.data.db.reviewhistory.ReviewHistoryDb
 import dev.esnault.bunpyro.data.db.supplementallink.SupplementalLinkDb
 import dev.esnault.bunpyro.data.mapper.IMapper
 import dev.esnault.bunpyro.data.network.entities.review.CurrentReview
+import dev.esnault.bunpyro.data.network.entities.review.ReviewType
 import dev.esnault.bunpyro.data.network.entities.review.Study
 
 
@@ -82,7 +83,7 @@ object CurrentReviewDbMapper {
         fun map(o: CurrentReview): ReviewDb {
             val id = ReviewDb.Id(
                 id = o.id,
-                type = ReviewType.NORMAL // Only normal reviews are provided by the API
+                type = OfReviewType.map(o.reviewType)
             )
             return ReviewDb(
                 id = id,
@@ -104,8 +105,16 @@ object CurrentReviewDbMapper {
         }
 
         fun map(o: CurrentReview): List<ReviewHistoryDb> {
-            // Only normal reviews are provided by the API
-            return historyMapper.map(o.id, ReviewType.NORMAL, o.history)
+            return historyMapper.map(o.id, OfReviewType.map(o.reviewType), o.history)
+        }
+    }
+
+    object OfReviewType {
+        fun map(o: ReviewType): ReviewTypeDb {
+            return when (o) {
+                ReviewType.NORMAL -> ReviewTypeDb.NORMAL
+                ReviewType.GHOST -> ReviewTypeDb.GHOST
+            }
         }
     }
 }
