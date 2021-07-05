@@ -1,5 +1,6 @@
 package dev.esnault.bunpyro.data.network.adapter
 
+import androidx.annotation.VisibleForTesting
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
@@ -9,12 +10,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
+private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z", Locale.US)
+
 /**
  * Formats [BunProDate], which is formatted like "2019-12-08 18:00:00 +0000".
  */
 class BunProDateAdapter : JsonAdapter<BunProDate?>() {
-
-    private val dateFormat = SimpleDateFormat("yyyy-MM-DD HH:mm:ss Z", Locale.US)
 
     @Synchronized
     @Throws(IOException::class)
@@ -38,12 +39,15 @@ class BunProDateAdapter : JsonAdapter<BunProDate?>() {
         }
     }
 
-    private fun parse(value: String): BunProDate {
-        val date = dateFormat.parse(value)
-        return BunProDate(date)
-    }
+    companion object {
+        @VisibleForTesting
+        internal fun parse(value: String): BunProDate? {
+            val date = dateFormat.parse(value)
+            return date?.let(::BunProDate)
+        }
 
-    private fun format(value: BunProDate): String {
-        return dateFormat.format(value.date)
+        private fun format(value: BunProDate): String {
+            return dateFormat.format(value.date)
+        }
     }
 }
