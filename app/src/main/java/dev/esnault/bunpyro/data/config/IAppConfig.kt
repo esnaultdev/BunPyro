@@ -5,6 +5,13 @@ import dev.esnault.bunpyro.domain.entities.user.UserSubscription
 
 interface IAppConfig {
 
+    // region
+
+    suspend fun getMigrationVersionCode(): Int?
+    suspend fun saveMigrationVersionCode(versionCode: Int)
+
+    // endregion
+
     // region Sync
 
     suspend fun getFirstSyncCompleted(): Boolean

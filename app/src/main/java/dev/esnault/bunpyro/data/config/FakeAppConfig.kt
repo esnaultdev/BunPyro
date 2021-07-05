@@ -1,9 +1,11 @@
 package dev.esnault.bunpyro.data.config
 
+import dev.esnault.bunpyro.BuildConfig
 import dev.esnault.bunpyro.domain.entities.user.UserSubscription
 
 
 class FakeAppConfig(
+    var migrationVersionCode: Int? = BuildConfig.VERSION_CODE,
     var apiKey: String? = null,
     var firstSyncCompleted: Boolean = false,
     var grammarPointsEtag: String? = null,
@@ -14,6 +16,12 @@ class FakeAppConfig(
     var username: String? = null,
     var userSubscription: UserSubscription = UserSubscription.DEFAULT
 ) : IAppConfig {
+
+    override suspend fun getMigrationVersionCode(): Int? = migrationVersionCode
+
+    override suspend fun saveMigrationVersionCode(versionCode: Int) {
+        migrationVersionCode = versionCode
+    }
 
     override suspend fun getApiKey(): String? = apiKey
 

@@ -8,19 +8,12 @@ import androidx.appcompat.app.AppCompatDelegate
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.res.toNightMode
 import dev.esnault.bunpyro.common.getThemeColor
-import dev.esnault.bunpyro.data.db.loadCustomSQLite
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
 
 
 class MainActivity : AppCompatActivity() {
-
-    companion object {
-        init {
-            loadCustomSQLite()
-        }
-    }
 
     private val settingsRepo : ISettingsRepository by inject()
 

@@ -8,6 +8,8 @@ import dev.esnault.bunpyro.data.config.FakeAppConfig
 import dev.esnault.bunpyro.data.config.IAppConfig
 import dev.esnault.bunpyro.data.service.auth.AuthService
 import dev.esnault.bunpyro.data.service.auth.IAuthService
+import dev.esnault.bunpyro.data.service.migration.IMigrationService
+import dev.esnault.bunpyro.data.service.migration.MigrationService
 import dev.esnault.bunpyro.data.service.review.IReviewService
 import dev.esnault.bunpyro.data.service.review.ReviewService
 import dev.esnault.bunpyro.data.service.search.ISearchService
@@ -81,5 +83,9 @@ val serviceModule = module {
 
     factory<ITimeProvider> {
         TimeProvider()
+    }
+
+    factory<IMigrationService> {
+        MigrationService(get())
     }
 }

@@ -11,6 +11,9 @@ import dev.esnault.bunpyro.domain.entities.user.UserSubscription
 
 
 private object Keys {
+    // Migration
+    const val MIGRATION_VERSION_CODE = "MigrationVersionCode"
+
     // Sync
     const val FIRST_SYNC_COMPLETED = "FirstSyncCompleted"
     const val SYNC_EXAMPLE_SENTENCES_ETAG = "ExampleSentencesEtag"
@@ -27,6 +30,18 @@ private object Keys {
 
 
 class AppConfig(private val prefs: SharedPreferences) : IAppConfig {
+
+    // region Migration
+
+    override suspend fun getMigrationVersionCode(): Int? {
+        return prefs.getIntOrNull(Keys.MIGRATION_VERSION_CODE)
+    }
+
+    override suspend fun saveMigrationVersionCode(versionCode: Int) {
+        prefs.edit { putInt(Keys.MIGRATION_VERSION_CODE, versionCode) }
+    }
+
+    // endregion
 
     // region Sync
 
