@@ -6,6 +6,7 @@ import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDao
 import dev.esnault.bunpyro.data.db.grammarpoint.GrammarPointDb
 import dev.esnault.bunpyro.data.db.review.ReviewDao
 import dev.esnault.bunpyro.data.db.review.ReviewDb
+import dev.esnault.bunpyro.data.db.review.ReviewType
 import dev.esnault.bunpyro.data.db.reviewhistory.ReviewHistoryDao
 import dev.esnault.bunpyro.data.db.reviewhistory.ReviewHistoryDb
 import dev.esnault.bunpyro.data.db.supplementallink.SupplementalLinkDao
@@ -135,7 +136,11 @@ class ReviewService(
                 reviewsDb,
                 localId = { filterId -> ReviewDb.Id(filterId.id, filterId.type) },
                 dataId = ReviewDb::id,
-                deleteIf = { filterId -> filterId.grammarId in grammarPointIds }
+                deleteIf = { filterId ->
+                    // Right now we only receive normal reviews, so let's not delete ghost reviews
+                    // from the DB.
+                    filterId.grammarId in grammarPointIds && filterId.type == ReviewType.NORMAL
+                }
             )
         }
 
@@ -149,8 +154,10 @@ class ReviewService(
                 localId = { it },
                 dataId = ReviewHistoryDb::id,
                 deleteIf = { localId ->
+                    // Right now we only receive normal reviews, so let's not delete ghost reviews
+                    // from the DB.
                     val reviewId = ReviewDb.Id(localId.reviewId, localId.reviewType)
-                    reviewId in reviewIds
+                    reviewId in reviewIds && localId.reviewType == ReviewType.NORMAL
                 }
             )
         }
