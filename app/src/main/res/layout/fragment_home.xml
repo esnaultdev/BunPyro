@@ -297,6 +297,78 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/ghost_reviews_card"
+                style="@style/Widget.App.HomeCard"
+                android:layout_width="0dp"
+                android:layout_height="72dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toStartOf="@+id/cram_card"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/reviews_card"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                    <TextView
+                        android:id="@+id/ghost_reviews_card_japanese"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="@string/home_reviews_ghost_japanese"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="22sp"
+                        app:layout_constraintBottom_toTopOf="@+id/ghost_reviews_card_english"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed"
+                        />
+
+                    <TextView
+                        android:id="@+id/ghost_reviews_card_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/review_badge_background"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
+                        android:minWidth="24dp"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                        android:textColor="?android:textColorPrimaryInverse"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toEndOf="@+id/ghost_reviews_card_japanese"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="68"
+                        tools:visibility="visible"
+                        />
+
+                    <TextView
+                        android:id="@+id/ghost_reviews_card_english"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/home_reviews_ghost_english"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                        android:textColor="?attr/colorPrimary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ghost_reviews_card_japanese"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

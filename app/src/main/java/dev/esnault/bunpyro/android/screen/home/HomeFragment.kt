@@ -61,6 +61,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             context?.openUrlInBrowser(ScreenConfig.Url.bunproCram)
         }
 
+        binding.ghostReviewsCard.setOnClickListener {
+            context?.openUrlInBrowser(ScreenConfig.Url.bunproReview)
+        }
+
         vm.viewState.safeObserve(this) { viewState ->
             val oldViewState = oldViewState
             this.oldViewState = viewState
@@ -143,7 +147,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.reviewsCardBadge.isVisible = count?.normalReviews != null
         binding.reviewsCardBadge.text = count?.normalReviews?.toString()
 
-        // TODO Display the ghost reviews count
+        binding.ghostReviewsCardBadge.isVisible = count?.ghostReviews != null
+        binding.ghostReviewsCardBadge.text = count?.ghostReviews?.toString()
     }
 
     // region Snackbar

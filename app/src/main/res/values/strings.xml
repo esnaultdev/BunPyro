@@ -51,6 +51,8 @@
     <string name="home_allGrammar_english">All grammar</string>
     <string name="home_reviews_japanese">復習</string>
     <string name="home_reviews_english">Reviews</string>
+    <string name="home_reviews_ghost_japanese">幽霊</string>
+    <string name="home_reviews_ghost_english">Ghosts</string>
     <string name="home_cram_japanese">一夜漬け</string>
     <string name="home_cram_english">Cram</string>
     <string name="home_progress_count">%1$d/%2$d</string>
