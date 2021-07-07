@@ -16,4 +16,14 @@
         app:title="@string/settings_debug_forceSub"
         />
 
+    <Preference
+        app:key="debug_clearGrammarEtag"
+        app:title="@string/settings_debug_clearGrammarEtag"
+        />
+
+    <Preference
+        app:key="debug_clearReviewEtag"
+        app:title="@string/settings_debug_clearReviewEtag"
+        />
+
 </PreferenceScreen>

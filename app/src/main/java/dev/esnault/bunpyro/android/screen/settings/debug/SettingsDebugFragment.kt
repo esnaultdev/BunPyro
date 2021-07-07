@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.preference.ListPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.jakewharton.processphoenix.ProcessPhoenix
@@ -46,7 +47,6 @@ class SettingsDebugFragment : BaseFragment<FragmentSettingsDebugBinding>() {
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.settings_debug, rootKey)
-
             setupPreferences()
         }
 
@@ -67,6 +67,16 @@ class SettingsDebugFragment : BaseFragment<FragmentSettingsDebugBinding>() {
                     vm?.onMockSubscriptionChange(MockSubscriptionSetting.fromValue(stringValue))
                     true
                 }
+            }
+
+            findPreference<Preference>("debug_clearGrammarEtag")?.setOnPreferenceClickListener {
+                vm?.onClearGrammarEtag()
+                true
+            }
+
+            findPreference<Preference>("debug_clearReviewEtag")?.setOnPreferenceClickListener {
+                vm?.onClearReviewEtag()
+                true
             }
         }
     }

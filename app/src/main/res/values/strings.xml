@@ -181,6 +181,8 @@
     <string name="settings_debug_title">Debug (╭ರ_•́)</string>
     <string name="settings_debug_mock">Mock</string>
     <string name="settings_debug_forceSub">Mock subscription</string>
+    <string name="settings_debug_clearGrammarEtag">Clear grammar etag</string>
+    <string name="settings_debug_clearReviewEtag">Cleat review etag</string>
 
     <string name="reviews_title">Reviews</string>
     <string name="reviews_init_loading_title">Loading reviews</string>
