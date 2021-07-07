@@ -9,9 +9,10 @@ import dev.esnault.bunpyro.data.db.reviewhistory.ReviewHistoryDb
 import dev.esnault.bunpyro.data.network.BunproApi
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
 import dev.esnault.bunpyro.data.utils.time.ITimeProvider
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import dev.esnault.bunpyro.domain.entities.user.StudyQueueCount
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.combine
 import timber.log.Timber
 import java.lang.Exception
 import java.util.concurrent.atomic.AtomicBoolean
@@ -26,15 +27,22 @@ class ReviewRepository(
     private val timeProvider: ITimeProvider
 ) : IReviewRepository {
 
-    private val reviewCountInit = AtomicBoolean(false)
-    private val reviewCountChannel = ConflatedBroadcastChannel<Int?>(1)
+    private val totalReviewCountInit = AtomicBoolean(false)
+    private val totalReviewCountFlow = MutableSharedFlow<Int?>(1)
 
-    override suspend fun getReviewCount(): Flow<Int?> {
-        if (reviewCountInit.compareAndSet(false, true)) {
+    override suspend fun getReviewCount(): Flow<StudyQueueCount?> {
+        if (totalReviewCountInit.compareAndSet(false, true)) {
             val initialValue = appConfig.getStudyQueueCount()
-            reviewCountChannel.send(initialValue)
+            totalReviewCountFlow.tryEmit(initialValue)
         }
-        return reviewCountChannel.asFlow()
+
+        return totalReviewCountFlow
+            .combine(reviewDao.getGhostReviewsCount()) { totalCount, ghostCount ->
+                if (totalCount == null) null else StudyQueueCount(
+                    normalReviews = totalCount - ghostCount,
+                    ghostReviews = ghostCount
+                )
+            }
     }
 
     override suspend fun refreshReviewCount() {
@@ -45,7 +53,7 @@ class ReviewRepository(
             val userInfo = response.userInfo
             appConfig.setStudyQueueCount(reviewCount)
             appConfig.setUserName(userInfo.userName)
-            reviewCountChannel.send(reviewCount)
+            totalReviewCountFlow.tryEmit(reviewCount)
         } catch (e: Exception) {
             Timber.w(e, "Could not refresh review count")
         }

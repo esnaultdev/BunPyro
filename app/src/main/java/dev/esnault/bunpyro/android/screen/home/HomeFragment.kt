@@ -18,6 +18,7 @@ import dev.esnault.bunpyro.android.screen.search.SearchUiHelper
 import dev.esnault.bunpyro.android.utils.safeObserve
 import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.databinding.FragmentHomeBinding
+import dev.esnault.bunpyro.domain.entities.user.StudyQueueCount
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -138,9 +139,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.syncProgress.isVisible = viewState.syncInProgress
     }
 
-    private fun bindReviewCount(count: Int?) {
-        binding.reviewsCardBadge.isVisible = count != null
-        binding.reviewsCardBadge.text = count?.toString()
+    private fun bindReviewCount(count: StudyQueueCount?) {
+        binding.reviewsCardBadge.isVisible = count?.normalReviews != null
+        binding.reviewsCardBadge.text = count?.normalReviews?.toString()
+
+        // TODO Display the ghost reviews count
     }
 
     // region Snackbar

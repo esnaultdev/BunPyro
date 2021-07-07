@@ -1,5 +1,6 @@
 package dev.esnault.bunpyro.data.repository.review
 
+import dev.esnault.bunpyro.domain.entities.user.StudyQueueCount
 import kotlinx.coroutines.flow.Flow
 
 
@@ -7,7 +8,7 @@ interface IReviewRepository {
 
     suspend fun refreshReviewCount()
 
-    suspend fun getReviewCount(): Flow<Int?>
+    suspend fun getReviewCount(): Flow<StudyQueueCount?>
 
     /** Remove a normal review */
     suspend fun removeReview(reviewId: Long): Boolean

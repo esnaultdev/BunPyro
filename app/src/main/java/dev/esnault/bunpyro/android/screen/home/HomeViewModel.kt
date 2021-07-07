@@ -21,6 +21,7 @@ import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchResult
 import dev.esnault.bunpyro.domain.entities.settings.HankoDisplaySetting
+import dev.esnault.bunpyro.domain.entities.user.StudyQueueCount
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -135,8 +136,8 @@ class HomeViewModel(
     }
 
     fun onReviewClick() {
-        val reviewCount = currentState.reviewCount ?: 0
-        if (reviewCount == 0) return // No reviews to do
+        val normalReviewCount = currentState.reviewCount?.normalReviews
+        if (normalReviewCount == 0) return // No reviews to do
 
         navigate(HomeFragmentDirections.actionHomeToReview())
     }
@@ -213,7 +214,7 @@ class HomeViewModel(
         val searchResult: SearchResult,
         val hankoDisplay: HankoDisplaySetting,
         val jlptProgress: JlptProgress?,
-        val reviewCount: Int?,
+        val reviewCount: StudyQueueCount?,
         val syncInProgress: Boolean
     )
 
