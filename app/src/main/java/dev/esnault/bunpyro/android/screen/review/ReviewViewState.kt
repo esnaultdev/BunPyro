@@ -6,6 +6,7 @@ import dev.esnault.bunpyro.domain.entities.review.ReviewQuestion
 import dev.esnault.bunpyro.domain.entities.review.ReviewSession
 import dev.esnault.bunpyro.domain.entities.settings.ReviewHintLevelSetting
 import dev.esnault.bunpyro.domain.entities.user.SubscriptionStatus
+import java.util.*
 
 
 sealed class ReviewViewState {
@@ -20,6 +21,8 @@ sealed class ReviewViewState {
             object FetchFail : Error()
         }
     }
+
+    data class NoReviews(val nextReviewDate: Date?) : ReviewViewState()
 
     data class Question(
         val session: ReviewSession,

@@ -44,6 +44,19 @@
         />
 
     <include
+        android:id="@+id/noReviews_layout"
+        layout="@layout/layout_review_no_reviews"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar_layout"
+        tools:visibility="gone"
+        />
+
+    <include
         android:id="@+id/question_layout"
         layout="@layout/layout_review_question"
         android:layout_width="0dp"

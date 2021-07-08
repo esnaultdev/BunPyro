@@ -138,9 +138,6 @@ class HomeViewModel(
     }
 
     fun onReviewClick() {
-        val normalReviewCount = currentState.reviewCount?.normalReviews
-        if (normalReviewCount == 0) return // No reviews to do
-
         navigate(HomeFragmentDirections.actionHomeToReview())
     }
 

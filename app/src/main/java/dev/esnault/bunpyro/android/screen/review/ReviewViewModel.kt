@@ -103,7 +103,8 @@ class ReviewViewModel(
                 onSuccess = { questions ->
                     val session = sessionService.startSession(questions)
                     if (session == null) {
-                        ViewState.Summary(answered = emptyList())
+                        // TODO Load the next review date
+                        ViewState.NoReviews(null)
                     } else {
                         ViewState.Question(
                             session = session,
@@ -310,6 +311,7 @@ class ReviewViewModel(
     fun onBackPressed() {
         when (val currentState = currentState) {
             is ViewState.Init,
+            is ViewState.NoReviews,
             is ViewState.Summary -> {
                 quitting = true
                 navigate(NavigationCommand.Back)

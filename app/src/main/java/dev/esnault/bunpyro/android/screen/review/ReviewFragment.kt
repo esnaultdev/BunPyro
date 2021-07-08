@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
+import dev.esnault.bunpyro.android.screen.review.subview.NoReviewsView
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState as ViewState
 import dev.esnault.bunpyro.android.screen.review.subview.ReviewInitView
 import dev.esnault.bunpyro.android.screen.review.subview.ReviewQuestionView
@@ -24,6 +25,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
     override val vm: ReviewViewModel by viewModel()
 
     private lateinit var initSubView: ReviewInitView
+    private lateinit var noReviewsSubView: NoReviewsView
     private lateinit var questionSubView: ReviewQuestionView
     private lateinit var syncSubView: ReviewSyncView
     private lateinit var summarySubView: ReviewSummaryView
@@ -66,6 +68,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
             onSubscriptionClick = vm::onSubscriptionClick
         )
         initSubView = ReviewInitView(binding.initLayout, initListener, context)
+        noReviewsSubView = NoReviewsView(binding.noReviewsLayout, context)
 
         val questionListener = ReviewQuestionView.Listener(
             onIgnoreIncorrect = vm::onIgnoreIncorrect,
@@ -104,6 +107,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>() {
         }
 
         initSubView.bindViewState(viewState as? ViewState.Init)
+        noReviewsSubView.bindViewState(viewState as? ViewState.NoReviews)
         questionSubView.bindViewState(
             oldViewState = oldViewState as? ViewState.Question,
             viewState = viewState as? ViewState.Question
