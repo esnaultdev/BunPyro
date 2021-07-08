@@ -26,4 +26,10 @@
         app:showAsAction="never"
         />
 
+    <item
+        android:id="@+id/syncReviews"
+        android:title="@string/home_menu_sync_reviews"
+        app:showAsAction="never"
+        />
+
 </menu>

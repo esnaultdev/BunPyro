@@ -7,7 +7,7 @@ interface ISyncService {
     suspend fun getSyncEvent(): Flow<SyncEvent>
 
     suspend fun firstSync(): SyncResult
-    suspend fun nextSync(): SyncResult
+    suspend fun nextSync(type: SyncType): SyncResult
 
     suspend fun syncReviews(): SyncResult
 }

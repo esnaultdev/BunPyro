@@ -57,6 +57,7 @@
     <string name="home_cram_english">Cram</string>
     <string name="home_progress_count">%1$d/%2$d</string>
     <string name="home_menu_sync">Sync data</string>
+    <string name="home_menu_sync_reviews">Sync reviews</string>
     <string name="home_sync_warning_title">@string/home_menu_sync</string>
     <string name="home_sync_warning_message">The sync will take from 30s to several minutes and might use up to 5MB of data.\n\nThis will be done in background.</string>
     <string name="home_sync_warning_ok">Sync</string>
@@ -225,7 +226,7 @@
     <string name="reviews_dialog_syncError_cancel">Leave</string>
 
     <!-- Notifications -->
-    <string name="notification_sync_inProgress">Syncing grammar…</string>
+    <string name="notification_sync_inProgress">Syncing data…</string>
     <string name="notificationChannel_sync_name">Sync</string>
     <string name="notificationChannel_sync_description">Synchronization of data with BunPro</string>
     <string name="notification_reviews_title">%d reviews available</string>

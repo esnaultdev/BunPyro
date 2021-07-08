@@ -15,6 +15,7 @@ import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.search.ISearchService
 import dev.esnault.bunpyro.data.service.sync.ISyncService
 import dev.esnault.bunpyro.data.service.sync.SyncEvent
+import dev.esnault.bunpyro.data.service.sync.SyncType
 import dev.esnault.bunpyro.data.service.user.IUserService
 import dev.esnault.bunpyro.domain.entities.JlptProgress
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
@@ -64,6 +65,7 @@ class HomeViewModel(
         }
 
     private var searchJob: Job? = null
+    private var lastSyncType = SyncType.ALL
 
     init {
         Analytics.screen(name = "home")
@@ -158,8 +160,14 @@ class HomeViewModel(
         _dialog.postValue(DialogMessage.SyncConfirm)
     }
 
+    fun onSyncReviewsClick() {
+        lastSyncType = SyncType.REVIEWS
+        serviceStarter.startSync(SyncType.REVIEWS)
+    }
+
     fun onSyncConfirm() {
-        serviceStarter.startSync()
+        lastSyncType = SyncType.ALL
+        serviceStarter.startSync(SyncType.ALL)
     }
 
     fun onDialogDismiss() {
@@ -170,7 +178,7 @@ class HomeViewModel(
     }
 
     fun onSyncRetry() {
-        serviceStarter.startSync()
+        serviceStarter.startSync(lastSyncType)
     }
 
     fun onBackPressed() {

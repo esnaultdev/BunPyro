@@ -58,13 +58,13 @@ class SyncService(
             return SyncResult.Success
         }
 
-        return nextSync()
+        return nextSync(SyncType.ALL)
     }
 
-    override suspend fun nextSync(): SyncResult {
+    override suspend fun nextSync(type: SyncType): SyncResult {
         syncEventChannel.send(SyncEvent.IN_PROGRESS)
 
-        val result = performNextSync()
+        val result = performNextSync(type)
 
         val resultEvent = when (result) {
             is SyncResult.Success -> SyncEvent.SUCCESS
@@ -75,20 +75,22 @@ class SyncService(
         return result
     }
 
-    private suspend fun performNextSync(): SyncResult {
-        val grammarSyncResult = syncGrammarPoints()
-        if (grammarSyncResult !is SyncResult.Success) {
-            return grammarSyncResult
-        }
+    private suspend fun performNextSync(type: SyncType): SyncResult {
+        if (type == SyncType.ALL) {
+            val grammarSyncResult = syncGrammarPoints()
+            if (grammarSyncResult !is SyncResult.Success) {
+                return grammarSyncResult
+            }
 
-        val examplesSyncResult = syncExampleSentences()
-        if (examplesSyncResult !is SyncResult.Success) {
-            return examplesSyncResult
-        }
+            val examplesSyncResult = syncExampleSentences()
+            if (examplesSyncResult !is SyncResult.Success) {
+                return examplesSyncResult
+            }
 
-        val supplementalLinksResult = syncSupplementalLinks()
-        if (supplementalLinksResult !is SyncResult.Success) {
-            return supplementalLinksResult
+            val supplementalLinksResult = syncSupplementalLinks()
+            if (supplementalLinksResult !is SyncResult.Success) {
+                return supplementalLinksResult
+            }
         }
 
         val reviewsResult = syncReviews()

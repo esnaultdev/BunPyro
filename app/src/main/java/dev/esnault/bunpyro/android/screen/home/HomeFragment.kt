@@ -96,6 +96,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     vm.onSyncClick()
                     true
                 }
+                R.id.syncReviews -> {
+                    vm.onSyncReviewsClick()
+                    true
+                }
                 else -> false
             }
         }
