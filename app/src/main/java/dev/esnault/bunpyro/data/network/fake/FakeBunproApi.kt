@@ -10,7 +10,7 @@ import timber.log.Timber
 
 class FakeBunproApi(
     var user: LightUserInfo? = Mock.lightUserInfo,
-    var studyQueue: StudyQueue = StudyQueue(Mock.reviewCount)
+    var studyQueue: StudyQueue = StudyQueue(Mock.reviewCount, null)
 ) : BunproApi {
 
     override suspend fun getUser(apiKey: String): BaseRequest<Unit> {

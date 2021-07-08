@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.combine
 import timber.log.Timber
 import java.lang.Exception
+import java.util.*
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
 
@@ -56,6 +58,22 @@ class ReviewRepository(
             totalReviewCountFlow.tryEmit(reviewCount)
         } catch (e: Exception) {
             Timber.w(e, "Could not refresh review count")
+        }
+    }
+
+    override suspend fun getNextReviewDate(): Date? {
+        val apiKey = appConfig.getApiKey() ?: return null
+        return try {
+            val response = bunproApi.getStudyQueue(apiKey)
+            val timestampSeconds = response.requestedInfo.nextReviewTimestampSeconds
+            if (timestampSeconds != null) {
+                Date(TimeUnit.SECONDS.toMillis(timestampSeconds))
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            Timber.w(e, "Could not get next review date")
+            null
         }
     }
 

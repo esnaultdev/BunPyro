@@ -68,6 +68,7 @@ val appModule = module {
         val sessionService: IReviewSessionService = ReviewSessionService(syncHelper)
         ReviewViewModel(
             reviewService = get(),
+            reviewRepository = get(),
             sessionService = sessionService,
             settingsRepo = get(),
             audioService = get(),

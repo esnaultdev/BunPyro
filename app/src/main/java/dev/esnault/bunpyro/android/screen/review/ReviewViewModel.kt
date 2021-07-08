@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.NavigationCommand
 import dev.esnault.bunpyro.data.analytics.Analytics
+import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState as ViewState
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.review.IReviewService
@@ -32,6 +33,7 @@ import timber.log.Timber
 
 class ReviewViewModel(
     private val reviewService: IReviewService,
+    private val reviewRepository: IReviewRepository,
     private val sessionService: IReviewSessionService,
     private val settingsRepo: ISettingsRepository,
     private val audioService: IAudioService,
@@ -103,8 +105,8 @@ class ReviewViewModel(
                 onSuccess = { questions ->
                     val session = sessionService.startSession(questions)
                     if (session == null) {
-                        // TODO Load the next review date
-                        ViewState.NoReviews(null)
+                        val nextReviewDate = reviewRepository.getNextReviewDate()
+                        ViewState.NoReviews(nextReviewDate)
                     } else {
                         ViewState.Question(
                             session = session,
