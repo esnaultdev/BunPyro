@@ -39,7 +39,8 @@ class ReviewRepository(
         }
 
         return totalReviewCountFlow
-            .combine(reviewDao.getGhostReviewsCount()) { totalCount, ghostCount ->
+            .combine(reviewDao.getGhostReviewsCount(timeProvider.currentDate())) {
+                    totalCount, ghostCount ->
                 if (totalCount == null) null else StudyQueueCount(
                     normalReviews = totalCount - ghostCount,
                     ghostReviews = ghostCount

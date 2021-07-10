@@ -3,6 +3,7 @@ package dev.esnault.bunpyro.data.db.review
 import androidx.room.*
 import dev.esnault.bunpyro.data.utils.DataUpdate
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 
 @Dao
@@ -30,9 +31,9 @@ LEFT JOIN (
     ON (rv_h1.review_id = rv_h2.review_id AND rv_h1.review_type = rv_h2.review_type AND rv_h1.history_index < rv_h2.history_index)
     WHERE rv_h2.review_id IS NULL AND rv_h1.review_type = 1
 ) AS rv_h ON rv.id = rv_h.review_id
-WHERE rv.type = 1 AND rv.hidden = 0 AND (rv_h.streak IS NULL OR rv_h.streak < 4)
+WHERE rv.type = 1 AND rv.next_review <= :currentDate AND rv.hidden = 0 AND (rv_h.streak IS NULL OR rv_h.streak < 4)
 """)
-    abstract fun getGhostReviewsCount(): Flow<Int>
+    abstract fun getGhostReviewsCount(currentDate: Date): Flow<Int>
 
     @Insert
     abstract suspend fun insertAll(reviews: List<ReviewDb>)
