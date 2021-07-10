@@ -2,28 +2,30 @@ package dev.esnault.bunpyro.android.screen.settings
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.CallSuper
 import androidx.annotation.StringRes
 import androidx.annotation.XmlRes
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceFragmentCompat
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
-import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.utils.setupWithNav
 import dev.esnault.bunpyro.common.getIntOrNull
 import dev.esnault.bunpyro.databinding.FragmentSettingsBinding
 
 
-abstract class BaseSettingsFragment<VM : BaseViewModel> : BaseFragment<FragmentSettingsBinding>() {
+abstract class BaseSettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
-    abstract override val vm: VM?
     abstract val toolbarTitleResId: Int
         @StringRes get
     abstract val settingResId: Int
         @XmlRes get
 
-    override val bindingClass = FragmentSettingsBinding::class
+    final override val bindingClass = FragmentSettingsBinding::class
 
+    protected lateinit var preferencesFragment: SettingsPreferenceFragment
+
+    @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -32,12 +34,12 @@ abstract class BaseSettingsFragment<VM : BaseViewModel> : BaseFragment<FragmentS
             title = requireContext().getString(toolbarTitleResId)
         }
 
-        val prefFragment = SettingsPreferenceFragment.create(
+        preferencesFragment = SettingsPreferenceFragment.create(
             settingResourceId = settingResId,
             setup = ::setup
         )
         parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, prefFragment)
+            .replace(R.id.fragment_container, preferencesFragment)
             .commit()
     }
 

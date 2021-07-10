@@ -14,12 +14,10 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SettingsDebugFragment : BaseSettingsFragment<SettingsDebugViewModel>() {
+class SettingsDebugFragment : BaseSettingsFragment() {
 
     override val vm: SettingsDebugViewModel by viewModel()
-
     override val settingResId: Int = R.xml.settings_debug
-
     override val toolbarTitleResId: Int = R.string.settings_debug_title
 
     override fun SettingsPreferenceFragment.setupPreferences() {
