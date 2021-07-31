@@ -12,7 +12,7 @@ data class ExampleSentence(
         val japanese: String,
         val english: String,
         val nuance: String?,
-        @Json(name = "sentence-order") val order: Int,
+        @Json(name = "sentence-order") val order: Int?,
         @Json(name = "audio-link") val audioLink: String?
     )
 }

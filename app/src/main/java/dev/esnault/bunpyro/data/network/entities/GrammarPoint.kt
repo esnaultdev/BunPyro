@@ -18,6 +18,6 @@ data class GrammarPoint(
         @Json(name="lesson-id") val lesson: Int,
         val nuance: String?,
         val incomplete: Boolean,
-        @Json(name="grammar-order") val grammarOrder: Int
+        @Json(name="grammar-order") val grammarOrder: Int?
     )
 }

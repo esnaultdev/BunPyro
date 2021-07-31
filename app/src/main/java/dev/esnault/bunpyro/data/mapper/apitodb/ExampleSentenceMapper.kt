@@ -15,7 +15,7 @@ class ExampleSentenceMapper : IMapper<ExampleSentence, ExampleSentenceDb> {
             english = o.attributes.english,
             nuance = o.attributes.nuance,
             audioLink = o.attributes.audioLink,
-            order = o.attributes.order
+            order = o.attributes.order ?: 0
         )
     }
 }

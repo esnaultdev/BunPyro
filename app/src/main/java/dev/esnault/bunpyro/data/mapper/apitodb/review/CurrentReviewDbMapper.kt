@@ -28,7 +28,7 @@ object CurrentReviewDbMapper {
                 lesson = g.lesson,
                 nuance = g.nuance,
                 incomplete = g.incomplete,
-                order = g.order
+                order = g.order ?: 0
             )
         }
     }
@@ -50,7 +50,7 @@ object CurrentReviewDbMapper {
                 english = o.english,
                 nuance = o.nuance,
                 audioLink = o.audioLink,
-                order = o.order
+                order = o.order ?: 0
             )
         }
     }

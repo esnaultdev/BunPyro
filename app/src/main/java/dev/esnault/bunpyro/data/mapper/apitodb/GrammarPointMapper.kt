@@ -19,7 +19,7 @@ class GrammarPointMapper : IMapper<GrammarPoint, GrammarPointDb> {
             lesson = o.attributes.lesson,
             nuance = o.attributes.nuance,
             incomplete = o.attributes.incomplete,
-            order = o.attributes.grammarOrder
+            order = o.attributes.grammarOrder ?: 0
         )
     }
 }

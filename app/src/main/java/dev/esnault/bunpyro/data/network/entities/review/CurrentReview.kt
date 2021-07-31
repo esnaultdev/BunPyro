@@ -74,7 +74,7 @@ object Study {
         @Json(name = "audio") val audioLink: String?,
         val nuance: String?,
         val tense: String?,
-        @Json(name = "sentence_order") val sentenceOrder: Int
+        @Json(name = "sentence_order") val sentenceOrder: Int?
     )
 
     /**
@@ -100,7 +100,7 @@ object Study {
         @Json(name = "lesson_id") val lesson: Int,
         val nuance: String?,
         val incomplete: Boolean,
-        @Json(name = "grammar_order") val order: Int,
+        @Json(name = "grammar_order") val order: Int?,
         @Json(name = "example_sentences") val sentences: List<ExampleSentence>,
         @Json(name = "supplemental_links") val links: List<SupplementalLink>
     )
@@ -122,7 +122,7 @@ object Study {
         val japanese: String,
         val english: String,
         val nuance: String?,
-        @Json(name = "sentence_order") val order: Int,
+        @Json(name = "sentence_order") val order: Int?,
         @Json(name = "audio_link") val audioLink: String?
     )
 

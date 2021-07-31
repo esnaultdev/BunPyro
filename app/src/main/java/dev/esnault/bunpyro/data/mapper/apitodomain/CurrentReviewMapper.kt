@@ -79,7 +79,7 @@ class CurrentReviewMapper {
             audioLink = o.audioLink,
             nuance = o.nuance,
             tense = o.tense,
-            sentenceOrder = o.sentenceOrder,
+            sentenceOrder = o.sentenceOrder ?: 0,
             grammarPoint = grammarPoint
         )
     }
