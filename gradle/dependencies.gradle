@@ -1,26 +1,26 @@
 ext.versions = [
-        kotlin: '1.5.10', // Because of compose, we can't use 1.5.20
+        kotlin: '1.5.10', // We can't use 1.5.20 because of compose
         kotlinx: [
-                coroutines: '1.5.0',
+                coroutines: '1.5.1',
         ],
         androidx: [
-                appcompat: '1.3.0',
-                compose: '1.0.0-rc01',
-                constraintlayout: '2.0.4',
-                core: '1.5.0',
-                espresso: '3.3.0',
+                appcompat: '1.3.1',
+                compose: '1.0.0',
+                constraintlayout: '2.1.0',
+                core: '1.6.0',
+                espresso: '3.4.0',
                 lifecycle: '2.3.1',
                 navigation: '2.3.5',
                 preference: '1.1.1',
                 room: '2.3.0',
-                test: '1.4.0-rc01',
-                testrules: '1.4.0-rc01',
-                junit: '1.1.2',
+                test: '1.4.0',
+                testrules: '1.4.0',
+                junit: '1.1.3',
         ],
         firebase_bom: '28.1.0',
 
         // UI
-        material: '1.4.0-rc01',
+        material: '1.5.0-alpha01',
         materialdialogs: '3.3.0',
         betterlinkmovementmethod: '2.2.0',
         transitionseverywhere: '2.1.0',
@@ -39,7 +39,7 @@ ext.versions = [
         wanakana: '1.1.1',
 
         // Media
-        exoplayer: '2.14.1',
+        exoplayer: '2.14.2',
 
         // Development
         timber: '4.7.1',
@@ -50,7 +50,7 @@ ext.versions = [
 
 ext.deps = [
         plugins: [
-                android: 'com.android.tools.build:gradle:7.0.0-beta05',
+                android: 'com.android.tools.build:gradle:7.0.0',
                 kotlin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
                 navigation: "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.androidx.navigation}",
                 googleservices: 'com.google.gms:google-services:4.3.8',
