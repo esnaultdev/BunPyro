@@ -81,7 +81,6 @@ class GrammarPointViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val furiganaShown = settingsRepo.getFurigana().asBoolean()
-                val textAnimation = settingsRepo.getTextAnimationEnabled()
                 val exampleDetailsShown = settingsRepo.getExampleDetails().asBoolean()
 
                 grammarRepo.getGrammarPoint(id)
@@ -91,7 +90,6 @@ class GrammarPointViewModel(
                         if (state == null) {
                             firstLoadState(
                                 furiganaShown = furiganaShown,
-                                textAnimation = textAnimation,
                                 exampleDetailsShown = exampleDetailsShown,
                                 grammarPoint = grammarPoint
                             )
@@ -114,7 +112,6 @@ class GrammarPointViewModel(
 
     private fun firstLoadState(
         furiganaShown: Boolean,
-        textAnimation: Boolean,
         exampleDetailsShown: Boolean,
         grammarPoint: GrammarPoint
     ): ViewState {
@@ -125,7 +122,6 @@ class GrammarPointViewModel(
             grammarPoint = grammarPoint,
             titleYomikataShown = false,
             furiganaShown = furiganaShown,
-            textAnimation = textAnimation,
             examples = grammarPoint.sentences.map { sentence ->
                 ViewState.Example(
                     titles = splitTitle,
@@ -357,7 +353,6 @@ class GrammarPointViewModel(
         val grammarPoint: GrammarPoint,
         val titleYomikataShown: Boolean,
         val furiganaShown: Boolean,
-        val textAnimation: Boolean,
         val examples: List<Example>,
         val currentAudio: CurrentAudio?,
         val reviewAction: ReviewAction?,

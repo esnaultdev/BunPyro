@@ -11,9 +11,7 @@ import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.isVisible
 import androidx.core.view.postDelayed
 import androidx.transition.AutoTransition
-import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
-import androidx.transition.TransitionSet
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.span.AnswerSpan
 import dev.esnault.bunpyro.android.display.span.TagSpan
@@ -21,7 +19,6 @@ import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState.Question as ViewState
 import dev.esnault.bunpyro.android.utils.*
-import dev.esnault.bunpyro.android.utils.transition.ChangeText
 import dev.esnault.bunpyro.common.dpToPx
 import dev.esnault.bunpyro.common.getColorCompat
 import dev.esnault.bunpyro.common.getThemeColor
@@ -104,7 +101,7 @@ class ReviewQuestionView(
             transitioning = questionTransition(transitioning, oldState)
             bindQuestion(viewState)
         } else if (furiganaChanged) {
-            updateFuriganas(viewState.furiganaShown, viewState.textAnimation)
+            updateFuriganas(viewState.furiganaShown)
         }
 
         if (answerChanged || answerStateChanged) {
@@ -445,17 +442,7 @@ class ReviewQuestionView(
         }
     }
 
-    private fun updateFuriganas(furiganaShown: Boolean, textAnimation: Boolean) {
-        if (textAnimation) {
-            val transition = TransitionSet().apply {
-                ordering = TransitionSet.ORDERING_TOGETHER
-                duration = ScreenConfig.Transition.reviewChangeDuration
-                addTransition(ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN))
-                addTransition(ChangeBounds())
-            }
-            TransitionManager.beginDelayedTransition(binding.root, transition)
-        }
-
+    private fun updateFuriganas(furiganaShown: Boolean) {
         val visibility = furiganaShown.toRubyVisibility()
         updateTextViewFuriganas(binding.questionQuestion, visibility)
         if (binding.questionEnglish.isVisible) {

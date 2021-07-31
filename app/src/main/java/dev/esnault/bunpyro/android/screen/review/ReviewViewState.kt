@@ -27,7 +27,6 @@ sealed class ReviewViewState {
     data class Question(
         val session: ReviewSession,
         val furiganaShown: Boolean,
-        val textAnimation: Boolean,
         val hintLevel: ReviewHintLevelSetting,
         val currentAudio: CurrentAudio?
     ) : ReviewViewState() {

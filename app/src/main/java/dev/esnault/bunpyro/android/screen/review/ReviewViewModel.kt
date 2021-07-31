@@ -97,7 +97,6 @@ class ReviewViewModel(
         currentState = ViewState.Init.Loading.Reviews
         viewModelScope.launch(Dispatchers.IO) {
             val furiganaShown = settingsRepo.getFurigana().asBoolean()
-            val textAnimation = settingsRepo.getTextAnimationEnabled()
             val hintLevel = settingsRepo.getReviewHintLevel()
 
             val result = reviewService.getCurrentReviews()
@@ -112,7 +111,6 @@ class ReviewViewModel(
                         ViewState.Question(
                             session = session,
                             furiganaShown = furiganaShown,
-                            textAnimation = textAnimation,
                             hintLevel = hintLevel,
                             currentAudio = null
                         )

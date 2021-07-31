@@ -11,8 +11,6 @@ interface ISettingsRepository {
     suspend fun getFurigana(): FuriganaSetting
     suspend fun setFurigana(setting: FuriganaSetting)
 
-    suspend fun getTextAnimationEnabled(): Boolean
-
     suspend fun getReviewHintLevel(): ReviewHintLevelSetting
     suspend fun setReviewHintLevel(setting: ReviewHintLevelSetting)
 

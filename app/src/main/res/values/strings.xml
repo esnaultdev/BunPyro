@@ -126,7 +126,6 @@
     <string name="settings_root_nightMode_never">Never (Light Mode)</string>
     <string name="settings_root_nightMode_system">Same as system</string>
     <string name="settings_root_furiganaDefault">Furigana</string>
-    <string name="settings_root_textAnimation">Text animation</string>
     <string name="settings_root_furiganaDefault_shown">Shown by default</string>
     <string name="settings_root_furiganaDefault_hidden">Hidden by default</string>
     <string name="settings_root_exampleDetails">Example details</string>

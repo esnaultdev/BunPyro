@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Wrong kana conversion for romaji input in search
 - Failing to parse the API data when `order` fields are missing
+- Fix the furigana animations getting stuck on some devices
 
 ## [0.3.7] - 2020-04-15
 ### Fixed

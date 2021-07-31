@@ -10,7 +10,6 @@ import android.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
 import dev.esnault.bunpyro.R
@@ -18,7 +17,6 @@ import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel.ViewState
 import dev.esnault.bunpyro.android.utils.*
-import dev.esnault.bunpyro.android.utils.transition.ChangeText
 import dev.esnault.bunpyro.android.utils.transition.NamedAutoTransition
 import dev.esnault.bunpyro.common.Alpha
 import dev.esnault.bunpyro.common.dpToPx
@@ -111,7 +109,7 @@ class ExampleAdapter(
             }
             else -> SimpleAudioState.STOPPED
         }
-        holder.bind(example, audioState, viewState.furiganaShown, viewState.textAnimation)
+        holder.bind(example, audioState, viewState.furiganaShown)
     }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
@@ -174,8 +172,7 @@ class ExampleAdapter(
         fun bind(
             example: ViewState.Example,
             audioState: SimpleAudioState?,
-            furiganaShown: Boolean,
-            textAnimation: Boolean
+            furiganaShown: Boolean
         ) {
             val sentenceChanged = example.sentence != this.example?.sentence
             val furiganaChanged = furiganaShown != this.furiganaShown
@@ -186,7 +183,7 @@ class ExampleAdapter(
 
             when {
                 sentenceChanged -> bindExample(example, furiganaShown)
-                furiganaChanged -> updateFurigana(furiganaShown, textAnimation)
+                furiganaChanged -> updateFurigana(furiganaShown)
                 expansionChanged -> updateExpansion(example)
             }
             bindAudioState(audioState)
@@ -211,17 +208,7 @@ class ExampleAdapter(
             updateExpansion(example.collapsed, nuanceIsBlank)
         }
 
-        private fun updateFurigana(furiganaShown: Boolean, textAnimation: Boolean) {
-            if (textAnimation) {
-                val transition = TransitionSet().apply {
-                    ordering = TransitionSet.ORDERING_TOGETHER
-                    duration = ScreenConfig.Transition.exampleChangeDuration
-                    addTransition(ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN))
-                    addTransition(ChangeBounds())
-                }
-                TransitionManager.beginDelayedTransition(binding.frameLayout, transition)
-            }
-
+        private fun updateFurigana(furiganaShown: Boolean) {
             val visibility = furiganaShown.toRubyVisibility()
             updateTextViewFuriganas(binding.japanese, visibility)
             updateTextViewFuriganas(binding.english, visibility)

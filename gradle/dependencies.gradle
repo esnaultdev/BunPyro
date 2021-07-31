@@ -23,7 +23,6 @@ ext.versions = [
         material: '1.5.0-alpha01',
         materialdialogs: '3.3.0',
         betterlinkmovementmethod: '2.2.0',
-        transitionseverywhere: '2.1.0',
 
         // "DI"
         koin: '3.1.1',
