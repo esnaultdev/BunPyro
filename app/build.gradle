@@ -60,6 +60,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
     implementation "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}"
+    compileOnly 'com.github.pengrad:jdk9-deps:1.0'
 
     // AndroidX
     implementation "androidx.appcompat:appcompat:${versions.androidx.appcompat}"
@@ -67,7 +68,9 @@ dependencies {
     implementation "androidx.preference:preference:${versions.androidx.preference}"
 
     // Firebase
-    implementation "com.google.firebase:firebase-crashlytics:${versions.firebase.crashlytics}"
+    implementation platform("com.google.firebase:firebase-bom:${versions.firebase_bom}")
+    implementation "com.google.firebase:firebase-crashlytics-ktx"
+    implementation "com.google.firebase:firebase-analytics-ktx"
 
     // UI
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidx.constraintlayout}"
