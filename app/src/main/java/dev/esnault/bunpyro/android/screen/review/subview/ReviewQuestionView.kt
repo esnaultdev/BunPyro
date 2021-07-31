@@ -104,7 +104,7 @@ class ReviewQuestionView(
             transitioning = questionTransition(transitioning, oldState)
             bindQuestion(viewState)
         } else if (furiganaChanged) {
-            updateFuriganas(viewState.furiganaShown)
+            updateFuriganas(viewState.furiganaShown, viewState.textAnimation)
         }
 
         if (answerChanged || answerStateChanged) {
@@ -445,14 +445,16 @@ class ReviewQuestionView(
         }
     }
 
-    private fun updateFuriganas(furiganaShown: Boolean) {
-        val transition = TransitionSet().apply {
-            ordering = TransitionSet.ORDERING_TOGETHER
-            duration = ScreenConfig.Transition.reviewChangeDuration
-            addTransition(ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN))
-            addTransition(ChangeBounds())
+    private fun updateFuriganas(furiganaShown: Boolean, textAnimation: Boolean) {
+        if (textAnimation) {
+            val transition = TransitionSet().apply {
+                ordering = TransitionSet.ORDERING_TOGETHER
+                duration = ScreenConfig.Transition.reviewChangeDuration
+                addTransition(ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN))
+                addTransition(ChangeBounds())
+            }
+            TransitionManager.beginDelayedTransition(binding.root, transition)
         }
-        TransitionManager.beginDelayedTransition(binding.root, transition)
 
         val visibility = furiganaShown.toRubyVisibility()
         updateTextViewFuriganas(binding.questionQuestion, visibility)

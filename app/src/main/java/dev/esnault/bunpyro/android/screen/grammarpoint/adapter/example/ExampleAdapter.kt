@@ -111,7 +111,7 @@ class ExampleAdapter(
             }
             else -> SimpleAudioState.STOPPED
         }
-        holder.bind(example, audioState, viewState.furiganaShown)
+        holder.bind(example, audioState, viewState.furiganaShown, viewState.textAnimation)
     }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
@@ -174,7 +174,8 @@ class ExampleAdapter(
         fun bind(
             example: ViewState.Example,
             audioState: SimpleAudioState?,
-            furiganaShown: Boolean
+            furiganaShown: Boolean,
+            textAnimation: Boolean
         ) {
             val sentenceChanged = example.sentence != this.example?.sentence
             val furiganaChanged = furiganaShown != this.furiganaShown
@@ -185,7 +186,7 @@ class ExampleAdapter(
 
             when {
                 sentenceChanged -> bindExample(example, furiganaShown)
-                furiganaChanged -> updateFurigana(furiganaShown)
+                furiganaChanged -> updateFurigana(furiganaShown, textAnimation)
                 expansionChanged -> updateExpansion(example)
             }
             bindAudioState(audioState)
@@ -210,14 +211,16 @@ class ExampleAdapter(
             updateExpansion(example.collapsed, nuanceIsBlank)
         }
 
-        private fun updateFurigana(furiganaShown: Boolean) {
-            val transition = TransitionSet().apply {
-                ordering = TransitionSet.ORDERING_TOGETHER
-                duration = ScreenConfig.Transition.exampleChangeDuration
-                addTransition(ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN))
-                addTransition(ChangeBounds())
+        private fun updateFurigana(furiganaShown: Boolean, textAnimation: Boolean) {
+            if (textAnimation) {
+                val transition = TransitionSet().apply {
+                    ordering = TransitionSet.ORDERING_TOGETHER
+                    duration = ScreenConfig.Transition.exampleChangeDuration
+                    addTransition(ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN))
+                    addTransition(ChangeBounds())
+                }
+                TransitionManager.beginDelayedTransition(binding.frameLayout, transition)
             }
-            TransitionManager.beginDelayedTransition(binding.frameLayout, transition)
 
             val visibility = furiganaShown.toRubyVisibility()
             updateTextViewFuriganas(binding.japanese, visibility)

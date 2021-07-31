@@ -27,6 +27,7 @@ class SettingsRepository(context: Context) : ISettingsRepository {
         const val EXAMPLE_DETAILS = "example_details"
         const val GRAMMAR_FILTERS = "all_grammar_filter"
         const val HANKO_DISPLAY = "hanko_display"
+        const val TEXT_ANIMATION = "text_animation"
 
         val allKeys: List<String>
             get() = listOf(
@@ -54,6 +55,10 @@ class SettingsRepository(context: Context) : ISettingsRepository {
 
     override suspend fun setFurigana(setting: FuriganaSetting) {
         sharedPreferences.edit { putString(Key.FURIGANA, setting.value) }
+    }
+
+    override suspend fun getTextAnimationEnabled(): Boolean {
+        return sharedPreferences.getBoolean(Key.TEXT_ANIMATION, true)
     }
 
     override suspend fun getReviewHintLevel(): ReviewHintLevelSetting {

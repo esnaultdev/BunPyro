@@ -25,6 +25,12 @@
             app:title="@string/settings_root_furiganaDefault"
             />
 
+        <SwitchPreference
+            app:defaultValue="true"
+            app:key="text_animation"
+            app:title="@string/settings_root_textAnimation"
+            />
+
         <ListPreference
             app:defaultValue="show"
             app:entries="@array/reviewHintLevel_entries"
