@@ -3,6 +3,8 @@ package dev.esnault.bunpyro.data.mapper.settings
 import androidx.annotation.Keep
 import dev.esnault.bunpyro.data.mapper.IMapper
 import dev.esnault.bunpyro.data.mapper.manualMappingMoshi
+import dev.esnault.bunpyro.data.utils.extension.fromJsonResult
+import dev.esnault.bunpyro.data.utils.extension.toJsonResult
 import dev.esnault.bunpyro.domain.entities.JLPT
 import dev.esnault.bunpyro.domain.entities.grammar.AllGrammarFilter
 
@@ -14,8 +16,10 @@ class AllGrammarFilterFromStringMapper : IMapper<String?, AllGrammarFilter> {
     override fun map(o: String?): AllGrammarFilter {
         if (o == null) return AllGrammarFilter.DEFAULT
 
-        val jsoned = moshi.adapter(AllGrammarFilterJson::class.java).fromJson(o)
-        if (jsoned == null) return AllGrammarFilter.DEFAULT
+        val adapter = moshi.adapter(AllGrammarFilterJson::class.java)
+        val jsoned = adapter.fromJsonResult(o)
+            .getOrNull()
+            ?: return AllGrammarFilter.DEFAULT
 
         return AllGrammarFilter(
             jlpt = jsoned.jlpt.mapTo(mutableSetOf()) { level -> JLPT[level] },
@@ -25,11 +29,12 @@ class AllGrammarFilterFromStringMapper : IMapper<String?, AllGrammarFilter> {
     }
 }
 
-class AllGrammarFilterToStringMapper : IMapper<AllGrammarFilter, String> {
+class AllGrammarFilterToStringMapper : IMapper<AllGrammarFilter, String?> {
 
-    override fun map(o: AllGrammarFilter): String {
+    override fun map(o: AllGrammarFilter): String? {
         val jsonable = AllGrammarFilterJson(o.jlpt.map { it.level }, o.studied, o.nonStudied)
-        return moshi.adapter(AllGrammarFilterJson::class.java).toJson(jsonable)
+        val adapter = moshi.adapter(AllGrammarFilterJson::class.java)
+        return adapter.toJsonResult(jsonable).getOrNull()
     }
 }
 
