@@ -4,16 +4,15 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.ListPreference
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.res.toNightMode
+import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.settings.BaseSettingsFragment
 import dev.esnault.bunpyro.android.screen.settings.SettingsPreferenceFragment
-import dev.esnault.bunpyro.android.screen.settings.debug.SettingsDebugViewModel
 import dev.esnault.bunpyro.domain.entities.settings.NightModeSetting
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SettingsDisplayFragment : BaseSettingsFragment() {
 
-    override val vm: SettingsDebugViewModel by viewModel()
+    override val vm: BaseViewModel? = null
     override val settingResId: Int = R.xml.settings_display
     override val toolbarTitleResId: Int = R.string.settings_display_title
 

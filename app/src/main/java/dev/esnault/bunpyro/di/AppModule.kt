@@ -20,6 +20,7 @@ import dev.esnault.bunpyro.android.screen.review.ReviewViewModel
 import dev.esnault.bunpyro.android.screen.settings.SettingsViewModel
 import dev.esnault.bunpyro.android.screen.settings.debug.SettingsDebugViewModel
 import dev.esnault.bunpyro.android.screen.settings.subscription.SubscriptionViewModel
+import dev.esnault.bunpyro.android.screen.settings.user.SettingsUserViewModel
 import dev.esnault.bunpyro.android.screen.start.StartViewModel
 import dev.esnault.bunpyro.android.service.AndroidServiceStarter
 import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
@@ -42,8 +43,6 @@ val appModule = module {
     viewModel { ApiKeyViewModel(get()) }
     viewModel { FirstSyncViewModel(get()) }
     viewModel { HomeViewModel(get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { SettingsViewModel(get(), get(), get(), get()) }
-    viewModel { SettingsDebugViewModel(get(), get()) }
     viewModel { LessonsViewModel(get(), get()) }
     viewModel { params ->
         val args: GrammarPointFragmentArgs = params[0]
@@ -76,6 +75,14 @@ val appModule = module {
             userService = get()
         )
     }
+
+    // endregion
+
+    // region ViewModel - Settings
+
+    viewModel { SettingsViewModel() }
+    viewModel { SettingsUserViewModel(get(), get(), get(), get()) }
+    viewModel { SettingsDebugViewModel(get(), get()) }
     viewModel { SubscriptionViewModel(get()) }
 
     // endregion

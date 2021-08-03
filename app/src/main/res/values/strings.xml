@@ -139,7 +139,7 @@
     <string name="settings_display_reviewHintLevel_hint">Hint</string>
     <string name="settings_display_reviewHintLevel_more">More</string>
     <string name="settings_display_reviewHintLevel_show">Show</string>
-    <string name="settings_root_category_user">User</string>
+    <string name="settings_user_title">User</string>
     <string name="settings_root_user_name">Current user</string>
     <string name="settings_root_user_name_sync">Unknown, tap to refresh</string>
     <string name="settings_root_user_name_sync_error">Failed to fetch the username</string>

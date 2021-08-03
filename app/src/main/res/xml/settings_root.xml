@@ -9,29 +9,10 @@
         app:title="@string/settings_display_title"
         />
 
-    <PreferenceCategory
+    <Preference
         app:key="category_user"
-        app:title="@string/settings_root_category_user"
-        >
-
-        <Preference
-            app:key="user_name"
-            app:title="@string/settings_root_user_name"
-            tools:summary="username"
-            />
-
-        <Preference
-            app:key="user_subscription"
-            app:title="@string/settings_root_user_subscription"
-            tools:summary="Subscribed"
-            />
-
-        <Preference
-            app:key="user_logout"
-            app:title="@string/settings_root_user_logout"
-            />
-
-    </PreferenceCategory>
+        app:title="@string/settings_user_title"
+        />
 
     <PreferenceCategory
         app:key="category_about"

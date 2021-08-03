@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <Preference
+        app:key="user_name"
+        app:title="@string/settings_root_user_name"
+        tools:summary="username"
+        />
+
+    <Preference
+        app:key="user_subscription"
+        app:title="@string/settings_root_user_subscription"
+        tools:summary="Subscribed"
+        />
+
+    <Preference
+        app:key="user_logout"
+        app:title="@string/settings_root_user_logout"
+        />
+
+</PreferenceScreen>

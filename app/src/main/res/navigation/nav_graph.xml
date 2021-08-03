@@ -166,6 +166,11 @@
             />
 
         <action
+            android:id="@+id/action_settings_to_settingsUser"
+            app:destination="@id/settingsUserScreen"
+            />
+
+        <action
             android:id="@+id/action_settings_to_settingsLicenses"
             app:destination="@id/settingsLicensesScreen"
             />
@@ -178,11 +183,6 @@
         <action
             android:id="@+id/action_settings_to_settingsDebug"
             app:destination="@id/settingsDebugScreen"
-            />
-
-        <action
-            android:id="@+id/action_settings_to_subscription"
-            app:destination="@id/subscriptionScreen"
             />
 
         <action
@@ -220,6 +220,19 @@
         android:name="dev.esnault.bunpyro.android.screen.settings.display.SettingsDisplayFragment"
         tools:layout="@layout/fragment_settings"
         />
+
+    <fragment
+        android:id="@+id/settingsUserScreen"
+        android:name="dev.esnault.bunpyro.android.screen.settings.user.SettingsUserFragment"
+        tools:layout="@layout/fragment_settings"
+        >
+
+        <action
+            android:id="@+id/action_settingsUser_to_subscription"
+            app:destination="@id/subscriptionScreen"
+            />
+
+    </fragment>
 
     <fragment
         android:id="@+id/reviewScreen"
