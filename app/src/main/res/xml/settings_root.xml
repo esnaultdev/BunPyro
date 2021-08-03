@@ -18,6 +18,13 @@
         app:summary="@string/settings_user_summary"
         />
 
+    <Preference
+        app:isPreferenceVisible="false"
+        app:key="about_debug"
+        app:title="@string/settings_root_debug"
+        tools:isPreferenceVisible="true"
+        />
+
     <PreferenceCategory
         app:key="category_about"
         app:title="@string/settings_root_category_about"
@@ -36,13 +43,6 @@
         <Preference
             app:key="about_licenses"
             app:title="@string/settings_root_licenses"
-            />
-
-        <Preference
-            app:isPreferenceVisible="false"
-            app:key="about_debug"
-            app:title="@string/settings_root_debug"
-            tools:isPreferenceVisible="true"
             />
 
         <Preference

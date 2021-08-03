@@ -29,6 +29,14 @@ class SettingsFragment : BaseSettingsFragment() {
             vm.onUserClick()
             true
         }
+
+        findPreference<Preference>("about_debug")?.apply {
+            isVisible = BuildConfig.DEBUG
+            setOnPreferenceClickListener {
+                vm.navigate(SettingsFragmentDirections.actionSettingsToSettingsDebug())
+                true
+            }
+        }
     }
 
     private fun SettingsPreferenceFragment.setupAbout() {
@@ -45,14 +53,6 @@ class SettingsFragment : BaseSettingsFragment() {
         findPreference<Preference>("about_licenses")?.setOnPreferenceClickListener {
             vm.navigate(SettingsFragmentDirections.actionSettingsToSettingsLicenses())
             true
-        }
-
-        findPreference<Preference>("about_debug")?.apply {
-            isVisible = BuildConfig.DEBUG
-            setOnPreferenceClickListener {
-                vm.navigate(SettingsFragmentDirections.actionSettingsToSettingsDebug())
-                true
-            }
         }
 
         findPreference<Preference>("about_version")?.apply {

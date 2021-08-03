@@ -7,7 +7,7 @@ import androidx.navigation.NavDirections
 
 open class BaseViewModel : ViewModel() {
 
-    val navigator = Navigator()
+    private val navigator = Navigator()
 
     val navigationCommands: LiveData<NavigationCommand>
         get() = navigator.navigationCommands
