@@ -2,9 +2,9 @@
 <resources>
 
     <string-array name="nightMode_entries">
-        <item>@string/settings_root_nightMode_system</item>
-        <item>@string/settings_root_nightMode_always</item>
-        <item>@string/settings_root_nightMode_never</item>
+        <item>@string/settings_display_nightMode_system</item>
+        <item>@string/settings_display_nightMode_always</item>
+        <item>@string/settings_display_nightMode_never</item>
     </string-array>
 
     <string-array name="nightMode_values">
@@ -14,8 +14,8 @@
     </string-array>
 
     <string-array name="furiganaDefault_entries">
-        <item>@string/settings_root_furiganaDefault_shown</item>
-        <item>@string/settings_root_furiganaDefault_hidden</item>
+        <item>@string/settings_display_furiganaDefault_shown</item>
+        <item>@string/settings_display_furiganaDefault_hidden</item>
     </string-array>
 
     <string-array name="furiganaDefault_values">
@@ -24,8 +24,8 @@
     </string-array>
 
     <string-array name="exampleDetails_entries">
-        <item>@string/settings_root_exampleDetails_shown</item>
-        <item>@string/settings_root_exampleDetails_hidden</item>
+        <item>@string/settings_display_exampleDetails_shown</item>
+        <item>@string/settings_display_exampleDetails_hidden</item>
     </string-array>
 
     <string-array name="exampleDetails_values">
@@ -34,8 +34,8 @@
     </string-array>
 
     <string-array name="hankoDisplay_entries">
-        <item>@string/settings_root_hankoDisplay_normal</item>
-        <item>@string/settings_root_hankoDisplay_level</item>
+        <item>@string/settings_display_hankoDisplay_normal</item>
+        <item>@string/settings_display_hankoDisplay_level</item>
     </string-array>
 
     <string-array name="hankoDisplay_values">
@@ -44,10 +44,10 @@
     </string-array>
 
     <string-array name="reviewHintLevel_entries">
-        <item>@string/settings_root_reviewHintLevel_hide</item>
-        <item>@string/settings_root_reviewHintLevel_hint</item>
-        <item>@string/settings_root_reviewHintLevel_show</item>
-        <item>@string/settings_root_reviewHintLevel_more</item>
+        <item>@string/settings_display_reviewHintLevel_hide</item>
+        <item>@string/settings_display_reviewHintLevel_hint</item>
+        <item>@string/settings_display_reviewHintLevel_show</item>
+        <item>@string/settings_display_reviewHintLevel_more</item>
     </string-array>
 
     <string-array name="reviewHintLevel_values">

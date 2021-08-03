@@ -50,6 +50,10 @@ class SettingsViewModel(
 
     // region Events
 
+    fun onDisplayClick() {
+        navigate(SettingsFragmentDirections.actionSettingsToSettingsDisplay())
+    }
+
     fun onUserNameClick() {
         if (refreshUserNameJob?.isActive != true && _viewState.value?.userName == null) {
             refreshUserNameJob = viewModelScope.launch {

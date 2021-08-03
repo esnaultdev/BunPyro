@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        app:defaultValue="system"
+        app:entries="@array/nightMode_entries"
+        app:entryValues="@array/nightMode_values"
+        app:key="night_mode"
+        app:title="@string/settings_display_nightMode"
+        />
+
+    <ListPreference
+        app:defaultValue="shown"
+        app:entries="@array/furiganaDefault_entries"
+        app:entryValues="@array/furiganaDefault_values"
+        app:key="furigana_default"
+        app:title="@string/settings_display_furiganaDefault"
+        />
+
+    <ListPreference
+        app:defaultValue="show"
+        app:entries="@array/reviewHintLevel_entries"
+        app:entryValues="@array/reviewHintLevel_values"
+        app:key="review_hint_level"
+        app:title="@string/settings_display_reviewHintLevel"
+        />
+
+    <ListPreference
+        app:defaultValue="hidden"
+        app:entries="@array/exampleDetails_entries"
+        app:entryValues="@array/exampleDetails_values"
+        app:key="example_details"
+        app:title="@string/settings_display_exampleDetails"
+        />
+
+    <ListPreference
+        app:defaultValue="normal"
+        app:entries="@array/hankoDisplay_entries"
+        app:entryValues="@array/hankoDisplay_values"
+        app:key="hanko_display"
+        app:title="@string/settings_display_hankoDisplay"
+        />
+
+</PreferenceScreen>

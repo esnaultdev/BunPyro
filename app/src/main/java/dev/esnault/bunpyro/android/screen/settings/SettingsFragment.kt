@@ -2,18 +2,14 @@ package dev.esnault.bunpyro.android.screen.settings
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.preference.ListPreference
 import androidx.preference.Preference
 import com.google.android.material.snackbar.Snackbar
 import dev.esnault.bunpyro.BuildConfig
 import dev.esnault.bunpyro.R
-import dev.esnault.bunpyro.android.res.toNightMode
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.settings.SettingsViewModel.SnackBarMessage
 import dev.esnault.bunpyro.android.utils.safeObserve
 import dev.esnault.bunpyro.common.openUrlInBrowser
-import dev.esnault.bunpyro.domain.entities.settings.NightModeSetting
 import dev.esnault.bunpyro.domain.entities.user.SubscriptionStatus
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -36,47 +32,15 @@ class SettingsFragment : BaseSettingsFragment() {
     }
 
     override fun SettingsPreferenceFragment.setupPreferences() {
-        setupDisplay()
+        setupNavigation()
         setupUser()
         setupAbout()
     }
 
-    private fun SettingsPreferenceFragment.setupDisplay() {
-        findPreference<ListPreference>("night_mode")?.apply {
-            summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
-            setOnPreferenceChangeListener { _, newValue ->
-                val setting = NightModeSetting.fromValue(newValue as? String)
-                val nightMode = setting.toNightMode()
-                AppCompatDelegate.setDefaultNightMode(nightMode)
-                true
-            }
-        }
-
-        findPreference<ListPreference>("furigana_default")?.apply {
-            summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
-        }
-
-        findPreference<ListPreference>("review_hint_level")?.apply {
-            summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
-        }
-
-        findPreference<ListPreference>("example_details")?.apply {
-            summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
-        }
-
-        findPreference<ListPreference>("hanko_display")?.apply {
-            summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
-        }
-
-        findPreference<Preference>("about_version")?.apply {
-            val versionName = BuildConfig.VERSION_NAME
-            val versionCode = BuildConfig.VERSION_CODE
-
-            summary = if (BuildConfig.DEBUG) {
-                "$versionName ($versionCode) debug"
-            } else {
-                "$versionName ($versionCode)"
-            }
+    private fun SettingsPreferenceFragment.setupNavigation() {
+        findPreference<Preference>("category_display")?.setOnPreferenceClickListener {
+            vm.onDisplayClick()
+            true
         }
     }
 
@@ -116,6 +80,17 @@ class SettingsFragment : BaseSettingsFragment() {
             setOnPreferenceClickListener {
                 vm.navigate(SettingsFragmentDirections.actionSettingsToSettingsDebug())
                 true
+            }
+        }
+
+        findPreference<Preference>("about_version")?.apply {
+            val versionName = BuildConfig.VERSION_NAME
+            val versionCode = BuildConfig.VERSION_CODE
+
+            summary = if (BuildConfig.DEBUG) {
+                "$versionName ($versionCode) debug"
+            } else {
+                "$versionName ($versionCode)"
             }
         }
     }

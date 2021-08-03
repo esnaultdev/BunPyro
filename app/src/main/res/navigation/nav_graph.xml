@@ -161,6 +161,11 @@
         >
 
         <action
+            android:id="@+id/action_settings_to_settingsDisplay"
+            app:destination="@id/settingsDisplayScreen"
+            />
+
+        <action
             android:id="@+id/action_settings_to_settingsLicenses"
             app:destination="@id/settingsLicensesScreen"
             />
@@ -207,7 +212,13 @@
     <fragment
         android:id="@+id/settingsDebugScreen"
         android:name="dev.esnault.bunpyro.android.screen.settings.debug.SettingsDebugFragment"
-        tools:layout="@layout/fragment_settings_debug"
+        tools:layout="@layout/fragment_settings"
+        />
+
+    <fragment
+        android:id="@+id/settingsDisplayScreen"
+        android:name="dev.esnault.bunpyro.android.screen.settings.display.SettingsDisplayFragment"
+        tools:layout="@layout/fragment_settings"
         />
 
     <fragment
