@@ -17,4 +17,7 @@
     <dimen name="questionOtherBadge_height">32dp</dimen>
 
     <dimen name="answerSpan_minWidth">60dp</dimen>
+
+    <dimen name="settings_icon_size">24dp</dimen>
+    <dimen name="settings_icon_padding">8dp</dimen>
 </resources>

@@ -7,11 +7,15 @@
     <Preference
         app:key="category_display"
         app:title="@string/settings_display_title"
+        app:icon="@drawable/settings_display"
+        app:summary="@string/settings_display_summary"
         />
 
     <Preference
         app:key="category_user"
         app:title="@string/settings_user_title"
+        app:icon="@drawable/settings_user"
+        app:summary="@string/settings_user_summary"
         />
 
     <PreferenceCategory

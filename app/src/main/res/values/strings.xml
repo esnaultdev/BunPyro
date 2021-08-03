@@ -121,6 +121,7 @@
 
     <string name="settings_root_title">Settings</string>
     <string name="settings_display_title">Display</string>
+    <string name="settings_display_summary">Night mode, furigana, stamps</string>
     <string name="settings_display_nightMode">Night mode</string>
     <string name="settings_display_nightMode_always">Always (Dark Mode)</string>
     <string name="settings_display_nightMode_never">Never (Light Mode)</string>
@@ -140,6 +141,7 @@
     <string name="settings_display_reviewHintLevel_more">More</string>
     <string name="settings_display_reviewHintLevel_show">Show</string>
     <string name="settings_user_title">User</string>
+    <string name="settings_user_summary">Subscription, sign out</string>
     <string name="settings_root_user_name">Current user</string>
     <string name="settings_root_user_name_sync">Unknown, tap to refresh</string>
     <string name="settings_root_user_name_sync_error">Failed to fetch the username</string>
