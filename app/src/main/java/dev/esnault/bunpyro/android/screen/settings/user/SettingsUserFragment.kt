@@ -47,16 +47,16 @@ class SettingsUserFragment : BaseSettingsFragment() {
 
     private fun SettingsPreferenceFragment.bindState(viewState: SettingsUserViewModel.ViewState) {
         findPreference<Preference>("user_name")?.apply {
-            summary = viewState.userName ?: getString(R.string.settings_root_user_name_sync)
+            summary = viewState.userName ?: getString(R.string.settings_user_name_sync)
         }
         findPreference<Preference>("user_subscription")?.apply {
             val resId = when (viewState.subStatus) {
                 SubscriptionStatus.SUBSCRIBED ->
-                    R.string.settings_root_user_subscription_subscribed
+                    R.string.settings_user_subscription_subscribed
                 SubscriptionStatus.NOT_SUBSCRIBED ->
-                    R.string.settings_root_user_subscription_notSubscribed
+                    R.string.settings_user_subscription_notSubscribed
                 SubscriptionStatus.EXPIRED ->
-                    R.string.settings_root_user_subscription_expired
+                    R.string.settings_user_subscription_expired
             }
             summary = getString(resId)
         }
@@ -67,8 +67,8 @@ class SettingsUserFragment : BaseSettingsFragment() {
     private fun showSnackBar(message: SnackBarMessage) {
         val view = view ?: return
         val textResId = when (message) {
-            is SnackBarMessage.UsernameFetchError -> R.string.settings_root_user_name_sync_error
-            is SnackBarMessage.LogoutError -> R.string.settings_root_user_logout_error
+            is SnackBarMessage.UsernameFetchError -> R.string.settings_user_name_sync_error
+            is SnackBarMessage.LogoutError -> R.string.settings_user_logout_error
         }
 
         Snackbar.make(view, textResId, Snackbar.LENGTH_SHORT)

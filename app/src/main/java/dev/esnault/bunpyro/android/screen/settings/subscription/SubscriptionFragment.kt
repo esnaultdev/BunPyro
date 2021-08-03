@@ -147,7 +147,7 @@ private fun AboutContent(
 ) {
     SimpleScreen(
         navController = navController,
-        title = stringResource(R.string.settings_root_user_subscription)
+        title = stringResource(R.string.settings_user_subscription)
     ) {
         if (viewState != null) {
             BodyContent(viewState, listener)
