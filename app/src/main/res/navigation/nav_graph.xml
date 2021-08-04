@@ -166,6 +166,11 @@
             />
 
         <action
+            android:id="@+id/action_settings_to_settingsReview"
+            app:destination="@id/settingsReviewScreen"
+            />
+
+        <action
             android:id="@+id/action_settings_to_settingsUser"
             app:destination="@id/settingsUserScreen"
             />
@@ -202,6 +207,11 @@
     <fragment
         android:id="@+id/settingsAboutScreen"
         android:name="dev.esnault.bunpyro.android.screen.settings.about.SettingsAboutFragment"
+        />
+
+    <fragment
+        android:id="@+id/settingsReviewScreen"
+        android:name="dev.esnault.bunpyro.android.screen.settings.review.SettingsReviewFragment"
         />
 
     <fragment

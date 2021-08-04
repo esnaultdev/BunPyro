@@ -25,6 +25,11 @@ class SettingsFragment : BaseSettingsFragment() {
             true
         }
 
+        findPreference<Preference>("category_review")?.setOnPreferenceClickListener {
+            vm.onReviewClick()
+            true
+        }
+
         findPreference<Preference>("category_user")?.setOnPreferenceClickListener {
             vm.onUserClick()
             true

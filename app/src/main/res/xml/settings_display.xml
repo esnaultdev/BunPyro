@@ -19,14 +19,6 @@
         />
 
     <ListPreference
-        app:defaultValue="show"
-        app:entries="@array/reviewHintLevel_entries"
-        app:entryValues="@array/reviewHintLevel_values"
-        app:key="review_hint_level"
-        app:title="@string/settings_display_reviewHintLevel"
-        />
-
-    <ListPreference
         app:defaultValue="hidden"
         app:entries="@array/exampleDetails_entries"
         app:entryValues="@array/exampleDetails_values"

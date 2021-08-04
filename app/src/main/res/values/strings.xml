@@ -140,6 +140,14 @@
     <string name="settings_display_reviewHintLevel_hint">Hint</string>
     <string name="settings_display_reviewHintLevel_more">More</string>
     <string name="settings_display_reviewHintLevel_show">Show</string>
+    <string name="settings_review_title">Review</string>
+    <string name="settings_review_summary">Bunny mode, audio, anki mode</string>
+    <string name="settings_review_bunnyMode">Bunny mode</string>
+    <string name="settings_review_bunnyMode_summary">Go to the next question instantly.</string>
+    <string name="settings_review_audio_autoPlay">Auto play audio</string>
+    <string name="settings_review_audio_autoPlay_summary">Autoplay sentence audio in reviews.</string>
+    <string name="settings_review_ankiMode">Anki mode</string>
+    <string name="settings_review_ankiMode_summary">Avoid typing answers by validating them manually.</string>
     <string name="settings_user_title">User</string>
     <string name="settings_user_summary">Subscription, sign out</string>
     <string name="settings_user_name">Current user</string>

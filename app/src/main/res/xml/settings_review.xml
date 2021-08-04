@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        app:defaultValue="show"
+        app:entries="@array/reviewHintLevel_entries"
+        app:entryValues="@array/reviewHintLevel_values"
+        app:key="review_hint_level"
+        app:title="@string/settings_display_reviewHintLevel"
+        />
+
+    <CheckBoxPreference
+        app:defaultValue="false"
+        app:key="review_audio_autoPlay"
+        app:title="@string/settings_review_audio_autoPlay"
+        app:summary="@string/settings_review_audio_autoPlay_summary"
+        />
+
+    <CheckBoxPreference
+        app:defaultValue="false"
+        app:key="review_bunnyMode"
+        app:title="@string/settings_review_bunnyMode"
+        app:summary="@string/settings_review_bunnyMode_summary"
+        />
+
+    <CheckBoxPreference
+        app:defaultValue="false"
+        app:key="review_ankiMode"
+        app:title="@string/settings_review_ankiMode"
+        app:summary="@string/settings_review_ankiMode_summary"
+        />
+
+</PreferenceScreen>

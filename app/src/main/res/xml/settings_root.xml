@@ -12,6 +12,13 @@
         />
 
     <Preference
+        app:key="category_review"
+        app:title="@string/settings_review_title"
+        app:icon="@drawable/settings_review"
+        app:summary="@string/settings_review_summary"
+        />
+
+    <Preference
         app:key="category_user"
         app:title="@string/settings_user_title"
         app:icon="@drawable/settings_user"

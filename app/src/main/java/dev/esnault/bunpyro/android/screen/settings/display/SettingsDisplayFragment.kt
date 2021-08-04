@@ -31,10 +31,6 @@ class SettingsDisplayFragment : BaseSettingsFragment() {
             summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
         }
 
-        findPreference<ListPreference>("review_hint_level")?.apply {
-            summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
-        }
-
         findPreference<ListPreference>("example_details")?.apply {
             summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
         }

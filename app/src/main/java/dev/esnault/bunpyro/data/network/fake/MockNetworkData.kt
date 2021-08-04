@@ -172,6 +172,6 @@ object Mock {
         reviewType = ReviewType.NORMAL,
         selfStudy = false
     )
-    val currentReviews = emptyList<CurrentReview>() // (1L..3L).map { index -> fakeReview(index) }
+    val currentReviews = (1L..3L).map { index -> fakeReview(index) }
     val reviewCount = currentReviews.size
 }
