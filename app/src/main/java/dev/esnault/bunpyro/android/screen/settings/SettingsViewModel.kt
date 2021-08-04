@@ -15,5 +15,17 @@ class SettingsViewModel : BaseViewModel() {
         navigate(SettingsFragmentDirections.actionSettingsToSettingsUser())
     }
 
+    fun onDebugClick() {
+        navigate(SettingsFragmentDirections.actionSettingsToSettingsDebug())
+    }
+
+    fun onAboutClick() {
+        navigate(SettingsFragmentDirections.actionSettingsToSettingsAbout())
+    }
+
+    fun onLicencesClick() {
+        navigate(SettingsFragmentDirections.actionSettingsToSettingsLicenses())
+    }
+
     // endregion
 }

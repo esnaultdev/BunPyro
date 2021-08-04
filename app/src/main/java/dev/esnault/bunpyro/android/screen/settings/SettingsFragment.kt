@@ -33,7 +33,7 @@ class SettingsFragment : BaseSettingsFragment() {
         findPreference<Preference>("about_debug")?.apply {
             isVisible = BuildConfig.DEBUG
             setOnPreferenceClickListener {
-                vm.navigate(SettingsFragmentDirections.actionSettingsToSettingsDebug())
+                vm.onDebugClick()
                 true
             }
         }
@@ -41,7 +41,7 @@ class SettingsFragment : BaseSettingsFragment() {
 
     private fun SettingsPreferenceFragment.setupAbout() {
         findPreference<Preference>("about_app")?.setOnPreferenceClickListener {
-            vm.navigate(SettingsFragmentDirections.actionSettingsToSettingsAbout())
+            vm.onAboutClick()
             true
         }
 
@@ -51,7 +51,7 @@ class SettingsFragment : BaseSettingsFragment() {
         }
 
         findPreference<Preference>("about_licenses")?.setOnPreferenceClickListener {
-            vm.navigate(SettingsFragmentDirections.actionSettingsToSettingsLicenses())
+            vm.onLicencesClick()
             true
         }
 

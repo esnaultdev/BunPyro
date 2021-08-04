@@ -12,11 +12,11 @@ open class BaseViewModel : ViewModel() {
     val navigationCommands: LiveData<NavigationCommand>
         get() = navigator.navigationCommands
 
-    fun navigate(command: NavigationCommand) {
+    protected fun navigate(command: NavigationCommand) {
         navigator.navigate(command)
     }
 
-    fun navigate(directions: NavDirections) {
+    protected fun navigate(directions: NavDirections) {
         navigator.navigate(NavigationCommand.To(directions))
     }
 }
