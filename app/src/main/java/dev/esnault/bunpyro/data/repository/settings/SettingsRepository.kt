@@ -27,6 +27,7 @@ class SettingsRepository(context: Context) : ISettingsRepository {
         const val EXAMPLE_DETAILS = "example_details"
         const val GRAMMAR_FILTERS = "all_grammar_filter"
         const val HANKO_DISPLAY = "hanko_display"
+        const val AUDIO_AUTOPLAY = "review_audio_autoPlay"
 
         val allKeys: List<String>
             get() = listOf(
@@ -87,6 +88,10 @@ class SettingsRepository(context: Context) : ISettingsRepository {
     override suspend fun getHankoDisplay(): HankoDisplaySetting {
         val value = sharedPreferences.getString(Key.HANKO_DISPLAY, "normal")
         return HankoDisplaySetting.fromValue(value)
+    }
+
+    override suspend fun getAudioAutoPlay(): Boolean {
+        return sharedPreferences.getBoolean(Key.AUDIO_AUTOPLAY, false)
     }
 
     override suspend fun clearAll() {

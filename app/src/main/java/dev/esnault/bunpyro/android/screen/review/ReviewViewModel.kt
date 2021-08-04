@@ -98,6 +98,7 @@ class ReviewViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val furiganaShown = settingsRepo.getFurigana().asBoolean()
             val hintLevel = settingsRepo.getReviewHintLevel()
+            val autoPlayAudio = settingsRepo.getAudioAutoPlay()
 
             val result = reviewService.getCurrentReviews()
             if (currentState != ViewState.Init.Loading.Reviews) return@launch
@@ -112,6 +113,7 @@ class ReviewViewModel(
                             session = session,
                             furiganaShown = furiganaShown,
                             hintLevel = hintLevel,
+                            autoPlayAudio = autoPlayAudio,
                             currentAudio = null
                         )
                     }
@@ -162,6 +164,9 @@ class ReviewViewModel(
             AnswerState.Answering -> {
                 val newSession = sessionService.answer(currentState.session)
                 this.currentState = currentState.copy(session = newSession)
+                if (newSession.answerState != AnswerState.Answering && currentState.autoPlayAudio) {
+                    onAnswerAudio()
+                }
             }
         }
     }

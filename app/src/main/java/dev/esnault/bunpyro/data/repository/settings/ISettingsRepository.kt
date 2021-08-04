@@ -21,6 +21,8 @@ interface ISettingsRepository {
 
     suspend fun getHankoDisplay(): HankoDisplaySetting
 
+    suspend fun getAudioAutoPlay(): Boolean
+
     suspend fun clearAll()
 
     // region Debug
