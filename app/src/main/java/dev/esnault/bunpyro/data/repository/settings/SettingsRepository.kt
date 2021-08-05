@@ -28,6 +28,7 @@ class SettingsRepository(context: Context) : ISettingsRepository {
         const val GRAMMAR_FILTERS = "all_grammar_filter"
         const val HANKO_DISPLAY = "hanko_display"
         const val AUDIO_AUTOPLAY = "review_audio_autoPlay"
+        const val REVIEW_BUNNY_MODE = "review_bunnyMode"
 
         val allKeys: List<String>
             get() = listOf(
@@ -92,6 +93,10 @@ class SettingsRepository(context: Context) : ISettingsRepository {
 
     override suspend fun getAudioAutoPlay(): Boolean {
         return sharedPreferences.getBoolean(Key.AUDIO_AUTOPLAY, false)
+    }
+
+    override suspend fun getBunnyMode(): Boolean {
+        return sharedPreferences.getBoolean(Key.REVIEW_BUNNY_MODE, false)
     }
 
     override suspend fun clearAll() {

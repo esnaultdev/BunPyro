@@ -99,6 +99,7 @@ class ReviewViewModel(
             val furiganaShown = settingsRepo.getFurigana().asBoolean()
             val hintLevel = settingsRepo.getReviewHintLevel()
             val autoPlayAudio = settingsRepo.getAudioAutoPlay()
+            val bunnyMode = settingsRepo.getBunnyMode()
 
             val result = reviewService.getCurrentReviews()
             if (currentState != ViewState.Init.Loading.Reviews) return@launch
@@ -114,6 +115,7 @@ class ReviewViewModel(
                             furiganaShown = furiganaShown,
                             hintLevel = hintLevel,
                             autoPlayAudio = autoPlayAudio,
+                            bunnyMode = bunnyMode,
                             currentAudio = null
                         )
                     }
@@ -153,23 +155,30 @@ class ReviewViewModel(
         val currentState = currentState as? ViewState.Question ?: return
         when (currentState.session.answerState) {
             is AnswerState.Correct,
-            is AnswerState.Incorrect -> {
-                val newSession = sessionService.next(currentState.session)
-                if (newSession.questionType == QuestionType.FINISHED) {
-                    finishSession()
-                } else {
-                    this.currentState = currentState.copy(session = newSession)
-                    if (newSession.answerState == AnswerState.Answering) {
-                        onQuestionStart(currentState)
-                    }
-                }
-            }
+            is AnswerState.Incorrect -> goToNext(currentState)
             AnswerState.Answering -> {
                 val newSession = sessionService.answer(currentState.session)
                 if (newSession.answerState != AnswerState.Answering) {
                     onQuestionEnd(currentState)
                 }
-                this.currentState = currentState.copy(session = newSession)
+                val newState = currentState.copy(session = newSession)
+                if (newSession.answerState is AnswerState.Correct && currentState.bunnyMode) {
+                    goToNext(newState)
+                } else {
+                    this.currentState = newState
+                }
+            }
+        }
+    }
+
+    private fun goToNext(currentState: ViewState.Question) {
+        val newSession = sessionService.next(currentState.session)
+        if (newSession.questionType == QuestionType.FINISHED) {
+            finishSession()
+        } else {
+            this.currentState = currentState.copy(session = newSession)
+            if (newSession.answerState == AnswerState.Answering) {
+                onQuestionStart(currentState)
             }
         }
     }

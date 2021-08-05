@@ -29,6 +29,7 @@ sealed class ReviewViewState {
         val furiganaShown: Boolean,
         val hintLevel: ReviewHintLevelSetting,
         val autoPlayAudio: Boolean,
+        val bunnyMode: Boolean,
         val currentAudio: CurrentAudio?
     ) : ReviewViewState() {
         val currentQuestion: ReviewQuestion

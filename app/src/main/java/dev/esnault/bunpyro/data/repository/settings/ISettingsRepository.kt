@@ -22,6 +22,7 @@ interface ISettingsRepository {
     suspend fun getHankoDisplay(): HankoDisplaySetting
 
     suspend fun getAudioAutoPlay(): Boolean
+    suspend fun getBunnyMode(): Boolean
 
     suspend fun clearAll()
 
