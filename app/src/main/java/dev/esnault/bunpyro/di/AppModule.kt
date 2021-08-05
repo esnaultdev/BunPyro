@@ -1,13 +1,20 @@
 package dev.esnault.bunpyro.di
 
 
+import com.google.android.exoplayer2.database.ExoDatabaseProvider
+import com.google.android.exoplayer2.source.MediaSourceFactory
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
+import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
+import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import com.google.android.exoplayer2.util.Util
 import dev.esnault.bunpyro.android.action.clipboard.Clipboard
 import dev.esnault.bunpyro.android.action.clipboard.IClipboard
 import dev.esnault.bunpyro.android.display.notification.INotificationService
 import dev.esnault.bunpyro.android.display.notification.NotificationService
 import dev.esnault.bunpyro.android.media.AudioPlayer
 import dev.esnault.bunpyro.android.media.IAudioPlayer
-import dev.esnault.bunpyro.android.media.buildMediaSourceFactory
 import dev.esnault.bunpyro.android.screen.allgrammar.AllGrammarViewModel
 import dev.esnault.bunpyro.android.screen.apikey.ApiKeyViewModel
 import dev.esnault.bunpyro.android.screen.firstsync.FirstSyncViewModel
@@ -33,6 +40,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import java.io.File
 
 
 val appModule = module {
@@ -93,9 +101,34 @@ val appModule = module {
     factory<IClipboard> { Clipboard(androidContext()) }
     single<INotificationService> { NotificationService(androidApplication()) }
 
-    factory<IAudioPlayer> { AudioPlayer(androidContext(), get()) }
+    // endregion
+
+    // region Audio
+
+    factory<IAudioPlayer> { AudioPlayer(androidContext(), get(), get()) }
     single<IAudioService> { AudioService(get()) }
-    single { buildMediaSourceFactory(androidContext()) }
+
+    single<CacheDataSource.Factory> {
+        val context = androidContext()
+        val userAgent = Util.getUserAgent(context, "BunPyro")
+        val defaultDataSourceFactory = DefaultDataSourceFactory(context, userAgent)
+
+        val cacheFolder = File(context.filesDir, "audio")
+        val cacheEvictor = LeastRecentlyUsedCacheEvictor(10L * 1024L * 1024L)
+        val databaseProvider = ExoDatabaseProvider(context)
+        val cache = SimpleCache(cacheFolder, cacheEvictor, databaseProvider)
+        CacheDataSource.Factory()
+            .setCache(cache)
+            .setUpstreamDataSourceFactory(defaultDataSourceFactory)
+    }
+    single<CacheDataSource> {
+        val cacheDataSourceFactory: CacheDataSource.Factory = get()
+        cacheDataSourceFactory.createDataSource()
+    }
+    single<MediaSourceFactory> {
+        val cacheDataSourceFactory: CacheDataSource.Factory = get()
+        ProgressiveMediaSource.Factory(cacheDataSourceFactory)
+    }
 
     // endregion
 }

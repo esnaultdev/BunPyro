@@ -52,6 +52,10 @@ class AudioService(private val audioPlayer: IAudioPlayer) : IAudioService {
         _currentAudio = null
     }
 
+    override fun preload(audioItem: AudioItem) {
+        audioPlayer.preload(audioItem.audioLink)
+    }
+
     override fun release() {
         audioPlayer.release()
         _currentAudio = null

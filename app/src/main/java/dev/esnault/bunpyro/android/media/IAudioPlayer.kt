@@ -11,5 +11,6 @@ interface IAudioPlayer {
 
     fun play(url: String?)
     fun stop()
+    fun preload(url: String)
     fun release()
 }

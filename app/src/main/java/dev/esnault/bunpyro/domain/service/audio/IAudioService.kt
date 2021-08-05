@@ -13,5 +13,7 @@ interface IAudioService {
 
     fun stop()
 
+    fun preload(audioItem: AudioItem)
+
     fun release()
 }

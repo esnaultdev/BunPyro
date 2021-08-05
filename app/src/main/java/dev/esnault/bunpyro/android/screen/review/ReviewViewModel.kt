@@ -159,15 +159,33 @@ class ReviewViewModel(
                     finishSession()
                 } else {
                     this.currentState = currentState.copy(session = newSession)
+                    if (newSession.answerState == AnswerState.Answering) {
+                        onQuestionStart(currentState)
+                    }
                 }
             }
             AnswerState.Answering -> {
                 val newSession = sessionService.answer(currentState.session)
-                this.currentState = currentState.copy(session = newSession)
-                if (newSession.answerState != AnswerState.Answering && currentState.autoPlayAudio) {
-                    onAnswerAudio()
+                if (newSession.answerState != AnswerState.Answering) {
+                    onQuestionEnd(currentState)
                 }
+                this.currentState = currentState.copy(session = newSession)
             }
+        }
+    }
+
+    private fun onQuestionStart(currentState: ViewState.Question) {
+        if (currentState.autoPlayAudio) {
+            val audioItem = getQuestionAudioItem(currentState)
+            if (audioItem != null) {
+                audioService.preload(audioItem)
+            }
+        }
+    }
+
+    private fun onQuestionEnd(currentState: ViewState.Question) {
+        if (currentState.autoPlayAudio) {
+            playQuestionAudio(currentState)
         }
     }
 
@@ -277,15 +295,23 @@ class ReviewViewModel(
 
     fun onAnswerAudio() {
         val currentState = currentState as? ViewState.Question ?: return
+        playQuestionAudio(currentState)
+    }
+
+    private fun getQuestionAudioItem(currentState: ViewState.Question): AudioItem? {
         val currentQuestion = currentState.currentQuestion
-        val audioLink: String? = currentQuestion.audioLink
-        if (audioLink == null) {
+        val audioLink = currentQuestion.audioLink ?: return null
+        return AudioItem.Question(
+            questionId = currentQuestion.id,
+            audioLink = audioLink
+        )
+    }
+
+    private fun playQuestionAudio(currentState: ViewState.Question) {
+        val audioItem = getQuestionAudioItem(currentState)
+        if (audioItem == null) {
             audioService.stop()
         } else {
-            val audioItem = AudioItem.Question(
-                questionId = currentQuestion.id,
-                audioLink = audioLink
-            )
             val currentAudioItem = currentState.currentAudio?.item
             if (currentAudioItem is AudioItem.Question && currentAudioItem != audioItem) {
                 // We can't just play or stop here since we might still be playing the audio of the

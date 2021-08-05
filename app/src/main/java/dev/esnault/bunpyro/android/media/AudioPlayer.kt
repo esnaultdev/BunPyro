@@ -3,26 +3,25 @@ package dev.esnault.bunpyro.android.media
 import android.content.Context
 import android.net.Uri
 import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.database.ExoDatabaseProvider
 import com.google.android.exoplayer2.source.MediaSourceFactory
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
-import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
-import com.google.android.exoplayer2.util.Util
-import java.io.File
+import com.google.android.exoplayer2.upstream.DataSpec
+import com.google.android.exoplayer2.upstream.cache.*
+import kotlinx.coroutines.*
+import timber.log.Timber
 
 
 private const val audioPrefix: String = "https://bunpro.jp/audio/"
-private const val cachePath = "audio"
 
 class AudioPlayer(
     private val context: Context,
-    private val mediaSourceFactory: MediaSourceFactory
+    private val mediaSourceFactory: MediaSourceFactory,
+    private val cacheDataSource: CacheDataSource
 ) : IAudioPlayer {
+
+    private val coroutineScope = CoroutineScope(SupervisorJob())
 
     override var listener: IAudioPlayer.Listener? = null
 
@@ -45,9 +44,11 @@ class AudioPlayer(
         }
 
         val uri = getAudioUri(url)
+        val mediaItem = MediaItem.fromUri(uri)
+        val source = mediaSourceFactory.createMediaSource(mediaItem)
 
-        val source = mediaSourceFactory.createMediaSource(uri)
-        exoPlayer.prepare(source)
+        exoPlayer.setMediaSource(source)
+        exoPlayer.prepare()
         exoPlayer.playWhenReady = true
     }
 
@@ -58,10 +59,21 @@ class AudioPlayer(
     override fun release() {
         _exoPlayer?.release()
         _exoPlayer = null
+        coroutineScope.cancel()
     }
 
-    private fun buildStateListener(): Player.EventListener {
-        return object : Player.EventListener {
+    override fun preload(url: String) {
+        coroutineScope.launch(Dispatchers.IO) {
+            val dataSpec = DataSpec(getAudioUri(url))
+            val cacheWriter = CacheWriter(cacheDataSource, dataSpec, null, null)
+            kotlin.runCatching { cacheWriter.cache() }
+                .onFailure { Timber.w("Failed to preload $url") }
+                .onSuccess { Timber.d("Preloaded $url") }
+        }
+    }
+
+    private fun buildStateListener(): Player.Listener {
+        return object : Player.Listener {
             override fun onPlayerStateChanged(
                 playWhenReady: Boolean,
                 playbackState: Int
@@ -83,19 +95,6 @@ class AudioPlayer(
             }
         }
     }
-}
-
-fun buildMediaSourceFactory(context: Context): MediaSourceFactory {
-    val userAgent = Util.getUserAgent(context, "BunPyro")
-    val defaultDataSourceFactory = DefaultDataSourceFactory(context, userAgent)
-
-    val cacheFolder = File(context.filesDir, cachePath)
-    val cacheEvictor = LeastRecentlyUsedCacheEvictor(10 * 1024 * 1024)
-    val databaseProvider = ExoDatabaseProvider(context)
-    val cache = SimpleCache(cacheFolder, cacheEvictor, databaseProvider)
-    val cacheDataSourceFactory = CacheDataSourceFactory(cache, defaultDataSourceFactory)
-
-    return ProgressiveMediaSource.Factory(cacheDataSourceFactory)
 }
 
 fun getAudioUri(url: String): Uri {
