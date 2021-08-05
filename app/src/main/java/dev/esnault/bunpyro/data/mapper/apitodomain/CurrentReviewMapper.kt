@@ -76,7 +76,7 @@ class CurrentReviewMapper {
             // The API sometimes has the answer in the altGrammar too, make it consistent
             alternateGrammar = o.alternateGrammar - o.answer,
             wrongAnswers = o.wrongAnswers,
-            audioLink = o.audioLink,
+            audioLink = o.audioLink?.takeIf { it.isNotBlank() },
             nuance = o.nuance,
             tense = o.tense,
             sentenceOrder = o.sentenceOrder ?: 0,

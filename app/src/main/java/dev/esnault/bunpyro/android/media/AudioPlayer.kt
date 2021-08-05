@@ -65,10 +65,16 @@ class AudioPlayer(
     override fun preload(url: String) {
         coroutineScope.launch(Dispatchers.IO) {
             val dataSpec = DataSpec(getAudioUri(url))
-            val cacheWriter = CacheWriter(cacheDataSource, dataSpec, null, null)
+
+            val listener = CacheWriter.ProgressListener { requestLength, bytesCached, _ ->
+                if (requestLength == bytesCached) {
+                    Timber.d("Preloaded $url")
+                }
+            }
+            val cacheWriter = CacheWriter(cacheDataSource, dataSpec, null, listener)
+            Timber.d("Preloading $url")
             kotlin.runCatching { cacheWriter.cache() }
                 .onFailure { Timber.w("Failed to preload $url") }
-                .onSuccess { Timber.d("Preloaded $url") }
         }
     }
 

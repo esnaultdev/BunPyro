@@ -13,7 +13,7 @@ class ExampleSentenceMapper : IMapper<ExampleSentenceDb, ExampleSentence> {
             japanese = o.japanese.trim(),
             english = o.english.trim(),
             nuance = o.nuance?.trim(),
-            audioLink = o.audioLink
+            audioLink = o.audioLink?.takeIf { it.isNotBlank() }
         )
     }
 }
