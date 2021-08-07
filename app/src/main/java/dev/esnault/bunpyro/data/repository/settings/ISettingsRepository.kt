@@ -23,6 +23,7 @@ interface ISettingsRepository {
 
     suspend fun getAudioAutoPlay(): Boolean
     suspend fun getBunnyMode(): Boolean
+    suspend fun getAnkiMode(): Boolean
 
     suspend fun clearAll()
 

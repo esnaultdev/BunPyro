@@ -100,6 +100,7 @@ class ReviewViewModel(
             val hintLevel = settingsRepo.getReviewHintLevel()
             val autoPlayAudio = settingsRepo.getAudioAutoPlay()
             val bunnyMode = settingsRepo.getBunnyMode()
+            val ankiMode = settingsRepo.getAnkiMode()
 
             val result = reviewService.getCurrentReviews()
             if (currentState != ViewState.Init.Loading.Reviews) return@launch
@@ -116,6 +117,7 @@ class ReviewViewModel(
                             hintLevel = hintLevel,
                             autoPlayAudio = autoPlayAudio,
                             bunnyMode = bunnyMode,
+                            ankiMode = ankiMode,
                             currentAudio = null
                         )
                     }
@@ -196,6 +198,22 @@ class ReviewViewModel(
         if (currentState.autoPlayAudio) {
             playQuestionAudio(currentState)
         }
+    }
+
+    // endregion
+
+    // region Anki mode
+
+    private fun onAnkiShowAnswer() {
+        // TODO
+    }
+
+    private fun onAnkiCorrect() {
+        // TODO
+    }
+
+    private fun onAnkiIncorrect() {
+        // TODO
     }
 
     // endregion

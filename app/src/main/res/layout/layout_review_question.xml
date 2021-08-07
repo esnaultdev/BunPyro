@@ -12,6 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="16dp"
         >
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -91,6 +92,8 @@
             app:layout_constraintBottom_toBottomOf="@id/info_remaining"
             app:layout_constraintEnd_toStartOf="@+id/info_precision_value"
             app:layout_constraintTop_toTopOf="@id/info_remaining"
+            app:tint="?colorControlNormal"
+            app:tintMode="src_in"
             />
 
         <TextView
@@ -306,20 +309,53 @@
 
         </FrameLayout>
 
-        <include
-            android:id="@+id/info_container"
-            layout="@layout/layout_review_question_info"
-            android:layout_width="0dp"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/question_anki_mainButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/reviews_action_anki_showAnswer"
             android:visibility="gone"
-            app:layout_constrainedHeight="true"
+            app:icon="@drawable/ic_visibility_24"
+            app:iconTint="?colorOnPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_min="400dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/question_action_hint"
-            app:layout_constraintVertical_bias="0"
-            tools:visibility="visible"
+            tools:visibility="gone"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/question_anki_incorrect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/reviews_action_anki_incorrect"
+            android:visibility="gone"
+            app:backgroundTint="@color/answer_incorrect"
+            app:icon="@drawable/ic_close_24dp"
+            app:iconTint="?colorOnPrimary"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/question_anki_correct"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
+            tools:visibility="gone"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/question_anki_correct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/reviews_action_anki_correct"
+            android:visibility="gone"
+            app:backgroundTint="@color/answer_correct"
+            app:icon="@drawable/ic_check_circle_24dp"
+            app:iconGravity="end"
+            app:iconTint="?colorOnPrimary"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
+            app:layout_constraintStart_toEndOf="@id/question_anki_incorrect"
+            tools:visibility="gone"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

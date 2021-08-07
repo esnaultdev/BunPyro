@@ -29,11 +29,14 @@ class SettingsRepository(context: Context) : ISettingsRepository {
         const val HANKO_DISPLAY = "hanko_display"
         const val AUDIO_AUTOPLAY = "review_audio_autoPlay"
         const val REVIEW_BUNNY_MODE = "review_bunnyMode"
+        const val REVIEW_ANKI_MODE = "review_ankiMode"
+        // When adding a new key, also add it to [allKeys].
 
         val allKeys: List<String>
             get() = listOf(
                 NIGHT_MODE, FURIGANA, REVIEW_HINT_LEVEL, EXAMPLE_DETAILS, GRAMMAR_FILTERS,
-                HANKO_DISPLAY
+                HANKO_DISPLAY, AUDIO_AUTOPLAY, REVIEW_BUNNY_MODE,
+                REVIEW_ANKI_MODE
             )
     }
 
@@ -97,6 +100,10 @@ class SettingsRepository(context: Context) : ISettingsRepository {
 
     override suspend fun getBunnyMode(): Boolean {
         return sharedPreferences.getBoolean(Key.REVIEW_BUNNY_MODE, false)
+    }
+
+    override suspend fun getAnkiMode(): Boolean {
+        return sharedPreferences.getBoolean(Key.REVIEW_ANKI_MODE, false)
     }
 
     override suspend fun clearAll() {
