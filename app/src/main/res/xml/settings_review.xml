@@ -24,7 +24,11 @@
         app:summary="@string/settings_review_bunnyMode_summary"
         />
 
+    <!--
+     * Hidden for now to focus on features that impact more users (notifications, ...).
+     -->
     <CheckBoxPreference
+        app:isPreferenceVisible="false"
         app:defaultValue="false"
         app:key="review_ankiMode"
         app:title="@string/settings_review_ankiMode"
