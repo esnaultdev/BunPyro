@@ -64,4 +64,28 @@
         <item>expired</item>
     </string-array>
 
+    <string-array name="notification_reviews_threshold_values">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>50</item>
+    </string-array>
+
+    <string-array name="notification_reviews_refresh_entries">
+        <item>@string/settings_notifications_reviews_refresh_30min</item>
+        <item>@string/settings_notifications_reviews_refresh_1h</item>
+        <item>@string/settings_notifications_reviews_refresh_6h</item>
+        <item>@string/settings_notifications_reviews_refresh_12h</item>
+        <item>@string/settings_notifications_reviews_refresh_24h</item>
+    </string-array>
+
+    <string-array name="notification_reviews_refresh_values">
+        <item>30</item>
+        <item>60</item>
+        <item>360</item>
+        <item>720</item>
+        <item>1440</item>
+    </string-array>
+
 </resources>

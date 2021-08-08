@@ -19,6 +19,13 @@
         />
 
     <Preference
+        app:key="category_notifications"
+        app:title="@string/settings_notifications_title"
+        app:icon="@drawable/settings_notification"
+        app:summary="@string/settings_notifications_summary"
+        />
+
+    <Preference
         app:key="category_user"
         app:title="@string/settings_user_title"
         app:icon="@drawable/settings_user"

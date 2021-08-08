@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <SwitchPreference
+        app:key="notification_reviews_enabled"
+        app:title="@string/settings_notifications_reviews"
+        />
+
+    <Preference
+        app:key="notification_reviews_osSetting"
+        app:title="@string/settings_notifications_reviews"
+        app:summary="@string/settings_notifications_reviews_osSettings"
+        />
+
+    <ListPreference
+        app:defaultValue="5"
+        app:entries="@array/notification_reviews_threshold_values"
+        app:entryValues="@array/notification_reviews_threshold_values"
+        app:key="notification_reviews_threshold"
+        app:title="@string/settings_notifications_reviews_threshold_title"
+        />
+
+    <ListPreference
+        app:defaultValue="30"
+        app:entries="@array/notification_reviews_refresh_entries"
+        app:entryValues="@array/notification_reviews_refresh_values"
+        app:key="notification_reviews_refresh"
+        app:title="@string/settings_notifications_reviews_refresh_title"
+        tools:summary="@string/settings_notifications_reviews_refresh_summary"
+        />
+
+</PreferenceScreen>

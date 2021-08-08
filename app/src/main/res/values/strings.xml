@@ -159,6 +159,22 @@
     <string name="settings_user_subscription_expired">Subscription check expired</string>
     <string name="settings_user_logout">Sign out</string>
     <string name="settings_user_logout_error">Failed to logout</string>
+    <string name="settings_notifications_title">Notifications</string>
+    <string name="settings_notifications_summary">Reviews notifications</string>
+    <string name="settings_notifications_reviews">Reviews notifications</string>
+    <string name="settings_notifications_reviews_osSettings">Device settings (on/off, priority, sound, …)</string>
+    <string name="settings_notifications_reviews_threshold_title">Threshold</string>
+    <plurals name="settings_notifications_reviews_threshold_summary">
+        <item quantity="one">Notify me when there is at least one review available</item>
+        <item quantity="other">Notify me when there are at least %d reviews available</item>
+    </plurals>
+    <string name="settings_notifications_reviews_refresh_title">Refresh rate</string>
+    <string name="settings_notifications_reviews_refresh_summary">Check for reviews every %s</string>
+    <string name="settings_notifications_reviews_refresh_30min">30 minutes</string>
+    <string name="settings_notifications_reviews_refresh_1h">1 hour</string>
+    <string name="settings_notifications_reviews_refresh_6h">6 hours</string>
+    <string name="settings_notifications_reviews_refresh_12h">12 hours</string>
+    <string name="settings_notifications_reviews_refresh_24h">24 hours</string>
     <string name="settings_root_category_about">About</string>
     <string name="settings_root_about">About BunPyro</string>
     <string name="settings_root_licenses">Licenses</string>
