@@ -5,14 +5,18 @@
     >
 
     <SwitchPreference
+        app:isPreferenceVisible="false"
         app:key="notification_reviews_enabled"
         app:title="@string/settings_notifications_reviews"
+        tools:isPreferenceVisible="true"
         />
 
     <Preference
+        app:isPreferenceVisible="false"
         app:key="notification_reviews_osSetting"
-        app:title="@string/settings_notifications_reviews"
         app:summary="@string/settings_notifications_reviews_osSettings"
+        app:title="@string/settings_notifications_reviews"
+        tools:isPreferenceVisible="true"
         />
 
     <ListPreference
@@ -21,6 +25,7 @@
         app:entryValues="@array/notification_reviews_threshold_values"
         app:key="notification_reviews_threshold"
         app:title="@string/settings_notifications_reviews_threshold_title"
+        tools:summary="@plurals/settings_notifications_reviews_threshold_summary"
         />
 
     <ListPreference

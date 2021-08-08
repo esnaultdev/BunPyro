@@ -171,6 +171,11 @@
             />
 
         <action
+            android:id="@+id/action_settings_to_settingsNotifications"
+            app:destination="@id/settingsNotificationsScreen"
+            />
+
+        <action
             android:id="@+id/action_settings_to_settingsUser"
             app:destination="@id/settingsUserScreen"
             />
@@ -212,6 +217,7 @@
     <fragment
         android:id="@+id/settingsReviewScreen"
         android:name="dev.esnault.bunpyro.android.screen.settings.review.SettingsReviewFragment"
+        tools:layout="@layout/fragment_settings"
         />
 
     <fragment
@@ -243,6 +249,12 @@
             />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/settingsNotificationsScreen"
+        android:name="dev.esnault.bunpyro.android.screen.settings.notifications.SettingsNotificationsFragment"
+        tools:layout="@layout/fragment_settings"
+        />
 
     <fragment
         android:id="@+id/reviewScreen"

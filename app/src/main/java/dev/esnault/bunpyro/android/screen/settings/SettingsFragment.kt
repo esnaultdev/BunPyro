@@ -30,6 +30,11 @@ class SettingsFragment : BaseSettingsFragment() {
             true
         }
 
+        findPreference<Preference>("category_notifications")?.setOnPreferenceClickListener {
+            vm.onNotificationsClick()
+            true
+        }
+
         findPreference<Preference>("category_user")?.setOnPreferenceClickListener {
             vm.onUserClick()
             true

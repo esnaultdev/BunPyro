@@ -15,6 +15,10 @@ class SettingsViewModel : BaseViewModel() {
         navigate(SettingsFragmentDirections.actionSettingsToSettingsReview())
     }
 
+    fun onNotificationsClick() {
+        navigate(SettingsFragmentDirections.actionSettingsToSettingsNotifications())
+    }
+
     fun onUserClick() {
         navigate(SettingsFragmentDirections.actionSettingsToSettingsUser())
     }
