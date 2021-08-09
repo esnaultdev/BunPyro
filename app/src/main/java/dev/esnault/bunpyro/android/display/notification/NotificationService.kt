@@ -13,6 +13,7 @@ import androidx.navigation.NavDeepLinkBuilder
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.MainActivity
 import dev.esnault.bunpyro.common.getThemeColor
+import dev.esnault.bunpyro.common.openNotificationSettingsCompat
 
 
 class NotificationService(
@@ -116,6 +117,10 @@ class NotificationService(
 
     override fun hideReviewsNotification() {
         notificationManager.cancel(NotificationId.REVIEWS)
+    }
+
+    override fun openReviewsNativeSettings() {
+        context.openNotificationSettingsCompat(ChannelId.REVIEWS)
     }
 
     // endregion

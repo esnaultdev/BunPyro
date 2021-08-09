@@ -14,6 +14,7 @@ interface INotificationService {
 
     fun showReviewsNotification(count: Int)
     fun hideReviewsNotification()
+    fun openReviewsNativeSettings()
 
     // endregion
 

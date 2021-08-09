@@ -19,7 +19,11 @@ class Navigator(private val appContext: Context) {
         _navigationCommands.postValue(NavigationCommand.To(directions))
     }
 
+    // region External navigation
+
     fun openUrlInBrowser(url: String) {
         appContext.openUrlInBrowser(url)
     }
+
+    // endregion
 }

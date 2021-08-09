@@ -29,6 +29,7 @@ import dev.esnault.bunpyro.android.screen.settings.SettingsViewModel
 import dev.esnault.bunpyro.android.screen.settings.about.SettingsAboutViewModel
 import dev.esnault.bunpyro.android.screen.settings.debug.SettingsDebugViewModel
 import dev.esnault.bunpyro.android.screen.settings.licenses.SettingsLicensesViewModel
+import dev.esnault.bunpyro.android.screen.settings.notifications.SettingsNotificationsViewModel
 import dev.esnault.bunpyro.android.screen.settings.subscription.SubscriptionViewModel
 import dev.esnault.bunpyro.android.screen.settings.user.SettingsUserViewModel
 import dev.esnault.bunpyro.android.screen.start.StartViewModel
@@ -93,6 +94,7 @@ val appModule = module {
 
     viewModel { SettingsViewModel() }
     viewModel { SettingsUserViewModel(get(), get(), get(), get()) }
+    viewModel { SettingsNotificationsViewModel(get()) }
     viewModel { SettingsDebugViewModel(get(), get()) }
     viewModel { SubscriptionViewModel(get()) }
     viewModel { SettingsLicensesViewModel() }

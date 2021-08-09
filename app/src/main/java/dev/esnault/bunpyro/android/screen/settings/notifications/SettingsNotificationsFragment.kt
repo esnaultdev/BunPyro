@@ -1,29 +1,33 @@
 package dev.esnault.bunpyro.android.screen.settings.notifications
 
+import android.os.Build
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.SwitchPreference
-import dev.esnault.bunpyro.BuildConfig
 import dev.esnault.bunpyro.R
-import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.settings.BaseSettingsFragment
 import dev.esnault.bunpyro.android.screen.settings.SettingsPreferenceFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SettingsNotificationsFragment : BaseSettingsFragment() {
 
-    override val vm: BaseViewModel? = null
+    override val vm: SettingsNotificationsViewModel by viewModel()
     override val settingResId: Int = R.xml.settings_notifications
     override val toolbarTitleResId: Int = R.string.settings_notifications_title
 
     override fun SettingsPreferenceFragment.setupPreferences() {
-        val hasNotificationChannel = BuildConfig.VERSION_CODE >= 26
+        val hasNotificationChannel = Build.VERSION.SDK_INT >= 26
 
         val notifsEnabledPref = findPreference<SwitchPreference>("notification_reviews_enabled")
         val osSettingsPref = findPreference<Preference>("notification_reviews_osSetting")
 
         notifsEnabledPref?.isVisible = !hasNotificationChannel
         osSettingsPref?.isVisible = hasNotificationChannel
+        osSettingsPref?.setOnPreferenceClickListener {
+            vm.onReviewsClick()
+            true
+        }
 
         findPreference<ListPreference>("notification_reviews_threshold")?.apply {
             summaryProvider = Preference.SummaryProvider<ListPreference> { preference ->
