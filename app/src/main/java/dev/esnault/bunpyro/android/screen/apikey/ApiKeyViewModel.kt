@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
+import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.data.repository.apikey.ApiKeyCheckResult
@@ -35,14 +36,14 @@ class ApiKeyViewModel(
         _viewState.postValue(ViewState.Default(false))
     }
 
+    // Events
+
     fun apiKeyUpdated(apiKey: String?) {
         this.apiKey = apiKey
         if (currentState is ViewState.Default) {
             currentState = ViewState.Default(canSend(apiKey))
         }
     }
-
-    fun canSend(apiKey: String?): Boolean = !apiKey.isNullOrBlank()
 
     fun onSaveApiKey() {
         val apiKey = apiKey ?: return
@@ -59,6 +60,18 @@ class ApiKeyViewModel(
     fun onErrorOk() {
         currentState = ViewState.Default(canSend(apiKey))
     }
+
+    fun onBunproWebsiteClick() {
+        navigator.openUrlInBrowser(ScreenConfig.Url.bunpro)
+    }
+
+    fun onPrivacyClick() {
+        navigator.openUrlInBrowser(ScreenConfig.Url.privacy)
+    }
+
+    // endregion
+
+    private fun canSend(apiKey: String?): Boolean = !apiKey.isNullOrBlank()
 
     private suspend fun handleApiKeyCheckResult(checkResult: ApiKeyCheckResult) {
         when (checkResult) {

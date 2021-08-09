@@ -3,8 +3,6 @@ package dev.esnault.bunpyro.android.screen.settings
 import androidx.preference.Preference
 import dev.esnault.bunpyro.BuildConfig
 import dev.esnault.bunpyro.R
-import dev.esnault.bunpyro.android.screen.ScreenConfig
-import dev.esnault.bunpyro.common.openUrlInBrowser
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -56,7 +54,7 @@ class SettingsFragment : BaseSettingsFragment() {
         }
 
         findPreference<Preference>("about_privacy")?.setOnPreferenceClickListener {
-            context?.openUrlInBrowser(ScreenConfig.Url.privacy)
+            vm.onPrivacyClick()
             true
         }
 

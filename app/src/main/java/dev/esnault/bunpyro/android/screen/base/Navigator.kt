@@ -1,10 +1,12 @@
 package dev.esnault.bunpyro.android.screen.base
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavDirections
+import dev.esnault.bunpyro.common.openUrlInBrowser
 
 
-class Navigator {
+class Navigator(private val appContext: Context) {
     private val _navigationCommands = SingleLiveEvent<NavigationCommand>()
     val navigationCommands: LiveData<NavigationCommand>
         get() = _navigationCommands
@@ -15,5 +17,9 @@ class Navigator {
 
     fun navigate(directions: NavDirections) {
         _navigationCommands.postValue(NavigationCommand.To(directions))
+    }
+
+    fun openUrlInBrowser(url: String) {
+        appContext.openUrlInBrowser(url)
     }
 }

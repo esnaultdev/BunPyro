@@ -16,6 +16,7 @@ import dev.esnault.bunpyro.data.service.review.IReviewService
 import dev.esnault.bunpyro.data.service.user.IUserService
 import dev.esnault.bunpyro.domain.entities.grammar.ExampleSentence
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPoint
+import dev.esnault.bunpyro.domain.entities.grammar.SupplementalLink
 import dev.esnault.bunpyro.domain.entities.media.AudioItem
 import dev.esnault.bunpyro.domain.entities.media.CurrentAudio
 import dev.esnault.bunpyro.domain.entities.settings.FuriganaSetting
@@ -207,6 +208,10 @@ class GrammarPointViewModel(
 
     fun onGrammarPointClick(id: Long) {
         navigate(GrammarPointFragmentDirections.actionGrammarPointToGrammarPoint(id))
+    }
+
+    fun onSupplementalLinkClick(link: SupplementalLink) {
+        navigator.openUrlInBrowser(link.link)
     }
 
     fun onSubscribeClick() {

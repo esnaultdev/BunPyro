@@ -7,13 +7,11 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import dev.esnault.bunpyro.R
-import dev.esnault.bunpyro.android.screen.ScreenConfig
 
 import dev.esnault.bunpyro.android.screen.base.BaseFragment
 import dev.esnault.bunpyro.android.utils.safeObserve
 import dev.esnault.bunpyro.common.hide
 import dev.esnault.bunpyro.common.hideKeyboard
-import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.common.show
 import dev.esnault.bunpyro.databinding.FragmentApiKeyBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,10 +35,10 @@ class ApiKeyFragment : BaseFragment<FragmentApiKeyBinding>() {
             vm.onSaveApiKey()
         }
         binding.apikeyBunproWebsite.setOnClickListener {
-            context?.openUrlInBrowser(ScreenConfig.Url.bunpro)
+            vm.onBunproWebsiteClick()
         }
         binding.apikeyPrivacy.setOnClickListener {
-            context?.openUrlInBrowser(ScreenConfig.Url.privacy)
+            vm.onPrivacyClick()
         }
         binding.apikeyErrorButton.setOnClickListener {
             vm.onErrorOk()

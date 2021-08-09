@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
+import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.NavigationCommand
 import dev.esnault.bunpyro.android.screen.base.SingleLiveEvent
@@ -139,6 +140,14 @@ class HomeViewModel(
 
     fun onReviewClick() {
         navigate(HomeFragmentDirections.actionHomeToReview())
+    }
+
+    fun onCramClick() {
+        navigator.openUrlInBrowser(ScreenConfig.Url.bunproCram)
+    }
+
+    fun onGhostReviewClick() {
+        navigator.openUrlInBrowser(ScreenConfig.Url.bunproReview)
     }
 
     private fun onNavigateToGrammarPoint(incomplete: Boolean, id: Long) {

@@ -19,14 +19,13 @@ import androidx.navigation.fragment.findNavController
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.compose.AppTheme
 import dev.esnault.bunpyro.android.display.compose.SimpleScreen
-import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.ComposeFragment
-import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.data.analytics.Analytics
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsLicensesFragment : ComposeFragment() {
 
-    override val vm: BaseViewModel? = null
+    override val vm: SettingsLicensesViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,9 +38,7 @@ class SettingsLicensesFragment : ComposeFragment() {
         LicensesContent(
             navController = findNavController(),
             licenses = licenses,
-            onLicenseClick = { license ->
-                context?.openUrlInBrowser(license.url)
-            }
+            onLicenseClick = vm::onLicenseClick
         )
     }
 }

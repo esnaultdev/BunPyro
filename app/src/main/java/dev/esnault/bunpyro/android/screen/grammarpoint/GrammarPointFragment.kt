@@ -20,9 +20,7 @@ import dev.esnault.bunpyro.android.screen.grammarpoint.adapter.reading.ReadingVi
 import dev.esnault.bunpyro.android.utils.safeObserve
 import dev.esnault.bunpyro.android.utils.setupWithNav
 import dev.esnault.bunpyro.common.isDarkTheme
-import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.databinding.FragmentGrammarPointBinding
-import dev.esnault.bunpyro.domain.entities.grammar.SupplementalLink
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -88,7 +86,7 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
                 onSubscribeClick = vm::onSubscribeClick
             ),
             readingListener = ReadingViewHolder.Listener(
-                onClick = this::onSupplementalLinkClick
+                onClick = vm::onSupplementalLinkClick
             )
         )
 
@@ -170,10 +168,6 @@ class GrammarPointFragment : BaseFragment<FragmentGrammarPointBinding>() {
                 else -> false
             }
         }
-    }
-
-    private fun onSupplementalLinkClick(link: SupplementalLink) {
-        context?.openUrlInBrowser(link.link)
     }
 
     private fun showSnackbar(message: SnackBarMessage) {

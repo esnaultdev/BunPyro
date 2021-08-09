@@ -18,15 +18,13 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.compose.SimpleScreen
-import dev.esnault.bunpyro.android.screen.ScreenConfig
-import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.android.screen.base.ComposeFragment
-import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.data.analytics.Analytics
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsAboutFragment : ComposeFragment() {
 
-    override val vm: BaseViewModel? = null
+    override val vm: SettingsAboutViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,13 +34,12 @@ class SettingsAboutFragment : ComposeFragment() {
 
     @Composable
     override fun FragmentContent() {
-        val openUrl = { url: String -> context?.openUrlInBrowser(url) }
         AboutContent(
             navController = findNavController(),
             listener = ContentListener(
-                onBunproClick = { openUrl(ScreenConfig.Url.bunpro) },
-                onDevWebsiteClick = { openUrl(ScreenConfig.Url.devWebsite) },
-                onGithubRepoClick = { openUrl(ScreenConfig.Url.githubRepo) }
+                onBunproClick = vm::onBunproClick,
+                onDevWebsiteClick = vm::onDevWebsiteClick,
+                onGithubRepoClick = vm::onGithubRepoClick
             )
         )
     }

@@ -1,5 +1,6 @@
 package dev.esnault.bunpyro.android.screen.settings
 
+import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 
 
@@ -29,6 +30,10 @@ class SettingsViewModel : BaseViewModel() {
 
     fun onAboutClick() {
         navigate(SettingsFragmentDirections.actionSettingsToSettingsAbout())
+    }
+
+    fun onPrivacyClick() {
+        navigator.openUrlInBrowser(ScreenConfig.Url.privacy)
     }
 
     fun onLicencesClick() {

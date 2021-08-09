@@ -17,6 +17,7 @@ import dev.esnault.bunpyro.android.media.AudioPlayer
 import dev.esnault.bunpyro.android.media.IAudioPlayer
 import dev.esnault.bunpyro.android.screen.allgrammar.AllGrammarViewModel
 import dev.esnault.bunpyro.android.screen.apikey.ApiKeyViewModel
+import dev.esnault.bunpyro.android.screen.base.Navigator
 import dev.esnault.bunpyro.android.screen.firstsync.FirstSyncViewModel
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointFragmentArgs
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel
@@ -25,7 +26,9 @@ import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel
 import dev.esnault.bunpyro.domain.service.review.sync.ReviewSyncHelper
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel
 import dev.esnault.bunpyro.android.screen.settings.SettingsViewModel
+import dev.esnault.bunpyro.android.screen.settings.about.SettingsAboutViewModel
 import dev.esnault.bunpyro.android.screen.settings.debug.SettingsDebugViewModel
+import dev.esnault.bunpyro.android.screen.settings.licenses.SettingsLicensesViewModel
 import dev.esnault.bunpyro.android.screen.settings.subscription.SubscriptionViewModel
 import dev.esnault.bunpyro.android.screen.settings.user.SettingsUserViewModel
 import dev.esnault.bunpyro.android.screen.start.StartViewModel
@@ -92,11 +95,14 @@ val appModule = module {
     viewModel { SettingsUserViewModel(get(), get(), get(), get()) }
     viewModel { SettingsDebugViewModel(get(), get()) }
     viewModel { SubscriptionViewModel(get()) }
+    viewModel { SettingsLicensesViewModel() }
+    viewModel { SettingsAboutViewModel() }
 
     // endregion
 
     // region System service
 
+    single { Navigator(androidApplication()) }
     factory<IAndroidServiceStarter> { AndroidServiceStarter(get()) }
     factory<IClipboard> { Clipboard(androidContext()) }
     single<INotificationService> { NotificationService(androidApplication()) }

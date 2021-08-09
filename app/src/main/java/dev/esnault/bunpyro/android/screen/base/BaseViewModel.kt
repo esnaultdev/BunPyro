@@ -3,11 +3,12 @@ package dev.esnault.bunpyro.android.screen.base
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
+import dev.esnault.bunpyro.di.utils.getKoinInstance
 
 
 open class BaseViewModel : ViewModel() {
 
-    private val navigator = Navigator()
+    protected val navigator: Navigator = getKoinInstance()
 
     val navigationCommands: LiveData<NavigationCommand>
         get() = navigator.navigationCommands

@@ -3,6 +3,7 @@ package dev.esnault.bunpyro.android.screen.settings.subscription
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.BaseViewModel
 import dev.esnault.bunpyro.data.service.user.IUserService
 import dev.esnault.bunpyro.domain.entities.user.UserSubscription
@@ -38,6 +39,10 @@ class SubscriptionViewModel(
 
     fun onResume() {
         userService.refreshSubscription()
+    }
+
+    fun onOpenBunproSubscription() {
+        navigator.openUrlInBrowser(ScreenConfig.Url.bunproSubscribe)
     }
 
     // endregion

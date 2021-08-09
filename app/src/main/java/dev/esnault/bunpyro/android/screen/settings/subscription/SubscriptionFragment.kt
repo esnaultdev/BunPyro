@@ -24,10 +24,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.compose.SimpleScreen
-import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.base.ComposeFragment
 import dev.esnault.bunpyro.android.screen.settings.subscription.SubscriptionViewModel.ViewState
-import dev.esnault.bunpyro.common.openUrlInBrowser
 import dev.esnault.bunpyro.data.analytics.Analytics
 import dev.esnault.bunpyro.domain.entities.user.SubscriptionStatus
 import dev.esnault.bunpyro.domain.entities.user.UserSubscription
@@ -52,9 +50,7 @@ class SubscriptionFragment : ComposeFragment() {
 
     @Composable
     override fun FragmentContent() {
-        val openBunproSubscription: () -> Unit = {
-            context?.openUrlInBrowser(ScreenConfig.Url.bunproSubscribe)
-        }
+        val openBunproSubscription = vm::onOpenBunproSubscription
         val viewState: ViewState? by vm.viewState.observeAsState(null)
         AboutContent(
             navController = findNavController(),

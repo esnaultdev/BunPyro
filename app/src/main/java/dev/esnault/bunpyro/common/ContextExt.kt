@@ -17,9 +17,10 @@ import androidx.core.content.ContextCompat
 
 
 fun Context.openUrlInBrowser(url: String) {
-    val i = Intent(Intent.ACTION_VIEW)
-    i.data = Uri.parse(url)
-    startActivity(i)
+    val intent = Intent(Intent.ACTION_VIEW)
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        .setData(Uri.parse(url))
+    startActivity(intent)
 }
 
 @ColorInt
