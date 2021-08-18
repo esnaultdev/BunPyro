@@ -30,13 +30,16 @@ class SettingsRepository(context: Context) : ISettingsRepository {
         const val AUDIO_AUTOPLAY = "review_audio_autoPlay"
         const val REVIEW_BUNNY_MODE = "review_bunnyMode"
         const val REVIEW_ANKI_MODE = "review_ankiMode"
+        const val NOTIF_REVIEWS_ENABLED = "notification_reviews_enabled"
+        const val NOTIF_REVIEWS_THRESHOLD = "notification_reviews_threshold_values"
+        const val NOTIF_REVIEWS_REFRESH_RATE = "notification_reviews_refresh_entries"
         // When adding a new key, also add it to [allKeys].
 
         val allKeys: List<String>
             get() = listOf(
                 NIGHT_MODE, FURIGANA, REVIEW_HINT_LEVEL, EXAMPLE_DETAILS, GRAMMAR_FILTERS,
-                HANKO_DISPLAY, AUDIO_AUTOPLAY, REVIEW_BUNNY_MODE,
-                REVIEW_ANKI_MODE
+                HANKO_DISPLAY, AUDIO_AUTOPLAY, REVIEW_BUNNY_MODE, REVIEW_ANKI_MODE,
+                NOTIF_REVIEWS_ENABLED, NOTIF_REVIEWS_THRESHOLD, NOTIF_REVIEWS_REFRESH_RATE
             )
     }
 
@@ -105,6 +108,22 @@ class SettingsRepository(context: Context) : ISettingsRepository {
     override suspend fun getAnkiMode(): Boolean {
         return sharedPreferences.getBoolean(Key.REVIEW_ANKI_MODE, false)
     }
+
+    // region Notifications
+
+    override suspend fun getReviewsNotificationEnabled(): Boolean {
+        return sharedPreferences.getBoolean(Key.NOTIF_REVIEWS_ENABLED, true)
+    }
+
+    override suspend fun getReviewsNotificationThreshold(): Int {
+        return sharedPreferences.getInt(Key.NOTIF_REVIEWS_THRESHOLD, 5)
+    }
+
+    override suspend fun getReviewsNotificationRefreshRateMinutes(): Long {
+        return sharedPreferences.getLong(Key.NOTIF_REVIEWS_REFRESH_RATE, 30L)
+    }
+
+    // endregion
 
     override suspend fun clearAll() {
         // Not using the clear function of the shared preferences since the default preferences file

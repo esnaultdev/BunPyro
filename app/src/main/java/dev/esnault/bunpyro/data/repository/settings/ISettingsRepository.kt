@@ -25,6 +25,14 @@ interface ISettingsRepository {
     suspend fun getBunnyMode(): Boolean
     suspend fun getAnkiMode(): Boolean
 
+    // region Notifications
+
+    suspend fun getReviewsNotificationEnabled(): Boolean
+    suspend fun getReviewsNotificationThreshold(): Int
+    suspend fun getReviewsNotificationRefreshRateMinutes(): Long
+
+    // endregion
+
     suspend fun clearAll()
 
     // region Debug

@@ -94,7 +94,7 @@ val appModule = module {
 
     viewModel { SettingsViewModel() }
     viewModel { SettingsUserViewModel(get(), get(), get(), get()) }
-    viewModel { SettingsNotificationsViewModel(get()) }
+    viewModel { SettingsNotificationsViewModel(get(), get()) }
     viewModel { SettingsDebugViewModel(get(), get()) }
     viewModel { SubscriptionViewModel(get()) }
     viewModel { SettingsLicensesViewModel() }
@@ -107,7 +107,7 @@ val appModule = module {
     single { Navigator(androidApplication()) }
     factory<IAndroidServiceStarter> { AndroidServiceStarter(get()) }
     factory<IClipboard> { Clipboard(androidContext()) }
-    single<INotificationService> { NotificationService(androidApplication()) }
+    single<INotificationService> { NotificationService(androidApplication(), get()) }
 
     // endregion
 

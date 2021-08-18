@@ -7,7 +7,7 @@ import java.util.*
 
 interface IReviewRepository {
 
-    suspend fun refreshReviewCount()
+    suspend fun refreshReviewCount(): Result<Int>
 
     suspend fun getReviewCount(): Flow<StudyQueueCount?>
 

@@ -39,8 +39,7 @@ class ReviewRepository(
         }
 
         return totalReviewCountFlow
-            .combine(reviewDao.getGhostReviewsCount(timeProvider.currentDate())) {
-                    totalCount, ghostCount ->
+            .combine(reviewDao.getGhostReviewsCount(timeProvider.currentDate())) { totalCount, ghostCount ->
                 if (totalCount == null) null else StudyQueueCount(
                     normalReviews = totalCount - ghostCount,
                     ghostReviews = ghostCount
@@ -48,17 +47,21 @@ class ReviewRepository(
             }
     }
 
-    override suspend fun refreshReviewCount() {
-        val apiKey = appConfig.getApiKey() ?: return
-        try {
+    override suspend fun refreshReviewCount(): Result<Int> {
+        val apiKey = appConfig.getApiKey()
+            ?: return Result.failure(IllegalStateException("No API key"))
+
+        return try {
             val response = bunproApi.getStudyQueue(apiKey)
             val reviewCount = response.requestedInfo.reviewsAvailable
             val userInfo = response.userInfo
             appConfig.setStudyQueueCount(reviewCount)
             appConfig.setUserName(userInfo.userName)
             totalReviewCountFlow.tryEmit(reviewCount)
+            Result.success(reviewCount)
         } catch (e: Exception) {
             Timber.w(e, "Could not refresh review count")
+            Result.failure(e)
         }
     }
 

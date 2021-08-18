@@ -11,6 +11,7 @@ import dev.esnault.bunpyro.di.*
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import timber.log.Timber
 import timber.log.Timber.DebugTree
@@ -40,8 +41,9 @@ class BunPyroApplication : Application() {
     private fun setupKoin() {
         startKoin {
             androidContext(this@BunPyroApplication)
+            workManagerFactory()
 
-            modules(listOf(appModule, serviceModule, repoModule, daoModule))
+            modules(listOf(appModule, serviceModule, repoModule, daoModule, workModule))
 
             val settingsRepo = SettingsRepository(this@BunPyroApplication)
             if (!settingsRepo.getDebugMocked()) {

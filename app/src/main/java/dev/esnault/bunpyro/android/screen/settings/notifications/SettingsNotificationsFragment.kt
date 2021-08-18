@@ -45,6 +45,10 @@ class SettingsNotificationsFragment : BaseSettingsFragment() {
                 val entry = preference.entry ?: return@SummaryProvider ""
                 resources.getString(R.string.settings_notifications_reviews_refresh_summary, entry)
             }
+            setOnPreferenceChangeListener { _, _ ->
+                vm.onReviewsRefreshRateChanged()
+                true
+            }
         }
     }
 }

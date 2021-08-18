@@ -4,7 +4,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -14,14 +13,16 @@ import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.MainActivity
 import dev.esnault.bunpyro.common.getThemeColor
 import dev.esnault.bunpyro.common.openNotificationSettingsCompat
+import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
+import androidx.core.app.NotificationManagerCompat
 
 
 class NotificationService(
-    private val context: Context
+    private val context: Context,
+    private val settingsRepo: ISettingsRepository,
 ) : INotificationService {
 
-    private val notificationManager =
-        context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+    private val notificationManager = NotificationManagerCompat.from(context)
 
     object ChannelId {
         const val SYNC = "sync"
@@ -69,6 +70,21 @@ class NotificationService(
         channel.description = descriptionText
 
         notificationManager.createNotificationChannel(channel)
+    }
+
+    private fun areNotificationsEnabled(): Boolean {
+        return notificationManager.areNotificationsEnabled()
+    }
+
+    @RequiresApi(26)
+    private fun isNotificationChannelEnabled(channelId: String): Boolean {
+        if (channelId.isBlank()) return false
+        val channel = notificationManager.getNotificationChannel(channelId)
+        return if (channel != null) {
+            channel.importance != NotificationManager.IMPORTANCE_NONE
+        } else {
+            false
+        }
     }
 
     // endregion
@@ -121,6 +137,15 @@ class NotificationService(
 
     override fun openReviewsNativeSettings() {
         context.openNotificationSettingsCompat(ChannelId.REVIEWS)
+    }
+
+    override suspend fun isReviewsNotificationEnabled(): Boolean {
+        if (!areNotificationsEnabled()) return false
+        return if (Build.VERSION.SDK_INT >= 26) {
+            isNotificationChannelEnabled(ChannelId.REVIEWS)
+        } else {
+            settingsRepo.getReviewsNotificationEnabled()
+        }
     }
 
     // endregion

@@ -52,7 +52,8 @@ android {
         useIR = true
         freeCompilerArgs += [
                 "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                "-Xuse-experimental=kotlinx.coroutines.FlowPreview"
+                "-Xuse-experimental=kotlinx.coroutines.FlowPreview",
+                "-Xuse-experimental=org.koin.core.KoinExperimentalAPI"
         ]
     }
 
@@ -107,9 +108,11 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:${versions.androidx.navigation}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidx.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidx.lifecycle}"
+    implementation "androidx.work:work-runtime-ktx:${versions.androidx.work}"
 
     // DI
     implementation "io.insert-koin:koin-android:${versions.koin}"
+    implementation "io.insert-koin:koin-androidx-workmanager:${versions.koin}"
     testImplementation "io.insert-koin:koin-test:${versions.koin}"
     implementation "com.jakewharton:process-phoenix:${versions.processPhoenix}"
 
