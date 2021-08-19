@@ -392,12 +392,9 @@ class ReviewQuestionView(
         val answerSpans = spanned.getSpans(0, spanned.length, AnswerSpan::class.java)
         val firstAnswerSpan = answerSpans.firstOrNull() ?: return
         val oldText = firstAnswerSpan.text
-        block(firstAnswerSpan)
+        answerSpans.forEach(block)
         val newText = firstAnswerSpan.text
         if (oldText != newText) {
-            // Also update the text of the other blocks
-            answerSpans.drop(1).forEach(block)
-
             // Update the spanned text
             val spannableBuilder = SpannableStringBuilder(spanned)
             answerSpans.map { it to spanned.getSpanStart(it) }
