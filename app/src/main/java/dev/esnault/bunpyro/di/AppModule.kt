@@ -95,7 +95,7 @@ val appModule = module {
     viewModel { SettingsViewModel() }
     viewModel { SettingsUserViewModel(get(), get(), get(), get()) }
     viewModel { SettingsNotificationsViewModel(get(), get()) }
-    viewModel { SettingsDebugViewModel(get(), get()) }
+    viewModel { SettingsDebugViewModel(get(), get(), get()) }
     viewModel { SubscriptionViewModel(get()) }
     viewModel { SettingsLicensesViewModel() }
     viewModel { SettingsAboutViewModel() }

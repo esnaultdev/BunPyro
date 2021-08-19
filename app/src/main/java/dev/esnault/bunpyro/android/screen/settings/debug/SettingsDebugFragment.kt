@@ -48,5 +48,10 @@ class SettingsDebugFragment : BaseSettingsFragment() {
             vm.onClearReviewEtag()
             true
         }
+
+        findPreference<Preference>("debug_notification_reviews")?.setOnPreferenceClickListener {
+            vm.onSendReviewsNotification()
+            true
+        }
     }
 }

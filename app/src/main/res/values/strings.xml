@@ -120,6 +120,13 @@
     <string name="contentDescription_review_summary_incorrect">Incorrect</string>
 
     <string name="settings_root_title">Settings</string>
+    <string name="settings_root_category_about">About</string>
+    <string name="settings_root_about">About BunPyro</string>
+    <string name="settings_root_licenses">Licenses</string>
+    <string name="settings_root_privacy">Privacy</string>
+    <string name="settings_root_debug">@string/settings_debug_title</string>
+    <string name="settings_root_version">Version</string>
+
     <string name="settings_display_title">Display</string>
     <string name="settings_display_summary">Night mode, furigana, stamps</string>
     <string name="settings_display_nightMode">Night mode</string>
@@ -140,6 +147,7 @@
     <string name="settings_display_reviewHintLevel_hint">Hint</string>
     <string name="settings_display_reviewHintLevel_more">More</string>
     <string name="settings_display_reviewHintLevel_show">Show</string>
+
     <string name="settings_review_title">Review</string>
     <string name="settings_review_summary">Bunny mode, audio, anki mode</string>
     <string name="settings_review_bunnyMode">Bunny mode</string>
@@ -148,6 +156,7 @@
     <string name="settings_review_audio_autoPlay_summary">Autoplay sentence audio in reviews.</string>
     <string name="settings_review_ankiMode">Anki mode</string>
     <string name="settings_review_ankiMode_summary">Avoid typing answers by validating them manually.</string>
+
     <string name="settings_user_title">User</string>
     <string name="settings_user_summary">Subscription, sign out</string>
     <string name="settings_user_name">Current user</string>
@@ -159,6 +168,7 @@
     <string name="settings_user_subscription_expired">Subscription check expired</string>
     <string name="settings_user_logout">Sign out</string>
     <string name="settings_user_logout_error">Failed to logout</string>
+
     <string name="settings_notifications_title">Notifications</string>
     <string name="settings_notifications_summary">Reviews notifications</string>
     <string name="settings_notifications_reviews">Reviews notifications</string>
@@ -175,12 +185,13 @@
     <string name="settings_notifications_reviews_refresh_6h">6 hours</string>
     <string name="settings_notifications_reviews_refresh_12h">12 hours</string>
     <string name="settings_notifications_reviews_refresh_24h">24 hours</string>
-    <string name="settings_root_category_about">About</string>
-    <string name="settings_root_about">About BunPyro</string>
-    <string name="settings_root_licenses">Licenses</string>
-    <string name="settings_root_privacy">Privacy</string>
-    <string name="settings_root_debug">@string/settings_debug_title</string>
-    <string name="settings_root_version">Version</string>
+
+    <string name="settings_debug_title">Debug (╭ರ_•́)</string>
+    <string name="settings_debug_mock">Mock</string>
+    <string name="settings_debug_forceSub">Mock subscription</string>
+    <string name="settings_debug_clearGrammarEtag">Clear grammar etag</string>
+    <string name="settings_debug_clearReviewEtag">Clear review etag</string>
+    <string name="settings_debug_notification_reviews">Send reviews notification</string>
 
     <string name="about_intro">BunPyro is a companion application for Bunpro, the website to learn Japanese grammar.</string>
     <string name="about_checkBunpro">Check BunPro</string>
@@ -206,12 +217,6 @@
     <string name="subscription_content_cta">Learn more</string>
     <string name="subscription_examples_message">Get access to %d more sentences by subscribing!</string>
     <string name="subscription_reviews_message">Get access to reviews by subscribing!</string>
-
-    <string name="settings_debug_title">Debug (╭ರ_•́)</string>
-    <string name="settings_debug_mock">Mock</string>
-    <string name="settings_debug_forceSub">Mock subscription</string>
-    <string name="settings_debug_clearGrammarEtag">Clear grammar etag</string>
-    <string name="settings_debug_clearReviewEtag">Cleat review etag</string>
 
     <string name="reviews_title">Reviews</string>
     <string name="reviews_init_loading_title">Loading reviews</string>

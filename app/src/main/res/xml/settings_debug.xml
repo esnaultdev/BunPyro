@@ -26,4 +26,9 @@
         app:title="@string/settings_debug_clearReviewEtag"
         />
 
+    <Preference
+        app:key="debug_notification_reviews"
+        app:title="@string/settings_debug_notification_reviews"
+        />
+
 </PreferenceScreen>
