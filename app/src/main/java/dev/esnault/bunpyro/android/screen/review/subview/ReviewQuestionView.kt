@@ -425,7 +425,9 @@ class ReviewQuestionView(
                 if (answerState.showIndex == 0) {
                     session.currentQuestion.answer
                 } else {
-                    session.currentQuestion.alternateGrammar[answerState.showIndex - 1]
+                    val altAnswerIndex = answerState.showIndex - 1
+                    session.currentQuestion.alternateGrammar.getOrNull(altAnswerIndex)
+                        ?: session.currentQuestion.answer
                 }
             }
             is AnswerState.Incorrect -> {

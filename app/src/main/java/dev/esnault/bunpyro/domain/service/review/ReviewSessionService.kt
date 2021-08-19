@@ -253,6 +253,7 @@ class ReviewSessionService(
 
     private fun cycleAltAnswerIndex(currentIndex: Int, userIndex: Int, answerCount: Int): Int {
         // Cycle in this order: userIndex, 0, 1, 2, 3, ...
+        // Note that the index is of the list [answer, *altGrammar], so 0 is the answer.
         return if (currentIndex == userIndex) {
             // We're at the userIndex, we need to go to 0 unless we were at 0 already
             if (userIndex != 0) {
