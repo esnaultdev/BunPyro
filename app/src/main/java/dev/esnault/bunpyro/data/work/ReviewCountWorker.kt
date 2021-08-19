@@ -18,10 +18,16 @@ class ReviewCountWorker(
     private val reviewRepository: IReviewRepository,
     private val settingsRepository: ISettingsRepository,
     private val appConfig: IAppConfig,
-    private val notificationService: INotificationService
+    private val notificationService: INotificationService,
+    private val workScheduler: IWorkScheduler,
 ) : CoroutineWorker(context, params), KoinComponent {
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+        if (appConfig.getApiKey() == null) {
+            workScheduler.cancelReviewCountWork()
+            return@withContext Result.failure()
+        }
+
         val oldCount = appConfig.getStudyQueueCount()
         reviewRepository.refreshReviewCount()
             .fold(
@@ -35,8 +41,12 @@ class ReviewCountWorker(
 
     private suspend fun onCountChange(oldCount: Int?, newCount: Int) {
         val threshold = settingsRepository.getReviewsNotificationThreshold()
+        if (newCount < threshold) return
 
-        // TODO Display the notification only if needed, and if not already reviewing.
+        // This can collide, but the API doesn't provide any way to differentiate the two cases.
+        if (newCount == oldCount) return
+
+        // TODO Don't display a notification if we're already reviewing.
         notificationService.showReviewsNotification(newCount)
     }
 }

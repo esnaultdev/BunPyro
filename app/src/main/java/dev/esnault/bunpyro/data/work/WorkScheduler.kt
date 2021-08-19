@@ -66,7 +66,7 @@ class WorkScheduler(
         )
     }
 
-    private fun cancelReviewCountWork() {
+    override fun cancelReviewCountWork() {
         workManager.cancelUniqueWork(WorkNames.REVIEW_COUNT)
     }
 

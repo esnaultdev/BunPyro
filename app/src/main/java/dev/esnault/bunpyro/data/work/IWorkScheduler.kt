@@ -6,4 +6,6 @@ interface IWorkScheduler {
     suspend fun setupOrCancelReviewCountWork()
 
     suspend fun rescheduleReviewCountWork()
+
+    fun cancelReviewCountWork()
 }

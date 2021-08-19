@@ -5,6 +5,7 @@ import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
 import dev.esnault.bunpyro.data.service.user.IUserService
 import dev.esnault.bunpyro.data.utils.crashreport.ICrashReporter
+import dev.esnault.bunpyro.data.work.IWorkScheduler
 import dev.esnault.bunpyro.domain.entities.user.UserSubscription
 
 
@@ -12,6 +13,7 @@ class AuthService(
     private val reviewRepo: IReviewRepository,
     private val settingsRepo: ISettingsRepository,
     private val userService: IUserService,
+    private val workScheduler: IWorkScheduler,
     private val appConfig: IAppConfig,
     private val reporter: ICrashReporter
 ) : IAuthService {
@@ -20,6 +22,7 @@ class AuthService(
         return if (clearReviews()) {
             settingsRepo.clearAll()
             userService.cancelRefresh()
+            workScheduler.cancelReviewCountWork()
             clearUserDataInAppConfig()
             true
         } else {

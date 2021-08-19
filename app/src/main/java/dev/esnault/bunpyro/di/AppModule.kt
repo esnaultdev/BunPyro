@@ -54,7 +54,7 @@ val appModule = module {
     viewModel { StartViewModel(get(), get()) }
     viewModel { ApiKeyViewModel(get()) }
     viewModel { FirstSyncViewModel(get()) }
-    viewModel { HomeViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { LessonsViewModel(get(), get()) }
     viewModel { params ->
         val args: GrammarPointFragmentArgs = params[0]

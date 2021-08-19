@@ -18,6 +18,7 @@ import dev.esnault.bunpyro.data.service.sync.ISyncService
 import dev.esnault.bunpyro.data.service.sync.SyncEvent
 import dev.esnault.bunpyro.data.service.sync.SyncType
 import dev.esnault.bunpyro.data.service.user.IUserService
+import dev.esnault.bunpyro.data.work.IWorkScheduler
 import dev.esnault.bunpyro.domain.entities.JlptProgress
 import dev.esnault.bunpyro.domain.entities.grammar.GrammarPointOverview
 import dev.esnault.bunpyro.domain.entities.search.SearchGrammarOverview
@@ -37,7 +38,8 @@ class HomeViewModel(
     private val reviewRepo: IReviewRepository,
     private val settingsRepo: ISettingsRepository,
     private val serviceStarter: IAndroidServiceStarter,
-    private val syncService: ISyncService
+    private val syncService: ISyncService,
+    private val workScheduler: IWorkScheduler,
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -76,6 +78,9 @@ class HomeViewModel(
         observeReviewCount()
         observeSyncInProgress()
         userService.refreshSubscription()
+        viewModelScope.launch(Dispatchers.IO) {
+            workScheduler.setupOrCancelReviewCountWork()
+        }
     }
 
     private fun getHankoDisplay() {
