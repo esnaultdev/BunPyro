@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="md_blue_300">#64B5F6</color>
     <color name="md_blue_400">#42A5F5</color>
     <color name="md_blue_500">#2196F3</color>
     <color name="md_blue_600">#1E88E5</color>
     <color name="md_blue_700">#1976D2</color>
     <color name="md_blue_800">#1565C0</color>
+    <color name="md_lightBlue_300">#4FC3F7</color>
+    <color name="md_lightBlue_400">#29B6F6</color>
+    <color name="md_lightBlue_500">#03A9F4</color>
+    <color name="md_lightBlue_600">#039BE5</color>
+    <color name="md_lightBlue_700">#0288D1</color>
+    <color name="md_lightBlue_800">#0277BD</color>
     <color name="md_lightBlue_A200">#40C4FF</color>
     <color name="md_lightBlue_A400">#00B0FF</color>
 
