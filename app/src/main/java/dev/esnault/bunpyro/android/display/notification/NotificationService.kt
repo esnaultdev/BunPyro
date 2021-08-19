@@ -52,7 +52,7 @@ class NotificationService(
                 channelId = ChannelId.REVIEWS,
                 nameResId = R.string.notificationChannel_reviews_name,
                 descriptionResId = R.string.notificationChannel_reviews_description,
-                importance = NotificationManager.IMPORTANCE_MIN
+                importance = NotificationManager.IMPORTANCE_LOW
             )
         }
     }
