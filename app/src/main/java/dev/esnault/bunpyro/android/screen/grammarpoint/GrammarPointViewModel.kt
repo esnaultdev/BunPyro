@@ -24,10 +24,7 @@ import dev.esnault.bunpyro.domain.entities.user.SubscriptionStatus
 import dev.esnault.bunpyro.domain.service.audio.IAudioService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -86,23 +83,25 @@ class GrammarPointViewModel(
 
                 grammarRepo.getGrammarPoint(id)
                     .flowOn(Dispatchers.Main)
-                    .map { grammarPoint ->
+                    .combine(userService.subscription, GrammarPoint::to)
+                    .combine(audioService.currentAudio) {
+                            (grammarPoint, subscription), currentAudio ->
                         val state = currentState
-                        if (state == null) {
+                        val newState = if (state == null) {
                             firstLoadState(
                                 furiganaShown = furiganaShown,
                                 exampleDetailsShown = exampleDetailsShown,
-                                grammarPoint = grammarPoint
+                                grammarPoint = grammarPoint,
+
                             )
                         } else {
                             nextLoadState(state, exampleDetailsShown, grammarPoint)
                         }
-                    }
-                    .combine(userService.subscription) { state, subscription ->
-                        state.copy(subStatus = subscription.status)
-                    }
-                    .combine(audioService.currentAudio) { state, currentAudio ->
-                        state.copy(currentAudio = currentAudio)
+
+                        newState.copy(
+                            subStatus = subscription.status,
+                            currentAudio = currentAudio
+                        )
                     }
                     .collect { state ->
                         currentState = state
