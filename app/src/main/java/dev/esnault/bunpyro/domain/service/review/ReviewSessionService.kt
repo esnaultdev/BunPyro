@@ -25,7 +25,6 @@ class ReviewSessionService(
 
             val progress = Progress(
                 max = questions.size,
-                srs = questions.first().grammarPoint.srsLevel ?: 0,
                 correct = 0,
                 incorrect = 0
             )

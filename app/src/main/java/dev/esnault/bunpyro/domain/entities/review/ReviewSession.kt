@@ -20,18 +20,22 @@ data class ReviewSession(
 
     data class Progress(
         val max: Int,
-        val srs: Int,
         val correct: Int,
         val incorrect: Int
     ) {
         val progress: Int = correct
         val total: Int = max
 
-        private val answers = correct + incorrect
-
         /** Ratio of correct answers, between 0 and 1 */
-        val precision: Float
-            get() = if (answers == 0) 1f else correct.toFloat() / answers
+        val precision: Float = run {
+            val answers = correct + incorrect
+
+            if (answers <= max) {
+                if (answers == 0) 1f else correct.toFloat() / answers
+            } else { // Asking again, `correct` accumulates both normal and asked again answers.
+                if (max == 0) 1f else (max - incorrect).toFloat() / max
+            }
+        }
     }
 
     sealed class AnswerState {
