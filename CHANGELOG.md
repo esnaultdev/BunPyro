@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.5.0] - 2021-08-24
+### Added
+- Notifications for new reviews
+- Audio can be auto played during reviews
+- Bunny mode is available for reviews
+
+### Updated
+- Cleaned up the settings screen to fit the new settings
+- Better color contrast in dark mode
+
+### Fixed
+- Fixed a rare crash during reviews
+- Playing the audio of an example no longer resets its expanded state
+- For multiple answer fields in reviews, all fields are colored
+- The precision displayed in the review screen did not match the one of the summary
+
 ## [0.4.1] - 2021-08-03
 ### Fixed
 - Fixed a crash when searching for grammar with filters
