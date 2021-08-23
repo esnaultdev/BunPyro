@@ -6,6 +6,8 @@ import dev.esnault.bunpyro.domain.entities.review.ReviewSession
 
 interface IReviewSessionService {
 
+    val sessionInProgress: Boolean
+
     fun startSession(questions: List<ReviewQuestion>): ReviewSession?
 
     fun wrapUpOrFinish(session: ReviewSession): ReviewSession

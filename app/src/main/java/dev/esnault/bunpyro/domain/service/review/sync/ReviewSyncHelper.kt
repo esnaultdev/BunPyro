@@ -36,6 +36,15 @@ class ReviewSyncHelper(
         }
     }
 
+    override fun clear() {
+        if (currentJob?.isActive == true) {
+            currentJob?.cancel()
+            requests.clear()
+            _stateFlow.value = State.IDLE
+            _syncedRequestFlow.resetReplayCache()
+        }
+    }
+
     private fun startNextRequest() {
         val request = requests.firstOrNull()
         if (request == null) {

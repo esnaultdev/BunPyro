@@ -13,10 +13,16 @@ class ReviewSessionService(
     private val syncHelper: IReviewSyncHelper
 ) : IReviewSessionService {
 
+    override var sessionInProgress: Boolean = false
+        private set
+
     override fun startSession(questions: List<ReviewQuestion>): ReviewSession? {
         return if (questions.isEmpty()) {
             null
         } else {
+            syncHelper.clear()
+            sessionInProgress = true
+
             val progress = Progress(
                 max = questions.size,
                 srs = questions.first().grammarPoint.srsLevel ?: 0,
@@ -57,6 +63,9 @@ class ReviewSessionService(
     }
 
     private fun finish(session: ReviewSession): ReviewSession {
+        syncHelper.clear()
+        sessionInProgress = false
+
         return session.copy(questionType = QuestionType.FINISHED)
     }
 

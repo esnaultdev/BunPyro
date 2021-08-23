@@ -14,5 +14,5 @@ val workModule = module {
 
     factory { WorkManager.getInstance(androidApplication()) }
     factory<IWorkScheduler> { WorkScheduler(get(), get(), get()) }
-    worker { ReviewCountWorker(androidContext(), get(), get(), get(), get(), get(), get()) }
+    worker { ReviewCountWorker(androidContext(), get(), get(), get(), get(), get(), get(), get()) }
 }

@@ -18,6 +18,8 @@ interface IReviewSyncHelper {
 
     fun retry()
 
+    fun clear()
+
     sealed class Request {
         abstract val askAgain: Boolean
 

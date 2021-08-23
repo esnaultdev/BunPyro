@@ -43,7 +43,16 @@ class BunPyroApplication : Application() {
             androidContext(this@BunPyroApplication)
             workManagerFactory()
 
-            modules(listOf(appModule, serviceModule, repoModule, daoModule, workModule))
+            modules(
+                listOf(
+                    appModule,
+                    serviceModule,
+                    repoModule,
+                    daoModule,
+                    workModule,
+                    domainModule,
+                )
+            )
 
             val settingsRepo = SettingsRepository(this@BunPyroApplication)
             if (!settingsRepo.getDebugMocked()) {

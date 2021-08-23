@@ -23,7 +23,6 @@ import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointFragmentArgs
 import dev.esnault.bunpyro.android.screen.grammarpoint.GrammarPointViewModel
 import dev.esnault.bunpyro.android.screen.home.HomeViewModel
 import dev.esnault.bunpyro.android.screen.lessons.LessonsViewModel
-import dev.esnault.bunpyro.domain.service.review.sync.ReviewSyncHelper
 import dev.esnault.bunpyro.android.screen.review.ReviewViewModel
 import dev.esnault.bunpyro.android.screen.settings.SettingsViewModel
 import dev.esnault.bunpyro.android.screen.settings.about.SettingsAboutViewModel
@@ -37,9 +36,6 @@ import dev.esnault.bunpyro.android.service.AndroidServiceStarter
 import dev.esnault.bunpyro.android.service.IAndroidServiceStarter
 import dev.esnault.bunpyro.domain.service.audio.AudioService
 import dev.esnault.bunpyro.domain.service.audio.IAudioService
-import dev.esnault.bunpyro.domain.service.review.IReviewSessionService
-import dev.esnault.bunpyro.domain.service.review.ReviewSessionService
-import dev.esnault.bunpyro.domain.service.review.sync.IReviewSyncHelper
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -73,17 +69,13 @@ val appModule = module {
     }
     viewModel { AllGrammarViewModel(get(), get(), get()) }
     viewModel {
-        // Injected manually because we want to share a single syncHelper instance scoped for each
-        // view model instance.
-        val syncHelper: IReviewSyncHelper = ReviewSyncHelper(get())
-        val sessionService: IReviewSessionService = ReviewSessionService(syncHelper)
         ReviewViewModel(
             reviewService = get(),
             reviewRepository = get(),
-            sessionService = sessionService,
+            sessionService = get(),
             settingsRepo = get(),
             audioService = get(),
-            syncHelper = syncHelper,
+            syncHelper = get(),
             userService = get()
         )
     }
@@ -113,8 +105,8 @@ val appModule = module {
 
     // region Audio
 
-    factory<IAudioPlayer> { AudioPlayer(androidContext(), get(), get()) }
     single<IAudioService> { AudioService(get()) }
+    factory<IAudioPlayer> { AudioPlayer(androidContext(), get(), get()) }
 
     single<CacheDataSource.Factory> {
         val context = androidContext()
