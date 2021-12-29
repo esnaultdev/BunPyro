@@ -8,9 +8,9 @@ data class ExampleSentence(
 ) {
 
     data class Attributes(
-        @Json(name = "grammar-point-id") val grammarId: Long,
-        val japanese: String,
-        val english: String,
+        @Json(name = "grammar-point-id") val grammarId: Long?,
+        val japanese: String?,
+        val english: String?,
         val nuance: String?,
         @Json(name = "sentence-order") val order: Int?,
         @Json(name = "audio-link") val audioLink: String?

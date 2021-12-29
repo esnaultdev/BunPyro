@@ -189,6 +189,7 @@ class SyncService(
                 // Let's filter them so that we have a sane DB
                 .filter { grammarPointIds.contains(it.attributes.grammarId) }
                 .let(mapper::map)
+                .filterNotNull()
 
             exampleSentenceDao.performDataUpdate { localIds ->
                 DataUpdate.fromLocalIds(localIds, mappedSentences, ExampleSentenceDb::id)

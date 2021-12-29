@@ -5,9 +5,14 @@ import dev.esnault.bunpyro.data.mapper.IMapper
 import dev.esnault.bunpyro.data.network.entities.ExampleSentence
 
 
-class ExampleSentenceMapper : IMapper<ExampleSentence, ExampleSentenceDb> {
+class ExampleSentenceMapper : IMapper<ExampleSentence, ExampleSentenceDb?> {
 
-    override fun map(o: ExampleSentence): ExampleSentenceDb {
+    override fun map(o: ExampleSentence): ExampleSentenceDb? {
+        if (o.attributes.grammarId == null ||
+            o.attributes.japanese == null ||
+            o.attributes.english == null
+        ) return null
+
         return ExampleSentenceDb(
             id = o.id,
             grammarId = o.attributes.grammarId,
