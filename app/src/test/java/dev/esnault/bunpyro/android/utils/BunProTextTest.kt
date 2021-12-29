@@ -6,6 +6,8 @@ import org.junit.Test
 
 class BunProTextTest {
 
+    // region processBunProFurigana
+
     @Test
     fun processBunProFurigana_noFurigana() {
         // Given
@@ -57,4 +59,6 @@ class BunProTextTest {
         val expected = "これは<ruby>寿司<rt>すし</rt></ruby>です。"
         assertEquals(expected, output)
     }
+
+    // endregion
 }

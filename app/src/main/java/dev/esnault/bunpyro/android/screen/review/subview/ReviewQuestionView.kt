@@ -14,7 +14,6 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.span.AnswerSpan
-import dev.esnault.bunpyro.android.display.span.TagSpan
 import dev.esnault.bunpyro.android.media.SimpleAudioState
 import dev.esnault.bunpyro.android.screen.ScreenConfig
 import dev.esnault.bunpyro.android.screen.review.ReviewViewState.Question as ViewState
@@ -194,42 +193,6 @@ class ReviewQuestionView(
             binding.questionNuance.text =
                 context.postProcessString(question.nuance!!, furiganaShown)
         }
-    }
-
-    /**
-     * Transform an english text to a simplified version with only the strong tags.
-     * For example:
-     *     "This is an <strong>example</strong> of <strong>behavior</strong>"
-     * should become
-     *     "<strong>example</strong>～<strong>behavior</strong>"
-     */
-    private fun simplifyEnglishText(englishText: SpannableStringBuilder): Spanned {
-        val strongRanges = englishText.getSpans(0, englishText.length, TagSpan::class.java)
-            .filter { it.tag == BunProHtml.Tag.Strong }
-            .map { strongSpan ->
-                val start = englishText.getSpanStart(strongSpan)
-                val end = englishText.getSpanEnd(strongSpan)
-                start..end
-            }
-            .sortedBy { it.first }
-
-        if (strongRanges.isEmpty()) return SpannableStringBuilder()
-
-        // Remove everything after the last strong
-        englishText.delete(strongRanges.last().last, englishText.length)
-
-        // Replace every text between strongs with "～"
-        strongRanges.zipWithNext()
-            // Start from the end to keep our indexes coherent
-            .reversed()
-            .forEach { (previousStrong, nextStrong) ->
-                englishText.replace(previousStrong.last, nextStrong.first, "～")
-            }
-
-        // Remove everything before the first strong
-        englishText.delete(0, strongRanges.first().first)
-
-        return englishText
     }
 
     private fun bindAnswerState(viewState: ViewState) {

@@ -6,8 +6,10 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
 import android.widget.TextView
+import androidx.annotation.VisibleForTesting
 import dev.esnault.bunpyro.R
 import dev.esnault.bunpyro.android.display.span.FontColorSpan
+import dev.esnault.bunpyro.android.display.span.TagSpan
 import dev.esnault.bunpyro.android.display.span.ruby.RubySpan
 import dev.esnault.bunpyro.android.display.span.ruby.duplicateRubySpannedString
 import dev.esnault.bunpyro.common.getThemeColor
@@ -154,4 +156,45 @@ private fun needFuriganaLayout(
         RubySpan.Visibility.INVISIBLE -> newVisibility == RubySpan.Visibility.GONE
         RubySpan.Visibility.GONE -> newVisibility != RubySpan.Visibility.GONE
     }
+}
+
+/**
+ * Transform an english text to a simplified version with only the strong tags.
+ * For example:
+ *     "This is an <strong>example</strong> of <strong>behavior</strong>"
+ * should become
+ *     "<strong>example</strong>～<strong>behavior</strong>"
+ */
+fun simplifyEnglishText(englishText: SpannableStringBuilder): Spanned {
+    val strongRanges = englishText.getSpans(0, englishText.length, TagSpan::class.java)
+        .filter { it.tag == BunProHtml.Tag.Strong }
+        .map { strongSpan ->
+            val start = englishText.getSpanStart(strongSpan)
+            val end = englishText.getSpanEnd(strongSpan)
+            start..end
+        }
+        .sortedBy { it.first }
+
+    if (strongRanges.isEmpty()) return SpannableStringBuilder()
+
+    // Remove everything after the last strong
+    englishText.delete(strongRanges.last().last, englishText.length)
+
+    // Replace every text between strongs with "～"
+    strongRanges.zipWithNext()
+        // Start from the end to keep our indexes coherent
+        .reversed()
+        .forEach { (previousStrong, nextStrong) ->
+            val replaceStart = previousStrong.last
+            val replaceEnd = nextStrong.first
+            // If strong ranges overlap, we can have bad data here.
+            if (replaceEnd > replaceStart && replaceEnd <= englishText.length) {
+                englishText.replace(replaceStart, replaceEnd, "～")
+            }
+        }
+
+    // Remove everything before the first strong
+    englishText.delete(0, strongRanges.first().first)
+
+    return englishText
 }
