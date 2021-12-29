@@ -14,8 +14,8 @@ android {
         applicationId "dev.esnault.bunpyro"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 25
-        versionName "0.5.0"
+        versionCode 26
+        versionName "0.5.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 

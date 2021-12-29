@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.5.1] - 2021-12-29
+### Fixed
+- Ignore invalid examples from the API that made the sync fail
+
 ## [0.5.0] - 2021-08-24
 ### Added
 - Notifications for new reviews
