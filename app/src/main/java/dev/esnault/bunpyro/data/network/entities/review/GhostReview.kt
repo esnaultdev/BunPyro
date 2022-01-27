@@ -23,12 +23,12 @@ import java.util.*
  * - review_misses
  */
 data class GhostReview(
-    val id: Long,
-    @Json(name = "study_question_id") val questionId: Long,
-    @Json(name = "grammar_point_id") val grammarId: Long,
-    @Json(name = "next_review") val nextReview: Date,
-    @Json(name = "created_at") val createdAt: Date,
-    @Json(name = "updated_at") val updatedAt: Date,
+    val id: Long?,
+    @Json(name = "study_question_id") val questionId: Long?,
+    @Json(name = "grammar_point_id") val grammarId: Long?,
+    @Json(name = "next_review") val nextReview: Date?,
+    @Json(name = "created_at") val createdAt: Date?,
+    @Json(name = "updated_at") val updatedAt: Date?,
     @Json(name = "last_studied_at") val lastStudiedAt: Date?,
-    val history: List<ReviewHistory>
+    val history: List<ReviewHistory>?,
 )

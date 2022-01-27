@@ -97,7 +97,7 @@ class ReviewService(
 
     private suspend fun saveCurrentReviews(currentReviews: List<CurrentReview>) {
         // Update the grammar point
-        val grammarPointsDb = CurrentReviewDbMapper.OfGrammarPoint().map(currentReviews)
+        val grammarPointsDb = CurrentReviewDbMapper.OfGrammarPoint().mapNotNull(currentReviews)
         grammarPointDao.performDataUpdate { localIds ->
             DataUpdate.fromLocalIdsNoDelete(localIds, grammarPointsDb, GrammarPointDb::id)
         }

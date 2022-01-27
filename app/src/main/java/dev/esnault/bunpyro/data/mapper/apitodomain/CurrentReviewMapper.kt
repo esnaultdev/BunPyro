@@ -1,5 +1,6 @@
 package dev.esnault.bunpyro.data.mapper.apitodomain
 
+import dev.esnault.bunpyro.common.stdlib.takeIfAllNonNull
 import dev.esnault.bunpyro.data.db.review.ReviewType
 import dev.esnault.bunpyro.data.mapper.apitodb.review.CurrentReviewDbMapper
 import dev.esnault.bunpyro.data.mapper.dbtodomain.jlpt.jlptFromLesson
@@ -21,25 +22,31 @@ class CurrentReviewMapper {
         val ghostReviewsList = mutableListOf<Review>()
         val studyGrammarPointList = mutableListOf<Study.GrammarPoint>()
         o.forEach { currentReview ->
-            val review = mapReview(currentReview)
+            val review = mapReview(currentReview) ?: return@forEach
             when (review.type) {
                 ReviewType.NORMAL -> normalReviewsList.add(review)
                 ReviewType.GHOST -> ghostReviewsList.add(review)
             }
-            studyGrammarPointList.add(currentReview.grammarPoint)
+            currentReview.grammarPoint?.let(studyGrammarPointList::add)
         }
 
         val normalReviewsMap: Map<Long, Review> = normalReviewsList.associateBy(Review::grammarId)
         val ghostReviewsMap: Map<Long, List<Review>> = ghostReviewsList.groupBy(Review::grammarId)
         val grammarPointsMap: Map<Long, GrammarPoint> = studyGrammarPointList.asSequence()
             .distinctBy { it.id }
-            .map { mapGrammarPoint(it, normalReviewsMap[it.id], ghostReviewsMap[it.id].orEmpty()) }
+            .mapNotNull {
+                mapGrammarPoint(it, normalReviewsMap[it.id], ghostReviewsMap[it.id].orEmpty())
+            }
             .associateBy { it.id }
 
-        return o.map { map(it, grammarPointsMap[it.grammarPoint.id]!!) }
+        return o.mapNotNull { currentReview ->
+            val grammarPoint = currentReview.grammarPoint?.id?.let(grammarPointsMap::get)
+            grammarPoint?.let { map(currentReview, it) }
+        }
     }
 
-    fun map(o: CurrentReview, grammarPoint: GrammarPoint): ReviewQuestion {
+    fun map(o: CurrentReview, grammarPoint: GrammarPoint): ReviewQuestion? {
+        if (o.studyQuestion == null) return null
         return mapQuestion(grammarPoint, o.studyQuestion)
     }
 
@@ -47,7 +54,14 @@ class CurrentReviewMapper {
         g: Study.GrammarPoint,
         review: Review?,
         ghostReviews: List<Review>
-    ): GrammarPoint {
+    ): GrammarPoint? {
+        if (g.id == null ||
+            g.title == null ||
+            g.yomikata == null ||
+            g.meaning == null ||
+            g.lesson == null
+        ) return null
+
         return GrammarPoint(
             id = g.id,
             title = g.title,
@@ -59,14 +73,23 @@ class CurrentReviewMapper {
             jlpt = jlptFromLesson(g.lesson),
             nuance = g.nuance,
             incomplete = g.incomplete,
-            sentences = g.sentences.map(::mapSentence),
-            links = g.links.map(::mapLink),
+            sentences = g.sentences?.mapNotNull(::mapSentence).orEmpty(),
+            links = g.links?.mapNotNull(::mapLink).orEmpty(),
             review = review,
-            ghostReviews = ghostReviews
+            ghostReviews = ghostReviews,
         )
     }
 
-    private fun mapQuestion(grammarPoint: GrammarPoint, o: Study.Question): ReviewQuestion {
+    private fun mapQuestion(grammarPoint: GrammarPoint, o: Study.Question): ReviewQuestion? {
+        if (o.id == null ||
+            o.japanese == null ||
+            o.english == null ||
+            o.answer == null ||
+            o.alternateAnswers == null ||
+            o.alternateGrammar == null ||
+            o.wrongAnswers == null
+        ) return null
+
         return ReviewQuestion(
             id = o.id,
             japanese = o.japanese,
@@ -80,21 +103,38 @@ class CurrentReviewMapper {
             nuance = o.nuance,
             tense = o.tense,
             sentenceOrder = o.sentenceOrder ?: 0,
-            grammarPoint = grammarPoint
+            grammarPoint = grammarPoint,
         )
     }
 
-    private fun mapReview(o: CurrentReview): Review {
+    private fun mapReview(o: CurrentReview): Review? {
+        val history = o.history?.map(::mapReviewHistory)?.takeIfAllNonNull()
+        val reviewType = o.reviewType?.let(CurrentReviewDbMapper.OfReviewType::map)
+
+        if (o.id == null ||
+            reviewType == null ||
+            o.grammarPoint == null ||
+            o.grammarPoint.id == null ||
+            history == null
+        ) return null
+
         return Review(
             id = o.id,
-            type = CurrentReviewDbMapper.OfReviewType.map(o.reviewType),
+            type = reviewType,
             grammarId = o.grammarPoint.id,
             hidden = !o.complete,
-            history = o.history.map(::mapReviewHistory)
+            history = history,
         )
     }
 
-    private fun mapReviewHistory(o: ReviewHistory): DomainReviewHistory {
+    private fun mapReviewHistory(o: ReviewHistory): DomainReviewHistory? {
+        if (o.questionId == null ||
+            o.time == null ||
+            o.status == null ||
+            o.attempts == null ||
+            o.streak == null
+        ) return null
+
         return DomainReviewHistory(
             questionId = o.questionId,
             time = o.time.date,
@@ -104,22 +144,33 @@ class CurrentReviewMapper {
         )
     }
 
-    private fun mapSentence(o: Study.ExampleSentence): ExampleSentence {
+    private fun mapSentence(o: Study.ExampleSentence): ExampleSentence? {
+        if (o.id == null ||
+            o.japanese == null ||
+            o.english == null
+        ) return null
+
         return ExampleSentence(
             id = o.id,
             japanese = o.japanese,
             english = o.english,
             nuance = o.nuance,
-            audioLink = o.audioLink
+            audioLink = o.audioLink,
         )
     }
 
-    private fun mapLink(o: Study.SupplementalLink): SupplementalLink {
+    private fun mapLink(o: Study.SupplementalLink): SupplementalLink? {
+        if (o.id == null ||
+            o.site == null ||
+            o.link == null ||
+            o.description == null
+        ) return null
+
         return SupplementalLink(
             id = o.id,
             site = o.site,
             link = o.link,
-            description = o.description
+            description = o.description,
         )
     }
 }

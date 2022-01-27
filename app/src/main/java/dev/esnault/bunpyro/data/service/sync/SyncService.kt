@@ -147,7 +147,7 @@ class SyncService(
     ): SyncResult {
         return try {
             val mapper = GrammarPointMapper()
-            val mappedPoints = mapper.map(grammarPoints)
+            val mappedPoints = mapper.mapNotNull(grammarPoints)
             grammarPointDao.performDataUpdate { localIds ->
                 DataUpdate.fromLocalIds(localIds, mappedPoints, GrammarPointDb::id)
             }
@@ -185,11 +185,10 @@ class SyncService(
             val mapper = ExampleSentenceMapper()
 
             val mappedSentences = exampleSentences
+                .let(mapper::mapNotNull)
                 // The API returns some example sentence that is not related to any grammar point
                 // Let's filter them so that we have a sane DB
-                .filter { grammarPointIds.contains(it.attributes.grammarId) }
-                .let(mapper::map)
-                .filterNotNull()
+                .filter { grammarPointIds.contains(it.grammarId) }
 
             exampleSentenceDao.performDataUpdate { localIds ->
                 DataUpdate.fromLocalIds(localIds, mappedSentences, ExampleSentenceDb::id)
@@ -228,10 +227,10 @@ class SyncService(
             val mapper = SupplementalLinkMapper()
 
             val mappedLinks = supplementalLinks
+                .let(mapper::mapNotNull)
                 // The API returns some example sentence that is not related to any grammar point
                 // Let's filter them so that we have a sane DB
-                .filter { grammarPointIds.contains(it.attributes.grammarId) }
-                .let(mapper::map)
+                .filter { grammarPointIds.contains(it.grammarId) }
 
             supplementalLinkDao.performDataUpdate { localIds ->
                 DataUpdate.fromLocalIds(localIds, mappedLinks, SupplementalLinkDb::id)
@@ -268,17 +267,17 @@ class SyncService(
         return try {
             val grammarPointIds = grammarPointDao.getAllIds()
 
-            val reviewsData = ReviewsData(
-                reviews = rawReviewsData.reviews.filter { grammarPointIds.contains(it.grammarId) },
-                ghostReviews = rawReviewsData.ghostReviews.filter { grammarPointIds.contains(it.grammarId) }
-            )
+            val rawNormalReviews = rawReviewsData.reviews.orEmpty()
+                .filter { grammarPointIds.contains(it.grammarId) }
+            val rawGhostReviews = rawReviewsData.ghostReviews.orEmpty()
+                .filter { grammarPointIds.contains(it.grammarId) }
 
             val normalReviewMapper = NormalReviewMapper()
             val ghostReviewMapper = GhostReviewMapper()
             val reviewHistoryMapper = ReviewHistoryMapper()
 
-            val mappedNormalReviews = normalReviewMapper.map(reviewsData.reviews)
-            val mappedGhostReviews = ghostReviewMapper.map(reviewsData.ghostReviews)
+            val mappedNormalReviews = normalReviewMapper.mapNotNull(rawNormalReviews)
+            val mappedGhostReviews = ghostReviewMapper.mapNotNull(rawGhostReviews)
             val mappedReviews = mappedNormalReviews + mappedGhostReviews
 
             reviewDao.performDataUpdate { localIds ->
@@ -286,9 +285,9 @@ class SyncService(
             }
 
             val mappedNormalReviewsHistory =
-                reviewHistoryMapper.mapFromNormalReviews(reviewsData.reviews)
+                reviewHistoryMapper.mapFromNormalReviews(rawNormalReviews)
             val mappedGhostReviewsHistory =
-                reviewHistoryMapper.mapFromGhostReviews(reviewsData.ghostReviews)
+                reviewHistoryMapper.mapFromGhostReviews(rawGhostReviews)
             val mappedReviewsHistory = mappedNormalReviewsHistory + mappedGhostReviewsHistory
 
             reviewHistoryDao.performDataUpdate { localIds ->

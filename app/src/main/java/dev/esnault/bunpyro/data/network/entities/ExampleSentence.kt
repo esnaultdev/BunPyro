@@ -3,8 +3,8 @@ package dev.esnault.bunpyro.data.network.entities
 import com.squareup.moshi.Json
 
 data class ExampleSentence(
-    val id: Long,
-    val attributes: Attributes
+    val id: Long?,
+    val attributes: Attributes?,
 ) {
 
     data class Attributes(
@@ -13,6 +13,6 @@ data class ExampleSentence(
         val english: String?,
         val nuance: String?,
         @Json(name = "sentence-order") val order: Int?,
-        @Json(name = "audio-link") val audioLink: String?
+        @Json(name = "audio-link") val audioLink: String?,
     )
 }

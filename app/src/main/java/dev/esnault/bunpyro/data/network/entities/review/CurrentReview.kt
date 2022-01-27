@@ -24,20 +24,20 @@ import java.util.*
  * - review_misses
  */
 data class CurrentReview(
-    val id: Long,
-    @Json(name = "next_review") val nextReview: Date,
-    @Json(name = "created_at") val createdAt: Date,
-    @Json(name = "updated_at") val updatedAt: Date,
+    val id: Long?,
+    @Json(name = "next_review") val nextReview: Date?,
+    @Json(name = "created_at") val createdAt: Date?,
+    @Json(name = "updated_at") val updatedAt: Date?,
     @Json(name = "last_studied_at") val lastStudiedAt: Date?,
-    val readings: List<Long>,
-    val history: List<ReviewHistory>,
-    @Json(name = "missed_question_ids") val missedQuestionIds: List<Long>,
-    @Json(name = "studied_question_ids") val studiedQuestionIds: List<Long>,
-    val complete: Boolean,
-    @Json(name = "study_question") val studyQuestion: Study.Question,
-    @Json(name = "grammar_point") val grammarPoint: Study.GrammarPoint,
-    @Json(name = "review_type") val reviewType: ReviewType,
-    @Json(name = "self_study") val selfStudy: Boolean
+    val readings: List<Long>?,
+    val history: List<ReviewHistory>?,
+    @Json(name = "missed_question_ids") val missedQuestionIds: List<Long>?,
+    @Json(name = "studied_question_ids") val studiedQuestionIds: List<Long>?,
+    val complete: Boolean = false,
+    @Json(name = "study_question") val studyQuestion: Study.Question?,
+    @Json(name = "grammar_point") val grammarPoint: Study.GrammarPoint?,
+    @Json(name = "review_type") val reviewType: ReviewType?,
+    @Json(name = "self_study") val selfStudy: Boolean?,
 )
 
 /**
@@ -61,20 +61,20 @@ object Study {
      * - last_updated_by
      */
     data class Question(
-        val id: Long,
-        val japanese: String,
-        val english: String,
-        val answer: String,
-        @Json(name = "grammar_point_id") val grammarId: Long,
-        @Json(name = "created_at") val createdAt: Date,
-        @Json(name = "updated_at") val updatedAt: Date,
-        @Json(name = "alternate_answers") val alternateAnswers: Map<String, String>,
-        @Json(name = "alternate_grammar") val alternateGrammar: List<String>,
-        @Json(name = "wrong_answers") val wrongAnswers: Map<String, String>,
+        val id: Long?,
+        val japanese: String?,
+        val english: String?,
+        val answer: String?,
+        @Json(name = "grammar_point_id") val grammarId: Long?,
+        @Json(name = "created_at") val createdAt: Date?,
+        @Json(name = "updated_at") val updatedAt: Date?,
+        @Json(name = "alternate_answers") val alternateAnswers: Map<String, String>?,
+        @Json(name = "alternate_grammar") val alternateGrammar: List<String>?,
+        @Json(name = "wrong_answers") val wrongAnswers: Map<String, String>?,
         @Json(name = "audio") val audioLink: String?,
         val nuance: String?,
         val tense: String?,
-        @Json(name = "sentence_order") val sentenceOrder: Int?
+        @Json(name = "sentence_order") val sentenceOrder: Int?,
     )
 
     /**
@@ -90,19 +90,19 @@ object Study {
      * - last_updated_by
      */
     data class GrammarPoint(
-        val id: Long,
-        val title: String,
-        val yomikata: String,
-        val meaning: String,
+        val id: Long?,
+        val title: String?,
+        val yomikata: String?,
+        val meaning: String?,
         val caution: String?,
         val structure: String?,
-        val level: String, // JLPT level
-        @Json(name = "lesson_id") val lesson: Int,
+        val level: String?, // JLPT level
+        @Json(name = "lesson_id") val lesson: Int?,
         val nuance: String?,
-        val incomplete: Boolean,
+        val incomplete: Boolean = false,
         @Json(name = "grammar_order") val order: Int?,
-        @Json(name = "example_sentences") val sentences: List<ExampleSentence>,
-        @Json(name = "supplemental_links") val links: List<SupplementalLink>
+        @Json(name = "example_sentences") val sentences: List<ExampleSentence>?,
+        @Json(name = "supplemental_links") val links: List<SupplementalLink>?,
     )
 
     /**
@@ -117,13 +117,13 @@ object Study {
      * - last_updated_by
      */
     data class ExampleSentence(
-        val id: Long,
-        @Json(name = "grammar_point_id") val grammarId: Long,
-        val japanese: String,
-        val english: String,
+        val id: Long?,
+        @Json(name = "grammar_point_id") val grammarId: Long?,
+        val japanese: String?,
+        val english: String?,
         val nuance: String?,
         @Json(name = "sentence_order") val order: Int?,
-        @Json(name = "audio_link") val audioLink: String?
+        @Json(name = "audio_link") val audioLink: String?,
     )
 
     /**
@@ -134,10 +134,10 @@ object Study {
      * - updated_at
      */
     data class SupplementalLink(
-        val id: Long,
-        @Json(name = "grammar_point_id") val grammarId: Long,
-        val site: String,
-        val link: String,
-        val description: String
+        val id: Long?,
+        @Json(name = "grammar_point_id") val grammarId: Long?,
+        val site: String?,
+        val link: String?,
+        val description: String?,
     )
 }

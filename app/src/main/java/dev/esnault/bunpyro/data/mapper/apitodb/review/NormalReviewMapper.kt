@@ -2,13 +2,20 @@ package dev.esnault.bunpyro.data.mapper.apitodb.review
 
 import dev.esnault.bunpyro.data.db.review.ReviewDb
 import dev.esnault.bunpyro.data.db.review.ReviewType
-import dev.esnault.bunpyro.data.mapper.IMapper
+import dev.esnault.bunpyro.data.mapper.INullableMapper
 import dev.esnault.bunpyro.data.network.entities.review.NormalReview
 
 
-class NormalReviewMapper : IMapper<NormalReview, ReviewDb> {
+class NormalReviewMapper : INullableMapper<NormalReview, ReviewDb> {
 
-    override fun map(o: NormalReview): ReviewDb {
+    override fun map(o: NormalReview): ReviewDb? {
+        if (o.id == null ||
+            o.grammarId == null ||
+            o.createdAt == null ||
+            o.updatedAt == null ||
+            o.nextReview == null
+        ) return null
+
         return ReviewDb(
             id = ReviewDb.Id(o.id, ReviewType.NORMAL),
             grammarId = o.grammarId,

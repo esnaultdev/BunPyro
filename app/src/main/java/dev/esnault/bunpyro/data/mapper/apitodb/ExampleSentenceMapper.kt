@@ -1,14 +1,16 @@
 package dev.esnault.bunpyro.data.mapper.apitodb
 
 import dev.esnault.bunpyro.data.db.examplesentence.ExampleSentenceDb
-import dev.esnault.bunpyro.data.mapper.IMapper
+import dev.esnault.bunpyro.data.mapper.INullableMapper
 import dev.esnault.bunpyro.data.network.entities.ExampleSentence
 
 
-class ExampleSentenceMapper : IMapper<ExampleSentence, ExampleSentenceDb?> {
+class ExampleSentenceMapper : INullableMapper<ExampleSentence, ExampleSentenceDb> {
 
     override fun map(o: ExampleSentence): ExampleSentenceDb? {
-        if (o.attributes.grammarId == null ||
+        if (o.id == null ||
+            o.attributes == null ||
+            o.attributes.grammarId == null ||
             o.attributes.japanese == null ||
             o.attributes.english == null
         ) return null
