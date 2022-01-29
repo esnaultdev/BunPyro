@@ -12,6 +12,7 @@ import dev.esnault.bunpyro.domain.service.review.IReviewSessionService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
+import timber.log.Timber
 
 
 class ReviewCountWorker(
@@ -26,12 +27,16 @@ class ReviewCountWorker(
 ) : CoroutineWorker(context, params), KoinComponent {
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+        Timber.d("Starting work")
+
         if (appConfig.getApiKey() == null) {
             workScheduler.cancelReviewCountWork()
+            Timber.d("Failure: missing API key")
             return@withContext Result.failure()
         }
 
         if (reviewSessionService.sessionInProgress) {
+            Timber.d("Skipped: Review session in progress")
             return@withContext Result.success()
         }
 
@@ -47,17 +52,28 @@ class ReviewCountWorker(
                     onCountChange(oldStatus, newStatus)
                     Result.success()
                 },
-                onFailure = { Result.failure() }
+                onFailure = {
+                    Timber.w(it, "Failure: API request error")
+                    Result.failure()
+                }
             )
     }
 
     private suspend fun onCountChange(oldStatus: StudyQueueStatus?, newStatus: StudyQueueStatus) {
         val threshold = settingsRepository.getReviewsNotificationThreshold()
-        if (newStatus.reviewCount < threshold) return
+        val reviewCount = newStatus.reviewCount
+        if (reviewCount < threshold) {
+            Timber.d("Skipped: Not enough reviews (reviews: $reviewCount, threshold: $threshold")
+            return
+        }
 
         // This can collide, but the API doesn't provide any way to differentiate the two cases.
-        if (oldStatus == newStatus) return
+        if (oldStatus == newStatus) {
+            Timber.d("Skipped: Same review count as before $newStatus")
+            return
+        }
 
-        notificationService.showReviewsNotification(newStatus.reviewCount)
+        Timber.d("Showing notification for $reviewCount review(s)")
+        notificationService.showReviewsNotification(reviewCount)
     }
 }

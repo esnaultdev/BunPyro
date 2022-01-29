@@ -4,6 +4,7 @@ import androidx.work.*
 import dev.esnault.bunpyro.BuildConfig
 import dev.esnault.bunpyro.android.display.notification.INotificationService
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
@@ -38,7 +39,6 @@ class WorkScheduler(
     private suspend fun enqueueReviewCountWork(keepExisting: Boolean) {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresBatteryNotLow(true)
             .build()
 
         val intervalMinutes: Long = settingsRepository.getReviewsNotificationRefreshRateMinutes()
@@ -61,12 +61,14 @@ class WorkScheduler(
         } else {
             ExistingPeriodicWorkPolicy.REPLACE
         }
+        Timber.d("Enqueue review worker ($existingWorkPolicy)")
         workManager.enqueueUniquePeriodicWork(
             WorkNames.REVIEW_COUNT, existingWorkPolicy, request
         )
     }
 
     override fun cancelReviewCountWork() {
+        Timber.d("Cancel review worker")
         workManager.cancelUniqueWork(WorkNames.REVIEW_COUNT)
     }
 

@@ -1,6 +1,7 @@
 package dev.esnault.bunpyro.android
 
 import android.app.Application
+import androidx.work.Configuration
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.jakewharton.processphoenix.ProcessPhoenix
 import dev.esnault.bunpyro.BuildConfig
@@ -17,7 +18,7 @@ import timber.log.Timber
 import timber.log.Timber.DebugTree
 
 
-class BunPyroApplication : Application() {
+class BunPyroApplication : Application(), Configuration.Provider {
 
     companion object {
         init {
@@ -79,4 +80,9 @@ class BunPyroApplication : Application() {
             migrationService.migrate()
         }
     }
+
+    override fun getWorkManagerConfiguration() =
+        Configuration.Builder()
+            .setMinimumLoggingLevel(android.util.Log.DEBUG)
+            .build()
 }
