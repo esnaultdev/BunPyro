@@ -1,13 +1,14 @@
 package dev.esnault.bunpyro.data.repository.review
 
 import dev.esnault.bunpyro.domain.entities.user.StudyQueueCount
+import dev.esnault.bunpyro.domain.entities.user.StudyQueueStatus
 import kotlinx.coroutines.flow.Flow
 import java.util.*
 
 
 interface IReviewRepository {
 
-    suspend fun refreshReviewCount(): Result<Int>
+    suspend fun refreshReviewStatus(): Result<StudyQueueStatus>
 
     suspend fun getReviewCount(): Flow<StudyQueueCount?>
 

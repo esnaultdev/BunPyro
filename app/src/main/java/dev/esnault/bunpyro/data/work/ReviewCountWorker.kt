@@ -7,6 +7,7 @@ import dev.esnault.bunpyro.android.display.notification.INotificationService
 import dev.esnault.bunpyro.data.config.IAppConfig
 import dev.esnault.bunpyro.data.repository.review.IReviewRepository
 import dev.esnault.bunpyro.data.repository.settings.ISettingsRepository
+import dev.esnault.bunpyro.domain.entities.user.StudyQueueStatus
 import dev.esnault.bunpyro.domain.service.review.IReviewSessionService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,24 +35,29 @@ class ReviewCountWorker(
             return@withContext Result.success()
         }
 
-        val oldCount = appConfig.getStudyQueueCount()
-        reviewRepository.refreshReviewCount()
+        val oldStatus = appConfig.getStudyQueueCount()?.let { oldCount ->
+            StudyQueueStatus(
+                reviewCount = oldCount,
+                nextReviewDate = appConfig.getNextReviewDate(),
+            )
+        }
+        reviewRepository.refreshReviewStatus()
             .fold(
-                onSuccess = { newCount ->
-                    onCountChange(oldCount, newCount)
+                onSuccess = { newStatus ->
+                    onCountChange(oldStatus, newStatus)
                     Result.success()
                 },
                 onFailure = { Result.failure() }
             )
     }
 
-    private suspend fun onCountChange(oldCount: Int?, newCount: Int) {
+    private suspend fun onCountChange(oldStatus: StudyQueueStatus?, newStatus: StudyQueueStatus) {
         val threshold = settingsRepository.getReviewsNotificationThreshold()
-        if (newCount < threshold) return
+        if (newStatus.reviewCount < threshold) return
 
         // This can collide, but the API doesn't provide any way to differentiate the two cases.
-        if (newCount == oldCount) return
+        if (oldStatus == newStatus) return
 
-        notificationService.showReviewsNotification(newCount)
+        notificationService.showReviewsNotification(newStatus.reviewCount)
     }
 }

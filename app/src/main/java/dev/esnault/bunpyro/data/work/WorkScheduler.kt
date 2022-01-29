@@ -37,7 +37,7 @@ class WorkScheduler(
 
     private suspend fun enqueueReviewCountWork(keepExisting: Boolean) {
         val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.UNMETERED)
+            .setRequiredNetworkType(NetworkType.CONNECTED)
             .setRequiresBatteryNotLow(true)
             .build()
 

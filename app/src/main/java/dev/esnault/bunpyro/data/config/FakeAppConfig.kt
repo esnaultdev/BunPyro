@@ -2,6 +2,7 @@ package dev.esnault.bunpyro.data.config
 
 import dev.esnault.bunpyro.BuildConfig
 import dev.esnault.bunpyro.domain.entities.user.UserSubscription
+import java.util.*
 
 
 class FakeAppConfig(
@@ -13,6 +14,7 @@ class FakeAppConfig(
     var supplementalLinksEtag: String? = null,
     var reviewsEtag: String? = null,
     var studyQueueCount: Int? = null,
+    var nextReviewDate: Date? = null,
     var username: String? = null,
     var userSubscription: UserSubscription = UserSubscription.DEFAULT
 ) : IAppConfig {
@@ -63,6 +65,12 @@ class FakeAppConfig(
 
     override suspend fun setStudyQueueCount(count: Int?) {
         studyQueueCount = count
+    }
+
+    override suspend fun getNextReviewDate(): Date? = nextReviewDate
+
+    override suspend fun setNextReviewDate(date: Date?) {
+        nextReviewDate = date
     }
 
     override suspend fun getUserName(): String? = username

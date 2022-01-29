@@ -2,12 +2,11 @@ package dev.esnault.bunpyro.data.config
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import dev.esnault.bunpyro.common.getIntOrNull
-import dev.esnault.bunpyro.common.putOrRemoveInt
-import dev.esnault.bunpyro.common.putOrRemoveString
+import dev.esnault.bunpyro.common.*
 import dev.esnault.bunpyro.data.mapper.settings.UserSubscriptionFromStringMapper
 import dev.esnault.bunpyro.data.mapper.settings.UserSubscriptionToStringMapper
 import dev.esnault.bunpyro.domain.entities.user.UserSubscription
+import java.util.*
 
 
 private object Keys {
@@ -24,6 +23,7 @@ private object Keys {
     // User
     const val API_KEY = "ApiKey"
     const val STUDY_QUEUE_COUNT = "study_queue_count" // how come I messed this up?
+    const val NEXT_REVIEW_DATE = "NextReviewDate"
     const val USER_NAME = "UserName"
     const val USER_SUBSCRIPTION = "UserSubscription"
 }
@@ -117,6 +117,16 @@ class AppConfig(private val prefs: SharedPreferences) : IAppConfig {
 
     override suspend fun getStudyQueueCount(): Int? {
         return prefs.getIntOrNull(Keys.STUDY_QUEUE_COUNT)
+    }
+
+    override suspend fun getNextReviewDate(): Date? {
+        return prefs.getDate(Keys.NEXT_REVIEW_DATE)
+    }
+
+    override suspend fun setNextReviewDate(date: Date?) {
+        prefs.edit {
+            putOrRemoveDate(Keys.NEXT_REVIEW_DATE, date)
+        }
     }
 
     override suspend fun getUserName(): String? {

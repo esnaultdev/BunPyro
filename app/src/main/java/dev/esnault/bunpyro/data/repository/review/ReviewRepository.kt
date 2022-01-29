@@ -10,6 +10,7 @@ import dev.esnault.bunpyro.data.network.BunproApi
 import dev.esnault.bunpyro.data.network.BunproVersionedApi
 import dev.esnault.bunpyro.data.utils.time.ITimeProvider
 import dev.esnault.bunpyro.domain.entities.user.StudyQueueCount
+import dev.esnault.bunpyro.domain.entities.user.StudyQueueStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.combine
@@ -47,18 +48,28 @@ class ReviewRepository(
             }
     }
 
-    override suspend fun refreshReviewCount(): Result<Int> {
+    override suspend fun refreshReviewStatus(): Result<StudyQueueStatus> {
         val apiKey = appConfig.getApiKey()
             ?: return Result.failure(IllegalStateException("No API key"))
 
         return try {
             val response = bunproApi.getStudyQueue(apiKey)
             val reviewCount = response.requestedInfo.reviewsAvailable
+            val nextReviewDate =
+                response.requestedInfo.nextReviewTimestampSeconds?.toDateFromApiTimestamp()
             val userInfo = response.userInfo
+
+            // Store the new data in our config
             appConfig.setStudyQueueCount(reviewCount)
             appConfig.setUserName(userInfo.userName)
+            appConfig.setNextReviewDate(nextReviewDate)
+
             totalReviewCountFlow.tryEmit(reviewCount)
-            Result.success(reviewCount)
+            val newStatus = StudyQueueStatus(
+                reviewCount = reviewCount,
+                nextReviewDate = nextReviewDate,
+            )
+            Result.success(newStatus)
         } catch (e: Exception) {
             Timber.w(e, "Could not refresh review count")
             Result.failure(e)
@@ -70,16 +81,14 @@ class ReviewRepository(
         return try {
             val response = bunproApi.getStudyQueue(apiKey)
             val timestampSeconds = response.requestedInfo.nextReviewTimestampSeconds
-            if (timestampSeconds != null) {
-                Date(TimeUnit.SECONDS.toMillis(timestampSeconds))
-            } else {
-                null
-            }
+            timestampSeconds?.toDateFromApiTimestamp()
         } catch (e: Exception) {
             Timber.w(e, "Could not get next review date")
             null
         }
     }
+
+    private fun Long.toDateFromApiTimestamp(): Date = Date(TimeUnit.SECONDS.toMillis(this))
 
     override suspend fun removeReview(reviewId: Long): Boolean {
         return try {

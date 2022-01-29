@@ -123,7 +123,7 @@ class HomeViewModel(
 
     fun onResume() {
         viewModelScope.launch(Dispatchers.IO) {
-            reviewRepo.refreshReviewCount()
+            reviewRepo.refreshReviewStatus()
         }
     }
 

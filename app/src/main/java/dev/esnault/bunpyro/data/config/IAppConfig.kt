@@ -1,6 +1,7 @@
 package dev.esnault.bunpyro.data.config
 
 import dev.esnault.bunpyro.domain.entities.user.UserSubscription
+import java.util.*
 
 
 interface IAppConfig {
@@ -38,6 +39,8 @@ interface IAppConfig {
 
     suspend fun getStudyQueueCount(): Int?
     suspend fun setStudyQueueCount(count: Int?)
+    suspend fun getNextReviewDate(): Date?
+    suspend fun setNextReviewDate(date: Date?)
 
     suspend fun getUserName(): String?
     suspend fun setUserName(name: String?)
