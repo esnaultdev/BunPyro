@@ -18,6 +18,7 @@
         <activity
             android:name=".android.MainActivity"
             android:launchMode="singleTop"
+            android:exported="true"
             android:theme="@style/AppTheme.Launcher"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -39,10 +40,12 @@
             android:value="false" />
 
         <!-- https://insert-koin.io/docs/reference/koin-android/workmanager/ -->
+        <!-- https://developer.android.com/topic/libraries/architecture/workmanager/advanced/custom-configuration -->
         <provider
-            android:name="androidx.work.impl.WorkManagerInitializer"
-            android:authorities="${applicationId}.workmanager-init"
-            tools:node="remove" />
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="remove">
+        </provider>
 
     </application>
 
